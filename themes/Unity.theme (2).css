@@ -1,0 +1,164 @@
+/**
+ * @name Unity
+ * @author Superuser
+ * @description All for one, One for all. A theme inspired by Samsung's OneUI.
+ * @version 0.9.7
+ * @authorId 419610859392860162
+ * @website https://github.com/joshuah345
+ * @source https://github.com/joshuah345/Discord-Stuff/tree/master/Themes/Unity
+ */
+
+ @import url(https://joshuah345.github.io/Discord-Stuff/Themes/Unity/Unity.css);
+
+/* Please visit https://github.com/joshuah345/Discord-Stuff/wiki/Themes#unity for a variable guide. Somee are omitted from this theme file as they are considered optional. */
+
+/* GLOBAL VARIABLES */
+
+ :root,
+.theme-dark,
+.theme-light {
+
+    --unity-custom-font: local(C:\Users\rober\AppData\Roaming\BetterDiscord\data\stable\Comfortaa-Light.ttf);
+    
+    --unity-gaps: 1;
+    --unity-background-color: rgba(0,0,0,0.3);
+    --unity-background-image: unset;
+    --unity-background-blur: 12px;
+    --unity-inset: 10px;
+
+    --unity-border-radius: 13px;
+    --unity-floating-blur-radius: 16px;
+
+    --unity-settings-icons: 1;
+    --unity-settings-icon-size: 25px;
+    --hide-ui-settings-open: 0;
+    --settings-margin: 10vh;
+    --settings-bg-blur-radius: 6px;
+
+    --unity-chat-bubble: 1;
+    --unity-chat-bubble-background-color: var(--background-secondary);
+    --unity-chat-bubble-border-color: var(--background-secondary-alt);
+    --unity-chat-bubble-code-background-color: var(--background-secondary-alt);
+    --unity-chat-bubble-max-width: 90%;
+    --unity-chat-bubble-border-radius: var(--unity-border-radius);
+
+    --unity-badge-color: var(--unity-orange-2);
+
+    --threads-margin-right: unset;
+   
+}
+/*div.chat-2ZfjoI{background-blend-mode:normal;}*/
+
+/* DARK THEME VARIABLES  */
+
+:root.theme-dark {
+
+    --unity-accent-hue: 225;
+    --unity-accent-saturation: 100%;
+    --unity-accent-lightness: 40%;
+
+    --unity-background-image:url('https://i.imgur.com/jglehZZ.jpg');
+
+
+    --unity-opacity: 0.82;
+    --unity-background-primary:rgb(25,25,30);
+    --guilds-background-color: hsl(221, 78%, 70%);
+    --guilds-background-image: linear-gradient(180deg, rgba(39,51,77,0.8125843568281694) 0%, rgba(7,29,63,0.8353116295554421) 44%, rgba(0,0,0,0.8069025386463512) 98%);
+    --guilds-background-blur: unset;
+    --guilds-border-color:rgb(116, 68, 149);
+    --guilds-border-width:3px;
+    
+    --sidebar-background-color:unset;
+    --sidebar-background-image:unset;
+    --sidebar-background-blur:unset;
+    --sidebar-border-color: unset;
+    --sidebar-border-width: unset;
+
+    --panels-background-color: #82006f;
+    --panels-background-image: linear-gradient(180deg, rgba(39,51,77,0.8125843568281694) 0%, rgba(7,29,63,0.8353116295554421) 44%, rgba(0,0,0,0.8069025386463512) 98%);
+    --panels-background-blur: unset;
+    --panels-border-color: rgb(116, 68, 149);
+    --panels-border-width: 3px;
+
+    --chat-background-color: rgb(13, 13, 14);
+    --chat-background-image:none 
+    /*linear-gradient(180deg, rgba(106, 116, 136, 0.813) 0%, rgba(7,29,63,0.8353116295554421) 44%, rgba(0,0,0,0.8069025386463512) 98%);*/
+    --chat-background-blur: unset;
+    --chat-border-color: rgb(42, 115, 171);
+    --chat-border-width: 3px;
+    
+    --threads-border-color: unset;
+    --threads-border-width: unset; 
+    --channel-icon: #dc68ee;
+}
+
+/* LIGHT THEME VARIABLES */
+
+:root.theme-light {
+
+    --unity-accent-hue: 210;
+    --unity-accent-saturation: 99%;
+    --unity-accent-lightness: 50%;
+
+    --unity-background-image: unset;
+
+    --unity-opacity: 1;
+
+    --guilds-background-color: unset; 
+    --guilds-background-image: unset;
+    --guilds-background-blur: unset;
+    --guilds-border-color:unset;
+    --guilds-border-width: unset;
+    
+    --sidebar-background-color:unset;
+    --sidebar-background-image: unset;
+    --sidebar-background-blur:unset;
+    --sidebar-border-color: unset;
+    --sidebar-border-width: unset;
+
+    --panels-background-color: unset;
+    --panels-background-image: unset;
+    --panels-background-blur: unset;
+    --panels-border-color: unset;
+    --panels-border-width: unset;
+
+    --chat-background-color: unset;
+    --chat-background-image: unset;
+    --chat-background-blur: unset;
+    --chat-border-color: unset;
+    --chat-border-width: unset;
+    
+    --threads-border-color: unset;
+    --threads-border-width: unset;
+}
+
+/*#app-mount > div.appAsidePanelWrapper-ev4hlp > div.notAppAsidePanel-3yzkgB > div.app-3xd6d0 > div > div.layers-OrUESM.layers-1YQhyW > div > div > div > div > div.chat-2ZfjoI > section, app-mount > div.appAsidePanelWrapper-ev4hlp > div.notAppAsidePanel-3yzkgB > div.app-3xd6d0 > div > div.layers-OrUESM.layers-1YQhyW > div > div > div > div > div.chat-2ZfjoI > div.content-1jQy2l > main
+
+    {
+    background: rgb(255,255,255)!important;
+}
+*/
+/*
+div.content-1jQy2l > div > aside > div
+{
+    border-radius: 0%!important;
+    background-color:rgba(0,0,0,0.1);
+    background-image: none;
+}
+*/
+div.titleWrapper-24Kyzc{
+    background: -webkit-linear-gradient(45deg, #dc68ee 0%, hsl(202, 100%, 50%) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+div.container-2o3qEW,div.content-1jQy2l{
+    background-image: linear-gradient(top right rgb(10,10,10),bottom right rgb(50,50,50));
+    background-color: rgba(25,25,30,1);
+    border-bottom-left-radius: 0%;
+}
+
+div.content-1jQy2l > aside *{
+    background-color: transparent;
+    background-image: none;
+}

@@ -1,0 +1,370 @@
+/**
+ * @name SoftX
+ * @author Gibbu
+ * @version 1.0.0
+ * @description A soft and comfy feel for Discord.
+ * @source https://github.com/DiscordStyles/SoftX
+ * @invite ZHthyCw
+*/
+@import url('https://discordstyles.github.io/SoftX/SoftX.css');
+
+/* Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap');
+/* Theme imports */
+@import url('https://discordstyles.github.io/SoftX/RadialGlow.css'); /* RadialGlow effect for avatars. | Remove this line to disable. */
+@import url('https://discordstyles.github.io/Addons/windows-titlebar.css'); /* Windows titlebar. | Remove this line to disable. */
+
+
+
+:root {
+  /*
+   * SoftX variables
+   */
+  --background-image: url('https://i.imgur.com/Nglfni6.png'); /* Background image | URL MUST BE A DIRECT LINK (ending in .jpg, .jpeg, .png, .gif) */
+  --background-blur: 0px; /* Blur intensity of --background-image | Must end in px | Default: 0px */
+  --accent: 0, 231, 169; /* Colour used around the app. | Values are in R,G,B format. | Default: 0, 231, 169 */
+  --channels-width: 300px; /* Width of the channels list. | Default: 300px */
+  --guilds-width: 105px; /* Width of the server list. | Default: 105px */
+  --members-width: 280px; /* Width of the members list. | Default: 280px */
+  --server-size: 50px; /* Size of the servers inside the server list. | Default: 50px */
+  --chat-avatar-size: 32px; /* Size of the chat avatars. | Default: 32px */
+  --glow-intensity: 1; /* Intensity of the glow used around the app. | Set to 0 to disable the glow. | Decimals allowed | Default: 1 */
+  --opacity: .85; /* Opacity of overall app. | Default: .85 */
+  --font: 'Inter'; /* Custom font | Default: 'Inter' */
+  --avatar-roundness: 50%; /* Roundness for avatars. | 0% = Square, 50% = Circle | Default: 50% */
+  --server-roundness: 50%; /* Roundness for servers. | 0% = Square, 50% = Circle | Default: 50% */
+  /*
+   * RadialStatus veriables
+   */
+  --rs-small-spacing: 2px; /* Spacing between profile image and outer ring on small icons (e.g. member list) | Default: 2px */
+  --rs-medium-spacing: 4px; /* Spacing between profile image and outer ring on medium icons (e.g. user popout) | Default: 4px */
+  --rs-large-spacing: 4px; /* Spacing between profile image and outer ring on medium icons (e.g. user popout fullscreen) | Default: 4px */
+  --rs-small-width: 1.5px; /* Ring width (follows same sizing as above) | Default: 1.5px */
+  --rs-medium-width: 2px; /* Default: 2px */
+  --rs-large-width: 2px; /* Default: 2px */
+  /* Customizable colors */
+  --rs-online-color: #43b581; /* Default: #43b581 */
+  --rs-idle-color: #faa61a; /* Default: #faa61a */
+  --rs-dnd-color: #f04747; /* Default: #f04747 */
+  --rs-offline-color: #636b75; /* Default: #636b75 */
+  --rs-streaming-color: #643da7; /* Default: #643da7 */
+  --rs-invisible-color: #747f8d; /* Default: #747f8d */
+  --rs-phone-color: var(--rs-online-color); /* Color of the phone for mobile users | Default: var(--rs-online-color) */
+  --rs-phone-visible: block; /* Visibility of the phone for mobile users | Default: block */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#app-mount > div.appAsidePanelWrapper-ev4hlp > div.notAppAsidePanel-3yzkgB > div.app-3xd6d0 > div > div.layers-OrUESM.layers-1YQhyW > div > div > nav{
+    width: 6vw!important;
+}
+
+.sidebar-1tnWFu{
+    width: 14.5vw!important;
+}
+
+
+
+
+
+#app-mount > div.typeWindows-2-g3UY.withFrame-2dL45i.titleBar-1it3bQ.horizontalReverse-2QssvL.flex-3BkGQD.directionRowReverse-HZatnx.justifyStart-2Mwniq.alignStretch-Uwowzr.withBackgroundOverride-gzmZco{
+    height: 30px!important;
+    top:0px!important;
+}
+#app-mount > div.appAsidePanelWrapper-ev4hlp > div.notAppAsidePanel-3yzkgB > div.app-3xd6d0 > div > div.layers-OrUESM.layers-1YQhyW > div > div > div
+{
+    margin-top: -10px!important;
+}   
+#app-mount > div.typeWindows-2-g3UY.withFrame-2dL45i.titleBar-1it3bQ.horizontalReverse-2QssvL.flex-3BkGQD.directionRowReverse-HZatnx.justifyStart-2Mwniq.alignStretch-Uwowzr.withBackgroundOverride-gzmZco > div.wordmarkWindows-2dq6rw.wordmark-2u86JB::after
+{
+    content:'💎𝒹𝒶𝓎 𝟰 𝓎𝑜𝓊 𝒾𝓈 𝒹𝓊𝓂𝒷 𝒶𝓈 𝙛𝙪𝙘𝙠😈 (っ☯◡☯)っ';
+    background: -webkit-linear-gradient(45deg, #dc68ee 0%, hsl(202, 100%, 50%) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+div.titleWrapper-24Kyzc{
+    background: -webkit-linear-gradient(45deg, #dc68ee 0%, hsl(202, 100%, 50%) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+div.container-2o3qEW,div.content-1jQy2l{
+    background-image: linear-gradient(top right rgb(10,10,10),bottom right rgb(50,50,50));
+    background-color: rgba(25,25,30,1);
+    border-bottom-left-radius: 0%;
+}
+
+div.content-1jQy2l > aside *{
+    background-color: transparent;
+    background-image: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ----------------------------------------------------------------------- */
+  
+  /*RESIZE GIF DRAWER*/
+  
+  /* ----------------------------------------------------------------------- */
+
+div.drawerSizingWrapper-1txdWG {
+    height:80vh;
+    bottom:0px;
+    right:5px;
+    width:600px; /* 498px-599px = 2 ROWS || 600px-799px = 3 ROWS || 800px-999px = 4 ROWS || 1000px< = get fucking help */
+}
+
+  /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+  /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+  
+  
+  /* ----------------------------------------------------------------------- */
+  
+  /*WHITE SCROLL BARS*/
+  
+  /* ----------------------------------------------------------------------- */
+  
+  .auto-2TJ1RH::-webkit-scrollbar-thumb {
+      background-color:white;
+  }
+  .thin-RnSY0a::-webkit-scrollbar-thumb {
+      border: none;
+      border-radius:12px;
+      background-color: white;
+  }
+
+  /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+  /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+  
+  
+  
+  
+  
+  
+  /* ----------------------------------------------------------------------- */
+  
+  /*WINDOW CLOSE BUTTONS*/
+  
+  /* ----------------------------------------------------------------------- */
+  
+#app-mount > div.typeWindows-2-g3UY.withFrame-2dL45i.titleBar-1it3bQ.horizontalReverse-2QssvL.flex-3BkGQD.directionRowReverse-HZatnx.justifyStart-2Mwniq.alignStretch-Uwowzr.withBackgroundOverride-gzmZco > div.wordmarkWindows-2dq6rw.wordmark-2u86JB::after
+,
+#window-title, #app-mount > div.withFrame-haYltI > nav{
+      content:'💎𝒹𝒶𝓎 𝟰 𝓎𝑜𝓊 𝒾𝓈 𝒹𝓊𝓂𝒷 𝒶𝓈 𝙛𝙪𝙘𝙠😈 (っ☯◡☯)っ VENCORD.PTB'!important;
+      color:white;
+    background: -webkit-linear-gradient(45deg, #dc68ee 0%, hsl(202, 100%, 50%) 100%)!important;
+    -webkit-background-clip: text!important;
+    -webkit-text-fill-color: transparent!important;
+
+  }
+
+#app-mount > div.typeWindows-2-g3UY.withFrame-2dL45i.titleBar-1it3bQ.horizontalReverse-2QssvL.flex-3BkGQD.directionRowReverse-HZatnx.justifyStart-2Mwniq.alignStretch-Uwowzr > div.wordmarkWindows-2dq6rw.wordmark-2u86JB > svg {
+    display:none!important;
+}
+/*
+.titlebar #window-controls-container #minimize, .titlebar #window-controls-container #maximize, .titlebar #window-controls-container #quit {
+      height: 21px;
+      width: 21px;
+      border-radius: 25px;
+      margin: 4px 12px 0px 12px;
+  }*/
+  /*
+.titlebar #window-controls-container #quit {background-color: hsl(0, 50%, 50%) !important;}
+.titlebar #window-controls-container #quit-icon {display:none!important;}
+
+.titlebar #window-controls-container #maximize {background-color: hsl(120, 50%, 50%) !important;}
+.titlebar #window-controls-container #maximize-icon {display:none!important;}
+
+.titlebar #window-controls-container #minimize {background-color: hsl(50, 50%, 50%) !important;}
+*/
+
+
+  .withFrame-2dL45i {
+      height: 18px;
+  }
+  .typeWindows-2-g3UY .winButton-3UMjdg > svg {
+      display: none!important;
+  }
+  .typeWindows-2-g3UY .winButton-3UMjdg:before {
+      top: 0px;
+      width: 22px;
+      height: 22px;
+      margin: 0px 22px 0px 12px;
+      border-radius: 25px;
+    outline-width: 3px;
+    outline-color: rgba(255,255,255,0.8);
+    outline-style:inset;
+  }
+  .typeWindows-2-g3UY .winButton-3UMjdg::after {
+      content:'';
+      height: 22px;
+      width: 22px;
+      border-radius: 25px;
+      transition: 0.4s;
+    outline-width: 3px;
+    outline-style: inset;
+  }
+  .typeWindows-2-g3UY .winButtonClose-3Q8ZH5::after {
+      background-color: hsl(0, 50%, 50%) !important;
+  }
+  .typeWindows-2-g3UY .winButtonMinMax-3RsPUg:nth-child(3)::after {
+      background-color: hsl(120, 50%, 50%) !important;
+  }
+  .typeWindows-2-g3UY .winButtonMinMax-3RsPUg:nth-child(4)::after {
+      background-color: hsl(50, 50%, 50%) !important;
+  }
+  .typeWindows-2-g3UY > div:hover::after {
+      transform: scale(1.5);
+  }
+
+
+  
+  /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+  /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  /* ----------------------------------------------------------------------- */
+  
+  /*FONT SETTINGS*/
+  
+  /* ----------------------------------------------------------------------- */
+
+  /* Import Comfortaa */
+ 
+  @font-face {
+      font-family: 'Comfortaa Light';
+      font-family: 'Comfortaa Regular';
+      font-family: 'Comfortaa Medium';
+      font-family: 'Comfortaa Semibold';
+      font-family: 'Comfortaa Bold';
+       src: url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&display=swap');
+      font-style: normal;
+      font-weight: 300,400,500,600,700;
+  }
+ 
+  
+  /* Backwards Compatibility */
+  
+  :root {
+      --line-spacing: var(--message-line-spacing);
+  }
+  
+  /* Apply styles */
+ 
+  ::-webkit-input-placeholder, body, button, input, select, textarea {
+      font-family: 'Comfortaa Light', 'Comfortaa Regular', 'Comfortaa SemiBold' ,'Comfortaa Medium', 'Comfortaa-Bold', sans-serif !important;
+      word-spacing: var(--word-spacing, initial);
+      letter-spacing: var(--letter-spacing, initial);
+  }
+  
+  /* Adjust formatted text line-height */
+  
+  [class*="messageContent-" i] {
+      line-height: var(--message-line-spacing, initial) !important;
+  }
+  
+  /* Scale up timestamps & "Edited" text */
+  
+  [class*="group-spacing" i] [class*="timestamp"],
+  [class*="messageContent-" i] time {
+      font-size: .9rem;
+  }
+  
+  /* ----------------------------------------------------------------------- */
+  
+  /* FONT SIZE VARIABLES */
+  
+  :root {
+      --word-spacing: 0.7px;
+      --letter-spacing: 0.15px;
+      --message-line-spacing: 1.5;
+  }
+  
+  /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+  /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+
+
+
+
+
+

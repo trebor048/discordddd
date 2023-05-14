@@ -1,0 +1,715 @@
+/**
+ * @name midnight
+ * @description A darkened discord theme.
+ * @author refact0r
+ * @version 1.4.0
+ * @source https://github.com/refact0r/midnight-discord
+ * @authorId 508863359777505290
+*/
+
+@import url('https://refact0r.github.io/midnight-discord/midnight.css');
+@import url('https://discord-extensions.github.io/modern-indicators/src/source.css');
+
+/* change colors here */
+/* a color picker should show up if you hover over the "hsl(x, y, z)" part */
+:root {
+	/* link color */
+	--link-color: hsl(190, 70%, 60%);
+	/* main accent color (mentions, folder icons, unread indicators) */
+	--accent-color: hsl(190, 60%, 50%);
+	/* darker accent color (background of any accent items with text) */
+	--accent-background: hsl(190, 60%, 40%);
+	/* even darker accent color (background of accent buttons when hover) */
+	--accent-background-2: hsl(190, 60%, 30%);
+	/* even darker accent color (background of accent buttons when clicked) */
+	--accent-background-3: hsl(190, 60%, 20%);
+	/* background of mention text and messages that mention you */
+	--mention-modifier: hsla(14, 82%, 59%, 0.3);
+	/* background of messages that mention you on hover */
+	--mention-hover-modifier: hsla(59, 100%, 80%, 0.3);
+	/* bright text for colored buttons */
+	--bright-text: hsl(0, 0%, 100%);
+	/* header text for headers and certain text */
+	--header-text: hsl(219, 100%, 92%);
+	/* main text color (messages, titles, unread text/indicators) */
+	--primary-text: hsl(200, 17%, 90%);
+	/* secondary text color (channels, descriptions, buttons) */
+	--secondary-text: hsl(219, 13%, 59%);
+	/* muted text color (input box placeholders, muted channels, message times) */
+	--muted-text: hsl(214, 8%, 35%);
+	/* background of muted colored buttons on hover */
+	--muted-background-hover: hsl(220, 15%, 20%);
+	/* background of muted colored buttons on click */
+	--muted-background-active: hsl(220, 15%, 16%);
+	/* background of pretty much everything not using primary background */
+	--secondary-background: hsla(222, 15%, 13%, 0.911);
+	/* main chat/channel list/member list background */
+	--primary-background: hsla(223, 14%, 10%, 0.603);
+	/* overlay background on stuff when hovered over */
+	--hover-modifier: hsl(230, 20%, 40%, 0.1);
+	/* overlay background on stuff when clicked or selected */
+	--active-modifier: hsl(220, 20%, 40%, 0.2);
+	/* overlay background on messages when hovered over */
+	--message-hover-modifier: hsla(0, 0%, 100%, 0.1);
+	/* radius of round corners */
+	--roundness: 16px;
+}
+/*------------MIDNIGHT----------*/
+
+
+
+
+/* || Accent Colors
+ * Accent colors use HSL to remain compatible with Discord's built in saturation accessibility feature.
+ * To the bigbrains out there, I know this is unnecessary. This is just how I prefer to do things.
+ */
+.theme-light {
+    --indicator-unread: 0, calc(var(--saturation-factor, 1) * 0%), 0%;
+    --indicator-selected: 235, calc(var(--saturation-factor, 1) * 86%), 65%;
+    --indicator-connected: 139, calc(var(--saturation-factor, 1) * 47.6%), 48.6%;
+    --indicator-hovered: hsla(var(--indicator-unread), 0.08);
+    --text-active: black;
+}
+.theme-dark {
+    --indicator-unread: 0, calc(var(--saturation-factor, 1) * 0%), 100%;
+    --indicator-selected: 206, calc(var(--saturation-factor, 1) * 70%), 40%;
+    --indicator-connected: 139, calc(var(--saturation-factor, 1) * 86%), 65%;
+    --indicator-hovered: hsla(var(--indicator-unread), 0.075);
+    --text-active: white;
+}
+
+/* || Main Customization */
+:root {
+    --indicator-border-size: 6px;
+    --indicator-border-style: solid;
+    --indicator-rounding: 0;
+
+    /* || Advanced Coloring */
+    --item-selected-icon:white;
+    --item-selected-indicator: hsl(var(--indicator-selected));
+    --item-selected-background: hsla(var(--indicator-selected), 0.5);
+    --item-selected-background-hover: rgba(183,88,199,0.7);
+
+    --item-connected-icon: hsl(var(--indicator-connected));
+    --item-connected-indicator: hsl(var(--indicator-connected));
+    --item-connected-background: hsl(var(--indicator-connected), 0.1);
+    --item-connected-background-hover: hsl(var(--indicator-connected), 0.2);
+
+    --item-unread-icon: hsl(var(--indicator-unread));
+    --item-unread-indicator: hsl(var(--indicator-unread), 0.5);
+    --item-unread-background: hsl(var(--indicator-unread), 0.025);
+    --item-unread-background-hover: hsl(var(--indicator-unread), 0.1);
+}
+
+
+@keyframes rainbowText {
+    from {
+      -webkit-filter: hue-rotate(0deg);
+    }
+    to {
+      -webkit-filter: hue-rotate(360deg);
+    }
+  }
+  
+
+#app-mount > div.typeWindows-2-g3UY.withFrame-2dL45i.titleBar-1it3bQ.horizontalReverse-2QssvL.flex-3BkGQD.directionRowReverse-HZatnx.justifyStart-2Mwniq.alignStretch-Uwowzr.withBackgroundOverride-gzmZco > div.wordmarkWindows-2dq6rw.wordmark-2u86JB::after
+{
+    content:'💎𝒹𝒶𝓎 𝟰 𝓎𝑜𝓊 𝒾𝓈 𝒹𝓊𝓂𝒷 𝒶𝓈 𝙛𝙪𝙘𝙠😈 (っ☯◡☯)っ' !important;
+    background: -webkit-linear-gradient(45deg, #dc68ee 0%, hsl(202, 100%, 50%) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: #1727b9;
+    animation: rainbowText 3s infinite linear;
+}
+
+
+div.titleWrapper-24Kyzc, div.topic-11NuQZ.expandable-3CaLeS > span, div.buttons-uaqb-5 *, div.contents-3NembX.attachButtonInner-2mwer8 *{
+    background: -webkit-linear-gradient(45deg, #dc68ee 0%, hsl(202, 100%, 50%) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: #001aff;
+    animation: rainbowText 8s infinite linear;
+}
+
+
+
+
+/*----------MODERN INDICATORS-----------------*/
+
+
+
+
+
+@import url("https://raw.githubusercontent.com/maenDisease/BetterDiscordStuff/main/css/SettingsSidebar.css");
+
+
+
+
+
+:root {
+    --tertiaryb4:#173851;
+    --background-tertiary: rgba(23, 56,81,0.5);
+    --background-primary: rgb(54, 57, 63, 0);
+  }
+
+  /*--------------------------------------------------------------------------------------------------------*/
+
+  .sidebar-1tnWFu .unreadBar-elBRZx {
+    width: 102px;
+    margin: auto;
+    text-transform: capitalize;
+    color: white;
+    background-color: var(--background-tertiary);
+}
+
+.sidebar-1tnWFu .unreadBar-elBRZx:not(.mention-3XBnnZ) span:before {
+    margin: -2px 8px 0px 6px;
+    float: left;
+}
+
+.sidebar-1tnWFu
+    .unreadTop-1DJtGv
+    .unreadBar-elBRZx:not(.mention-3XBnnZ)
+    span:before {
+    content: url("https://i.imgur.com/xN4NFmi.png");
+}
+
+.sidebar-1tnWFu
+    .unreadBottom-3Ojk6R
+    .unreadBar-elBRZx:not(.mention-3XBnnZ)
+    span:before {
+    content: url("https://i.imgur.com/H9iG4mp.png");
+}
+
+.sidebar-1tnWFu .unreadBar-elBRZx.mention-3XBnnZ span:before {
+    content: " ";
+    font-size: 0px;
+    background-color: var(--status-danger);
+    float: left;
+    border-radius: 50%;
+    height: 8px;
+    width: 8px;
+    margin: 4px 3px auto auto;
+}
+  
+  [data-list-id="guildsnav"] {
+    background: var(--tertiaryb4)
+  }
+  /*--------------------------------------------------------------------------------------------------------*/
+  /*--------------------------------------------------------------------------------------------------------*/
+  /*--------------------------------------------------------------------------------------------------------*/
+  /*--------------------------------------------------------------------------------------------------------*/
+
+
+
+
+  /*--------------------------------------------------------------------------------------------------------*/
+  /*--------------------------------------------------------------------------------------------------------*/
+  /*--------------------------------------------------------------------------------------------------------*/
+  /*--------------------------------------------------------------------------------------------------------*/
+
+
+  /*--------------------------------------------------------------------------------------------------------*/
+  /*--------------------------------------------------------------------------------------------------------*/
+  /*--------------------------------------------------------------------------------------------------------*/
+  /*--------------------------------------------------------------------------------------------------------*/
+
+
+  .container-2nx-BQ:not(.checked-25WXMf) {
+    background-color: #f04747 !important;
+}
+
+.container-2nx-BQ:not(.checked-25WXMf) path {
+    fill: #f04747 !important;
+}
+
+/* fixes/ensures enabled input is green*/
+.container-2nx-BQ.checked-25WXMf {
+    background-color: #43b581 !important;
+}
+
+.container-2nx-BQ.checked-25WXMf path {
+    fill: #43b581 !important;
+}
+
+
+
+
+
+  /*--------------------------------------------------------------------------------------------------------*/
+  /*--------------------------------------------------------------------------------------------------------*/
+  /*--------------------------------------------------------------------------------------------------------*/
+  /*--------------------------------------------------------------------------------------------------------*/
+/*** Collapsed members list snippet but now with a hacky way of showing the members count. ***/
+.content-yTz4x3:before { /* Fix topbar shadow */
+  z-index: 12;
+}
+[class*="membersWrap-"] {
+  margin-right: -175px;
+  transition: transform .35s;
+  z-index: 10;
+}
+[class*="membersWrap-"]:hover,
+[class*="membersWrap-"]:focus,
+[class*="membersWrap-"]:focus-within {
+  transform: translatex(-175px);
+}
+[class*="membersWrap-"] > [class*="members-"] {
+  background-color: var(--background-primary);
+  transition: background-color .2s;
+  max-width: 200vw;
+}
+[class*="membersWrap-"] > [class*="members-"] > div {
+  background: none !important;
+}
+
+[class*="membersWrap-"]:hover > [class*="members-"],
+[class*="membersWrap-"]:focus-within > [class*="members-"] {
+  background-color: var(--background-secondary);
+}
+[class*="membersWrap-"] [class*="membersGroup-"] {
+  margin-right: auto;
+  width: 55px;
+  text-overflow: clip;
+  direction: rtl;
+  word-spacing: 1000px;
+}
+[class*="membersWrap-"]:hover [class*="membersGroup-"],
+[class*="membersWrap-"]:focus-within [class*="membersGroup-"] {
+  width: 100%;
+  margin: 0;
+  direction: ltr;
+  word-spacing: unset;
+  text-overflow: ellipsis;
+}
+[class*="membersWrap-"] [class*="member-"] [class*="content-"] {
+  filter: opacity(0);
+  transition: filter .2s;
+}
+[class*="membersWrap-"]:hover [class*="membersGroup-"],
+[class*="membersWrap-"]:focus-within [class*="membersGroup-"],
+[class*="membersWrap-"]:hover [class*="member-"] [class*="content-"],
+[class*="membersWrap-"]:focus-within [class*="member-"] [class*="content-"] {
+  filter: opacity(1);
+}
+
+
+
+
+
+
+
+
+
+
+    /*--------------------------------------------------------------------------------------------------------*/
+  /*--------------------------------------------------------------------------------------------------------*/
+  /*--------------------------------------------------------------------------------------------------------*/
+  /*--------------------------------------------------------------------------------------------------------*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /*--------------------------------------------------------------------------------------------------------*/
+  /*--------------------------------------------------------------------------------------------------------*/
+  /*--------------------------------------------------------------------------------------------------------*/
+  /*--------------------------------------------------------------------------------------------------------*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /*--------------------------------------------------------------------------------------------------------*/
+  /*--------------------------------------------------------------------------------------------------------*/
+  /*--------------------------------------------------------------------------------------------------------*/
+  /*--------------------------------------------------------------------------------------------------------*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /*--------------------------------------------------------------------------------------------------------*/
+  /*--------------------------------------------------------------------------------------------------------*/
+  /*--------------------------------------------------------------------------------------------------------*/
+  /*--------------------------------------------------------------------------------------------------------*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /*--------------------------------------------------------------------------------------------------------*/
+  /*--------------------------------------------------------------------------------------------------------*/
+  /*--------------------------------------------------------------------------------------------------------*/
+  /*--------------------------------------------------------------------------------------------------------*/
+
+
+
+
+
+
+
+
+/*#app-mount > div.typeWindows-2-g3UY.withFrame-2dL45i.titleBar-1it3bQ.horizontalReverse-2QssvL.flex-3BkGQD.directionRowReverse-HZatnx.justifyStart-2Mwniq.alignStretch-Uwowzr.withBackgroundOverride-gzmZco{
+    height: 30px!important;
+    top:0px!important;
+}
+#app-mount > div.appAsidePanelWrapper-ev4hlp > div.notAppAsidePanel-3yzkgB > div.app-3xd6d0 > div > div.layers-OrUESM.layers-1YQhyW > div > div > div
+{
+    margin-top: -10px!important;
+} 
+#app-mount > div.typeWindows-2-g3UY.withFrame-2dL45i.titleBar-1it3bQ.horizontalReverse-2QssvL.flex-3BkGQD.directionRowReverse-HZatnx.justifyStart-2Mwniq.alignStretch-Uwowzr.withBackgroundOverride-gzmZco > div.wordmarkWindows-2dq6rw.wordmark-2u86JB::after
+{
+    content:'💎𝒹𝒶𝓎 𝟰 𝓎𝑜𝓊 𝒾𝓈 𝒹𝓊𝓂𝒷 𝒶𝓈 𝙛𝙪𝙘𝙠😈 (っ☯◡☯)っ';
+    background: -webkit-linear-gradient(45deg, #dc68ee 0%, hsl(202, 100%, 50%) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+/*
+#app-mount > div.appAsidePanelWrapper-ev4hlp > div.notAppAsidePanel-3yzkgB > div.app-3xd6d0 > div > div.layers-OrUESM.layers-1YQhyW > div > div > nav{
+    width: 4vw!important;
+}
+div.titleWrapper-24Kyzc{
+    background: -webkit-linear-gradient(45deg, #7aa967 -30%, hsl(214, 55%, 60%));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+div.container-2o3qEW,div.content-1jQy2l{
+    background-image: linear-gradient(top right rgb(10,10,10),bottom right rgb(50,50,50));
+    background-color: rgba(25,25,30,1);
+    border-bottom-left-radius: 0%;
+}
+
+div.content-1jQy2l > aside *{
+    background-color: transparent;
+    background-image: none;
+}
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ----------------------------------------------------------------------- */
+  
+  /*RESIZE GIF DRAWER*/
+  
+  /* ----------------------------------------------------------------------- */
+
+div.drawerSizingWrapper-1txdWG {
+    height:80vh;
+    bottom:0px;
+    right:5px;
+    width:600px; /* 498px-599px = 2 ROWS || 600px-799px = 3 ROWS || 800px-999px = 4 ROWS || 1000px< = get fucking help */
+}
+
+  /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+  /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+  
+  
+  /* ----------------------------------------------------------------------- */
+  
+  /*WHITE SCROLL BARS*/
+  
+  /* ----------------------------------------------------------------------- */
+  
+  .auto-2TJ1RH::-webkit-scrollbar-thumb {
+      background-color:white;
+  }
+  .thin-RnSY0a::-webkit-scrollbar-thumb {
+      border: none;
+      border-radius:12px;
+      background-color: white;
+  }
+
+  /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+  /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+  
+  
+  
+  
+  
+  
+  /* ----------------------------------------------------------------------- */
+  
+  /*WINDOW CLOSE BUTTONS*/
+  
+  /* ----------------------------------------------------------------------- */
+  /*
+#app-mount > div.typeWindows-2-g3UY.withFrame-2dL45i.titleBar-1it3bQ.horizontalReverse-2QssvL.flex-3BkGQD.directionRowReverse-HZatnx.justifyStart-2Mwniq.alignStretch-Uwowzr.withBackgroundOverride-gzmZco > div.wordmarkWindows-2dq6rw.wordmark-2u86JB::after
+,
+#window-title, #app-mount > div.withFrame-haYltI > nav{
+      content:'💎𝒹𝒶𝓎 𝟰 𝓎𝑜𝓊 𝒾𝓈 𝒹𝓊𝓂𝒷 𝒶𝓈 𝙛𝙪𝙘𝙠😈 (っ☯◡☯)っ VENCORD.PTB'!important;
+      color:white;
+    background: -webkit-linear-gradient(45deg, #dc68ee 0%, hsl(202, 100%, 50%) 100%)!important;
+    -webkit-background-clip: text!important;
+    -webkit-text-fill-color: transparent!important;
+
+  }
+
+#app-mount > div.typeWindows-2-g3UY.withFrame-2dL45i.titleBar-1it3bQ.horizontalReverse-2QssvL.flex-3BkGQD.directionRowReverse-HZatnx.justifyStart-2Mwniq.alignStretch-Uwowzr > div.wordmarkWindows-2dq6rw.wordmark-2u86JB > svg {
+    display:none!important;
+}
+/*
+.titlebar #window-controls-container #minimize, .titlebar #window-controls-container #maximize, .titlebar #window-controls-container #quit {
+      height: 21px;
+      width: 21px;
+      border-radius: 25px;
+      margin: 4px 12px 0px 12px;
+  }*/
+  /*
+.titlebar #window-controls-container #quit {background-color: hsl(0, 50%, 50%) !important;}
+.titlebar #window-controls-container #quit-icon {display:none!important;}
+
+.titlebar #window-controls-container #maximize {background-color: hsl(120, 50%, 50%) !important;}
+.titlebar #window-controls-container #maximize-icon {display:none!important;}
+
+.titlebar #window-controls-container #minimize {background-color: hsl(50, 50%, 50%) !important;}
+
+
+
+  .withFrame-2dL45i {
+      height: 18px;
+  }
+  .typeWindows-2-g3UY .winButton-3UMjdg > svg {
+      display: none!important;
+  }
+  .typeWindows-2-g3UY .winButton-3UMjdg:before {
+      top: 0px;
+      width: 22px;
+      height: 22px;
+      margin: 0px 22px 0px 12px;
+      border-radius: 25px;
+    outline-width: 3px;
+    outline-color: rgba(255,255,255,0.8);
+    outline-style:inset;
+  }
+  .typeWindows-2-g3UY .winButton-3UMjdg::after {
+      content:'';
+      height: 22px;
+      width: 22px;
+      border-radius: 25px;
+      transition: 0.4s;
+    outline-width: 3px;
+    outline-style: inset;
+  }
+  .typeWindows-2-g3UY .winButtonClose-3Q8ZH5::after {
+      background-color: hsl(0, 50%, 50%) !important;
+  }
+  .typeWindows-2-g3UY .winButtonMinMax-3RsPUg:nth-child(3)::after {
+      background-color: hsl(120, 50%, 50%) !important;
+  }
+  .typeWindows-2-g3UY .winButtonMinMax-3RsPUg:nth-child(4)::after {
+      background-color: hsl(50, 50%, 50%) !important;
+  }
+  .typeWindows-2-g3UY > div:hover::after {
+      transform: scale(1.5);
+  }
+
+*/
+  
+  /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+  /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  /* ----------------------------------------------------------------------- */
+  
+  /*FONT SETTINGS*/
+  
+  /* ----------------------------------------------------------------------- */
+
+  /* Import Comfortaa */
+ 
+  @font-face {
+      font-family: 'Comfortaa Light';
+      font-family: 'Comfortaa Regular';
+      font-family: 'Comfortaa Medium';
+      font-family: 'Comfortaa Semibold';
+      font-family: 'Comfortaa Bold';
+       src: url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&display=swap');
+      font-style: normal;
+      font-weight: 300,400,500,600,700;
+  }
+ 
+  
+  /* Backwards Compatibility */
+  
+  :root {
+      --line-spacing: var(--message-line-spacing);
+  }
+  
+  /* Apply styles */
+ 
+  ::-webkit-input-placeholder, body, button, input, select, textarea {
+      font-family: 'Comfortaa Light', 'Comfortaa Regular', 'Comfortaa SemiBold' ,'Comfortaa Medium', 'Comfortaa-Bold', sans-serif !important;
+      word-spacing: var(--word-spacing, initial);
+      letter-spacing: var(--letter-spacing, initial);
+  }
+  
+  /* Adjust formatted text line-height */
+  
+  [class*="messageContent-" i] {
+      line-height: var(--message-line-spacing, initial) !important;
+  }
+  
+  /* Scale up timestamps & "Edited" text */
+  
+  [class*="group-spacing" i] [class*="timestamp"],
+  [class*="messageContent-" i] time {
+      font-size: .9rem;
+  }
+  
+  /* ----------------------------------------------------------------------- */
+  
+  /* FONT SIZE VARIABLES */
+  
+  :root {
+      --word-spacing: 0.7px;
+      --letter-spacing: 0.15px;
+      --message-line-spacing: 1.5;
+  }
+  
+  /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+  /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+
+
+
+
+
+
+/*-----------------CUSTOM CSS---------------------*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

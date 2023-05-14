@@ -1,0 +1,33 @@
+:root {
+    --channelTabs-tab-height: 22px;
+}
+.wordmarkWindows-2dq6rw {
+    display:none;
+}
+.titleBar-1it3bQ {
+    position:absolute;
+    top:0;
+    right:0;
+    width: fit-content;
+    height: calc(var(--channelTabs-tab-height) + 3px);
+}
+
+.winButton-3UMjdg {
+    height: 100%;
+    
+}
+.channelTabs-tabContainer {
+    padding-right: 72px;
+    margin-right: calc(76px + 20px);
+    -webkit-app-region: drag;
+}
+.channelTabs-tabContainer > * {
+    -webkit-app-region: no-drag;
+}
+
+html #channelTabs-settingsMenu {
+    right: 84px;
+    max-height: unset;
+    height: calc(var(--channelTabs-tab-height) + 3px);
+    top:0;
+}

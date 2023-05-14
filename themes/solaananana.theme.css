@@ -1,0 +1,441 @@
+/*
+ * @name solaananana
+ * @author Disease#5663
+ * @version 1.0.11
+ * @description macOS with barely any customization.
+ * @source https://github.com/maenDisease/BetterDiscordStuff/tree/main/Themes/Solana
+ * @invite BShu37e4jg
+ * @website https://maendisease.github.io/
+ * @authorId 678469587444170762
+ * @BDEditor Solana
+*/
+@import url('https://maendisease.github.io/BetterDiscordStuff/Themes/Solana/Solana.css');
+@import url('https://maendisease.github.io/BetterDiscordStuff/css/bdAddonMini.css');
+@import url('https://maendisease.github.io/BetterDiscordStuff/Themes/Solana/addon/mac-titlebar.css');
+
+:root {
+  --accent-hue: 213;
+  --accent-saturation: 100%;
+  --accent-brightness: 50%;
+  --background-accent-hue: 213;
+  --background-accent-saturation: 100%;
+  --background-accent-brightness: 50%;
+  --background-image: url('https://i.imgur.com/6bhj1lj.jpg'); /* url(https://site.com/foobar.png) | URL MUST BE A DIRECT(ending in .jpg, .jpeg, .png, .gif) */
+  --background-image-position: center;
+  --background-image-size: contain;
+  --background-image-blur: 3px;
+  --background-overlay-opacity: 70%;
+  --background-overlay-color-lightness: -0.94;
+  --background-hue-shift-strength: 100%;
+  --window-background-image: transparent;
+  --window-background-image-position: center;
+  --window-background-image-size: cover;
+  --window-background-image-attachment: fixed;
+  --window-opacity: 40%;
+  --window-blur: 13;
+  --window-friends-blur: 0;
+  --window-margin: 8;
+  --window-margin-left: 5;
+  --window-border-radius: 18px;
+  --window-background-lightness: 0.1;
+  --window-accent-tint-strength: 33%;
+  --chat-bubble: 1;
+  --text-link-hue: 212;
+  --chat-text-brightness: 1;
+  --home-icon: url('https://i.imgur.com/2OfZdPa.gif');
+  --favorites-icon: url('');
+  --dock-blur: 5; /* Blur intensity of the dock. */
+  --dock-border-radius: -0.76;
+  --sidebar-width: 235px;
+  --members-width: 193px;
+  --sidebar-text-brightness: 0.2;
+  --background-floating-blur: 20px;
+  --floating-background-lightness: 1;
+  --background-floating-opacity: 1;
+  --enable-floating-transparency: 1;
+  --custom-font-display: "";
+  --custom-font-regular: "";
+  --custom-font-primary: "";
+  --custom-font-code: "";
+  --enable-blur: 1;
+}
+
+/* Any custom CSS below here */
+
+/* ----------------------------------------------------------------------- */
+  
+  /*RESIZE GIF DRAWER*/
+  
+  /* ----------------------------------------------------------------------- */
+
+div.drawerSizingWrapper-1txdWG {
+    height:80vh;
+    bottom:0px;
+    right:5px;
+    width:600px; /* 498px-599px = 2 ROWS || 600px-799px = 3 ROWS || 800px-999px = 4 ROWS || 1000px< = get fucking help */
+}
+
+  /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+  /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+  
+  
+  /* ----------------------------------------------------------------------- */
+  
+  /*WHITE SCROLL BARS*/
+  
+  /* ----------------------------------------------------------------------- */
+  
+  .auto-2TJ1RH::-webkit-scrollbar-thumb {
+      background-color:white;
+  }
+  .thin-RnSY0a::-webkit-scrollbar-thumb {
+      border: none;
+      border-radius:12px;
+      background-color: white;
+  }
+
+  /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+  /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+  
+  
+  
+  
+  
+  
+  /* ----------------------------------------------------------------------- */
+  
+  /*WINDOW CLOSE BUTTONS*/
+  
+  /* ----------------------------------------------------------------------- */
+  /*
+#app-mount > div.typeWindows-2-g3UY.withFrame-2dL45i.titleBar-1it3bQ.horizontalReverse-2QssvL.flex-3BkGQD.directionRowReverse-HZatnx.justifyStart-2Mwniq.alignStretch-Uwowzr.withBackgroundOverride-gzmZco > div.wordmarkWindows-2dq6rw.wordmark-2u86JB::after
+,
+#window-title, #app-mount > div.withFrame-haYltI > nav{
+      content:'💎𝒹𝒶𝓎 𝟰 𝓎𝑜𝓊 𝒾𝓈 𝒹𝓊𝓂𝒷 𝒶𝓈 𝙛𝙪𝙘𝙠😈 (っ☯◡☯)っ VENCORD.PTB'!important;
+      color:white;
+    background: -webkit-linear-gradient(45deg, #dc68ee 0%, hsl(202, 100%, 50%) 100%)!important;
+    -webkit-background-clip: text!important;
+    -webkit-text-fill-color: transparent!important;
+
+  }
+
+#app-mount > div.typeWindows-2-g3UY.withFrame-2dL45i.titleBar-1it3bQ.horizontalReverse-2QssvL.flex-3BkGQD.directionRowReverse-HZatnx.justifyStart-2Mwniq.alignStretch-Uwowzr > div.wordmarkWindows-2dq6rw.wordmark-2u86JB > svg {
+    display:none!important;
+}
+/*
+.titlebar #window-controls-container #minimize, .titlebar #window-controls-container #maximize, .titlebar #window-controls-container #quit {
+      height: 21px;
+      width: 21px;
+      border-radius: 25px;
+      margin: 4px 12px 0px 12px;
+  }*/
+  /*
+.titlebar #window-controls-container #quit {background-color: hsl(0, 50%, 50%) !important;}
+.titlebar #window-controls-container #quit-icon {display:none!important;}
+
+.titlebar #window-controls-container #maximize {background-color: hsl(120, 50%, 50%) !important;}
+.titlebar #window-controls-container #maximize-icon {display:none!important;}
+
+.titlebar #window-controls-container #minimize {background-color: hsl(50, 50%, 50%) !important;}
+*/
+/*
+
+  .withFrame-2dL45i {
+      height: 18px;
+  }
+  .typeWindows-2-g3UY .winButton-3UMjdg > svg {
+      display: none!important;
+  }
+  .typeWindows-2-g3UY .winButton-3UMjdg:before {
+      top: 0px;
+      width: 22px;
+      height: 22px;
+      margin: 0px 22px 0px 12px;
+      border-radius: 25px;
+    outline-width: 3px;
+    outline-color: rgba(255,255,255,0.8);
+    outline-style:inset;
+  }
+  .typeWindows-2-g3UY .winButton-3UMjdg::after {
+      content:'';
+      height: 22px;
+      width: 22px;
+      border-radius: 25px;
+      transition: 0.4s;
+    outline-width: 3px;
+    outline-style: inset;
+  }
+  .typeWindows-2-g3UY .winButtonClose-3Q8ZH5::after {
+      background-color: hsl(0, 50%, 50%) !important;
+  }
+  .typeWindows-2-g3UY .winButtonMinMax-3RsPUg:nth-child(3)::after {
+      background-color: hsl(120, 50%, 50%) !important;
+  }
+  .typeWindows-2-g3UY .winButtonMinMax-3RsPUg:nth-child(4)::after {
+      background-color: hsl(50, 50%, 50%) !important;
+  }
+  .typeWindows-2-g3UY > div:hover::after {
+      transform: scale(1.5);
+  }
+
+*/
+  
+  /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+  /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  /* ----------------------------------------------------------------------- */
+  
+  /*FONT SETTINGS*/
+  
+  /* ----------------------------------------------------------------------- */
+/*
+ 
+  @font-face {
+      font-family: 'Comfortaa Light';
+      font-family: 'Comfortaa Regular';
+      font-family: 'Comfortaa Medium';
+      font-family: 'Comfortaa Semibold';
+      font-family: 'Comfortaa Bold';
+       src: url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&display=swap');
+      font-style: normal;
+      font-weight: 300,400,500,600,700;
+  }
+ 
+  
+  :root {
+      --line-spacing: var(--message-line-spacing);
+  }
+ 
+  ::-webkit-input-placeholder, body, button, input, select, textarea {
+      font-family: 'Comfortaa Light', 'Comfortaa Regular', 'Comfortaa SemiBold' ,'Comfortaa Medium', 'Comfortaa-Bold', sans-serif !important;
+      word-spacing: var(--word-spacing, initial);
+      letter-spacing: var(--letter-spacing, initial);
+  }
+  
+  
+  [class*="messageContent-" i] {
+      line-height: var(--message-line-spacing, initial) !important;
+  }
+  
+  
+  [class*="group-spacing" i] [class*="timestamp"],
+  [class*="messageContent-" i] time {
+      font-size: .9rem;
+  }
+  
+  :root {
+      --word-spacing: 0.7px;
+      --letter-spacing: 0.15px;
+      --message-line-spacing: 1.5;
+  }
+  */
+  /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+  /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+
+@import url("https://github.com/trebor048/discordthemes/raw/main/collapsed-members-list-with-member-count.css");
+
+/* ----------------------------------------------------------------------- */
+  
+  /*RESIZE GIF DRAWER*/
+  
+  /* ----------------------------------------------------------------------- */
+
+div.drawerSizingWrapper-1txdWG {
+    height:80vh;
+    bottom:0px;
+    right:5px;
+    width:600px; /* 498px-599px = 2 ROWS || 600px-799px = 3 ROWS || 800px-999px = 4 ROWS || 1000px< = get fucking help */
+}
+
+  /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+  /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+  
+  
+  /* ----------------------------------------------------------------------- */
+  
+  /*WHITE SCROLL BARS*/
+  
+  /* ----------------------------------------------------------------------- */
+  
+  .auto-2TJ1RH::-webkit-scrollbar-thumb {
+      background-color:white;
+  }
+  .thin-RnSY0a::-webkit-scrollbar-thumb {
+      border: none;
+      border-radius:12px;
+      background-color: white;
+  }
+
+  /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+  /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+  
+  
+  
+  
+  
+  
+  /* ----------------------------------------------------------------------- */
+  
+  /*WINDOW CLOSE BUTTONS*/
+  
+  /* ----------------------------------------------------------------------- */
+  /*
+#app-mount > div.typeWindows-2-g3UY.withFrame-2dL45i.titleBar-1it3bQ.horizontalReverse-2QssvL.flex-3BkGQD.directionRowReverse-HZatnx.justifyStart-2Mwniq.alignStretch-Uwowzr.withBackgroundOverride-gzmZco > div.wordmarkWindows-2dq6rw.wordmark-2u86JB::after
+,
+#window-title, #app-mount > div.withFrame-haYltI > nav{
+      content:'💎𝒹𝒶𝓎 𝟰 𝓎𝑜𝓊 𝒾𝓈 𝒹𝓊𝓂𝒷 𝒶𝓈 𝙛𝙪𝙘𝙠😈 (っ☯◡☯)っ VENCORD.PTB'!important;
+      color:white;
+    background: -webkit-linear-gradient(45deg, #dc68ee 0%, hsl(202, 100%, 50%) 100%)!important;
+    -webkit-background-clip: text!important;
+    -webkit-text-fill-color: transparent!important;
+
+  }
+
+#app-mount > div.typeWindows-2-g3UY.withFrame-2dL45i.titleBar-1it3bQ.horizontalReverse-2QssvL.flex-3BkGQD.directionRowReverse-HZatnx.justifyStart-2Mwniq.alignStretch-Uwowzr > div.wordmarkWindows-2dq6rw.wordmark-2u86JB > svg {
+    display:none!important;
+}
+/*
+.titlebar #window-controls-container #minimize, .titlebar #window-controls-container #maximize, .titlebar #window-controls-container #quit {
+      height: 21px;
+      width: 21px;
+      border-radius: 25px;
+      margin: 4px 12px 0px 12px;
+  }*/
+  /*
+.titlebar #window-controls-container #quit {background-color: hsl(0, 50%, 50%) !important;}
+.titlebar #window-controls-container #quit-icon {display:none!important;}
+
+.titlebar #window-controls-container #maximize {background-color: hsl(120, 50%, 50%) !important;}
+.titlebar #window-controls-container #maximize-icon {display:none!important;}
+
+.titlebar #window-controls-container #minimize {background-color: hsl(50, 50%, 50%) !important;}
+*/
+/*
+
+  .withFrame-2dL45i {
+      height: 18px;
+  }
+  .typeWindows-2-g3UY .winButton-3UMjdg > svg {
+      display: none!important;
+  }
+  .typeWindows-2-g3UY .winButton-3UMjdg:before {
+      top: 0px;
+      width: 22px;
+      height: 22px;
+      margin: 0px 22px 0px 12px;
+      border-radius: 25px;
+    outline-width: 3px;
+    outline-color: rgba(255,255,255,0.8);
+    outline-style:inset;
+  }
+  .typeWindows-2-g3UY .winButton-3UMjdg::after {
+      content:'';
+      height: 22px;
+      width: 22px;
+      border-radius: 25px;
+      transition: 0.4s;
+    outline-width: 3px;
+    outline-style: inset;
+  }
+  .typeWindows-2-g3UY .winButtonClose-3Q8ZH5::after {
+      background-color: hsl(0, 50%, 50%) !important;
+  }
+  .typeWindows-2-g3UY .winButtonMinMax-3RsPUg:nth-child(3)::after {
+      background-color: hsl(120, 50%, 50%) !important;
+  }
+  .typeWindows-2-g3UY .winButtonMinMax-3RsPUg:nth-child(4)::after {
+      background-color: hsl(50, 50%, 50%) !important;
+  }
+  .typeWindows-2-g3UY > div:hover::after {
+      transform: scale(1.5);
+  }
+
+*/
+  
+  /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+  /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  /* ----------------------------------------------------------------------- */
+  
+  /*FONT SETTINGS*/
+  
+  /* ----------------------------------------------------------------------- */
+/*
+ 
+  @font-face {
+      font-family: 'Comfortaa Light';
+      font-family: 'Comfortaa Regular';
+      font-family: 'Comfortaa Medium';
+      font-family: 'Comfortaa Semibold';
+      font-family: 'Comfortaa Bold';
+       src: url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&display=swap');
+      font-style: normal;
+      font-weight: 300,400,500,600,700;
+  }
+ 
+  
+  :root {
+      --line-spacing: var(--message-line-spacing);
+  }
+ 
+  ::-webkit-input-placeholder, body, button, input, select, textarea {
+      font-family: 'Comfortaa Light', 'Comfortaa Regular', 'Comfortaa SemiBold' ,'Comfortaa Medium', 'Comfortaa-Bold', sans-serif !important;
+      word-spacing: var(--word-spacing, initial);
+      letter-spacing: var(--letter-spacing, initial);
+  }
+  
+  
+  [class*="messageContent-" i] {
+      line-height: var(--message-line-spacing, initial) !important;
+  }
+  
+  
+  [class*="group-spacing" i] [class*="timestamp"],
+  [class*="messageContent-" i] time {
+      font-size: .9rem;
+  }
+  
+  :root {
+      --word-spacing: 0.7px;
+      --letter-spacing: 0.15px;
+      --message-line-spacing: 1.5;
+  }
+  */
+  /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+  /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+
+
+
+
+
+
+
+
+
+
+
+

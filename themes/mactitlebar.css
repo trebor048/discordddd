@@ -1,0 +1,49 @@
+/* Mac Like Titlebar */
+:root {
+  --close-button-color: #e92a2ade;
+  --maximize-button-color: #f7bc1bde;
+  --minimize-button-color: #12db33de;
+  --button-position: row;
+}
+
+div.withFrame-haYltI {
+  margin: 0;
+  height: 24px;
+}
+#window-controls-container {
+  flex-direction: var(--button-position);
+  margin-left: 3px !important;
+}
+#window-controls-container > div  > div > svg {
+  display: none;
+}
+#window-controls-container > div::hover {
+  background-color: var(--background-teritary);
+}
+#window-controls-container {
+  pointer-events: none;
+  margin-left: -4px;
+  top: 0;
+}
+#window-controls-container > div::after {
+  content: "";
+  padding: 7px;
+  border-radius: 50px;
+  pointer-events: fill;
+  transition-duration: 200ms;
+}
+#quit::after {
+  background-color: var(--close-button-color) !important;
+  margin-top: 0px;
+}
+#maximize::after {
+  background-color: var(--maximize-button-color) !important;
+  margin-top: 0px;
+}
+#minimize::after {
+  background-color: var(--minimize-button-color) !important;
+  margin-top: 0px;
+}
+.window-controls-container > div::after {
+  transform: scale(1.4);
+}
