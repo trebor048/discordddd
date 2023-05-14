@@ -1,0 +1,70 @@
+/**
+ * @name wownigga
+ * @author Disease#5663
+ * @version 1.0.11
+ * @description macOS with barely any customization.
+ * @source https://github.com/maenDisease/Solana
+ * @invite BShu37e4jg
+ * @website https://maendisease.github.io/
+ * @authorId 678469587444170762
+ * @BDEditor Solana
+*/
+
+@import url('https://maendisease.github.io/Solana/Solana.css');
+@import url('https://maendisease.github.io/BetterDiscordStuff/Themes/Solana/addon/mac-titlebar.css');
+
+:root {
+  --accent-hue: 213;
+  --accent-saturation: 100%;
+  --accent-brightness: 50%;
+  --background-accent-hue: 213;
+  --background-accent-saturation: 100%;
+  --background-accent-brightness: 50%;
+  --background-image: url('https://cdnb.artstation.com/p/assets/images/images/043/905/919/large/phazed-indigo-muse-3-lq.jpg?1638562011');
+  --background-image-position: center;
+  --background-image-size: cover;
+  --background-image-blur: 0px;
+  --background-overlay-opacity: 35%;
+  --background-overlay-color-lightness: -0.1;
+  --background-hue-shift-strength: 100%;
+  --window-background-image: rgba(0,0,0,0.3);
+  --window-background-image-position: center;
+  --window-background-image-size: auto;
+  --window-background-image-attachment: fixed;
+  --window-opacity: 28%;
+  --window-blur: 2;
+  --window-friends-blur: 4;
+  --window-margin: 14;
+  --window-margin-left: 0;
+  --window-border-radius: 14px;
+  --window-background-lightness: 0.2;
+  --window-accent-tint-strength: 20%;
+  --chat-bubble: 0;
+  --text-link-hue: 359;
+  --chat-text-brightness: 1;
+  --home-icon: url("https://i.imgur.com/YIh4jwk.png");
+  --favorites-icon: transparent;
+  --dock-blur: 50; /* Blur intensity of the dock. */
+  --dock-border-radius: -0.4;
+  --sidebar-width: 230px;
+  --members-width: 180px;
+  --sidebar-text-brightness: 1;
+  --background-floating-blur: 50px;
+  --floating-background-lightness: -0.4;
+  --background-floating-opacity: 1;
+  --enable-floating-transparency: 1;
+  --custom-font-display: "";
+  --custom-font-regular: "";
+  --custom-font-primary: "";
+  --custom-font-code: "";
+  --enable-blur: 1;
+}
+
+/* Any custom CSS below here */
+
+body, body::before, #app-mount{background-color: transparent!important;
+   border-radius: 20px!important;
+}
+
+.disabled-stroke-through{display:none}
+
