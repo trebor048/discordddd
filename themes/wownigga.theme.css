@@ -11,7 +11,6 @@
 */
 
 @import url('https://maendisease.github.io/Solana/Solana.css');
-@import url('https://maendisease.github.io/BetterDiscordStuff/Themes/Solana/addon/mac-titlebar.css');
 
 :root {
   --accent-hue: 213;
@@ -20,7 +19,7 @@
   --background-accent-hue: 213;
   --background-accent-saturation: 100%;
   --background-accent-brightness: 50%;
-  --background-image: url('https://i.imgur.com/dxqcsMm.png'); /* url(https://site.com/foobar.png) | URL MUST BE A DIRECT LINK (ending in .jpg, .jpeg, .png, .gif) */
+  --background-image: url('https://i.imgur.com/7dSBdPZ.png'); /* url(https://site.com/foobar.png) | URL MUST BE A DIRECT LINK (ending in .jpg, .jpeg, .png, .gif) */
   --background-image-position: center right;
   --background-image-size: 100%;
   --background-image-blur: 1px;
@@ -34,7 +33,7 @@
   --window-opacity: 50%;
   --window-blur: 3;
   --window-friends-blur: 4;
-  --window-margin: 0;
+  --window-margin: 5;
   --window-margin-left: 0;
   --window-border-radius: 20px;
   --window-background-lightness: 0.4;
@@ -51,7 +50,7 @@
   --sidebar-text-brightness: 1;
   --background-floating-blur: 50px;
   --floating-background-lightness: -0.4;
-  --background-floating-opacity: 0;
+  --background-floating-opacity: 1;
   --enable-floating-transparency: 1;
   --custom-font-display: "";
   --custom-font-regular: "";
