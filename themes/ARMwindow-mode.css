@@ -13,8 +13,8 @@
 }
 #app-mount .withFrame-haYltI {
     background: var(--drag-background);
-    border-top-left-radius: var(--radius-theme);
-    border-top-right-radius: var(--radius-theme);
+    border-top-left-radius: 22px;
+    border-top-right-radius: 22px;
     margin-left: 16px;
     margin-right: 16x;
     margin-top: 16px;
