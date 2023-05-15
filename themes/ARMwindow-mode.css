@@ -1,10 +1,10 @@
 /* Like a window */
 #app-mount .layers-OrUESM {
-    margin-bottom: 12px;
-    margin-left: 12px;
-    margin-right: 12px;
-    border-bottom-right-radius: 18px;
-    border-bottom-left-radius: 18px;
+    margin-bottom: 26px;
+    margin-left: 16px;
+    margin-right: 16px;
+    border-bottom-right-radius: 22px;
+    border-bottom-left-radius: 22px;
 }
 #app-mount .layers-OrUESM {
     border: var(--the-borders);
@@ -15,15 +15,15 @@
     background: var(--drag-background);
     border-top-left-radius: var(--radius-theme);
     border-top-right-radius: var(--radius-theme);
-    margin-left: 12px;
-    margin-right: 12px;
-    margin-top: 12px;
-    min-height: 18px;
+    margin-left: 16px;
+    margin-right: 16x;
+    margin-top: 16px;
+    min-height: 22px;
     border: var(--the-borders);
     flex-direction: row;
 }
 #app-mount .withFrame-haYltI::after {
-    top: 18px;
+    top: 22px;
     margin-left: 80px;
 }
 /* ARMCord */
