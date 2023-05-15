@@ -17,7 +17,7 @@
     border-top-right-radius: 22px;
     margin-left: 16px;
     margin-right: 16x;
-    margin-top: 16px;
+    margin-top: 0px;
     min-height: 22px;
     border: var(--the-borders);
     flex-direction: row;
