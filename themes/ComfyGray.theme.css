@@ -44,7 +44,7 @@
 #app-mount .guilds-2JjMmN {
     height: 72.2%;
     border-radius: 15px;
-    margin-left: 7px;
+    margin-left: 10px;
     border-bottom-left-radius: 15px;
 }
 #app-mount .tree-3agP2X{
@@ -62,7 +62,7 @@
     align-items: center;
     border-radius: var(--radius-primary);
     flex-direction: column;
-    padding: 0px 7px;
+    padding: 0px 10px;
 }
 #app-mount .panels-3wFtMD>.container-YkUktl:last-child>.avatarWrapper-1B9FTW {
     position: fixed;
