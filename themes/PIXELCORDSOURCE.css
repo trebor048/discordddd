@@ -43,6 +43,10 @@
 /*
     VARIABLES
 */
+
+@import url('https://fonts.googleapis.com/css2?family=Raleway&family=Tilt+Neon&family=Tilt+Warp&family=Urbanist&Comfortaa&display=swap');
+
+
 [data-popout-root].newBrand,
 html.newBrand,
 :root {
@@ -61,8 +65,8 @@ html.newBrand,
   --header-weight: 600;
   --subtitle-weight: 500;
   --section-weight: 900;
-  --font-header: "Google Sans", "Migu 1M", sans-serif;
-  --font-code: "Roboto Mono", monospace;
+  ---header: "Urbanist","Comfortaa", "Poppins", ;
+  --font-code: "Poppins", monospace;
   --font-primary: var(--font-header);
   --font-secondary: var(--font-header);
   --font-display: var(--font-header);
