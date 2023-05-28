@@ -1,65 +1,65 @@
-.guilds-2JjMmN{
+.guilds-2JjMmN,.tree-3agP2X{
     transition:.2s ease .175s;
     width:0px !important;
     min-width:0px !important;
     resize:none
 }
-.guilds-2JjMmN .container-1zzFcN,.guilds-2JjMmN .panel-2ZFCRb{
+.guilds-2JjMmN,.tree-3agP2X .container-1zzFcN,.guilds-2JjMmN,.tree-3agP2X .panel-2ZFCRb{
     padding:0;
     transition:.2s ease .175s
 }
-.guilds-2JjMmN .button-12Fmur,.guilds-2JjMmN .badge-3RBqXG{
+.guilds-2JjMmN,.tree-3agP2X .button-12Fmur,.guilds-2JjMmN,.tree-3agP2X .badge-3RBqXG{
     width:0;
     transition:.2s ease .175s
 }
-.guilds-2JjMmN .searchBar-3TnChZ,.guilds-2JjMmN .badge-3RBqXG{
+.guilds-2JjMmN,.tree-3agP2X .searchBar-3TnChZ,.guilds-2JjMmN,.tree-3agP2X .badge-3RBqXG{
     padding:0;
     transition:.2s ease .175s
 }
-.guilds-2JjMmN .button-38aScr{
+.guilds-2JjMmN,.tree-3agP2X .button-38aScr{
     padding:0;
     transition:.2s ease .175s
 }
-.guilds-2JjMmN .icon-10cLkJ{
+.guilds-2JjMmN,.tree-3agP2X .icon-10cLkJ{
     opacity:0;
     transition:.2s ease-in-out .175s
 }
-.guilds-2JjMmN .container-YkUktl .button-38aScr,.guilds-2JjMmN .container-YkUktl .button-12Fmur{
+.guilds-2JjMmN,.tree-3agP2X .container-YkUktl .button-38aScr,.guilds-2JjMmN,.tree-3agP2X .container-YkUktl .button-12Fmur{
     padding:unset;
     width:32px !important
 }
-.guilds-2JjMmN .container-YkUktl>.flex-2S1XBF{
+.guilds-2JjMmN,.tree-3agP2X .container-YkUktl>.flex-2S1XBF{
     opacity:0;
     pointer-events:none;
     transition:.2s ease-in-out .175s
 }
-.wrapper-1_HaEi:hover+.base-2jDfDU>.content-1SgpWY>.guilds-2JjMmN,.guilds-2JjMmN:hover{
+.wrapper-1_HaEi:hover+.base-2jDfDU>.content-1SgpWY>.guilds-2JjMmN,.tree-3agP2X,.guilds-2JjMmN,.tree-3agP2X:hover{
     width:var(--channels-width)
 }
-.wrapper-1_HaEi:hover+.base-2jDfDU>.content-1SgpWY>.guilds-2JjMmN .container-1zzFcN,.wrapper-1_HaEi:hover+.base-2jDfDU>.content-1SgpWY>.guilds-2JjMmN .panel-2ZFCRb,.guilds-2JjMmN:hover .container-1zzFcN,.guilds-2JjMmN:hover .panel-2ZFCRb{
+.wrapper-1_HaEi:hover+.base-2jDfDU>.content-1SgpWY>.guilds-2JjMmN,.tree-3agP2X .container-1zzFcN,.wrapper-1_HaEi:hover+.base-2jDfDU>.content-1SgpWY>.guilds-2JjMmN,.tree-3agP2X .panel-2ZFCRb,.guilds-2JjMmN,.tree-3agP2X:hover .container-1zzFcN,.guilds-2JjMmN,.tree-3agP2X:hover .panel-2ZFCRb{
     padding:8px !important
 }
-.wrapper-1_HaEi:hover+.base-2jDfDU>.content-1SgpWY>.guilds-2JjMmN .button-12Fmur,.guilds-2JjMmN:hover .button-12Fmur{
+.wrapper-1_HaEi:hover+.base-2jDfDU>.content-1SgpWY>.guilds-2JjMmN,.tree-3agP2X .button-12Fmur,.guilds-2JjMmN,.tree-3agP2X:hover .button-12Fmur{
     width:32px !important
 }
-.wrapper-1_HaEi:hover+.base-2jDfDU>.content-1SgpWY>.guilds-2JjMmN .searchBar-3TnChZ,.guilds-2JjMmN:hover .searchBar-3TnChZ{
+.wrapper-1_HaEi:hover+.base-2jDfDU>.content-1SgpWY>.guilds-2JjMmN,.tree-3agP2X .searchBar-3TnChZ,.guilds-2JjMmN,.tree-3agP2X:hover .searchBar-3TnChZ{
     padding:0 10px !important
 }
-.wrapper-1_HaEi:hover+.base-2jDfDU>.content-1SgpWY>.guilds-2JjMmN .button-38aScr,.guilds-2JjMmN:hover .button-38aScr{
+.wrapper-1_HaEi:hover+.base-2jDfDU>.content-1SgpWY>.guilds-2JjMmN,.tree-3agP2X .button-38aScr,.guilds-2JjMmN,.tree-3agP2X:hover .button-38aScr{
     padding:2px !important 16px !important
 }
-.wrapper-1_HaEi:hover+.base-2jDfDU>.content-1SgpWY>.guilds-2JjMmN .badge-3RBqXG,.guilds-2JjMmN:hover .badge-3RBqXG{
+.wrapper-1_HaEi:hover+.base-2jDfDU>.content-1SgpWY>.guilds-2JjMmN,.tree-3agP2X .badge-3RBqXG,.guilds-2JjMmN,.tree-3agP2X:hover .badge-3RBqXG{
     padding:2px !important;
     width:14px !important
 }
-.wrapper-1_HaEi:hover+.base-2jDfDU>.content-1SgpWY>.guilds-2JjMmN .icon-10cLkJ,.guilds-2JjMmN:hover .icon-10cLkJ{
+.wrapper-1_HaEi:hover+.base-2jDfDU>.content-1SgpWY>.guilds-2JjMmN,.tree-3agP2X .icon-10cLkJ,.guilds-2JjMmN,.tree-3agP2X:hover .icon-10cLkJ{
     opacity:1
 }
-.wrapper-1_HaEi:hover+.base-2jDfDU>.content-1SgpWY>.guilds-2JjMmN .container-YkUktl .button-12Fmur,.guilds-2JjMmN:hover .container-YkUktl .button-12Fmur{
+.wrapper-1_HaEi:hover+.base-2jDfDU>.content-1SgpWY>.guilds-2JjMmN,.tree-3agP2X .container-YkUktl .button-12Fmur,.guilds-2JjMmN,.tree-3agP2X:hover .container-YkUktl .button-12Fmur{
     padding:unset;
     width:32px !important
 }
-.wrapper-1_HaEi:hover+.base-2jDfDU>.content-1SgpWY>.guilds-2JjMmN .container-YkUktl>.flex-2S1XBF,.guilds-2JjMmN:hover .container-YkUktl>.flex-2S1XBF{
+.wrapper-1_HaEi:hover+.base-2jDfDU>.content-1SgpWY>.guilds-2JjMmN,.tree-3agP2X .container-YkUktl>.flex-2S1XBF,.guilds-2JjMmN,.tree-3agP2X:hover .container-YkUktl>.flex-2S1XBF{
     pointer-events:auto;
     opacity:1
 }
