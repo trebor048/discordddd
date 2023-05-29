@@ -1,32 +1,32 @@
 :root {
 	/* link color */
-	--link-color: hsl(190, 70%, 60%);
+	--link-color: #9f4165;
 	/* main accent color (mentions, folder icons, unread indicators) */
-	--accent-color: hsl(190, 60%, 50%);
+	--accent-color: #107e1d;
 	/* darker accent color (background of any accent items with text) */
-	--accent-background: hsl(190, 60%, 40%);
+	--accent-background: #094b11;
 	/* even darker accent color (background of accent buttons when hover) */
-	--accent-background-2: hsl(190, 60%, 30%);
+	--accent-background-2 :hsl(127, 79%, 18%);
 	/* even darker accent color (background of accent buttons when clicked) */
-	--accent-background-3: hsl(190, 60%, 20%);
+	--accent-background-3: #021804;
 	/* background of mention text and messages that mention you */
 	--mention-modifier: hsla(190, 60%, 50%, 0.1);
 	/* background of messages that mention you on hover */
 	--mention-hover-modifier: hsla(190, 60%, 50%, 0.05);
 	/* bright text for colored buttons */
-	--bright-text: hsl(220, 40%, 90%);
+	--bright-text: white;
 	/* header text for headers and certain text */
-	--header-text: hsl(220, 30%, 70%);
+	--header-text: #107e1d;
 	/* main text color (messages, titles, unread text/indicators) */
-	--primary-text: hsl(220, 15%, 60%);
+	--primary-text: white;
 	/* secondary text color (channels, descriptions, buttons) */
-	--secondary-text: hsl(220, 15%, 40%);
+	--secondary-text: hsl(220, 57%, 52%);
 	/* muted text color (input box placeholders, muted channels, message times) */
-	--muted-text: hsl(220, 15%, 24%);
+	--muted-text: black;
 	/* background of muted colored buttons on hover */
-	--muted-background-hover: hsl(220, 15%, 20%);
+	--muted-background-hover: rgb(60, 60, 60);
 	/* background of muted colored buttons on click */
-	--muted-background-active: hsl(220, 15%, 16%);
+	--muted-background-active: rgb(164, 55, 55);
 	/* background of pretty much everything not using primary background */
 	/* lighter variant is used for the side of embeds and borders */
 	--secondary-background: hsl(220, 15%, 13%);
@@ -39,7 +39,7 @@
 	/* overlay background on messages when hovered over */
 	--message-hover-modifier: hsl(220, 0%, 0%, 0.1);
 	/* radius of round corners */
-	--roundness: 16px;
+	--roundness: 18px;
 }
 
 :root.theme-dark,
