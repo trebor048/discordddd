@@ -31,17 +31,17 @@
   --window-background-image-position: center;
   --window-background-image-size: cover;
   --window-background-image-attachment: fixed;
-  --window-opacity: 40%;
+  --window-opacity: 15%;
   --window-blur: 13;
   --window-friends-blur: 0;
-  --window-margin: 8;
+  --window-margin: 10;
   --window-margin-left: 5;
-  --window-border-radius: 18px;
-  --window-background-lightness: 0.1;
-  --window-accent-tint-strength: 33%;
-  --chat-bubble: 1;
+  --window-border-radius: 24px;
+  --window-background-lightness: 1;
+  --window-accent-tint-strength: 100%;
+  --chat-bubble: 0;
   --text-link-hue: 212;
-  --chat-text-brightness: 1;
+  --chat-text-brightness: 2;
   --home-icon: url('https://i.imgur.com/2OfZdPa.gif');
   --favorites-icon: url('https://i.imgur.com/dtYy1Kt.gif');
   --dock-blur: 5; /* Blur intensity of the dock. */
@@ -53,10 +53,10 @@
   --floating-background-lightness: 1;
   --background-floating-opacity: 1;
   --enable-floating-transparency: 1;
-  --custom-font-display: "";
-  --custom-font-regular: "";
-  --custom-font-primary: "";
-  --custom-font-code: "";
+  --custom-font-display: "Comfortaa";
+  --custom-font-regular: "Comfortaa";
+  --custom-font-primary: "Comfortaa";
+  --custom-font-code: "Comfortaa";
   --enable-blur: 1;
 }
 
@@ -67,7 +67,7 @@
   /*RESIZE GIF DRAWER*/
   
   /* ----------------------------------------------------------------------- */
-
+/*
 div.drawerSizingWrapper-1txdWG {
     height:80vh;
     bottom:0px;
@@ -85,7 +85,7 @@ div.drawerSizingWrapper-1txdWG {
   /*WHITE SCROLL BARS*/
   
   /* ----------------------------------------------------------------------- */
-  
+  /*
   .auto-2TJ1RH::-webkit-scrollbar-thumb {
       background-color:white;
   }
@@ -243,7 +243,7 @@ div.drawerSizingWrapper-1txdWG {
   /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
   /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
+/*
 @import url("https://github.com/trebor048/discordthemes/raw/main/collapsed-members-list-with-member-count.css");
 
 /* ----------------------------------------------------------------------- */
@@ -251,7 +251,7 @@ div.drawerSizingWrapper-1txdWG {
   /*RESIZE GIF DRAWER*/
   
   /* ----------------------------------------------------------------------- */
-
+/*
 div.drawerSizingWrapper-1txdWG {
     height:80vh;
     bottom:0px;
@@ -292,7 +292,7 @@ div.drawerSizingWrapper-1txdWG {
   /*WINDOW CLOSE BUTTONS*/
   
   /* ----------------------------------------------------------------------- */
-  /*
+  
 #app-mount > div.typeWindows-2-g3UY.withFrame-2dL45i.titleBar-1it3bQ.horizontalReverse-2QssvL.flex-3BkGQD.directionRowReverse-HZatnx.justifyStart-2Mwniq.alignStretch-Uwowzr.withBackgroundOverride-gzmZco > div.wordmarkWindows-2dq6rw.wordmark-2u86JB::after
 ,
 #window-title, #app-mount > div.withFrame-haYltI > nav{
@@ -307,14 +307,14 @@ div.drawerSizingWrapper-1txdWG {
 #app-mount > div.typeWindows-2-g3UY.withFrame-2dL45i.titleBar-1it3bQ.horizontalReverse-2QssvL.flex-3BkGQD.directionRowReverse-HZatnx.justifyStart-2Mwniq.alignStretch-Uwowzr > div.wordmarkWindows-2dq6rw.wordmark-2u86JB > svg {
     display:none!important;
 }
-/*
+
 .titlebar #window-controls-container #minimize, .titlebar #window-controls-container #maximize, .titlebar #window-controls-container #quit {
       height: 21px;
       width: 21px;
       border-radius: 25px;
       margin: 4px 12px 0px 12px;
-  }*/
-  /*
+  }
+  
 .titlebar #window-controls-container #quit {background-color: hsl(0, 50%, 50%) !important;}
 .titlebar #window-controls-container #quit-icon {display:none!important;}
 
@@ -322,8 +322,8 @@ div.drawerSizingWrapper-1txdWG {
 .titlebar #window-controls-container #maximize-icon {display:none!important;}
 
 .titlebar #window-controls-container #minimize {background-color: hsl(50, 50%, 50%) !important;}
-*/
-/*
+
+
 
   .withFrame-2dL45i {
       height: 18px;
@@ -363,7 +363,7 @@ div.drawerSizingWrapper-1txdWG {
       transform: scale(1.5);
   }
 
-*/
+
   
   /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
   /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
