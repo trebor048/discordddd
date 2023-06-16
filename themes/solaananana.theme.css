@@ -23,7 +23,7 @@
   --background-image: url('https://i.imgur.com/MKYIiEO.jpg'); /* url(https://site.com/foobar.png) | URL MUST BE A DIRECT(ending in .jpg, .jpeg, .png, .gif) */
   --background-image-position: center;
   --background-image-size: 100%;
-  --background-image-blur: 3px;
+  --background-image-blur: 0px;
   --background-overlay-opacity: 70%;
   --background-overlay-color-lightness: -0.94;
   --background-hue-shift-strength: 100%;
@@ -32,7 +32,7 @@
   --window-background-image-size: cover;
   --window-background-image-attachment: fixed;
   --window-opacity: 15%;
-  --window-blur: 13;
+  --window-blur: 0;
   --window-friends-blur: 0;
   --window-margin: 10;
   --window-margin-left: 5;
@@ -44,7 +44,7 @@
   --chat-text-brightness: 2;
   --home-icon: url('https://i.imgur.com/2OfZdPa.gif');
   --favorites-icon: url('https://i.imgur.com/dtYy1Kt.gif');
-  --dock-blur: 5; /* Blur intensity of the dock. */
+  --dock-blur: 0; /* Blur intensity of the dock. */
   --dock-border-radius: -0.76;
   --sidebar-width: 235px;
   --members-width: 193px;
@@ -57,5 +57,5 @@
   --custom-font-regular: "Comfortaa";
   --custom-font-primary: "Comfortaa";
   --custom-font-code: "Comfortaa";
-  --enable-blur: 1;
+  --enable-blur: 0;
 }
