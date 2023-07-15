@@ -24,7 +24,7 @@
   --background-image-position: center;
   --background-image-size: cover;
   --background-image-blur: 0px;
-  --background-overlay-opacity: 40%;
+  --background-overlay-opacity: 30%;
   --background-overlay-color-lightness: -0.1;
   --background-hue-shift-strength: 100%;
   --window-background-image: transparent;
@@ -32,9 +32,9 @@
   --window-background-image-size: cover;
   --window-background-image-attachment: fixed;
   --window-opacity: 50%;
-  --window-blur: 3;
-  --window-friends-blur: 4;
-  --window-margin: 4;
+  --window-blur: 0;
+  --window-friends-blur: 0;
+  --window-margin: 0;
   --window-margin-left: 0;
   --window-border-radius: 20px;
   --window-background-lightness: -0.05;
@@ -44,14 +44,14 @@
   --chat-text-brightness: 1;
   --home-icon: initial;
   --favorites-icon: initial;
-  --dock-blur: 50; /* Blur intensity of the dock. */
+  --dock-blur: 0; /* Blur intensity of the dock. */
   --dock-border-radius: -0.4;
-  --sidebar-width: 200px;
+  --sidebar-width: 240px;
   --members-width: 201px;
   --sidebar-text-brightness: 1;
-  --background-floating-blur: 50px;
+  --background-floating-blur: 0px;
   --floating-background-lightness: -0.4;
-  --background-floating-opacity: 0;
+  --background-floating-opacity: 1;
   --enable-floating-transparency: 1;
   --custom-font-display: "";
   --custom-font-regular: "";
