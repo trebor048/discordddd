@@ -1,0 +1,29 @@
+/**
+ * @name faggot
+ * @author Disease#5663
+ * @version 1.0.0
+ * @description Based on Outlook Web.
+ * @source https://github.com/maenDisease/Outlook
+ * @invite BShu37e4jg
+ * @website https://maendisease.github.io/
+ * @authorId 678469587444170762
+ * @BDEditor Outlook
+*/
+
+@import url('https://maendisease.github.io/Outlook/Outlook.css');
+
+:root {
+  --home-image: url('https://maendisease.github.io/Outlook/illustrations/homeimage-default.avif');
+  --accent-hue: 278;
+  --accent-saturation: 100%;
+  --accent-brightness: 9%;
+  --gradient-toggle: 1;
+  --gradient-hue-shift: 0.59;
+  --gradient-saturation: 0%;
+  --gradient-deg: 135deg;
+  --customFont: Segoe UI;
+}
+
+/* Any custom CSS below here */
+
+
