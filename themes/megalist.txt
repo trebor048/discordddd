@@ -1,0 +1,291 @@
+https://discordstyles.github.io/Slate/dist/Slate.css
+https://github.com/maenDisease/Solana -my fav <3 (use this to customize!! https://bdeditor.dev/theme/solana)
+https://raw.githubusercontent.com/DiscordStyles/SoftX/deploy/SoftX.theme.css
+https://raw.githubusercontent.com/DiscordStyles/Fluent/deploy/Fluent.theme.css
+https://raw.githubusercontent.com/Lavender-Discord/Lavender/main/clients/lavender.theme.css
+https://raw.githubusercontent.com/DiscordStyles/HorizontalServerList/deploy/HorizontalServerList.theme.css
+https://raw.githubusercontent.com/DiscordStyles/DarkMatter/main/DarkMatter.theme.css
+https://discordstyles.github.io/Crystalline/Crystalline.css
+https://discordstyles.github.io/FrostedGlass/dist/FrostedGlass.css
+https://discordstyles.github.io/HorizontalServerList/bottomhsl.css
+https://discordstyles.github.io/Addons/windows-titlebar.css
+https://raw.githubusercontent.com/DiscordStyles/discord-dyslexia/main/dyslexia.theme.css
+https://raw.githubusercontent.com/ClearVision/ClearVision-v6/master/ClearVision_v6.theme.css
+https://raw.githubusercontent.com/schnensch0/zelk/main/zelkBD.theme.css
+https://raw.githubusercontent.com/Discord-Custom-Covers/usrbg/master/USRBG.theme.css
+https://raw.githubusercontent.com/xcruxiex/themes/master/themes-files/nocturnal.theme.css
+https://raw.githubusercontent.com/xcruxiex/themes/master/themes-files/neutron.theme.css
+https://raw.githubusercontent.com/refact0r/midnight-discord/master/midnight.theme.css
+https://raw.githubusercontent.com/refact0r/midnight-discord/master/midnight-classic.css
+https://raw.githubusercontent.com/CommandCrafterHD/DiscordDarkNeon/master/DarkNeon.theme.css
+https://raw.githubusercontent.com/zuzumi-f/Discord-11/main/Discord11.theme.css
+https://capnkitten.github.io/BetterDiscord/Themes/Spotify-Discord/css/source.css
+https://crearts-community.github.io/CreArts-Discord/clients/crearts.theme.css
+https://raw.githubusercontent.com/SlippingGittys-Discord-Themes/surCord/main/surCord.theme.css
+https://raw.githubusercontent.com/SlippingGitty/Acorn/main/Acorn.css (surcord, only for vencord?? ior macOS?? dk)
+https://slippinggittys-discord-Themes.github.io/surCord/src/fixations/additions/translucency.css (probably wont work. check out this https://github.com/SlippingGittys-Discord-Themes/surCord)
+https://raw.githubusercontent.com/DiscordStyles/MinimalCord/deploy/MinimalCord.theme.css
+https://monstrousdev.github.io/themes/black-hole/style.css
+https://catppuccin.github.io/discord/dist/catppuccin-frappe.theme.css
+https://raw.githubusercontent.com/DiscordStyles/SimplyDark/deploy/SimplyDark.theme.css
+https://raw.githubusercontent.com/DiscordStyles/MinimalCord/deploy/MinimalCord.theme.css
+https://raw.githubusercontent.com/DaBluLite/Cyan/master/Cyan.theme.css
+https://raw.githubusercontent.com/maenDisease/Float/main/src/core/_root.scss
+https://raw.githubusercontent.com/ObjectiveSlayer/ComfyGray/main/ComfyGray.theme.css
+--------------------
+other shit to look at/places to get links
+https://github.com/mwittrien/BetterDiscordAddons/tree/master/Themes/BasicBackground/
+https://github.com/warrayquipsome/Chillax
+https://github.com/DiscordStyles
+https://github.com/DaBluLite/DiscordColorways/tree/master
+https://userstyles.org/styles/browse/discord (meant for browser, but can work for desktop. its mostly all the same.)
+https://dablulite.github.io/Cyan/ (editor for the cyan theme)
+https://github.com/DaBluLite/css-snippets
+
+
+/* neat things */
+
+.chatContent-3KubbW{background: rgba(59, 59, 59, 0.2);} /*background color for the chat*/
+.buttons-uaqb-5 > .button-ejjZWC:first-child{display: none;} /*remove the gift button on the chatbar*/
+div [aria-label="Create Thread"] {display: none !important;} /*remove the create thread button*/
+
+
+
+  /* ----------------------------------------------------------------------- */
+  
+  /*WINDOW CLOSE BUTTONS*/
+  
+  /* ----------------------------------------------------------------------- */
+ 
+  .withFrame-2dL45i {
+      height: 24px;
+  }
+  .typeWindows-2-g3UY .winButton-3UMjdg > svg {
+      display: none!important;
+  }
+  .typeWindows-2-g3UY .winButton-3UMjdg::before,
+  #quit, #maximize, #minimize {
+      top: 0px;
+      width: 12px;
+      height: 12px;
+      border-radius: 25px;
+    outline-width: 1px;
+    outline-color: rgba(255,255,255,0.8);
+    outline-style:inset;
+  }
+  .typeWindows-2-g3UY .winButton-3UMjdg::after,
+  .winButtonClose-3Q8ZH5
+   #quit::after, #maximize::after, #minimize::after {
+      content:'';
+      height: 14px;
+      margin-top: 4px;
+      width: 14px;
+      border-radius: 25px;
+      transition: 0.4s;
+    outline-width: 1px;
+    outline-style: inset;
+  }
+  .typeWindows-2-g3UY .winButtonClose-3Q8ZH5::after {
+      background-color: hsl(0, 50%, 50%) !important;
+  }
+  .typeWindows-2-g3UY .winButtonMinMax-3RsPUg:nth-child(3)::after {
+      background-color: hsl(120, 50%, 50%) !important;
+  }
+  .typeWindows-2-g3UY .winButtonMinMax-3RsPUg:nth-child(4)::after {
+      background-color: hsl(50, 50%, 50%) !important;
+  }
+  .typeWindows-2-g3UY > div:hover::after {
+      transform: scale(1.5);
+  }
+
+
+
+
+  /* ----------------------------------------------------------------------- */
+  
+  /*FONT SETTINGS*/ /*REPALCE THE fonts.google link with a font form fonts.google.com theyve got a great selection.*/
+  
+  /* ----------------------------------------------------------------------- */
+
+ 
+  @font-face {
+    src:url('https://fonts.googleapis.com/css2?family=Comfortaa&display=swap');
+      font-family: 'Comfortaa';
+      font-style: normal;
+      font-weight: 400;
+  }
+ 
+  
+  /* Backwards Compatibility */
+  
+  :root {
+      --line-spacing: var(--message-line-spacing);
+  }
+  
+  /* Apply styles */
+ 
+  ::-webkit-input-placeholder, body, button, input, select, textarea {
+     font-family: 'Comfortaa', sans-serif !important;
+      word-spacing: var(--word-spacing, initial);
+      letter-spacing: var(--letter-spacing, initial);
+  }
+  
+  /* Adjust formatted text line-height */
+  
+  [class*="messageContent-" i] {
+      line-height: var(--message-line-spacing, initial) !important;
+  }
+  
+  /* Scale up timestamps & "Edited" text */
+  
+  [class*="group-spacing" i] [class*="timestamp"],
+  [class*="messageContent-" i] time {
+      font-size: 0.9rem;
+  }
+  
+  /* ----------------------------------------------------------------------- */
+  
+  /* FONT SIZE VARIABLES */
+  
+  :root {
+      --word-spacing: 0.2px;
+      --letter-spacing: 0.09px;
+      --message-line-spacing: 1.4;
+  }
+  
+  /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+  /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+
+
+
+
+
+
+
+
+    /* ----------------------------------------------------------------------- */
+  
+  /*WHITE SCROLL BARS*/ /*keeps the scroll bars white, so i can fucking see them */
+  
+  /* ----------------------------------------------------------------------- */
+  
+  .auto-2TJ1RH::-webkit-scrollbar-thumb
+  {
+      background-color:white!important; 
+  }
+  .thin-RnSY0a::-webkit-scrollbar-thumb
+  {
+      border: none;
+      border-radius:12px;
+      background-color: white!important;
+  }
+
+
+
+/* ----------------------------------------------------------------------- */
+  
+  /*RESIZE GIF DRAWER*/ /*Make the GIF/emoji drawer huge so I can post funny shit */
+  
+/* ----------------------------------------------------------------------- */
+
+div.drawerSizingWrapper-1txdWG
+{
+    height:80vh;
+    bottom:0px;
+    right:5px;
+    width:600px; /* 498px-599px = 2 ROWS || 600px-799px = 3 ROWS || 800px-999px = 4 ROWS || 1000px< = get fucking help */
+}
+
+  /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+  /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+
+
+/* ----------------------------------------------------------------------- */
+  
+/*CHANNEL CATEGORYS BIGGER*/ & /*Channel Highlighter/Resizer*/
+  
+  /* ----------------------------------------------------------------------- */
+
+/*CHANNEL CATEGORYS BIGGER*/
+.container-q97qHp
+{
+  font-size: 18px;
+  font-weight: bold;
+  color:white;
+}
+
+/*Channel Highlighter/Resizer*/
+.containerDefault-YUSmu3{max-height: 35px;}
+.modeUnread-3Cxepe
+ {
+    background-color:rgba(0, 153, 255, 0.425);
+    border:1px outset rgb(184, 184, 184);
+    border-radius: 8px;
+}
+
+  /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+  /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+
+/* ----------------------------------------------------------------------- */
+  
+/*SMOL PLATFORM INDICATORS*/
+  
+  /* ----------------------------------------------------------------------- */
+
+[class^="nameAndDecorator"] .vc-platform-indicator {
+    flex-direction: column;
+    margin-left: 2px !important;
+    margin-right: -2px;
+    max-height: 30px;
+}
+[class^="nameAndDecorator"] .vc-platform-indicator svg {
+    width: 16px;
+}
+[class^="nameAndDecorator"] .vc-platform-indicator :only-child {
+    height: 16px;
+}
+[class^="nameAndDecorator"] .vc-platform-indicator :nth-child(3) {
+    position: absolute;
+    height: 16px;
+    margin-left: 20px;
+}
+  
+
+  /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+  /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+
+
+/* ----------------------------------------------------------------------- */
+
+  /*COLOR ON/OFF SWITCHES GREEN/RED*/
+  
+  /* ----------------------------------------------------------------------- */
+
+
+
+.container-2nx-BQ:not(.checked-25WXMf) {
+    background-color: #f04747 !important;
+}
+
+.container-2nx-BQ:not(.checked-25WXMf) path {
+    fill: #f04747 !important;
+}
+
+ fixes/ensures enabled input is green
+.container-2nx-BQ.checked-25WXMf {
+    background-color: #43b581 !important;
+}
+
+.container-2nx-BQ.checked-25WXMf path {
+    fill: #43b581 !important;
+}
+
+  /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+  /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+  
+
