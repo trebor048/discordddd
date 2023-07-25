@@ -34,6 +34,7 @@ https://raw.githubusercontent.com/maenDisease/Float/main/src/core/_root.scss
 https://raw.githubusercontent.com/ObjectiveSlayer/ComfyGray/main/ComfyGray.theme.css
 --------------------
 other shit to look at/places to get links
+--------------------
 https://github.com/mwittrien/BetterDiscordAddons/tree/master/Themes/BasicBackground/
 https://github.com/warrayquipsome/Chillax
 https://github.com/DiscordStyles
@@ -42,9 +43,9 @@ https://userstyles.org/styles/browse/discord (meant for browser, but can work fo
 https://dablulite.github.io/Cyan/ (editor for the cyan theme)
 https://github.com/DaBluLite/css-snippets
 
-
+--------------------
 /* neat things */
-
+--------------------
 .chatContent-3KubbW{background: rgba(59, 59, 59, 0.2);} /*background color for the chat*/
 .buttons-uaqb-5 > .button-ejjZWC:first-child{display: none;} /*remove the gift button on the chatbar*/
 div [aria-label="Create Thread"] {display: none !important;} /*remove the create thread button*/
@@ -103,7 +104,7 @@ div [aria-label="Create Thread"] {display: none !important;} /*remove the create
 
   /* ----------------------------------------------------------------------- */
   
-  /*FONT SETTINGS*/ /*REPALCE THE fonts.google link with a font form fonts.google.com theyve got a great selection.*/
+  /*FONT SETTINGS*/ /*REPALCE THE fonts.google link with a font from fonts.google.com theyve got a great selection.*/
   
   /* ----------------------------------------------------------------------- */
 
@@ -115,8 +116,6 @@ div [aria-label="Create Thread"] {display: none !important;} /*remove the create
       font-weight: 400;
   }
  
-  
-  /* Backwards Compatibility */
   
   :root {
       --line-spacing: var(--message-line-spacing);
