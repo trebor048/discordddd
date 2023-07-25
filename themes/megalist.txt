@@ -216,7 +216,9 @@ div.drawerSizingWrapper-1txdWG
 }
 
 /*Channel Highlighter/Resizer*/
-.containerDefault-YUSmu3{max-height: 35px;}
+/*
+.containerDefault-YUSmu3{max-height: 35px;} -i broke this bit. makes people in vc all smooshed together. 
+*/
 .modeUnread-3Cxepe
  {
     background-color:rgba(0, 153, 255, 0.425);
