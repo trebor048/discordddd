@@ -1,0 +1,67 @@
+
+
+    /* ----------------------------------------------------------------------- */
+  
+  /*WHITE SCROLL BARS*/ /*keeps the scroll bars white, so i can fucking see them */
+  
+  /* ----------------------------------------------------------------------- */
+  
+  .auto-2TJ1RH::-webkit-scrollbar-thumb
+  {
+      background-color:white!important; 
+  }
+  .thin-RnSY0a::-webkit-scrollbar-thumb
+  {
+      border: none;
+      border-radius:12px;
+      background-color: white!important;
+  }
+
+
+
+/* ----------------------------------------------------------------------- */
+  
+  /*RESIZE GIF DRAWER*/ /*Make the GIF/emoji drawer huge so I can post funny shit */
+  
+/* ----------------------------------------------------------------------- */
+
+div.drawerSizingWrapper-1txdWG
+{
+    height:80vh;
+    bottom:0px;
+    right:5px;
+    width:600px; /* 498px-599px = 2 ROWS || 600px-799px = 3 ROWS || 800px-999px = 4 ROWS || 1000px< = get fucking help */
+}
+
+  /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+  /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+
+
+/* ----------------------------------------------------------------------- */
+  
+/*CHANNEL CATEGORYS BIGGER*/ & /*Channel Highlighter/Resizer*/
+  
+  /* ----------------------------------------------------------------------- */
+
+/*CHANNEL CATEGORYS BIGGER*/
+.container-q97qHp
+{
+  font-size: 18px;
+  font-weight: bold;
+  color:white;
+}
+
+/*Channel Highlighter/Resizer*/
+/*
+.containerDefault-YUSmu3{max-height: 35px;} -i broke this bit. makes people in vc all smooshed together. 
+*/
+.modeUnread-3Cxepe
+ {
+    background-color:rgba(0, 153, 255, 0.425);
+    border:1px outset rgb(184, 184, 184);
+    border-radius: 8px;
+}
+
+  /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+  /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
