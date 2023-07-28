@@ -13,13 +13,13 @@ body,
 .container-1um7CU,
 .container-2IKOsH,
 .header-3xB4vB {
-  background: rgb(0,0,0,0.1); !important;
+  background: transparent; !important;
 }
 :root {
-	--background-primary: rgb(0,0,0,0.75);
-	--background-tertiary: rgb(0,0,0,0.75);
-	--background-secondary: rgb(0,0,0,0.75);
-	--background-secondary-alt: rgb(0,0,0,0.75);
+	--background-primary: rgb(0,0,0,0.15);
+	--background-tertiary: rgb(0,0,0,0.35);
+	--background-secondary: rgb(0,0,0,0.45);
+	--background-secondary-alt: rgb(0,0,0,0.55);
 	--scrollbar-auto-track: rgb(0,0,0,0.75);
 	--channeltextarea-background: hsl(var(--primary-560-hsl)/.1);
 	--background-modifier-active: hsl(var(--primary-560-hsl)/0.2);
