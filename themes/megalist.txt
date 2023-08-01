@@ -203,7 +203,7 @@ div.drawerSizingWrapper-1txdWG
 
 /* ----------------------------------------------------------------------- */
   
-/*CHANNEL CATEGORYS BIGGER*/ & /*Channel Highlighter/Resizer*/
+/*CHANNEL CATEGORYS BIGGER*/ /*Channel Highlighter/Resizer*/
   
   /* ----------------------------------------------------------------------- */
 
