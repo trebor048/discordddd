@@ -1,0 +1,484 @@
+@import url('https://raw.githubusercontent.com/sahibjotsaggu/San-Francisco-Pro-Fonts/master/SF-Pro.ttf');
+@import url("https://lazuee.github.io/css-snippets/discord/member-list/import.css");
+/*@import url(//dablulite.github.io/css-snippets/UserReimagined/import.css);*/
+/*@import url(//dablulite.github.io/css-snippets/ServersList/import.css);*/
+/*@import url(//dablulite.github.io/css-snippets/HorizontalServerList/unified-import.css);*/  
+@import url(//dablulite.github.io/css-snippets/ConsistentChatbar/import.css);
+@import url(//dablulite.github.io/SegmentationBlurple/import.css);
+@import url(//dablulite.github.io/css-snippets/BDSettingsV2/import.css);
+@import url(//dablulite.github.io/css-snippets/AccountDetailsGrid/import.css);
+@import url(//dablulite.github.io/css-snippets/MacosTitlebar/import.css);
+@import url(//dablulite.github.io/css-snippets/VesktopMica/import.css);
+@import url(//dablulite.github.io/css-snippets/UserReimagined/import.css);
+:root {
+    --mactitlebar-left-margin: 5px;
+    --mactitlebar-top-margin: 10px;
+    --mactitlebar-button-width: 20px;
+    --mactitlebar-button-height: 20px;
+    --mactitlebar-button-border-radius: 50px;
+    --mactitlebar-close-btn-back: #f25056;
+    --mactitlebar-min-btn-back: #fac536;
+    --mactitlebar-max-btn-back: #39ea49;
+    --macbuttons-serverlist-inner-top-margin: 32px;
+    /*guilds inner ul element*/
+    --macbuttons-serverlist-outer-top-margin: 0;
+    --macbuttons-serverlist-outer-height: 100%;
+}
+:root{
+    --radius: 16px;
+--guild-list-width: 250px;
+  --guild-list-height: 44px;
+  --guild-item-radius: 50px;
+  --guild-item-spacing: 3px;
+}
+
+  /* ----------------------------------------------------------------------- */
+  
+  /*WINDOW CLOSE BUTTONS*/
+  
+  /* ----------------------------------------------------------------------- */
+/* 
+  .withFrame-2dL45i {
+      height: 24px;
+  }
+  .typeWindows-2-g3UY .winButton-3UMjdg > svg {
+      display: none!important;
+  }
+  .typeWindows-2-g3UY .winButton-3UMjdg::before,
+  #quit, #maximize, #minimize {
+      top: 0px;
+      width: 12px;
+      height: 12px;
+      border-radius: 25px;
+    outline-width: 1px;
+    outline-color: rgba(255,255,255,0.8);
+    outline-style:inset;
+  }
+  .typeWindows-2-g3UY .winButton-3UMjdg::after,
+  .winButtonClose-3Q8ZH5
+   #quit::after, #maximize::after, #minimize::after {
+      content:'';
+      height: 12px;
+      margin-top: 4px;
+      width: 12px;
+      border-radius: 25px;
+      transition: 0.4s;
+    outline-width: 1px;
+    outline-style: inset;
+  }
+  .typeWindows-2-g3UY .winButtonClose-3Q8ZH5::after {
+      background-color: hsl(0, 50%, 50%) !important;
+  }
+  .typeWindows-2-g3UY .winButtonMinMax-3RsPUg:nth-child(3)::after {
+      background-color: hsl(120, 50%, 50%) !important;
+  }
+  .typeWindows-2-g3UY .winButtonMinMax-3RsPUg:nth-child(4)::after {
+      background-color: hsl(50, 50%, 50%) !important;
+  }
+  .typeWindows-2-g3UY > div:hover::after {
+      transform: scale(1.5);
+  }
+/*
+
+.wordmarkWindows-2dq6rw > svg {
+    width: 23px;
+}
+.wordmarkWindows-2dq6rw path:not(:first-child) {
+    display: none;
+}
+.wordmarkWindows-2dq6rw path:first-child path {
+ d:("M85.2,70.5C85.2,70.5,85.2,70.5,85.2,70.5c-0.1,0-0.3,0-0.4-0.1L29.6,50.9c-2.1,1.5-4.5,2.3-7.1,2.3    c-6.5,0-11.9-5.3-11.9-11.9S16,29.5,22.5,29.5s11.9,5.3,11.9,11.9c0,0.1,0,0.1,0,0.2l54,19.2c0.6,0.2,1.2,0.9,0.8,3.2    C88.8,66.2,87.1,70.5,85.2,70.5z M29.5,49.8l0.2,0.1l55.4,19.7c0,0,0.1,0,0.1,0c0.8,0,2.6-3,3.1-5.8c0.2-1.4,0.1-2.1-0.2-2.2    L33.5,42.2l0-0.3c0-0.2,0-0.3,0-0.5c0-6-4.9-11-11-11s-11,4.9-11,11s4.9,11,11,11c2.5,0,4.8-0.8,6.7-2.3L29.5,49.8z M25.1,36.2    c-0.4,0-0.7,0-1.1-0.1c-1.1-0.2-2-0.5-2.7-1.1c-0.7-0.6-1.1-1.3-1-2c0.2-1.2,1.5-1.9,3.3-1.9c0.4,0,0.7,0,1.1,0.1    c1.1,0.2,2,0.5,2.7,1.1c0.7,0.6,1.1,1.3,1,2C28.3,35.4,26.9,36.2,25.1,36.2z M23.7,31.5c-1.6,0-2.7,0.6-2.9,1.5    c-0.1,0.6,0.2,1.1,0.8,1.6c0.6,0.5,1.5,0.8,2.5,1c0.3,0.1,0.7,0.1,1,0.1c1.6,0,2.7-0.6,2.9-1.5c0.1-0.6-0.2-1.1-0.8-1.6    c-0.6-0.5-1.5-0.8-2.5-1C24.4,31.5,24.1,31.5,23.7,31.5z M24.7,32.1c-1.7-0.3-3.1,0.2-3.3,1c-0.1,0.8,1.1,1.7,2.8,2    c1.7,0.3,3.1-0.2,3.3-1C27.6,33.2,26.4,32.3,24.7,32.1z M87.3,65.9c0.9-2.3,0.8-3.7,0.6-3.8c-0.3,0-1.3,1.1-2,3.2    c-0.4,1-0.6,1.9-0.7,2.7c-0.1,0.8,0.1,1.1,0.1,1.1c0,0,0,0,0,0C85.6,69.1,86.5,68,87.3,65.9z M12.9,40.7c0-2.1,0.6-4.1,1.5-5.7    c-1.4,1.8-2.3,4-2.3,6.4c0,5.7,4.6,10.2,10.2,10.2c0.1,0,0.2,0,0.4,0C17.3,51.4,12.9,46.6,12.9,40.7z M78.7,66.4L30.6,48.8    c-0.2,0.2-0.4,0.4-0.6,0.6l48.8,17.4C78.8,66.6,78.7,66.6,78.7,66.4z") !important;
+    scale: 2;
+}
+
+.winButtonClose-3Q8ZH5 svg path:first-child {
+d: path("M23.6 2c-3.363 0-6.258 2.736-7.599 5.594-1.342-2.858-4.237-5.594-7.601-5.594-4.637 0-8.4 3.764-8.4 8.401 0 9.433 9.516 11.906 16.001 21.232 6.13-9.268 15.999-12.1 15.999-21.232 0-4.637-3.763-8.401-8.4-8.401z");
+}
+.wordmarkWindows-2dq6rw svg > g {
+    transform: translateY(-75%);
+}
+.wordmarkWindows-2dq6rw {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    order: 1;
+    margin-right: auto;
+    color: var(--header-primary);
+}
+.wordmarkWindows-2dq6rw::after {
+    content: "DRUGSCORD";
+    display: flex;
+    width: fit-content;
+    font-size: 12px;
+    font-family: var(--font-display);
+    font-weight: 700;
+}
+html:has(#activeColorway:not(:empty)) .wordmarkWindows-2dq6rw::after {
+    content: "Colorways";
+    background-color: var(--background-primary);
+    padding: 2px 8px;
+    border-radius: 16px;
+}
+.typeWindows-2-g3UY {
+    margin-top: 0;
+    padding: 4px;
+    height: fit-content;
+}
+.typeWindows-2-g3UY > * {
+    position: relative;
+}
+.winButton-3UMjdg {
+    top: 0 !important;
+    margin: -4px 0;
+    height: 31px;
+    width: 46px;
+}
+.winButtonClose-3Q8ZH5 {
+    margin-right: -4px;
+}
+*/
+
+
+  /* ----------------------------------------------------------------------- */
+  
+  /*FONT SETTINGS*/ /*REPALCE THE fonts.google link with a font from fonts.google.com theyve got a great selection.*/
+  
+  /* ----------------------------------------------------------------------- */
+
+ 
+  @font-face {
+    src:url('https://raw.githubusercontent.com/trebor048/discordddd/main/fonts/SF-Pro-Rounded-Light.ttf');
+      font-family: 'SF Pro Rounded';
+      font-style: normal;
+      font-weight: 300;
+  }
+ 
+  
+  :root {
+      --line-spacing: var(--message-line-spacing);
+  }
+  
+  /* Apply styles */
+ 
+  ::-webkit-input-placeholder, body, button, input, select, textarea {
+     font-family: 'SF Pro Rounded', sans-serif !important;
+      word-spacing: var(--word-spacing, initial);
+      letter-spacing: var(--letter-spacing, initial);
+  }
+  
+  /* Adjust formatted text line-height */
+  
+  [class*="messageContent-" i] {
+      line-height: var(--message-line-spacing, initial) !important;
+  }
+  
+  /* Scale up timestamps & "Edited" text */
+  
+  [class*="group-spacing" i] [class*="timestamp"],
+  [class*="messageContent-" i] time {
+      font-size: 0.9rem;
+  }
+  
+  /* ----------------------------------------------------------------------- */
+  
+  /* FONT SIZE VARIABLES */
+  
+  :root {
+      --word-spacing: 0.2px;
+      --letter-spacing: 0.09px;
+      --message-line-spacing: 1.4;
+  }
+  
+  /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+  /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+
+:root {
+  --dim-channels: 80%;
+  --dim-members: 80%;
+  --dim-serverlist: 90%;
+  --dim-dms: 100%
+}
+/* dimmed channel list */
+.link-1_kTxV {
+  opacity: var(--dim-channels);
+}
+/* dimmed member list */
+.members-3WRCEx {
+  opacity: var(--dim-members)
+}
+/* dimmed server list */
+.scroller-3X7KbA {
+  opacity: var(--dim-serverlist);
+}
+/* dimmed dms */
+.scroller-WSmht3 > ul {
+  opacity: var(--dim-dms);
+}
+
+.containerDefault-YUSmu3:hover {
+    background-color: var(--primary-560);
+    border-left: 3px solid var(--primary-500);
+    border-radius: 0px;
+}
+.containerDefault-YUSmu3.selected-2TbFuo {
+    background-color: var(--primary-660);
+    border-left: 3px solid var(--primary-560);
+    border-radius: 0px;
+}
+.containerDefault-YUSmu3.selected-2TbFuo > div > div > .link-1_kTxV > [class*="emojiColorFill-"] {
+  margin-left: -30px;
+  margin-top: 0px;
+} 
+.link-1_kTxV {
+  background: none !important;
+}
+/*
+.platform-win .typeWindows-2-g3UY { 
+     height: 0px; 
+     margin-top: 0; 
+     position: absolute; 
+     top: 31px; 
+     right: 0; 
+     width: 9%; 
+     background: rgba(254, 254, 254, 0); 
+   } 
+   .platform-win .winButtonClose-3Q8ZH5 { 
+     border-top-right-radius: 1; 
+     border-bottom-right-radius: 0; 
+   } 
+   .platform-win .winButton-3UMjdg { 
+     position: relative; 
+     top: -32px; 
+     right: 0px; 
+     height: 46px; 
+     width: 40px; 
+   } 
+   .platform-win .winButton-3UMjdg:not(.winButtonClose-3Q8ZH5):hover { 
+     background-color: rgba(255, 255, 255, 0.1); 
+   } 
+   .platform-win .container-ZMc96U { 
+     padding-right: 125px; 
+   } 
+   .platform-win .wordmarkWindows-2dq6rw { 
+     display: none; 
+   }
+*/
+
+    /* ----------------------------------------------------------------------- */
+  
+  /*WHITE SCROLL BARS*/ /*keeps the scroll bars white, so i can fucking see them */
+  
+  /* ----------------------------------------------------------------------- */
+  
+  .auto-2TJ1RH::-webkit-scrollbar-thumb
+  {
+      background-color:white!important; 
+  }
+  .thin-RnSY0a::-webkit-scrollbar-thumb
+  {
+      border: none;
+      border-radius:12px;
+      background-color: white!important;
+  }
+
+
+
+/* ----------------------------------------------------------------------- */
+  
+  /*RESIZE GIF DRAWER*/ /*Make the GIF/emoji drawer huge so I can post funny shit */
+  
+/* ----------------------------------------------------------------------- */
+
+div.drawerSizingWrapper-1txdWG
+{
+    height:80vh;
+    bottom:0px;
+    right:5px;
+    width:600px; /* 498px-599px = 2 ROWS || 600px-799px = 3 ROWS || 800px-999px = 4 ROWS || 1000px< = get fucking help */
+}
+
+  /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+  /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+
+
+/* ----------------------------------------------------------------------- */
+  
+/*CHANNEL CATEGORYS BIGGER*/ /*Channel Highlighter/Resizer*/
+  
+  /* ----------------------------------------------------------------------- */
+
+/*CHANNEL CATEGORYS BIGGER*/
+.container-q97qHp
+{
+  font-size: 18px;
+  font-weight: bold;
+  color:white;
+}
+
+/*Channel Highlighter/Resizer*/
+/*
+.containerDefault-YUSmu3{max-height: 35px;} -i broke this bit. makes people in vc all smooshed together. 
+*/
+.containerDefault-YUSmu3{
+  padding-bottom:5px;
+}
+.modeUnread-3Cxepe
+ {
+    background-color:rgba(255, 26, 26, 0.425);
+    border:1px outset rgb(184, 184, 184);
+    border-radius: 8px;
+    padding: 0px;
+}
+
+  /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+  /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+
+/* ----------------------------------------------------------------------- */
+  
+/*SMOL PLATFORM INDICATORS*/
+  
+  /* ----------------------------------------------------------------------- */
+/*
+[class^="nameAndDecorator"] .vc-platform-indicator {
+    flex-direction: column;
+    margin-left: 2px !important;
+    margin-right: -2px;
+    max-height: 30px;
+}
+[class^="nameAndDecorator"] .vc-platform-indicator svg {
+    width: 16px;
+}
+[class^="nameAndDecorator"] .vc-platform-indicator :only-child {
+    height: 16px;
+}
+[class^="nameAndDecorator"] .vc-platform-indicator :nth-child(3) {
+    position: absolute;
+    height: 16px;
+    margin-left: 20px;
+}
+*/
+
+  /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+  /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+
+
+/* ----------------------------------------------------------------------- */
+
+  /*COLOR ON/OFF SWITCHES GREEN/RED*/
+  
+  /* ----------------------------------------------------------------------- */
+
+
+/*
+.container-2nx-BQ:not(.checked-25WXMf) {
+    background-color: #f04747 !important;
+}
+
+.container-2nx-BQ:not(.checked-25WXMf) path {
+    fill: #f04747 !important;
+}
+
+ fixes/ensures enabled input is green
+.container-2nx-BQ.checked-25WXMf {
+    background-color: #43b581 !important;
+}
+
+.container-2nx-BQ.checked-25WXMf path {
+    fill: #43b581 !important;
+}
+*/
+  /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+  /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+.message-2CShn3 {
+    margin-left: 16px;
+    border-radius: 10px;
+}
+
+.mentioned-Tre-dv:before {
+  width: 5px;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+  /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+  /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+
+
+/* Colored context menus */
+.menu-2TXYjN, .base-2jDfDU, .header-3xB4vB, #app-mount, .chatContent-3KubbW  { 
+    background: linear-gradient(145deg, #2a2465 35%, #0a0818);
+    border: 2px solid #493fb1;
+    border-radius: 15px;
+}
+
+
+
+
+
+
+/*
+app-mount
+{
+  background: rgb(0,0,0,0)!important;
+}
+:root {
+	--background-primary: rgb(0,0,0,0.15);
+	--background-tertiary: rgb(0,0,0,0.35);
+	--background-secondary: rgb(0,0,0,0.45);
+	--background-secondary-alt: rgb(0,0,0,0.55);
+	--scrollbar-auto-track: rgb(0,0,0,0.75);
+	--channeltextarea-background: hsl(var(--primary-560-hsl)/.1);
+	--background-modifier-active: hsl(var(--primary-560-hsl)/0.2);
+    --background-modifier-hover: hsl(var(--primary-560-hsl)/0.1);
+    --background-modifier-selected: hsl(var(--primary-560-hsl)/0.3);
+	--button-secondary-background: hsl(var(--primary-560-hsl)/.1);
+	--scrollbar-auto-thumb: hsl(var(--primary-560-hsl)/.2);
+	--scrollbar-thin-thumb: hsl(var(--primary-560-hsl)/.2);
+    --button-secondary-background-active: hsl(var(--primary-560-hsl)/.3);
+    --button-secondary-background-disabled: var(--primary-430);
+    --button-secondary-background-hover: hsl(var(--primary-560-hsl)/.2);
+}
+.base-2jDfDU {
+    border-top-left-radius: 5px;
+}
+.innerWrapper-MqFL7z {
+	background-color: hsl(var(--primary-560-hsl)/.3) !important;
+}
+.theme-dark {
+	--channels-default: var(--white-560);
+	--channel-icon: var(--white-560);
+	--interactive-normal: var(--white-560);
+	--interactive-hover: var(--white-530);
+	--interactive-active: var(--white-500);
+	--channel-text-area-placeholder: var(--white-560);
+	--interactive-muted: var(--white-600);
+	--text-normal: var(--white-500);
+	--text-muted: var(--white-560);
+}
+.theme-light {
+	--channels-default: var(--black-400);
+	--channel-icon: var(--black-430);
+	--interactive-normal: var(--black-400);
+	--interactive-hover: var(--black-430);
+	--interactive-active: var(--black-500);
+	--channel-text-area-placeholder: var(--black-360);
+	--interactive-muted: var(--black-360);
+	--text-normal: var(--black-500);
+	--text-muted: var(--black-400);
+}
+.content-1jQy2l:before,
+.form-3gdLxP:before,
+.children-3xh0VB:after {
+  content: none;
+}
+.header-3OsQeK,
+.searchBar-3TnChZ {
+  box-shadow: none;
+}
+*/
