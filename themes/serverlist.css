@@ -261,14 +261,10 @@
   margin: 0 0 var(--guild-item-spacing);
 }
 /*=====================================================================*/
-/*
-.numberBadge-37OJ3S {align-items: self-end!important;}
-*/
+
 .upperBadge-1d6YsW,.lowerBadge-3j0ZAg,.numberBadge-37OJ3S{box-shadow:0 0 0 0!important;}
 .iconBadge-32fMme,.icon-2Ug6UV{background-color: #1b6911;min-height: 22px;min-width: 24px;border-radius: 5px;}
 .icon-2Ug6UV{padding:0px;}
-/*
-.chatContent-3KubbW,.channelTextArea-1FufC0{background: rgb(30, 31, 34);}*/
 .baseShapeRound-3epLEv{border-radius:5px;font-size:93%;min-height: 22px;min-width: 24px;}
 .unreadMentionsIndicatorBottom-3RJMnQ, .unreadMentionsIndicatorTop-2bTgUU{align-self:center;width:100%;}
-.bar-2eAyLE{align-items:self-end!important;}
+.bar-2eAyLE{align-items:self-end;}
