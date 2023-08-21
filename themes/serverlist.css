@@ -1,6 +1,6 @@
 :root {
   --guild-list-width: 198px;
-  --guild-list-height: 44px;
+  --guild-list-height: 48px;
   --guild-item-radius: 5px;
   --guild-item-spacing: 8px;
   --guild-item-font-size: 16px;
@@ -263,8 +263,8 @@
 /*=====================================================================*/
 .numberBadge-37OJ3S {display: -webkit-box;display: flex;-webkit-box-align: center;align-items: self-end;-webkit-box-pack: center;justify-content: center;}}
 .upperBadge-1d6YsW,.lowerBadge-3j0ZAg,.numberBadge-37OJ3S{box-shadow:0 0 0 0;}
-.base-3IDx3L{min-height: 21px;min-width: 24px;}
-.iconBadge-32fMme,.icon-2Ug6UV{background-color: #1b6911;min-height: 21px;min-width: 24px;border-radius: 5px;}
+.base-3IDx3L{min-height: 22px;min-width: 24px;}
+.iconBadge-32fMme,.icon-2Ug6UV{background-color: #1b6911;min-height: 22px;min-width: 24px;border-radius: 5px;}
 .icon-2Ug6UV{padding:1px;}
 .baseShapeRound-3epLEv{border-radius: 5px;font-size: 90%;}
 /*
