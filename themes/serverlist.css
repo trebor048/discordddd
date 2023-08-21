@@ -268,4 +268,6 @@
 .icon-2Ug6UV{padding:1px;}
 /*
 .chatContent-3KubbW,.channelTextArea-1FufC0{background: rgb(30, 31, 34);}*/
-.unreadMentionsIndicatorBottom-3RJMnQ, .unreadMentionsIndicatorTop-2bTgUU{align-self:center;width:100%;align-items:self-end!important;}
+.baseShapeRound-3epLEv{border-radius:5px;font-size:90%;}
+.unreadMentionsIndicatorBottom-3RJMnQ, .unreadMentionsIndicatorTop-2bTgUU{align-self:center;width:100%;}
+.bar-2eAyLE{align-items:self-end!important;}
