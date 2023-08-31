@@ -1,37 +1,38 @@
 @import url('https://raw.githubusercontent.com/sahibjotsaggu/San-Francisco-Pro-Fonts/master/SF-Pro.ttf');
- @import url("https://lazuee.github.io/css-snippets/discord/member-list/import.css");
-/*@import url(//dablulite.github.io/css-snippets/UserReimagined/import.css);
-*/
-/*@import url(//dablulite.github.io/css-snippets/HorizontalServerList/unified-import.css);
-*/
-/*@import url(//dablulite.github.io/css-snippets/ConsistentChatbar/import.css);
-*/
-/*@import url(//dablulite.github.io/SegmentationBlurple/import.css);
-*/
- @import url(//dablulite.github.io/css-snippets/BDSettingsV2/import.css);
-/*@import url(//dablulite.github.io/css-snippets/BetterTitlebar/import.css);
-*/
- @import url(//dablulite.github.io/css-snippets/BetterFloatingEditor/import.css);
-/*@import url(//dablulite.github.io/css-snippets/BetterModals/import.css);
-*/
-/*@import url(//dablulite.github.io/css-snippets/BetterAuthApps/import.css);
-*/
-/*@import url(//dablulite.github.io/css-snippets/AccountDetailsGrid/import.css);
-*/
- @import url(//dablulite.github.io/css-snippets/MacosTitlebar/import.css);
-/*@import url(//dablulite.github.io/css-snippets/VesktopMica/import.css);
-*/
-/*@import url(//dablulite.github.io/css-snippets/UserReimagined/import.css);
-*/
-/*@import url(//dablulite.github.io/css-snippets/ConsistentChatbar/import.css);
-*/
-/*@import url(https://raw.githubusercontent.com/maenDisease/Float/main/src/core/_root.scss);
-*/
+@import url("https://lazuee.github.io/css-snippets/discord/member-list/import.css");
+@import url(//dablulite.github.io/css-snippets/BDSettingsV2/import.css);
+@import url(//dablulite.github.io/css-snippets/BetterFloatingEditor/import.css);
+@import url(//dablulite.github.io/css-snippets/MacosTitlebar/import.css);
+/*@import url(//dablulite.github.io/css-snippets/UserReimagined/import.css);*/
+/*@import url(//dablulite.github.io/css-snippets/HorizontalServerList/unified-import.css);*/
+/*@import url(//dablulite.github.io/css-snippets/ConsistentChatbar/import.css);*/
+/*@import url(//dablulite.github.io/SegmentationBlurple/import.css);*/
+/*@import url(//dablulite.github.io/css-snippets/BetterTitlebar/import.css);*/
+/*@import url(//dablulite.github.io/css-snippets/BetterModals/import.css);*/
+/*@import url(//dablulite.github.io/css-snippets/BetterAuthApps/import.css);*/
+/*@import url(//dablulite.github.io/css-snippets/AccountDetailsGrid/import.css);*/
+/*@import url(//dablulite.github.io/css-snippets/VesktopMica/import.css);*/
+/*@import url(//dablulite.github.io/css-snippets/UserReimagined/import.css);*/
+/*@import url(//dablulite.github.io/css-snippets/ConsistentChatbar/import.css);*/
+/*@import url(https://raw.githubusercontent.com/maenDisease/Float/main/src/core/_root.scss);*/
 /*@import url(https://discordstyles.github.io/Addons/windows-titlebar.css)*/
-/*@import url(https://raw.githubusercontent.com/trebor048/discordddd/main/themes/mactitlebar.css);
-*/
- @import url();
+/*@import url(https://raw.githubusercontent.com/trebor048/discordddd/main/themes/mactitlebar.css);*/
+
+
+/* ----------------------------------------------------------------------- */
+/* a stupid fuckin theme. will update this file a lot. shit will break. you should probably cry about it. ill try to fix the bugs & convuluted bullshit.
+and i will fail.
+and youll still be crying.
+ok.
+/* ----------------------------------------------------------------------- */
+
+
+
+
+
+/* ----------------------------------------------------------------------- */
 /* meth pipe kitty */
+/* ----------------------------------------------------------------------- */
  #oneko{
      background-image: url('https://raw.githubusercontent.com/trebor048/discordddd/main/themes/pipe.png')!important;
      z-index: 99999;
