@@ -1,36 +1,4 @@
 /* ----------------------------------------------------------------------- */
-/* a stupid fuckin theme. will update this file a lot. shit will break. you should probably cry about it. ill try to fix the bugs & convuluted bullshit.
-and i will fail.
-and youll still be crying.
-ok.
-/* ----------------------------------------------------------------------- */
-
-/* ----------------------------------------------------------------------- */
-/* imports, shit i stole(ALLEGEDLY, I PLEAD DA FIF), shit thats awesome, shit that im trying to incorporate, shit that im storing for later/certain layouts */
-/* ----------------------------------------------------------------------- */
-@import url('https://raw.githubusercontent.com/sahibjotsaggu/San-Francisco-Pro-Fonts/master/SF-Pro.ttf');
-@import url("https://lazuee.github.io/css-snippets/discord/member-list/import.css");
-@import url(//dablulite.github.io/css-snippets/BDSettingsV2/import.css);
-@import url(//dablulite.github.io/css-snippets/BetterFloatingEditor/import.css);
-@import url(//dablulite.github.io/css-snippets/MacosTitlebar/import.css);
-@import url(https://raw.githubusercontent.com/trebor048/discordddd/main/themes/serverlist.css);
-/*@import url(//dablulite.github.io/css-snippets/UserReimagined/import.css);*/
-/*@import url(//dablulite.github.io/css-snippets/HorizontalServerList/unified-import.css);*/
-/*@import url(//dablulite.github.io/css-snippets/ConsistentChatbar/import.css);*/
-/*@import url(//dablulite.github.io/SegmentationBlurple/import.css);*/
-/*@import url(//dablulite.github.io/css-snippets/BetterTitlebar/import.css);*/
-/*@import url(//dablulite.github.io/css-snippets/BetterModals/import.css);*/
-/*@import url(//dablulite.github.io/css-snippets/BetterAuthApps/import.css);*/
-/*@import url(//dablulite.github.io/css-snippets/AccountDetailsGrid/import.css);*/
-/*@import url(//dablulite.github.io/css-snippets/VesktopMica/import.css);*/
-/*@import url(//dablulite.github.io/css-snippets/UserReimagined/import.css);*/
-/*@import url(//dablulite.github.io/css-snippets/ConsistentChatbar/import.css);*/
-/*@import url(https://raw.githubusercontent.com/maenDisease/Float/main/src/core/_root.scss);*/
-/*@import url(https://discordstyles.github.io/Addons/windows-titlebar.css)*/
-/*@import url(https://raw.githubusercontent.com/trebor048/discordddd/main/themes/mactitlebar.css);*/
-
-
-/* ----------------------------------------------------------------------- */
 /*
 ███████╗    ███╗   ███╗     ██████╗     ██╗  ██╗    ███████╗    
 ██╔════╝    ████╗ ████║    ██╔═══██╗    ██║ ██╔╝    ██╔════╝    
@@ -66,7 +34,33 @@ ok.
 ╚════██║    ██╔══██║       ██║       ██╔══██║    ██║╚██╗██║     
 ███████║    ██║  ██║       ██║       ██║  ██║    ██║ ╚████║     
 ╚══════╝    ╚═╝  ╚═╝       ╚═╝       ╚═╝  ╚═╝    ╚═╝  ╚═══╝     
-*/                                                       
+*/
+/* ----------------------------------------------------------------------- */
+/* imports, shit i stole(ALLEGEDLY, I PLEAD DA FIF), shit thats awesome, shit that im trying to incorporate, shit that im storing for later/certain layouts */
+/* ----------------------------------------------------------------------- */
+@import url('https://raw.githubusercontent.com/sahibjotsaggu/San-Francisco-Pro-Fonts/master/SF-Pro.ttf');
+@import url("https://lazuee.github.io/css-snippets/discord/member-list/import.css");
+@import url(//dablulite.github.io/css-snippets/BDSettingsV2/import.css);
+@import url(//dablulite.github.io/css-snippets/BetterFloatingEditor/import.css);
+@import url(//dablulite.github.io/css-snippets/MacosTitlebar/import.css);
+@import url(https://raw.githubusercontent.com/trebor048/discordddd/main/themes/serverlist.css);
+/*@import url(//dablulite.github.io/css-snippets/UserReimagined/import.css);*/
+/*@import url(//dablulite.github.io/css-snippets/HorizontalServerList/unified-import.css);*/
+/*@import url(//dablulite.github.io/css-snippets/ConsistentChatbar/import.css);*/
+/*@import url(//dablulite.github.io/SegmentationBlurple/import.css);*/
+/*@import url(//dablulite.github.io/css-snippets/BetterTitlebar/import.css);*/
+/*@import url(//dablulite.github.io/css-snippets/BetterModals/import.css);*/
+/*@import url(//dablulite.github.io/css-snippets/BetterAuthApps/import.css);*/
+/*@import url(//dablulite.github.io/css-snippets/AccountDetailsGrid/import.css);*/
+/*@import url(//dablulite.github.io/css-snippets/VesktopMica/import.css);*/
+/*@import url(//dablulite.github.io/css-snippets/UserReimagined/import.css);*/
+/*@import url(//dablulite.github.io/css-snippets/ConsistentChatbar/import.css);*/
+/*@import url(https://raw.githubusercontent.com/maenDisease/Float/main/src/core/_root.scss);*/
+/*@import url(https://discordstyles.github.io/Addons/windows-titlebar.css)*/
+/*@import url(https://raw.githubusercontent.com/trebor048/discordddd/main/themes/mactitlebar.css);*/
+
+
+                                                       
 
 
 
@@ -94,207 +88,193 @@ ok.
      --macbuttons-serverlist-outer-top-margin: 0;
      --macbuttons-serverlist-outer-height: 100%;
 }
- .wordmarkWindows-2dq6rw{
-     display:block!important;
-     left:83px;
-     top:0px;
-     background-image: url('https://svgshare.com/i/x8n.svg');
-     background-attachment: fixed;
-     background-size:cover;
-     width:80px;
-     height:25px;
+
+.wordmarkWindows-2dq6rw {
+  display: block !important;
+  left: 83px;
+  background: url("https://i.imgur.com/vn6ObWd.png");
+  background-size: 90%;
+  background-position: 4px -21px;
+  background-repeat: no-repeat;
+  width: 80px;
+  height: 28px;
 }
- .wordmarkWindows-2dq6rw > svg{
-     display:none;
+.wordmarkWindows-2dq6rw > svg {
+  display: none;
+}
+[aria-label^="Close"] > svg:hover {
+  transform: scale(1.6);
+  transition: 0.2s ease-in-out;
+  background-color: #f97a7a !important;
+}
+[aria-label^="Minimise"] > svg:hover {
+  transform: scale(1.6);
+  transition: 0.2s ease-in-out;
+  background-color: #fbe096 !important;
+}
+[aria-label^="Maximise"] > svg:hover {
+  transform: scale(1.6);
+  transition: 0.2s ease-in-out;
+  background-color: #85fb8f !important;
 }
 /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 /* ----------------------------------------------------------------------- */
 /*settings button and shit*/
 /* ----------------------------------------------------------------------- */
- .sidebar-nqHbhN{
-     padding:2px 
+/*settings close button and list*/
+.header-2F5_LB {
+  display: none;
 }
- .closeButton-PCZcma:hover{
-     transform: scale(1.1);
-     transition: 0.4s;
-     background-color: #f25056;
+.side-1lrxIh {
+  margin-top: 34px;
 }
- .closeButton-PCZcma, .container-054IuJ > svg{
-     top: 50px;
-     right:22px;
-     border-radius: 5px;
+.sidebar-nqHbhN {
+  padding: 0px;
+}
+.closeButton-PCZcma {
+  width: 75px !important;
+  height: 25px !important;
+  border-radius: 5px !important;
+}
+.closeButton-PCZcma:hover {
+  transform: scale(1.2);
+  transition: 0.3s;
+  background-color: #f25056;
+}
+#vc-membercount > div:nth-child(2) {
+  display: none;
+}
+#vc-membercount > div:nth-child(1) {
+  justify-content: center !important;
 }
 /*read all button*/
- .scroller-3X7KbA > button{
-     width:91%;
-     background-color:#2b89c0!important;
-     animation: rainbow 5s linear infinite;
-     border-style: solid;
-     border-color:white;
-     border-width:1px;
-     border-radius: 6px;
+.scroller-3X7KbA > button {
+  width: 91%;
+  background-color: #2b89c0 !important;
+  border-style: solid;
+  border-color: white;
+  border-width: 1px;
+  border-radius: 5px;
 }
 /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
 /* ----------------------------------------------------------------------- */
 /*chat bar and shit*/
 /* ----------------------------------------------------------------------- */
- .form-3gdLxP{
-     flex-direction: column-reverse;
-     display:flex;
-     align-self: center;
-     width:98%;
-     padding-bottom:8px;
+.form-3gdLxP {
+  flex-direction: column-reverse;
+  display: flex;
+  align-self: center;
+  width: 98%;
+  padding-bottom: 8px;
 }
- .base-3bcbY3{
-     position: sticky;
-     background-color: #00a2ff1c;
-     border-top-left-radius: 7px;
-     border-top-right-radius: 6px;
-     align-self: center;
-     width:98%!important;
+.base-3bcbY3 {
+  position: sticky;
+  background-color: #00629b6c;
+  border-top-left-radius: 7px;
+  border-top-right-radius: 6px;
+  align-self: center;
+  width: 98% !important;
 }
- .themedBackground-3uF0xW{
-     background-color: #0072b45e;
-     border-radius: 7px;
+.jumpToPresentBar-1cEnH0 {
+  background-color: #00000066;
+  width: 95%;
 }
-/*.typing-2J1mQU{
+.themedBackground-3uF0xW {
+  background-color: #0072b46a;
+  border-radius: 7px;
 }
+/*.typing-2J1mQU{}*/
+/*
+.form-3gdLxP{padding:0px;margin-top:0px;border-radius: 0px;display: flex;flex-direction: column;}
+.scrollableContainer-15eg7h{height: 55px;margin-top:0px;margin-bottom: 0px;z-index:3;border-bottom-right-radius: 0px;border-bottom-left-radius:0px;}
+.channelTextArea-1VQBuV{height:34px;border-radius: 0px;z-index: 1;}
+.a-1FufC0{machannelTextArergin-bottom: 0;border-radius: 0;}
+.typing-2J1mQU{margin-right:90px;margin-left:35px;padding-right:8px;width:fit-content;justify-self:center;padding-bottom:42px;background:#054e79;;z-index: 0;border-top-left-radius: 15px;border-top-right-radius: 15px;}
 */
-/* .form-3gdLxP{
-     padding:0px;
-     margin-top:0px;
-     border-radius: 0px;
-     display: flex;
-     flex-direction: column;
-}
- .scrollableContainer-15eg7h{
-     height: 55px;
-     margin-top:0px;
-     margin-bottom: 0px;
-     z-index:3;
-     border-bottom-right-radius: 0px;
-     border-bottom-left-radius:0px;
-}
- .channelTextArea-1VQBuV{
-     height:34px;
-     border-radius: 0px;
-     z-index: 1;
-}
- .a-1FufC0{
-     machannelTextArergin-bottom: 0;
-     border-radius: 0;
-}
- .typing-2J1mQU{
-     margin-right:90px;
-     margin-left:35px;
-     padding-right:8px;
-     width:fit-content;
-     justify-self:center;
-     padding-bottom:42px;
-     background:#054e79;
-     z-index: 0;
-     border-top-left-radius: 15px;
-     border-top-right-radius: 15px;
-}
- */
 /*---------------------*/
- .newMessagesBar-1hF-9G{
-     height:36px;
-     background-color: #0072b45e;
+.newMessagesBar-1hF-9G {
+  height: 36px;
+  background-color: #0072b4a5;
 }
- .span-3lFnWr{
-     font-size: 160%;
+.span-3lFnWr {
+  font-size: 160%;
 }
- .channelTextArea-1FufC, .channelTextArea-1VQBuV{
-     border-radius: 6px;
+.channelTextArea-1FufC,
+.channelTextArea-1VQBuV {
+  border-radius: 6px;
 }
- .wrapper-2SplAX {
-     margin-bottom: 0;
-     border-radius: 0;
-     padding: 1.5px 0;
+
+.wrapper-2SplAX {
+  margin-bottom: 0;
+  border-radius: 0;
+  padding: 1.5px 0;
 }
- .form-3gdLxP::after {
-     padding: 0;
-     margin-top: 0;
-     display: flex;
+.form-3gdLxP::after {
+  padding: 0;
+  margin-top: 0;
+  display: flex;
 }
- .channelTextArea-1FufC0 {
-     margin-bottom: 0;
-     border-radius: 0;
+.channelTextArea-1FufC0 {
+  margin-bottom: 0;
+  border-radius: 0;
 }
- .placeholder-1rCBhr{
-     color:white;
-     text-transform: lowercase;
+.placeholder-1rCBhr {
+  color: white;
+  text-transform: lowercase;
 }
-/* .base-3bcbY3 {
-     position: static;
-     width: 100%;
-     order: 1;
-     display: flex;
-     justify-content: space-between;
-     padding: 0 0px;
-     box-sizing: border-box;
+/*
+.base-3bcbY3 {
+  position: static;
+  width: 100%;
+  order: 1;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 0px;
+  box-sizing: border-box;
 }
- .base-3bcbY3 > .cooldownWrapper-2k1jHK {
-     margin: 0;
-     position: static;
+.base-3bcbY3 > .cooldownWrapper-2k1jHK {
+  margin: 0;
+  position: static;
 }
- .scroller-kQBbkU {
-     position: static;
+.scroller-kQBbkU {
+  position: static;
 }
- .scrollerSpacer-3AqkT9 {
-     height: 15px;
+.scrollerSpacer-3AqkT9 {
+  height: 15px;
 }
- .scrollableContainer-15eg7h {
-     border-bottom-left-radius: 0px;
-     border-bottom-right-radius: 0px;
-     height: 50px;
+.scrollableContainer-15eg7h {
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+  height: 50px;
+}*/
+.scrollableContainer-15eg7h > .inner-NQg18Y {
+  min-height: 45px;
+  align-items: center;
 }
-*/
- .scrollableContainer-15eg7h > .inner-NQg18Y {
-     min-height: 45px;
-     align-items: center;
+.attachWrapper-3slhXI {
+  display: flex;
+  position: static;
+  align-items: center;
 }
- .attachWrapper-3slhXI {
-     display: flex;
-     position: static;
-     align-items: center;
+.attachedBars-2BCP3l {
+  border-radius: 0;
 }
- .attachedBars-2BCP3l {
-     border-radius: 0;
-}
- .slateTextArea-27tkG0{
-     color:white!important 
+.slateTextArea-27tkG0 {
+  color: white !important;
 }
 /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
 /* ----------------------------------------------------------------------- */
 /*CHANNEL HIDER*/
 /* ----------------------------------------------------------------------- */
-/*
-.sidebar-1tnWFu{transition:.065s ease .075s;width:0px;min-width:0px;resize:none;background-color: #054e79;}
-.sidebar-1tnWFu .container-1zzFcN,.sidebar-1tnWFu .panel-2ZFCRb{padding:0;transition:.065s ease .075s}
-.sidebar-1tnWFu .button-12Fmur,.sidebar-1tnWFu .badge-3RBqXG{width:0;transition:.065s ease .075s}
-.sidebar-1tnWFu .searchBar-3TnChZ,.sidebar-1tnWFu .badge-3RBqXG{padding:0;transition:.065s ease .075s}
-.sidebar-1tnWFu .button-38aScr{ padding:0;transition:.065s ease .075s}
-.sidebar-1tnWFu .icon-10cLkJ{opacity:0;transition:.065s ease-in-out .075s}
-.sidebar-1tnWFu .container-YkUktl .button-38aScr,.sidebar-1tnWFu .container-YkUktl .button-12Fmur{padding:unset;width:32px}
-.sidebar-1tnWFu .container-YkUktl>.flex-2S1XBF{opacity:0;pointer-events:none;transition:.065s ease-in-out .075s}
-.wrapper-1_HaEi:hover+.base-2jDfDU>.content-1SgpWY>.sidebar-1tnWFu,.sidebar-1tnWFu:hover{width:var(--channels-width)}
-.wrapper-1_HaEi:hover+.base-2jDfDU>.content-1SgpWY>.sidebar-1tnWFu .container-1zzFcN,.wrapper-1_HaEi:hover+.base-2jDfDU>.content-1SgpWY>.sidebar-1tnWFu .panel-2ZFCRb,.sidebar-1tnWFu:hover .container-1zzFcN,.sidebar-1tnWFu:hover .panel-2ZFCRb{padding:8px}
-.wrapper-1_HaEi:hover+.base-2jDfDU>.content-1SgpWY>.sidebar-1tnWFu .button-12Fmur,.sidebar-1tnWFu:hover .button-12Fmur{width:32px}
-.wrapper-1_HaEi:hover+.base-2jDfDU>.content-1SgpWY>.sidebar-1tnWFu .searchBar-3TnChZ,.sidebar-1tnWFu:hover .searchBar-3TnChZ{padding:0 10px}
-.wrapper-1_HaEi:hover+.base-2jDfDU>.content-1SgpWY>.sidebar-1tnWFu .button-38aScr,.sidebar-1tnWFu:hover .button-38aScr{padding:2px 16px}
-.wrapper-1_HaEi:hover+.base-2jDfDU>.content-1SgpWY>.sidebar-1tnWFu .badge-3RBqXG,.sidebar-1tnWFu:hover .badge-3RBqXG{padding:2px;width:14px}
-.wrapper-1_HaEi:hover+.base-2jDfDU>.content-1SgpWY>.sidebar-1tnWFu .icon-10cLkJ,.sidebar-1tnWFu:hover .icon-10cLkJ{opacity:1}
-.wrapper-1_HaEi:hover+.base-2jDfDU>.content-1SgpWY>.sidebar-1tnWFu .container-YkUktl .button-12Fmur,.sidebar-1tnWFu:hover .container-YkUktl .button-12Fmur{padding:unset;width:32px}
-.wrapper-1_HaEi:hover+.base-2jDfDU>.content-1SgpWY>.sidebar-1tnWFu .container-YkUktl>.flex-2S1XBF,.sidebar-1tnWFu:hover .container-YkUktl>.flex-2S1XBF{pointer-events:auto;opacity:1}
- */
-/*-------------------------------------------------------*/
+/*.sidebar-1tnWFu{transition:.065s ease .075s;width:0px;min-width:0px;resize:none;background-color: #054e79;}.sidebar-1tnWFu .container-1zzFcN,.sidebar-1tnWFu .panel-2ZFCRb{padding:0;transition:.065s ease .075s}.sidebar-1tnWFu .button-12Fmur,.sidebar-1tnWFu .badge-3RBqXG{width:0;transition:.065s ease .075s}.sidebar-1tnWFu .searchBar-3TnChZ,.sidebar-1tnWFu .badge-3RBqXG{padding:0;transition:.065s ease .075s}.sidebar-1tnWFu .button-38aScr{ padding:0;transition:.065s ease .075s}.sidebar-1tnWFu .icon-10cLkJ{opacity:0;transition:.065s ease-in-out .075s}.sidebar-1tnWFu .container-YkUktl .button-38aScr,.sidebar-1tnWFu .container-YkUktl .button-12Fmur{padding:unset;width:32px}.sidebar-1tnWFu .container-YkUktl>.flex-2S1XBF{opacity:0;pointer-events:none;transition:.065s ease-in-out .075s}.wrapper-1_HaEi:hover+.base-2jDfDU>.content-1SgpWY>.sidebar-1tnWFu,.sidebar-1tnWFu:hover{width:var(--channels-width)}.wrapper-1_HaEi:hover+.base-2jDfDU>.content-1SgpWY>.sidebar-1tnWFu .container-1zzFcN,.wrapper-1_HaEi:hover+.base-2jDfDU>.content-1SgpWY>.sidebar-1tnWFu .panel-2ZFCRb,.sidebar-1tnWFu:hover .container-1zzFcN,.sidebar-1tnWFu:hover .panel-2ZFCRb{padding:8px}.wrapper-1_HaEi:hover+.base-2jDfDU>.content-1SgpWY>.sidebar-1tnWFu .button-12Fmur,.sidebar-1tnWFu:hover .button-12Fmur{width:32px}.wrapper-1_HaEi:hover+.base-2jDfDU>.content-1SgpWY>.sidebar-1tnWFu .searchBar-3TnChZ,.sidebar-1tnWFu:hover .searchBar-3TnChZ{padding:0 10px}.wrapper-1_HaEi:hover+.base-2jDfDU>.content-1SgpWY>.sidebar-1tnWFu .button-38aScr,.sidebar-1tnWFu:hover .button-38aScr{padding:2px 16px}.wrapper-1_HaEi:hover+.base-2jDfDU>.content-1SgpWY>.sidebar-1tnWFu .badge-3RBqXG,.sidebar-1tnWFu:hover .badge-3RBqXG{padding:2px;width:14px}.wrapper-1_HaEi:hover+.base-2jDfDU>.content-1SgpWY>.sidebar-1tnWFu .icon-10cLkJ,.sidebar-1tnWFu:hover .icon-10cLkJ{opacity:1}.wrapper-1_HaEi:hover+.base-2jDfDU>.content-1SgpWY>.sidebar-1tnWFu .container-YkUktl .button-12Fmur,.sidebar-1tnWFu:hover .container-YkUktl .button-12Fmur{padding:unset;width:32px}.wrapper-1_HaEi:hover+.base-2jDfDU>.content-1SgpWY>.sidebar-1tnWFu .container-YkUktl>.flex-2S1XBF,.sidebar-1tnWFu:hover .container-YkUktl>.flex-2S1XBF{pointer-events:auto;opacity:1}*/
 /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
 /* ----------------------------------------------------------------------- */
 /*SCROLL BARS*/
 /*keeps the scroll bars white, so i can fucking see them */
@@ -310,6 +290,7 @@ ok.
 }
 /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
 /* ----------------------------------------------------------------------- */
 /*RESIZE GIF DRAWER*/
 /*Make the GIF/emoji drawer huge so I can post funny shit */
@@ -353,144 +334,171 @@ ok.
 /* ----------------------------------------------------------------------- */
 /*SMOL PLATFORM INDICATORS*/
 /* ----------------------------------------------------------------------- */
- [class^="nameAndDecorator"] .vc-platform-indicator {flex-direction: column;margin-left: 2px !important;margin-right: -2px;max-height: 30px;}
- [class^="nameAndDecorator"] .vc-platform-indicator svg {width: 16px;}
- [class^="nameAndDecorator"] .vc-platform-indicator :only-child {height: 16px;}
- [class^="nameAndDecorator"] .vc-platform-indicator :nth-child(3) {position: absolute;height: 16px;margin-left: 20px;}
+[class^="nameAndDecorator"] .vc-platform-indicator {
+  flex-direction: column;
+  margin-left: 2px !important;
+  margin-right: -2px;
+  max-height: 30px;
+}
+[class^="nameAndDecorator"] .vc-platform-indicator svg {
+  width: 16px;
+}
+[class^="nameAndDecorator"] .vc-platform-indicator :only-child {
+  height: 16px;
+}
+[class^="nameAndDecorator"] .vc-platform-indicator :nth-child(3) {
+  position: absolute;
+  height: 16px;
+  margin-left: 20px;
+}
 /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
 /* ----------------------------------------------------------------------- */
 /*COLOR ON/OFF SWITCHES GREEN/RED*/
 /* ----------------------------------------------------------------------- */
 /*
- .container-2nx-BQ:not(.checked-25WXMf) {background-color: #f04747 !important;}
- .container-2nx-BQ:not(.checked-25WXMf) path {fill: #f04747 !important;}
- .container-2nx-BQ.checked-25WXMf {background-color: #43b581 !important;}
- .container-2nx-BQ.checked-25WXMf path {fill: #43b581 !important;}
- */
+.container-2nx-BQ:not(.checked-25WXMf) {background-color: #f04747 !important;}
+.container-2nx-BQ:not(.checked-25WXMf) path {fill: #f04747 !important;}
+.container-2nx-BQ.checked-25WXMf {background-color: #43b581 !important;}
+.container-2nx-BQ.checked-25WXMf path {fill: #43b581 !important;}
+*/
 /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
 /* ----------------------------------------------------------------------- */
 /*MESSAGE BACKGROUNDS*/
 /* ----------------------------------------------------------------------- */
- .message-2CShn3 {
-     margin-left: 5px;
-     border-radius: 7px;
-     background-color: #0000002a;
+.message-2CShn3 {
+  margin-left: 5px;
+  border-radius: 7px;
+  background-color: #0000002a;
 }
- .mentioned-Tre-dv:before {
-     width:100%;
-     border-radius: 7px;
-     background-color: #ffe55362;
+.mentioned-Tre-dv:before {
+  width: 100%;
+  border-radius: 7px;
+  background-color: #ffe55362;
 }
-/*
-#channels{background-color:#1e1f22;}
-*/
- .contents-2MsGLg .avatar-2e8lTP{
-     left:12px;
+/*#channels{background-color:#1e1f22;}*/
+.contents-2MsGLg .avatar-2e8lTP {
+  left: 12px;
 }
- .cozy-VmLDNB .contents-2MsGLg{
-     margin-left:-8px;
-     border-width:4px;
-     border-left-style:groove;
-     border-radius: 3px;
-     border-color: rgba(255, 255, 255, 0.466);
+.cozy-VmLDNB .contents-2MsGLg {
+  margin-left: -8px;
+  border-width: 4px;
+  border-left-style: groove;
+  border-radius: 3px;
+  border-color: rgba(255, 255, 255, 0.466);
 }
- .contents-2MsGLg > *{
-    left:10px;
+.contents-2MsGLg > * {
+  left: 10px;
 }
 /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
 /* ----------------------------------------------------------------------- */
 /*Radial Status Indicators!*/
 /* ----------------------------------------------------------------------- */
- .contents-2MsGLg .avatar-2e8lTP {
-     scale:0.85;
-     margin-top: 0.1em;
-     box-shadow: 0 0 0 2px #747f8d 
+.contents-2MsGLg .avatar-2e8lTP {
+  scale: 0.85;
+  margin-top: 0.1em;
+  box-shadow: 0 0 0 2px #747f8d;
 }
- .contents-2MsGLg:has(svg[fill="var(--green-360"]) .avatar-2e8lTP {
-     box-shadow: 0 0 0 2px #43b581 
+.contents-2MsGLg:has(svg[fill="var(--green-360"]) .avatar-2e8lTP {
+  box-shadow: 0 0 0 2px #43b581;
 }
- .contents-2MsGLg:has(svg[fill="var(--yellow-300"]) .avatar-2e8lTP {
-     box-shadow: 0 0 0 2px #faa61a 
+.contents-2MsGLg:has(svg[fill="var(--yellow-300"]) .avatar-2e8lTP {
+  box-shadow: 0 0 0 2px #faa61a;
 }
- .contents-2MsGLg:has(svg[fill="var(--red-400"]) .avatar-2e8lTP {
-     box-shadow: 0 0 0 2px #f04747 
+.contents-2MsGLg:has(svg[fill="var(--red-400"]) .avatar-2e8lTP {
+  box-shadow: 0 0 0 2px #f04747;
 }
- .contents-2MsGLg:has(span[data-tag="bot"]) .avatar-2e8lTP {
-     box-shadow: 0 0 0 2px #5865f2 
+.contents-2MsGLg:has(span[data-tag="bot"]) .avatar-2e8lTP {
+  box-shadow: 0 0 0 2px #5865f2;
 }
 /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
 /* ----------------------------------------------------------------------- */
-/*FONT SETTINGS*/
-/*REPALCE THE fonts.google link with a font from fonts.google.com theyve got a great selection.*/
+/*FONT SETTINGS*/ /*REPALCE THE fonts.google link with a font from fonts.google.com theyve got a great selection.*/
 /* ----------------------------------------------------------------------- */
- @font-face {
-     src:url('https://raw.githubusercontent.com/trebor048/discordddd/main/fonts/SF-Pro-Rounded-Light.ttf');
-     font-family: 'SF Pro Rounded';
-     font-style: normal;
-     font-weight: 300;
+@font-face {
+  src: url("https://raw.githubusercontent.com/trebor048/discordddd/main/fonts/SF-Pro-Rounded-Light.ttf");
+  font-family: "SF Pro Rounded";
+  font-style: normal;
+  font-weight: 300;
 }
- :root {
-     --line-spacing: var(--message-line-spacing);
+
+:root {
+  --line-spacing: var(--message-line-spacing);
 }
 /* Apply styles */
- ::-webkit-input-placeholder, body, button, input, select, textarea {
-     font-family: 'SF Pro Rounded', sans-serif !important;
-     word-spacing: var(--word-spacing, initial);
-     letter-spacing: var(--letter-spacing, initial);
+::-webkit-input-placeholder,
+body,
+button,
+input,
+select,
+textarea {
+  font-family: "SF Pro Rounded", sans-serif !important;
+  word-spacing: var(--word-spacing, initial);
+  letter-spacing: var(--letter-spacing, initial);
 }
-/*Adjust formatted text line-height [class*="messageContent-" i] {
-     line-height: var(--message-line-spacing, initial) !important;
-}
- */
+/*Adjust formatted text line-height 
+  [class*="messageContent-" i] {
+      line-height: var(--message-line-spacing, initial) !important;
+  }
+  */
 /* Scale up timestamps & "Edited" text */
- [class*="group-spacing" i] [class*="timestamp"], [class*="messageContent-" i] time {
-     font-size: 0.8rem;
+
+[class*="group-spacing" i] [class*="timestamp"],
+[class*="messageContent-" i] time {
+  font-size: 0.8rem;
 }
 /* FONT SIZE VARIABLES */
- :root {
-     --word-spacing: unset;
-     --letter-spacing: unset;
-     --message-line-spacing: unset;
+
+:root {
+  --word-spacing: unset;
+  --letter-spacing: unset;
+  --message-line-spacing: unset;
 }
 /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
 /* ----------------------------------------------------------------------- */
 /*DIM CHANNELS-SERVER LIST-MEMBER LIST */
 /* ----------------------------------------------------------------------- */
- :root {
-     --dim-channels: 90%;
-     --dim-members: 90%;
-     --dim-serverlist: 90%;
-     --dim-dms: 100% 
+:root {
+  --dim-channels: 90%;
+  --dim-members: 90%;
+  --dim-serverlist: 90%;
+  --dim-dms: 100%;
 }
 /* dimmed channel list */
- .link-1_kTxV {
-     opacity: var(--dim-channels);
+.link-1_kTxV {
+  opacity: var(--dim-channels);
 }
 /* dimmed member list */
- .members-3WRCEx {
-     opacity: var(--dim-members) 
+.members-3WRCEx {
+  opacity: var(--dim-members);
 }
 /* dimmed server list */
- .scroller-3X7KbA {
-     opacity: var(--dim-serverlist);
+.scroller-3X7KbA {
+  opacity: var(--dim-serverlist);
 }
 /* dimmed dms */
- .scroller-WSmht3 > ul {
-     opacity: var(--dim-dms);
+.scroller-WSmht3 > ul {
+  opacity: var(--dim-dms);
 }
 /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
 /* ----------------------------------------------------------------------- */
 /*CONTEXT MENU'S*/
 /* ----------------------------------------------------------------------- */
 /*
-.menu-2TXYjN, .base-2jDfDU, .header-3xB4vB, #app-mount, .chatContent-3KubbW {background: linear-gradient(145deg, #ffffff -260%, #0c2b47);border: 2px solid #000000;border-radius: 15px;}
- */
+.menu-2TXYjN, .base-2jDfDU, .header-3xB4vB, #app-mount, .chatContent-3KubbW  {background: linear-gradient(145deg, #ffffff -260%, #0c2b47);border: 2px solid #000000;border-radius: 15px;}
+*/
 /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
  
