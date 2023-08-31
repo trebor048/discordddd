@@ -1,9 +1,26 @@
 @import url('https://raw.githubusercontent.com/sahibjotsaggu/San-Francisco-Pro-Fonts/master/SF-Pro.ttf');
 @import url("https://lazuee.github.io/css-snippets/discord/member-list/import.css");
+/*@import url(//dablulite.github.io/css-snippets/UserReimagined/import.css);*/
+/*@import url(//dablulite.github.io/css-snippets/HorizontalServerList/unified-import.css);*/  
+/*@import url(//dablulite.github.io/css-snippets/ConsistentChatbar/import.css);*/
+/*@import url(//dablulite.github.io/SegmentationBlurple/import.css);*/
 @import url(//dablulite.github.io/css-snippets/BDSettingsV2/import.css);
+/*@import url(//dablulite.github.io/css-snippets/BetterTitlebar/import.css);*/
 @import url(//dablulite.github.io/css-snippets/BetterFloatingEditor/import.css);
+/*@import url(//dablulite.github.io/css-snippets/BetterModals/import.css);*/
+/*@import url(//dablulite.github.io/css-snippets/BetterAuthApps/import.css);*/
+/*@import url(//dablulite.github.io/css-snippets/AccountDetailsGrid/import.css);*/
 @import url(//dablulite.github.io/css-snippets/MacosTitlebar/import.css);
-
+/*@import url(//dablulite.github.io/css-snippets/VesktopMica/import.css);*/
+/*@import url(//dablulite.github.io/css-snippets/UserReimagined/import.css);*/
+/*@import url(//dablulite.github.io/css-snippets/ConsistentChatbar/import.css);*/
+/*@import url(https://raw.githubusercontent.com/maenDisease/Float/main/src/core/_root.scss);*/
+/*@import url(https://discordstyles.github.io/Addons/windows-titlebar.css)*/
+/*@import url(https://raw.githubusercontent.com/trebor048/discordddd/main/themes/mactitlebar.css);*/
+@import url();
+#oneko{
+  background-image: url('https://raw.githubusercontent.com/trebor048/discordddd/main/themes/pipe.png')!important;
+}
 
  /* ----------------------------------------------------------------------- */
   
@@ -24,8 +41,22 @@
     --macbuttons-serverlist-outer-top-margin: 0;
     --macbuttons-serverlist-outer-height: 100%;
 }
+.wordmarkWindows-2dq6rw{
+  display:block!important;
+  left:83px;
+  top:0px;
+  background-image: url('https://svgshare.com/i/x8n.svg');
+  background-attachment: fixed;
+  background-size:cover;
+  width:80px;
+  height:25px;
+}
+.wordmarkWindows-2dq6rw > svg{display:none;}
 /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+
+
 
 
 /* ----------------------------------------------------------------------- */
@@ -35,23 +66,34 @@
 .closeButton-PCZcma:hover{transform: scale(1.1);transition: 0.4s;background-color: #f25056;}
 .closeButton-PCZcma, .container-054IuJ > svg{top: 50px;right:22px;border-radius: 5px;}
 /*read all button*/
-.scroller-3X7KbA > button{width:91%;background-color:#086faa!important;animation: rainbow 5s linear infinite;border-style: solid;border-color:white;border-width:1px;border-radius: 6px;}
+.scroller-3X7KbA > button{width:91%;background-color:#2b89c0!important;animation: rainbow 5s linear infinite;border-style: solid;border-color:white;border-width:1px;border-radius: 6px;}
 /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+
+
+
 
 
 /* ----------------------------------------------------------------------- */
 /*chat bar and shit*/
 /* ----------------------------------------------------------------------- */
-.form-3gdLxP{flex-direction: column-reverse;display:flex;}
+.form-3gdLxP{flex-direction: column-reverse;display:flex;align-self: center;width:98%;padding-bottom:8px;}
 .base-3bcbY3{position: sticky;background-color: #00a2ff1c;border-top-left-radius: 7px;border-top-right-radius: 6px;align-self: center;width:98%!important;}
-.newMessagesBar-1hF-9G{
-  height:36px;
-  background-color: #054e79;
-}
-.span-3lFnWr{
-  font-size: 160%
-}
+.themedBackground-3uF0xW{background-color: #0072b45e;border-radius: 7px;}
+/*.typing-2J1mQU{}*/
+/*
+.form-3gdLxP{padding:0px;margin-top:0px;border-radius: 0px;display: flex;flex-direction: column;}
+.scrollableContainer-15eg7h{height: 55px;margin-top:0px;margin-bottom: 0px;z-index:3;border-bottom-right-radius: 0px;border-bottom-left-radius:0px;}
+.channelTextArea-1VQBuV{height:34px;border-radius: 0px;z-index: 1;}
+.a-1FufC0{machannelTextArergin-bottom: 0;border-radius: 0;}
+.typing-2J1mQU{margin-right:90px;margin-left:35px;padding-right:8px;width:fit-content;justify-self:center;padding-bottom:42px;background:#054e79;;z-index: 0;border-top-left-radius: 15px;border-top-right-radius: 15px;}
+*/
+/*---------------------*/
+.newMessagesBar-1hF-9G{height:36px;background-color: #0072b45e}
+.span-3lFnWr{font-size: 160%;}
+.channelTextArea-1FufC, .channelTextArea-1VQBuV{border-radius: 6px;}
+
 .wrapper-2SplAX {
   margin-bottom: 0;
   border-radius: 0;
@@ -67,9 +109,34 @@
   border-radius: 0;
 }
 .placeholder-1rCBhr{
-  color:white!important;
+  color:white;
   text-transform: lowercase;
 }
+/*
+.base-3bcbY3 {
+  position: static;
+  width: 100%;
+  order: 1;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 0px;
+  box-sizing: border-box;
+}
+.base-3bcbY3 > .cooldownWrapper-2k1jHK {
+  margin: 0;
+  position: static;
+}
+.scroller-kQBbkU {
+  position: static;
+}
+.scrollerSpacer-3AqkT9 {
+  height: 15px;
+}
+.scrollableContainer-15eg7h {
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+  height: 50px;
+}*/
 .scrollableContainer-15eg7h > .inner-NQg18Y {
   min-height: 45px;
   align-items: center;
@@ -89,6 +156,7 @@
 
 
 
+
 /* ----------------------------------------------------------------------- */
 /*CHANNEL HIDER*/
 /* ----------------------------------------------------------------------- */
@@ -101,6 +169,157 @@
 
 
 
+
+
+
+
+
+
+
+
+/* ----------------------------------------------------------------------- */
+/*SCROLL BARS*/ /*keeps the scroll bars white, so i can fucking see them */
+/* ----------------------------------------------------------------------- */
+  .auto-2TJ1RH::-webkit-scrollbar-thumb
+  {
+      background-color:#0072b45e;
+      border-radius: 7px;
+  }
+  .thin-RnSY0a::-webkit-scrollbar-thumb
+  {
+      border: none;
+      border-radius:2px;
+      background-color: #0072b47e;
+  }
+/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+
+
+
+
+/* ----------------------------------------------------------------------- */
+  
+  /*RESIZE GIF DRAWER*/ /*Make the GIF/emoji drawer huge so I can post funny shit */
+  
+/* ----------------------------------------------------------------------- */
+div.drawerSizingWrapper-1txdWG
+{
+    height:70vh;
+    bottom:0px;
+    right:5px;
+    width:600px; /* 498px-599px = 2 ROWS || 600px-799px = 3 ROWS || 800px-999px = 4 ROWS || 1000px< = get fucking help */
+}
+/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+
+
+
+
+/*CHANNEL CATEGORYS BIGGER*/ /*Channel Highlighter/Resizer*/
+/*CHANNEL CATEGORYS BIGGER*/
+.container-q97qHp{font-size: 18px;font-weight: bold;color:white;}
+/*Channel Highlighter/Resizer*/
+.containerDefault-YUSmu3,.wrapper-NhbLHG,.name-28HaxV{padding-bottom:3px;border-radius: 8px;font-size: 105%;}
+div.unread-36eUEm.unreadRelevant-2f-VSK{background-color: white;border-top-right-radius:3px;border-bottom-right-radius: 3px; width:5px;}
+.modeUnread-3Cxepe,.unread-36eUEm-VSK{background-color:#0072b45e;border-radius: 8px;padding: 0px;}
+/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+
+
+
+
+/* ----------------------------------------------------------------------- */ 
+/*SMOL PLATFORM INDICATORS*/ 
+/* ----------------------------------------------------------------------- */
+[class^="nameAndDecorator"] .vc-platform-indicator {flex-direction: column;margin-left: 2px !important;margin-right: -2px;max-height: 30px;}
+[class^="nameAndDecorator"] .vc-platform-indicator svg {width: 16px;}
+[class^="nameAndDecorator"] .vc-platform-indicator :only-child {height: 16px;}
+[class^="nameAndDecorator"] .vc-platform-indicator :nth-child(3) {position: absolute;height: 16px;margin-left: 20px;}
+/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+
+
+
+
+/* ----------------------------------------------------------------------- */
+/*COLOR ON/OFF SWITCHES GREEN/RED*/  
+/* ----------------------------------------------------------------------- */
+/*
+.container-2nx-BQ:not(.checked-25WXMf) {background-color: #f04747 !important;}
+.container-2nx-BQ:not(.checked-25WXMf) path {fill: #f04747 !important;}
+.container-2nx-BQ.checked-25WXMf {background-color: #43b581 !important;}
+.container-2nx-BQ.checked-25WXMf path {fill: #43b581 !important;}
+*/
+/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+
+
+
+
+
+/* ----------------------------------------------------------------------- */
+/*MESSAGE BACKGROUNDS*/  
+/* ----------------------------------------------------------------------- */
+.message-2CShn3 {
+  margin-left: 5px;
+  border-radius: 7px;
+  background-color: #0000002a;
+  }
+.mentioned-Tre-dv:before {
+  width:100%;
+  border-radius: 7px;
+  background-color: #ffe55362;
+  }
+/*#channels{background-color:#1e1f22;}*/
+.contents-2MsGLg .avatar-2e8lTP{
+  left:12px;
+}
+.cozy-VmLDNB .contents-2MsGLg{
+  margin-left:-8px;
+  border-width:4px;
+  border-left-style:groove;
+  border-radius: 3px;
+  border-color: rgba(255, 255, 255, 0.466);
+}
+.contents-2MsGLg > *{left:10px;}
+
+
+/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+
+
+
+
+/* ----------------------------------------------------------------------- */
+/*Radial Status Indicators!*/  
+/* ----------------------------------------------------------------------- */
+
+.contents-2MsGLg .avatar-2e8lTP {
+    scale:0.85;
+    margin-top: 0.1em;
+    box-shadow: 0 0 0 2px #747f8d
+}
+
+.contents-2MsGLg:has(svg[fill="var(--green-360"]) .avatar-2e8lTP {
+    box-shadow: 0 0 0 2px #43b581
+}
+.contents-2MsGLg:has(svg[fill="var(--yellow-300"]) .avatar-2e8lTP {
+    box-shadow: 0 0 0 2px #faa61a
+}
+.contents-2MsGLg:has(svg[fill="var(--red-400"]) .avatar-2e8lTP {
+    box-shadow: 0 0 0 2px #f04747
+}
+.contents-2MsGLg:has(span[data-tag="bot"]) .avatar-2e8lTP {
+    box-shadow: 0 0 0 2px #5865f2
+}
+/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
 /* ----------------------------------------------------------------------- */
@@ -150,9 +369,9 @@
 /*DIM CHANNELS-SERVER LIST-MEMBER LIST */
 /* ----------------------------------------------------------------------- */
 :root {
-  --dim-channels: 70%;
+  --dim-channels: 90%;
   --dim-members: 90%;
-  --dim-serverlist: 80%;
+  --dim-serverlist: 90%;
   --dim-dms: 100%
 }
 /* dimmed channel list */
@@ -177,110 +396,13 @@
 
 
 
-/* ----------------------------------------------------------------------- */
-/*WHITE SCROLL BARS*/ /*keeps the scroll bars white, so i can fucking see them */
-/* ----------------------------------------------------------------------- */
-  .auto-2TJ1RH::-webkit-scrollbar-thumb
-  {
-      background-color:#0875b4;
-      border-radius: 7px;
-  }
-  .thin-RnSY0a::-webkit-scrollbar-thumb
-  {
-      border: none;
-      border-radius:2px;
-      background-color: #086faa;
-  }
-/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-
-
 
 /* ----------------------------------------------------------------------- */
-  
-  /*RESIZE GIF DRAWER*/ /*Make the GIF/emoji drawer huge so I can post funny shit */
-  
-/* ----------------------------------------------------------------------- */
-div.drawerSizingWrapper-1txdWG
-{
-    height:70vh;
-    bottom:0px;
-    right:5px;
-    width:600px; /* 498px-599px = 2 ROWS || 600px-799px = 3 ROWS || 800px-999px = 4 ROWS || 1000px< = get fucking help */
-}
-/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-
-
-
-/*CHANNEL CATEGORYS BIGGER*/ /*Channel Highlighter/Resizer*/
-/*CHANNEL CATEGORYS BIGGER*/
-.container-q97qHp{font-size: 18px;font-weight: bold;color:white;}
-/*Channel Highlighter/Resizer*/
-.containerDefault-YUSmu3,.wrapper-NhbLHG,.name-28HaxV{padding-bottom:3px;border-radius: 8px;font-size: 105%;}
-div.unread-36eUEm.unreadRelevant-2f-VSK{height:10px;position:column;background-color: white;border-top-right-radius:3px;border-bottom-right-radius: 3px; width:5px;}
-.modeUnread-3Cxepe,.unread-36eUEm-VSK{background-color:#054e79;border-radius: 5px;padding: 0px;}
-/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-
-
-
-/* ----------------------------------------------------------------------- */ 
-/*SMOL PLATFORM INDICATORS*/ 
-/* ----------------------------------------------------------------------- */
-[class^="nameAndDecorator"] .vc-platform-indicator {flex-direction: column;margin-left: 2px !important;margin-right: -2px;max-height: 30px;}
-[class^="nameAndDecorator"] .vc-platform-indicator svg {width: 16px;}
-[class^="nameAndDecorator"] .vc-platform-indicator :only-child {height: 16px;}
-[class^="nameAndDecorator"] .vc-platform-indicator :nth-child(3) {position: absolute;height: 16px;margin-left: 20px;}
-/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-
-
-
-/* ----------------------------------------------------------------------- */
-/*COLOR ON/OFF SWITCHES GREEN/RED*/  
+/*CONTEXT MENU'S*/  
 /* ----------------------------------------------------------------------- */
 /*
-.container-2nx-BQ:not(.checked-25WXMf) {background-color: #f04747 !important;}
-.container-2nx-BQ:not(.checked-25WXMf) path {fill: #f04747 !important;}
-.container-2nx-BQ.checked-25WXMf {background-color: #43b581 !important;}
-.container-2nx-BQ.checked-25WXMf path {fill: #43b581 !important;}
+.menu-2TXYjN, .base-2jDfDU, .header-3xB4vB, #app-mount, .chatContent-3KubbW  {background: linear-gradient(145deg, #ffffff -260%, #0c2b47);border: 2px solid #000000;border-radius: 15px;}
 */
-/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-
-
-
-/* ----------------------------------------------------------------------- */
-/*MESSAGE BACKGROUNDS*/  
-/* ----------------------------------------------------------------------- */
-.message-2CShn3 {margin-left: 5px;border-radius: 6px;background-color: #00000036;}
-.mentioned-Tre-dv:before {width: 14px;border-top-left-radius: 6px;border-bottom-left-radius: 6px;background-color: #ffe55362;}
-/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-
-
-
-/* ----------------------------------------------------------------------- */
-/*Radial Status Indicators!*/  
-/* ----------------------------------------------------------------------- */
-.contents-2MsGLg .avatar-2e8lTP {
-    scale:0.9;
-    margin-top: 0.1em;
-    box-shadow: 0 0 0 2px #747f8d
-}
-.contents-2MsGLg:has(svg[fill="var(--green-360"]) .avatar-2e8lTP {
-    box-shadow: 0 0 0 2px #43b581
-}
-.contents-2MsGLg:has(svg[fill="var(--yellow-300"]) .avatar-2e8lTP {
-    box-shadow: 0 0 0 2px #faa61a
-}
-.contents-2MsGLg:has(svg[fill="var(--red-400"]) .avatar-2e8lTP {
-    box-shadow: 0 0 0 2px #f04747
-}
-.contents-2MsGLg:has(span[data-tag="bot"]) .avatar-2e8lTP {
-    box-shadow: 0 0 0 2px #5865f2
-}
 /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
