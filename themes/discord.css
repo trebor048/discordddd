@@ -1,0 +1,299 @@
+@import url('https://raw.githubusercontent.com/sahibjotsaggu/San-Francisco-Pro-Fonts/master/SF-Pro.ttf');
+@import url("https://lazuee.github.io/css-snippets/discord/member-list/import.css");
+@import url(//dablulite.github.io/css-snippets/BDSettingsV2/import.css);
+@import url(//dablulite.github.io/css-snippets/BetterFloatingEditor/import.css);
+@import url(//dablulite.github.io/css-snippets/MacosTitlebar/import.css);
+
+
+ /* ----------------------------------------------------------------------- */
+  
+  /*WINDOW CLOSE BUTTONS*/
+  
+  /* ----------------------------------------------------------------------- */
+:root {
+    --mactitlebar-left-margin: 5px;
+    --mactitlebar-top-margin: 10px;
+    --mactitlebar-button-width: 24px;
+    --mactitlebar-button-height: 20px;
+    --mactitlebar-button-border-radius: 50px;
+    --mactitlebar-close-btn-back: #f25056;
+    --mactitlebar-min-btn-back: #fac536;
+    --mactitlebar-max-btn-back: #39ea49;
+    --macbuttons-serverlist-inner-top-margin: 32px;
+    /*guilds inner ul element*/
+    --macbuttons-serverlist-outer-top-margin: 0;
+    --macbuttons-serverlist-outer-height: 100%;
+}
+/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+
+/* ----------------------------------------------------------------------- */
+/*settings button and shit*/
+/* ----------------------------------------------------------------------- */
+.sidebar-nqHbhN{padding:2px}
+.closeButton-PCZcma:hover{transform: scale(1.1);transition: 0.4s;background-color: #f25056;}
+.closeButton-PCZcma, .container-054IuJ > svg{top: 50px;right:22px;border-radius: 5px;}
+/*read all button*/
+.scroller-3X7KbA > button{width:91%;background-color:#086faa!important;animation: rainbow 5s linear infinite;border-style: solid;border-color:white;border-width:1px;border-radius: 6px;}
+/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+
+/* ----------------------------------------------------------------------- */
+/*chat bar and shit*/
+/* ----------------------------------------------------------------------- */
+.form-3gdLxP{flex-direction: column-reverse;display:flex;}
+.base-3bcbY3{position: sticky;background-color: #00a2ff1c;border-top-left-radius: 7px;border-top-right-radius: 6px;align-self: center;width:98%!important;}
+.newMessagesBar-1hF-9G{
+  height:36px;
+  background-color: #054e79;
+}
+.span-3lFnWr{
+  font-size: 160%
+}
+.wrapper-2SplAX {
+  margin-bottom: 0;
+  border-radius: 0;
+  padding: 1.5px 0;
+}
+.form-3gdLxP::after {
+  padding: 0;
+  margin-top: 0;
+  display: flex;
+}
+.channelTextArea-1FufC0 {
+  margin-bottom: 0;
+  border-radius: 0;
+}
+.placeholder-1rCBhr{
+  color:white!important;
+  text-transform: lowercase;
+}
+.scrollableContainer-15eg7h > .inner-NQg18Y {
+  min-height: 45px;
+  align-items: center;
+}
+.attachWrapper-3slhXI {
+  display: flex;
+  position: static;
+  align-items: center;
+}
+.attachedBars-2BCP3l {
+  border-radius: 0;
+}
+.slateTextArea-27tkG0{color:white!important}
+/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+
+
+
+/* ----------------------------------------------------------------------- */
+/*CHANNEL HIDER*/
+/* ----------------------------------------------------------------------- */
+/*
+.sidebar-1tnWFu{transition:.065s ease .075s;width:0px;min-width:0px;resize:none;background-color: #054e79;}.sidebar-1tnWFu .container-1zzFcN,.sidebar-1tnWFu .panel-2ZFCRb{padding:0;transition:.065s ease .075s}.sidebar-1tnWFu .button-12Fmur,.sidebar-1tnWFu .badge-3RBqXG{width:0;transition:.065s ease .075s}.sidebar-1tnWFu .searchBar-3TnChZ,.sidebar-1tnWFu .badge-3RBqXG{padding:0;transition:.065s ease .075s}.sidebar-1tnWFu .button-38aScr{padding:0;transition:.065s ease .075s}.sidebar-1tnWFu .icon-10cLkJ{opacity:0;transition:.065s ease-in-out .075s}.sidebar-1tnWFu .container-YkUktl .button-38aScr,.sidebar-1tnWFu .container-YkUktl .button-12Fmur{padding:unset;width:32px}.sidebar-1tnWFu .container-YkUktl>.flex-2S1XBF{opacity:0;pointer-events:none;transition:.065s ease-in-out .075s}.wrapper-1_HaEi:hover+.base-2jDfDU>.content-1SgpWY>.sidebar-1tnWFu,.sidebar-1tnWFu:hover{width:var(--channels-width)}.wrapper-1_HaEi:hover+.base-2jDfDU>.content-1SgpWY>.sidebar-1tnWFu .container-1zzFcN,.wrapper-1_HaEi:hover+.base-2jDfDU>.content-1SgpWY>.sidebar-1tnWFu .panel-2ZFCRb,.sidebar-1tnWFu:hover .container-1zzFcN,.sidebar-1tnWFu:hover .panel-2ZFCRb{padding:8px}.wrapper-1_HaEi:hover+.base-2jDfDU>.content-1SgpWY>.sidebar-1tnWFu .button-12Fmur,.sidebar-1tnWFu:hover .button-12Fmur{width:32px}.wrapper-1_HaEi:hover+.base-2jDfDU>.content-1SgpWY>.sidebar-1tnWFu .searchBar-3TnChZ,.sidebar-1tnWFu:hover .searchBar-3TnChZ{padding:0 10px}.wrapper-1_HaEi:hover+.base-2jDfDU>.content-1SgpWY>.sidebar-1tnWFu .button-38aScr,.sidebar-1tnWFu:hover .button-38aScr{padding:2px 16px}.wrapper-1_HaEi:hover+.base-2jDfDU>.content-1SgpWY>.sidebar-1tnWFu .badge-3RBqXG,.sidebar-1tnWFu:hover .badge-3RBqXG{padding:2px;width:14px}.wrapper-1_HaEi:hover+.base-2jDfDU>.content-1SgpWY>.sidebar-1tnWFu .icon-10cLkJ,.sidebar-1tnWFu:hover .icon-10cLkJ{opacity:1}.wrapper-1_HaEi:hover+.base-2jDfDU>.content-1SgpWY>.sidebar-1tnWFu .container-YkUktl .button-12Fmur,.sidebar-1tnWFu:hover .container-YkUktl .button-12Fmur{padding:unset;width:32px}.wrapper-1_HaEi:hover+.base-2jDfDU>.content-1SgpWY>.sidebar-1tnWFu .container-YkUktl>.flex-2S1XBF,.sidebar-1tnWFu:hover .container-YkUktl>.flex-2S1XBF{pointer-events:auto;opacity:1}
+*/
+/*-------------------------------------------------------*/
+/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+
+
+
+
+/* ----------------------------------------------------------------------- */
+/*FONT SETTINGS*/ /*REPALCE THE fonts.google link with a font from fonts.google.com theyve got a great selection.*/
+/* ----------------------------------------------------------------------- */
+  @font-face {
+    src:url('https://raw.githubusercontent.com/trebor048/discordddd/main/fonts/SF-Pro-Rounded-Light.ttf');
+      font-family: 'SF Pro Rounded';
+      font-style: normal;
+      font-weight: 300;
+  }
+
+  :root {
+      --line-spacing: var(--message-line-spacing);
+  }
+  /* Apply styles */
+  ::-webkit-input-placeholder, body, button, input, select, textarea {
+     font-family: 'SF Pro Rounded', sans-serif !important;
+      word-spacing: var(--word-spacing, initial);
+      letter-spacing: var(--letter-spacing, initial);
+  }
+  /*Adjust formatted text line-height 
+  [class*="messageContent-" i] {
+      line-height: var(--message-line-spacing, initial) !important;
+  }
+  */
+  /* Scale up timestamps & "Edited" text */
+  
+  [class*="group-spacing" i] [class*="timestamp"],
+  [class*="messageContent-" i] time {
+      font-size: 0.8rem;
+  } 
+/* FONT SIZE VARIABLES */
+  
+  :root {
+      --word-spacing: unset;
+      --letter-spacing: unset;
+      --message-line-spacing: unset;
+  } 
+/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+
+
+
+/* ----------------------------------------------------------------------- */
+/*DIM CHANNELS-SERVER LIST-MEMBER LIST */
+/* ----------------------------------------------------------------------- */
+:root {
+  --dim-channels: 70%;
+  --dim-members: 90%;
+  --dim-serverlist: 80%;
+  --dim-dms: 100%
+}
+/* dimmed channel list */
+.link-1_kTxV {
+  opacity: var(--dim-channels);
+}
+/* dimmed member list */
+.members-3WRCEx {
+  opacity: var(--dim-members)
+}
+/* dimmed server list */
+.scroller-3X7KbA {
+  opacity: var(--dim-serverlist);
+}
+/* dimmed dms */
+.scroller-WSmht3 > ul {
+  opacity: var(--dim-dms);
+}
+/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+
+
+
+/* ----------------------------------------------------------------------- */
+/*WHITE SCROLL BARS*/ /*keeps the scroll bars white, so i can fucking see them */
+/* ----------------------------------------------------------------------- */
+  .auto-2TJ1RH::-webkit-scrollbar-thumb
+  {
+      background-color:#0875b4;
+      border-radius: 7px;
+  }
+  .thin-RnSY0a::-webkit-scrollbar-thumb
+  {
+      border: none;
+      border-radius:2px;
+      background-color: #086faa;
+  }
+/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+
+
+/* ----------------------------------------------------------------------- */
+  
+  /*RESIZE GIF DRAWER*/ /*Make the GIF/emoji drawer huge so I can post funny shit */
+  
+/* ----------------------------------------------------------------------- */
+div.drawerSizingWrapper-1txdWG
+{
+    height:70vh;
+    bottom:0px;
+    right:5px;
+    width:600px; /* 498px-599px = 2 ROWS || 600px-799px = 3 ROWS || 800px-999px = 4 ROWS || 1000px< = get fucking help */
+}
+/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+
+
+/*CHANNEL CATEGORYS BIGGER*/ /*Channel Highlighter/Resizer*/
+/*CHANNEL CATEGORYS BIGGER*/
+.container-q97qHp{font-size: 18px;font-weight: bold;color:white;}
+/*Channel Highlighter/Resizer*/
+.containerDefault-YUSmu3,.wrapper-NhbLHG,.name-28HaxV{padding-bottom:3px;border-radius: 8px;font-size: 105%;}
+div.unread-36eUEm.unreadRelevant-2f-VSK{height:10px;position:column;background-color: white;border-top-right-radius:3px;border-bottom-right-radius: 3px; width:5px;}
+.modeUnread-3Cxepe,.unread-36eUEm-VSK{background-color:#054e79;border-radius: 5px;padding: 0px;}
+/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+
+
+/* ----------------------------------------------------------------------- */ 
+/*SMOL PLATFORM INDICATORS*/ 
+/* ----------------------------------------------------------------------- */
+[class^="nameAndDecorator"] .vc-platform-indicator {flex-direction: column;margin-left: 2px !important;margin-right: -2px;max-height: 30px;}
+[class^="nameAndDecorator"] .vc-platform-indicator svg {width: 16px;}
+[class^="nameAndDecorator"] .vc-platform-indicator :only-child {height: 16px;}
+[class^="nameAndDecorator"] .vc-platform-indicator :nth-child(3) {position: absolute;height: 16px;margin-left: 20px;}
+/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+
+
+/* ----------------------------------------------------------------------- */
+/*COLOR ON/OFF SWITCHES GREEN/RED*/  
+/* ----------------------------------------------------------------------- */
+/*
+.container-2nx-BQ:not(.checked-25WXMf) {background-color: #f04747 !important;}
+.container-2nx-BQ:not(.checked-25WXMf) path {fill: #f04747 !important;}
+.container-2nx-BQ.checked-25WXMf {background-color: #43b581 !important;}
+.container-2nx-BQ.checked-25WXMf path {fill: #43b581 !important;}
+*/
+/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+
+
+/* ----------------------------------------------------------------------- */
+/*MESSAGE BACKGROUNDS*/  
+/* ----------------------------------------------------------------------- */
+.message-2CShn3 {margin-left: 5px;border-radius: 6px;background-color: #00000036;}
+.mentioned-Tre-dv:before {width: 14px;border-top-left-radius: 6px;border-bottom-left-radius: 6px;background-color: #ffe55362;}
+/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+
+
+/* ----------------------------------------------------------------------- */
+/*Radial Status Indicators!*/  
+/* ----------------------------------------------------------------------- */
+.contents-2MsGLg .avatar-2e8lTP {
+    scale:0.9;
+    margin-top: 0.1em;
+    box-shadow: 0 0 0 2px #747f8d
+}
+.contents-2MsGLg:has(svg[fill="var(--green-360"]) .avatar-2e8lTP {
+    box-shadow: 0 0 0 2px #43b581
+}
+.contents-2MsGLg:has(svg[fill="var(--yellow-300"]) .avatar-2e8lTP {
+    box-shadow: 0 0 0 2px #faa61a
+}
+.contents-2MsGLg:has(svg[fill="var(--red-400"]) .avatar-2e8lTP {
+    box-shadow: 0 0 0 2px #f04747
+}
+.contents-2MsGLg:has(span[data-tag="bot"]) .avatar-2e8lTP {
+    box-shadow: 0 0 0 2px #5865f2
+}
+/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
