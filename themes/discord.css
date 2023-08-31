@@ -1,8 +1,19 @@
+/* ----------------------------------------------------------------------- */
+/* a stupid fuckin theme. will update this file a lot. shit will break. you should probably cry about it. ill try to fix the bugs & convuluted bullshit.
+and i will fail.
+and youll still be crying.
+ok.
+/* ----------------------------------------------------------------------- */
+
+/* ----------------------------------------------------------------------- */
+/* imports, shit i stole(ALLEGEDLY, I PLEAD DA FIF), shit thats awesome, shit that im trying to incorporate, shit that im storing for later/certain layouts */
+/* ----------------------------------------------------------------------- */
 @import url('https://raw.githubusercontent.com/sahibjotsaggu/San-Francisco-Pro-Fonts/master/SF-Pro.ttf');
 @import url("https://lazuee.github.io/css-snippets/discord/member-list/import.css");
 @import url(//dablulite.github.io/css-snippets/BDSettingsV2/import.css);
 @import url(//dablulite.github.io/css-snippets/BetterFloatingEditor/import.css);
 @import url(//dablulite.github.io/css-snippets/MacosTitlebar/import.css);
+@import url(https://raw.githubusercontent.com/trebor048/discordddd/main/themes/serverlist.css);
 /*@import url(//dablulite.github.io/css-snippets/UserReimagined/import.css);*/
 /*@import url(//dablulite.github.io/css-snippets/HorizontalServerList/unified-import.css);*/
 /*@import url(//dablulite.github.io/css-snippets/ConsistentChatbar/import.css);*/
@@ -18,14 +29,49 @@
 /*@import url(https://discordstyles.github.io/Addons/windows-titlebar.css)*/
 /*@import url(https://raw.githubusercontent.com/trebor048/discordddd/main/themes/mactitlebar.css);*/
 
-
 /* ----------------------------------------------------------------------- */
-/* a stupid fuckin theme. will update this file a lot. shit will break. you should probably cry about it. ill try to fix the bugs & convuluted bullshit.
-and i will fail.
-and youll still be crying.
-ok.
-/* ----------------------------------------------------------------------- */
-
+/*
+ ________           _____ ______           ________          ___  __            _______          
+|\   ____\         |\   _ \  _   \        |\   __  \        |\  \|\  \         |\  ___ \         
+\ \  \___|_        \ \  \\\__\ \  \       \ \  \|\  \       \ \  \/  /|_       \ \   __/|        
+ \ \_____  \        \ \  \\|__| \  \       \ \  \\\  \       \ \   ___  \       \ \  \_|/__      
+  \|____|\  \        \ \  \    \ \  \       \ \  \\\  \       \ \  \\ \  \       \ \  \_|\ \     
+    ____\_\  \        \ \__\    \ \__\       \ \_______\       \ \__\\ \__\       \ \_______\    
+   |\_________\        \|__|     \|__|        \|_______|        \|__| \|__|        \|_______|    
+   \|_________|                                                                                                                                                                                                                                                                                
+ _____ ______           _______           _________        ___  ___                              
+|\   _ \  _   \        |\  ___ \         |\___   ___\     |\  \|\  \                             
+\ \  \\\__\ \  \       \ \   __/|        \|___ \  \_|     \ \  \\\  \                            
+ \ \  \\|__| \  \       \ \  \_|/__           \ \  \       \ \   __  \                           
+  \ \  \    \ \  \       \ \  \_|\ \           \ \  \       \ \  \ \  \                          
+   \ \__\    \ \__\       \ \_______\           \ \__\       \ \__\ \__\                         
+    \|__|     \|__|        \|_______|            \|__|        \|__|\|__|                         
+                                                                                                                                                                                                                                                                                            
+ ________                                                                                        
+|\   __  \                                                                                       
+\ \  \|\  \  /\                                                                                  
+ \ \__     \/  \                                                                                 
+  \|_/  __     /|                                                                                
+    /  /_|\   / /                                                                                
+   /_______   \/                                                                                 
+   |_______|\__\                                                                                 
+           \|__|                                                                                                                                                                            
+ ___  ___          ________          ___          ___                                            
+|\  \|\  \        |\   __  \        |\  \        |\  \                                           
+\ \  \\\  \       \ \  \|\  \       \ \  \       \ \  \                                          
+ \ \   __  \       \ \   __  \       \ \  \       \ \  \                                         
+  \ \  \ \  \       \ \  \ \  \       \ \  \       \ \  \____                                    
+   \ \__\ \__\       \ \__\ \__\       \ \__\       \ \_______\                                  
+    \|__|\|__|        \|__|\|__|        \|__|        \|_______|                                                                                                                                                                                                                                                                                                              
+ ________           ________          _________        ________          ________                
+|\   ____\         |\   __  \        |\___   ___\     |\   __  \        |\   ___  \              
+\ \  \___|_        \ \  \|\  \       \|___ \  \_|     \ \  \|\  \       \ \  \\ \  \             
+ \ \_____  \        \ \   __  \           \ \  \       \ \   __  \       \ \  \\ \  \            
+  \|____|\  \        \ \  \ \  \           \ \  \       \ \  \ \  \       \ \  \\ \  \           
+    ____\_\  \        \ \__\ \__\           \ \__\       \ \__\ \__\       \ \__\\ \__\          
+   |\_________\        \|__|\|__|            \|__|        \|__|\|__|        \|__| \|__|          
+   \|_________|                                                                                                                                                                                
+*/
 
 
 
