@@ -277,6 +277,16 @@
   display: none;
 }
 
+/*read all button*/
+.scroller-3X7KbA > button {
+  width: 91%;
+  background-color: #2b89c0 !important;
+  border-style: solid;
+  border-color: white;
+  border-width: 1px;
+  border-radius: 5px;
+}
+
 /*=====================================================================*/
 
 .upperBadge-1d6YsW,.lowerBadge-3j0ZAg,.numberBadge-37OJ3S{box-shadow:0 0 0 0!important;}
