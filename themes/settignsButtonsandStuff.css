@@ -1,0 +1,71 @@
+@import url(//dablulite.github.io/css-snippets/BDSettingsV2/import.css);
+
+
+/* ----------------------------------------------------------------------- */
+/*settings button and shit*/
+/* ----------------------------------------------------------------------- */
+/*settings close button and list*/
+.header-2F5_LB {
+  display: none;
+}
+.side-1lrxIh {
+  margin-top: 34px;
+}
+.sidebar-nqHbhN {
+  padding: 0px;
+}
+.closeButton-PCZcma {
+  width: 75px !important;
+  height: 25px !important;
+  border-radius: 5px !important;
+}
+.closeButton-PCZcma:hover {
+  transform: scale(1.2);
+  transition: 0.3s;
+  background-color: #f25056;
+}
+#vc-membercount > div:nth-child(2) {
+  display: none;
+}
+#vc-membercount > div:nth-child(1) {
+  justify-content: center !important;
+}
+
+
+/* ----------------------------------------------------------------------- */
+/*SCROLL BARS*/ /*keeps the scroll bars white, so i can fucking see them */
+/* ----------------------------------------------------------------------- */
+.auto-2TJ1RH::-webkit-scrollbar-thumb {
+  background-color: #0072b45e;
+  border-radius: 7px;
+}
+.thin-RnSY0a::-webkit-scrollbar-thumb {
+  border: none;
+  border-radius: 2px;
+  background-color: #0072b47e;
+}
+/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+/* ----------------------------------------------------------------------- */
+/*COLOR ON/OFF SWITCHES GREEN/RED*/
+/* ----------------------------------------------------------------------- */
+/*
+.container-2nx-BQ:not(.checked-25WXMf) {background-color: #f04747 !important;}
+.container-2nx-BQ:not(.checked-25WXMf) path {fill: #f04747 !important;}
+.container-2nx-BQ.checked-25WXMf {background-color: #43b581 !important;}
+.container-2nx-BQ.checked-25WXMf path {fill: #43b581 !important;}
+*/
+/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+
+/* ----------------------------------------------------------------------- */
+/*CONTEXT MENU'S*/
+/* ----------------------------------------------------------------------- */
+/*
+.menu-2TXYjN, .base-2jDfDU, .header-3xB4vB, #app-mount, .chatContent-3KubbW  {background: linear-gradient(145deg, #ffffff -260%, #0c2b47);border: 2px solid #000000;border-radius: 15px;}
+*/
+/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
