@@ -287,6 +287,23 @@
   border-radius: 5px;
 }
 
+
+[aria-label^="Close"] > svg:hover {
+  transform: scale(1.6);
+  transition: 0.2s ease-in-out;
+  background-color: #f97a7a !important;
+}
+[aria-label^="Minimise"] > svg:hover {
+  transform: scale(1.6);
+  transition: 0.2s ease-in-out;
+  background-color: #fbe096 !important;
+}
+[aria-label^="Maximise"] > svg:hover {
+  transform: scale(1.6);
+  transition: 0.2s ease-in-out;
+  background-color: #85fb8f !important;
+}
+
 /*=====================================================================*/
 
 .upperBadge-1d6YsW,.lowerBadge-3j0ZAg,.numberBadge-37OJ3S{box-shadow:0 0 0 0!important;}
