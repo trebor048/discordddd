@@ -64,7 +64,7 @@
   width: calc(var(--guild-list-width) - 24px - var(--guild-list-height) - 12px);
   position: absolute;
   top: 0;
-  left: calc(12px + var(--guild-list-height) + 2px);
+  left: calc(12px + var(--guild-list-height) + 6px);
   flex-wrap: nowrap;
   align-items: center;
   white-space: nowrap;
@@ -223,6 +223,7 @@
 .wrapper-z5ab_q,
 .colorwaysBtnPill {
   height: var(--guild-list-height) !important;
+  width:
   align-items: center;
 }
 
