@@ -20,3 +20,27 @@
 }
 /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+
+/* ----------------------------------------------------------------------- */
+/*SMOL PLATFORM INDICATORS*/
+/* ----------------------------------------------------------------------- */
+[class^="nameAndDecorator"] .vc-platform-indicator {
+  flex-direction: column;
+  margin-left: 2px !important;
+  margin-right: -2px;
+  max-height: 30px;
+}
+[class^="nameAndDecorator"] .vc-platform-indicator svg {
+  width: 16px;
+}
+[class^="nameAndDecorator"] .vc-platform-indicator :only-child {
+  height: 16px;
+}
+[class^="nameAndDecorator"] .vc-platform-indicator :nth-child(3) {
+  position: absolute;
+  height: 16px;
+  margin-left: 20px;
+}
+/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
