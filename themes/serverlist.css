@@ -261,6 +261,18 @@
 .listItem-3SmSlK {
   margin: 0 0 var(--guild-item-spacing);
 }
+
+.wordmarkWindows-2dq6rw {
+  display: block !important;
+  left: 83px;
+  background: url("https://i.imgur.com/vn6ObWd.png");
+  background-size: 80%;
+  background-position: 5px -20px;
+  background-repeat: no-repeat;
+  width: 80px;
+  height: 28px;
+}
+
 /*=====================================================================*/
 
 .upperBadge-1d6YsW,.lowerBadge-3j0ZAg,.numberBadge-37OJ3S{box-shadow:0 0 0 0!important;}
