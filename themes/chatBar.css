@@ -1,0 +1,108 @@
+
+/* ----------------------------------------------------------------------- */
+/*chat bar and shit*/
+/* ----------------------------------------------------------------------- */
+.form-3gdLxP {
+  flex-direction: column-reverse;
+  display: flex;
+  align-self: center;
+  width: 98%;
+  padding-bottom: 8px;
+}
+.base-3bcbY3 {
+  position: sticky;
+  background-color: #00629b6c;
+  border-top-left-radius: 7px;
+  border-top-right-radius: 6px;
+  align-self: center;
+  width: 98% !important;
+}
+.jumpToPresentBar-1cEnH0 {
+  background-color: #00000066;
+  width: 95%;
+}
+.themedBackground-3uF0xW {
+  background-color: #0072b46a;
+  border-radius: 7px;
+}
+/*.typing-2J1mQU{}*/
+/*
+.form-3gdLxP{padding:0px;margin-top:0px;border-radius: 0px;display: flex;flex-direction: column;}
+.scrollableContainer-15eg7h{height: 55px;margin-top:0px;margin-bottom: 0px;z-index:3;border-bottom-right-radius: 0px;border-bottom-left-radius:0px;}
+.channelTextArea-1VQBuV{height:34px;border-radius: 0px;z-index: 1;}
+.a-1FufC0{machannelTextArergin-bottom: 0;border-radius: 0;}
+.typing-2J1mQU{margin-right:90px;margin-left:35px;padding-right:8px;width:fit-content;justify-self:center;padding-bottom:42px;background:#054e79;;z-index: 0;border-top-left-radius: 15px;border-top-right-radius: 15px;}
+*/
+/*---------------------*/
+.newMessagesBar-1hF-9G {
+  height: 36px;
+  background-color: #0072b4a5;
+}
+.span-3lFnWr {
+  font-size: 160%;
+}
+.channelTextArea-1FufC,
+.channelTextArea-1VQBuV {
+  border-radius: 6px;
+}
+
+.wrapper-2SplAX {
+  margin-bottom: 0;
+  border-radius: 0;
+  padding: 1.5px 0;
+}
+.form-3gdLxP::after {
+  padding: 0;
+  margin-top: 0;
+  display: flex;
+}
+.channelTextArea-1FufC0 {
+  margin-bottom: 0;
+  border-radius: 0;
+}
+.placeholder-1rCBhr {
+  color: white;
+  text-transform: lowercase;
+}
+/*
+.base-3bcbY3 {
+  position: static;
+  width: 100%;
+  order: 1;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 0px;
+  box-sizing: border-box;
+}
+.base-3bcbY3 > .cooldownWrapper-2k1jHK {
+  margin: 0;
+  position: static;
+}
+.scroller-kQBbkU {
+  position: static;
+}
+.scrollerSpacer-3AqkT9 {
+  height: 15px;
+}
+.scrollableContainer-15eg7h {
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+  height: 50px;
+}*/
+.scrollableContainer-15eg7h > .inner-NQg18Y {
+  min-height: 45px;
+  align-items: center;
+}
+.attachWrapper-3slhXI {
+  display: flex;
+  position: static;
+  align-items: center;
+}
+.attachedBars-2BCP3l {
+  border-radius: 0;
+}
+.slateTextArea-27tkG0 {
+  color: white !important;
+}
+/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
