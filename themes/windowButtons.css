@@ -1,0 +1,81 @@
+@import url(//dablulite.github.io/css-snippets/MacosTitlebar/import.css);
+
+/* ----------------------------------------------------------------------- */
+
+/*WINDOW CLOSE BUTTONS*/
+
+/* ----------------------------------------------------------------------- */
+:root {
+  --mactitlebar-left-margin: 7px;
+  --mactitlebar-top-margin: 10px;
+  --mactitlebar-button-width: 20px;
+  --mactitlebar-button-height: 20px;
+  --mactitlebar-button-border-radius: 50px;
+  --mactitlebar-close-btn-back: #f25056;
+  --mactitlebar-min-btn-back: #fac536;
+  --mactitlebar-max-btn-back: #39ea49;
+  --macbuttons-serverlist-inner-top-margin: 32px;
+  /*guilds inner ul element*/
+  --macbuttons-serverlist-outer-top-margin: 0;
+  --macbuttons-serverlist-outer-height: 100%;
+}
+
+
+[aria-label^="Close"] > svg:hover {
+  transform: scale(1.6);
+  transition: 0.2s ease-in-out;
+  background-color: #f97a7a !important;
+}
+[aria-label^="Minimise"] > svg:hover {
+  transform: scale(1.6);
+  transition: 0.2s ease-in-out;
+  background-color: #fbe096 !important;
+}
+[aria-label^="Maximise"] > svg:hover {
+  transform: scale(1.6);
+  transition: 0.2s ease-in-out;
+  background-color: #85fb8f !important;
+}
+/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+/* ----------------------------------------------------------------------- */
+/*settings button and shit*/
+/* ----------------------------------------------------------------------- */
+/*settings close button and list*/
+.header-2F5_LB {
+  display: none;
+}
+.side-1lrxIh {
+  margin-top: 34px;
+}
+.sidebar-nqHbhN {
+  padding: 0px;
+}
+.closeButton-PCZcma {
+  width: 75px !important;
+  height: 25px !important;
+  border-radius: 5px !important;
+}
+.closeButton-PCZcma:hover {
+  transform: scale(1.2);
+  transition: 0.3s;
+  background-color: #f25056;
+}
+#vc-membercount > div:nth-child(2) {
+  display: none;
+}
+#vc-membercount > div:nth-child(1) {
+  justify-content: center !important;
+}
+/*read all button*/
+.scroller-3X7KbA > button {
+  width: 91%;
+  background-color: #2b89c0 !important;
+  border-style: solid;
+  border-color: white;
+  border-width: 1px;
+  border-radius: 5px;
+}
+/*NEW UNREADS*/
+.bar-wDIGjg{background-color:#0072b4a5;border-radius: 5px;}
