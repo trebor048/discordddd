@@ -1,0 +1,22 @@
+/* ----------------------------------------------------------------------- */
+/*Radial Status Indicators!*/
+/* ----------------------------------------------------------------------- */
+.contents-2MsGLg .avatar-2e8lTP {
+  scale: 0.85;
+  margin-top: 0.1em;
+  box-shadow: 0 0 0 2px #747f8d;
+}
+.contents-2MsGLg:has(svg[fill="var(--green-360"]) .avatar-2e8lTP {
+  box-shadow: 0 0 0 2px #43b581;
+}
+.contents-2MsGLg:has(svg[fill="var(--yellow-300"]) .avatar-2e8lTP {
+  box-shadow: 0 0 0 2px #faa61a;
+}
+.contents-2MsGLg:has(svg[fill="var(--red-400"]) .avatar-2e8lTP {
+  box-shadow: 0 0 0 2px #f04747;
+}
+.contents-2MsGLg:has(span[data-tag="bot"]) .avatar-2e8lTP {
+  box-shadow: 0 0 0 2px #5865f2;
+}
+/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
