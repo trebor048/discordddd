@@ -106,3 +106,36 @@
 }
 /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+
+/* ----------------------------------------------------------------------- */
+/*MESSAGE BACKGROUNDS*/
+/* ----------------------------------------------------------------------- */
+.message-2CShn3 {
+  margin-left: 5px;
+  border-radius: 7px;
+  background-color: #0000002a;
+}
+.mentioned-Tre-dv:before {
+  width: 100%;
+  border-radius: 7px;
+  background-color: #ffe55362;
+}
+/*#channels{background-color:#1e1f22;}*/
+.contents-2MsGLg .avatar-2e8lTP {
+  left: 12px;
+}
+.cozy-VmLDNB .contents-2MsGLg {
+  margin-left: -8px;
+  border-width: 4px;
+  border-left-style: groove;
+  border-radius: 3px;
+  border-color: rgba(255, 255, 255, 0.466);
+}
+.contents-2MsGLg > * {
+  left: 10px;
+}
+/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+
