@@ -7,7 +7,8 @@
 /* ----------------------------------------------------------------------- */
 :root {
   --mactitlebar-left-margin: 7px;
-  --mactitlebar-top-margin: 10px;
+ /* --mactitlebar-top-margin: 10px; */
+  --mactitlebar-top-margin: 0px;
   --mactitlebar-button-width: 20px;
   --mactitlebar-button-height: 20px;
   --mactitlebar-button-border-radius: 50px;
