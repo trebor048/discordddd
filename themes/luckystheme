@@ -355,7 +355,7 @@ div.avatarWrapper-1B9FTW.withTagAsButton-OsgQ9L{margin-right:-4%;}
   /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
   /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 .memberInner--L4X2b,.member-48YF_l, .members-3WRCEx{background:rgba(25,25,25,0.2);}
-.sidebar-1tnWFu{width:17%;}
+/*.sidebar-1tnWFu{width:17%;}*/
 /* Colored context menus */
 .menu-2TXYjN, .base-2jDfDU, .header-3xB4vB, #app-mount, .chatContent-3KubbW, #channels, .members-3WRCEx  { 
     background: linear-gradient(145deg, var(--BACK-GROUND) 35%, #0a0818);
