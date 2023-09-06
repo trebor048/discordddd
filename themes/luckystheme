@@ -1,6 +1,6 @@
 /**
- * @name 0-LUCKY's windowButtons
- * @description LUCKY's windowButtons
+ * @name 0-LUCKY's Lucky's Theme
+ * @description LUCKY's Lucky's Theme
  * @author LuckyCanucky
  * @version 1.0
  * @authorId 995923917594173440
@@ -12,6 +12,7 @@
  * @updateUrl https://github.com/trebor048/discordddd/tree/main/themes/windowButtons.css
  */
 
+/* ENABLE PLATFORM INDICATORS, MORE USER TAGS, AND MEMBERLIST */
 
  @import url(//raw.githubusercontent.com/coolesding/shiggycord/v2/Files/Radialstatus.css);
 
