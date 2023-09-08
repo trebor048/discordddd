@@ -1,0 +1,965 @@
+/**
+ * @name 0-LUCKY's Lucky's Theme
+ * @description LUCKY's Lucky's Theme
+ * @author LuckyCanucky
+ * @version 1.0
+ * @authorId 995923917594173440
+ * @invite highndry
+ * @donate https://www.discord.com/invite/highndry
+ * @patreon https://www.discord.com/invite/highndry
+ * @website https://github.com/trebor048
+ * @source https://github.com/trebor048/discordddd/tree/main/themes/windowButtons.css
+ * @updateUrl https://github.com/trebor048/discordddd/tree/main/themes/windowButtons.css
+ */
+
+/* ENABLE PLATFORM INDICATORS, MORE USER TAGS, AND MEMBERLIST */
+
+ @import url(//raw.githubusercontent.com/coolesding/shiggycord/v2/Files/Radialstatus.css);
+
+
+ /* ----------------------------------------------------------------------- */
+ 
+ /*WINDOW CLOSE BUTTONS*/
+ 
+ /* ----------------------------------------------------------------------- */
+ :root {
+    --BACK-GROUND:#172738;
+    --the-borders:30px;
+    --rs-online-color: #43b581; /* default: #43b581 */
+    --rs-idle-color: #faa61a; /* default: #faa61a */
+    --rs-dnd-color: #f04747; /* default: #f04747 */
+    --rs-offline-color: #636b75; /* default: #636b75 */
+    --rs-streaming-color: #643da7; /* default: #643da7 */
+    --rs-bot-color: #5865f2; /* default: #5865f2 */
+    --rs-spacer-color: transparent; /* default: transparent*/
+    --rs-show-platformindicators: none; /* default: none */
+    --rs-small-size: 0.85; /* default: 0.85 */
+    --rs-small-roundness: 100%; /* default: 100% */
+    --rs-small-thickness: 2.5px; /* default: 2.5px */
+    --rs-small-glow: 0px; /* default: 0px */
+    --rs-small-spacing: 4px; /* default: 4px */
+    --rs-medium-size: 1; /* default: 1 */
+    --rs-medium-roundness: 100%; /* default: 100% */
+    --rs-medium-thickness: 2.5px; /* default: 2.5px */
+    --rs-medium-glow: 0px; /* default: 0px */
+    --rs-medium-spacing: 4px; /* default: 4px */
+    --rs-large-size: 1; /* default: 1 */
+    --rs-large-roundness: 100%; /* default: 100% */
+    --rs-large-thickness: 2.5px; /* default: 2.5px */
+    --rs-large-glow: 0px; /* default: 0px */
+    --rs-large-spacing: 4px; /* default: 4px */
+   --mactitlebar-left-margin: 7px;
+   --mactitlebar-top-margin: 10px;
+   --mactitlebar-button-width: 20px;
+   --mactitlebar-button-height: 20px;
+   --mactitlebar-button-border-radius: 50px;
+   --mactitlebar-close-btn-back: #f25056;
+   --mactitlebar-min-btn-back: #fac536;
+   --mactitlebar-max-btn-back: #39ea49;
+   --macbuttons-serverlist-inner-top-margin: 32px;
+   /*guilds inner ul element*/
+   --macbuttons-serverlist-outer-top-margin: 0;
+   --macbuttons-serverlist-outer-height: 100%;
+  --guild-list-width: 198px;
+  --guild-list-height: 48px;
+  --guild-item-radius: 5px;
+  --guild-item-spacing: 8px;
+  --guild-item-font-size: 16px;
+ }
+
+@keyframes rainbowText {
+  0% {filter: invert(0%);hue-rotate(0deg);}
+ 10% {filter: invert(25%);}
+ 20% {filter: invert(50%);}
+ 30% {filter: invert(75%);}
+ 40% {filter: invert(95%);}
+ 50% {filter: invert(100%);huerotate-(360deg);}
+ 60% {filter: invert(86%);}
+ 70% {filter: invert(66%);}
+ 80% {filter: invert(50%);}
+ 90% {filter: invert(25%);}
+100% {filter: invert(0%);huerotate-(0deg);}
+}
+@keyframes flash {
+  0% {filter: opacity(5%);}
+ 10% {filter: opacity(25%);}
+ 20% {filter: opacity(75%);}
+ 30% {filter: opacity(80%);}
+ 35% {filter: opacity(90%);}
+ 40% {filter: opacity(98%);}
+ 50% {filter: opacity(100%);}
+ 60% {filter: opacity(98%);}
+ 70% {filter: opacity(90%);}
+ 75% {filter: opacity(85%);}
+ 80% {filter: opacity(75%);}
+ 90% {filter: opacity(25%);}
+100% {filter: opacity(5%);}
+}
+ [aria-label^="Close"] > svg:hover {
+   transform: scale(1.6);
+   transition: 0.2s ease-in-out;
+   background-color: #f97a7a !important;
+ }
+ [aria-label^="Minimise"] > svg:hover {
+   transform: scale(1.6);
+   transition: 0.2s ease-in-out;
+   background-color: #fbe096 !important;
+ }
+ [aria-label^="Maximise"] > svg:hover {
+   transform: scale(1.6);
+   transition: 0.2s ease-in-out;
+   background-color: #85fb8f !important;
+ }
+
+ /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+ /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+ 
+ 
+ 
+ .winButtonClose-3Q8ZH5 {
+     order: 3;
+     margin-top: var(--mactitlebar-top-margin);
+     margin-left: var(--mactitlebar-left-margin);
+ }
+ .winButtonMinMax-3RsPUg {
+     order: 1;
+     margin-top: var(--mactitlebar-top-margin);
+ }
+ .winButtonMinMax-3RsPUg:last-child {
+     margin-top: var(--mactitlebar-top-margin);
+ }
+ .winButton-3UMjdg:hover {
+     background-color: transparent !important;
+ }
+ .withFrame-2dL45i {
+     box-shadow: none !important;
+ }
+
+ .winButtonClose-3Q8ZH5 > svg {
+     background: var(--mactitlebar-close-btn-back) !important;
+     background-size: contain !important;
+     border-radius: var(--mactitlebar-button-border-radius);
+ }
+ .winButtonClose-3Q8ZH5 > svg > polygon {
+     display: none !important;
+ }
+ .winButtonMinMax-3RsPUg > svg {
+     background: var(--mactitlebar-max-btn-back) !important;
+     background-size: contain !important;
+     border-radius: var(--mactitlebar-button-border-radius);
+ }
+ .winButtonMinMax-3RsPUg:last-child > svg {
+     background: var(--mactitlebar-min-btn-back) !important;
+     background-size: contain !important;
+     border-radius: var(--mactitlebar-button-border-radius);
+ }
+ .winButtonMinMax-3RsPUg > svg > rect {
+     display: none !important;
+ }
+ .winButton-3UMjdg:hover {
+     background-color: transparent;
+ }
+ .winButton-3UMjdg {
+     width: var(--mactitlebar-button-width) !important;
+     height: var(--mactitlebar-button-height) !important;
+ }
+ .guilds-2JjMmN > ul {
+     margin-top: var(--macbuttons-serverlist-inner-top-margin);
+ }
+ .guilds-2JjMmN {
+     margin-top: var(--macbuttons-serverlist-outer-top-margin);
+     height: var(--macbuttons-serverlist-outer-height);
+ }
+ .typeWindows-2-g3UY {
+     -webkit-box-pack: end;
+     -ms-flex-pack: end;
+     justify-content: flex-end;
+     margin-top: 0;
+     position: absolute;
+     background-color: transparent;
+ }
+
+ .platform-win .title-31SJ6t {
+     width: 100% !important;
+     -webkit-app-region: drag;
+ }
+ 
+ .platform-win .sidebar-1tnWFu {
+     border-radius: 0;
+ }
+ 
+ 
+ 
+ /* ----------------------------------------------------------------------- */
+ /*settings button and shit*/
+ /* ----------------------------------------------------------------------- */
+ /*settings close button and list*/
+ .side-1lrxIh {
+   margin-top: 34px;
+ }
+ .sidebar-nqHbhN {
+   padding: 0px;
+ }
+.contentColumn-1C7as6{
+    padding:50px 30px 0px;
+    min-width:95%
+}
+.container-O54IuJ > .keybind-13vtq8{display: none !important;}
+.container-O54IuJ:hover{transform:scale(1.2);transition: 0.3s;}
+.closeButton-PCZcma *, .closeButton-PCZcma,.toolsContainer-25FL6V, .closeIconOnly-2lAimv{background:none;border-radius: 50px;border:none;}
+.closeButton-PCZcma > svg{background:none;}
+
+ #vc-membercount > div:nth-child(2) {
+   display: none;
+ }
+ #vc-membercount > div:nth-child(1) {
+   justify-content: center !important;
+ }
+ /*read all button*/
+ .scroller-3X7KbA > button {
+   width: 91%;
+   background-color: #2b89c0 !important;
+   border-style: solid;
+   border-color: white;
+   border-width: 1px;
+   border-radius: 5px;
+ }
+ /*NEW UNREADS*/
+ .bar-wDIGjg{background-color:#0072b4a5;border-radius: 5px;}
+ 
+
+   /* ----------------------------------------------------------------------- */
+  
+  /*FONT SETTINGS*/ /*REPALCE THE fonts.google link with a font from fonts.google.com theyve got a great selection.*/
+  
+  /* ----------------------------------------------------------------------- */
+
+ 
+  @font-face {
+    src:url('https://raw.githubusercontent.com/trebor048/discordddd/main/fonts/SF-Pro-Rounded-Light.ttf');
+      font-family: 'SF Pro Rounded';
+      font-style: normal;
+      font-weight: 300;
+  }
+ 
+  
+  :root {
+      --line-spacing: var(--message-line-spacing);
+  }
+  
+  /* Apply styles */
+ 
+  ::-webkit-input-placeholder, body, button, input, select, textarea {
+     font-family: 'SF Pro Rounded', sans-serif !important;
+      word-spacing: var(--word-spacing, initial);
+      letter-spacing: var(--letter-spacing, initial);
+  }
+  
+  /* Adjust formatted text line-height */
+  
+  [class*="messageContent-" i] {
+      line-height: var(--message-line-spacing, initial) !important;
+  }
+  
+  /* Scale up timestamps & "Edited" text */
+  
+  [class*="group-spacing" i] [class*="timestamp"],
+  [class*="messageContent-" i] time {
+      font-size: 0.9rem;
+  }
+  
+  /* ----------------------------------------------------------------------- */
+  
+  /* FONT SIZE VARIABLES */
+  
+  :root {
+      --word-spacing: 0.2px;
+      --letter-spacing: 0.09px;
+      --message-line-spacing: 1.4;
+  }
+  
+  /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+  /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+
+/* ----------------------------------------------------------------------- */
+  
+  /*WHITE SCROLL BARS*/ /*keeps the scroll bars white, so i can fucking see them */
+  
+/* ----------------------------------------------------------------------- */
+  
+  .auto-2TJ1RH::-webkit-scrollbar-thumb
+  {
+      background-color:white!important; 
+  }
+  .thin-RnSY0a::-webkit-scrollbar-thumb
+  {
+      border: none;
+      border-radius:12px;
+      background-color: white!important;
+  }
+
+
+  /* ----------------------------------------------------------------------- */
+  
+  /*RESIZE GIF DRAWER*/ /*Make the GIF/emoji drawer huge so I can post funny shit */
+  
+/* ----------------------------------------------------------------------- */
+
+div.drawerSizingWrapper-1txdWG
+{
+    height:80vh;
+    bottom:0px;
+    right:5px;
+    width:600px; /* 498px-599px = 2 ROWS || 600px-799px = 3 ROWS || 800px-999px = 4 ROWS || 1000px< = get fucking help */
+}
+
+  /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+  /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+
+
+  
+/* ----------------------------------------------------------------------- */
+  
+/*SMOL PLATFORM INDICATORS*/
+  
+/* ----------------------------------------------------------------------- */
+
+[class^="nameAndDecorator"] .vc-platform-indicator {flex-direction: column;margin-left: 2px !important;margin-right: -2px;max-height: 30px;}
+[class^="nameAndDecorator"] .vc-platform-indicator svg {width: 16px;}
+[class^="nameAndDecorator"] .vc-platform-indicator :only-child {height: 16px;}
+[class^="nameAndDecorator"] .vc-platform-indicator :nth-child(3) {position: absolute;height: 16px;margin-left: 20px;}
+
+/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+
+/* ----------------------------------------------------------------------- */
+
+  /*COLOR ON/OFF SWITCHES GREEN/RED*/
+  
+/* ----------------------------------------------------------------------- */
+
+.container-2nx-BQ:not(.checked-25WXMf) {background-color: #f04747 !important;}
+.container-2nx-BQ:not(.checked-25WXMf) path {fill: #f04747 !important;}
+.container-2nx-BQ.checked-25WXMf {background-color: #43b581 !important;}
+.container-2nx-BQ.checked-25WXMf path {fill: #43b581 !important;}
+
+  /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+  /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+.message-2CShn3 {margin-left: 16px;border-radius: 10px;}
+.mentioned-Tre-dv:before {width: 5px;border-top-left-radius: 10px;border-bottom-left-radius: 10px;}
+div.avatarWrapper-1B9FTW.withTagAsButton-OsgQ9L{margin-right:-4%;}
+  /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+  /*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+.memberInner--L4X2b,.member-48YF_l, .members-3WRCEx{background:rgba(25,25,25,0.2);}
+/*.sidebar-1tnWFu{width:17%;}*/
+/* Colored context menus */
+.menu-2TXYjN, .base-2jDfDU, .header-3xB4vB, #app-mount, .chatContent-3KubbW, #channels, .members-3WRCEx  { 
+    background: linear-gradient(145deg, var(--BACK-GROUND) 35%, #0a0818);
+}
+
+[aria-label="Servers"]{display: flex; flex-direction: column}
+[aria-label="Servers"]>:has([data-dnd-name="High N Dry"]) {order: -1;}
+/*
+#app-mount .layers-OrUESM {
+    margin-top: 34px;
+    margin-bottom: 16px;
+    margin-left: 16px;
+    margin-right: 16px;
+    border-bottom-right-radius: 22px;
+    border-bottom-left-radius: 22px;
+}
+#app-mount .layers-OrUESM {
+    border: var(--the-borders);
+    border-radius: var(--the-borders);
+    border-top: 0 !important;
+    box-shadow: var(--elevation-high);
+}
+#app-mount .withFrame-2dL45i {
+    background: var(--drag-background);
+    border-top-left-radius: 22px;
+    border-top-right-radius: 22px;
+    margin-left: 16px;
+    margin-right: 16px;
+    margin-top: 0px;
+    min-height: 22px;
+    border: var(--the-borders);
+    width:100%;
+    flex-direction: row-reverse;
+}
+
+.titlebar {
+    overflow: inherit;
+    background-color: #20222500;
+}
+
+.titlebar #window-controls-container {
+    background-color: #ffffff00;
+    margin-top: 0px;
+    margin-right: 37px;
+}
+.titlebar #window-title {
+    display: none;
+}
+
+.bg-1QIAus{background:url(https://i.imgur.com/4iXQHua.png);background-size:cover;}
+*/
+
+
+/**
+ * @name BasicBackground
+ * @description Allows you to use a Background Image without greatly altering the basic Layout of Discord
+ * @author DevilBro
+ * @version 1.0.5
+ * @authorId 278543574059057154
+ * @invite Jx3TjNS
+ * @donate https://www.paypal.me/MircoWittrien
+ * @patreon https://www.patreon.com/MircoWittrien
+ * @website https://mwittrien.github.io/
+ * @source https://github.com/mwittrien/BetterDiscordAddons/tree/master/Themes/BasicBackground/
+ * @updateUrl https://mwittrien.github.io/BetterDiscordAddons/Themes/BasicBackground/BasicBackground.theme.css
+ */
+
+/* To change stuff like the colors, transparency and background image, change the variables inside the root {}, do NOT change the @import url() */
+
+@import url(https://mwittrien.github.io/BetterDiscordAddons/Themes/BasicBackground/BasicBackground.css);
+
+:root {
+	--transparencycolor:			0,0,0;						/* default:	0,0,0																								*/
+	--transparencyalpha:			0.15;						/* default: 0.15				(general darkness of the app)													*/
+	--messagetransparency:			0.5;						/* default: 0.5					(additional shadows behind messages, set to 0 to remove boxes)					*/
+	--guildchanneltransparency:		0.15;						/* default: 0.15				(additional darkness for guild/channel list)									*/
+	--chatinputtransparency:		0.0;						/* default: 0.0					(additional darkness for chat input container)									*/
+	--memberlisttransparency:		0.0;						/* default: 0.0					(additional darkness for member list)											*/
+	--accentcolor:					190,78,180;					/* default: 190,78,180			(RGB-format - blurple: 88,101,242 bd-blue: 58,113,193)							*/
+	
+	--font:							Whitney, Helvetica Neue, Helvetica, Arial, sans-serif;		/* font used in most places														*/
+	--textshadow:					transparent;				/* default: transparent			(textshadow for text ontop of accentcolor nodes, ONLY accepts a color, no px)	*/
+	--settingsicons:				1;							/* Use Settings Icons in User/Server/Channel Settings: 1 = yes, 0 = no											*/
+	
+	--background:					url(https://i.imgur.com/4iXQHua.png);	/* general background image				*/
+	--backgroundposition:			center;						/* default: center				(position of background - values: [center/top/right/bottom/left])				*/
+	--backgroundsize:				cover;						/* default: cover				(sizefit of background - values: [cover/contain/auto])							*/
+	--backgroundblur:				unset;						/* default: unset				(blur in px, only works when --background is set to an image)					*/
+	
+	--popout:						var(--background);			/* default: var(--background)	(change to use another background/color for modals/popouts)						*/
+	--popoutposition:				var(--backgroundposition);	/* default: center				(position of popout - values: [center/top/right/bottom/left])					*/
+	--popoutsize:					var(--backgroundsize);		/* default: cover				(sizefit of popout - values: [cover/contain/auto])								*/
+	--popoutblur:					var(--backgroundblur);		/* default: unset				(blur in px, only works when --popout is set to an image)						*/
+	
+	--backdrop:						rgba(0,0,0,0.85);			/* default: rgba(0,0,0,0.85)	(change to use another background/color for backdrops)							*/
+	--backdropposition:				center;						/* default: center				(position of backdrop - values: [center/top/right/bottom/left])					*/
+	--backdropsize:					cover;						/* default: cover				(sizefit of backdrop - values: [cover/contain/auto])							*/
+	--backdropblur:					unset;						/* default: unset				(blur in px, only works when --backdrop is set to an image)						*/
+	
+	--textbrightest: 				255,255,255;				/* default: 255,255,255			(text color for the brightest texts)											*/
+	--textbrighter: 				222,222,222;				/* default: 222,222,222			(text color for brighter texts)													*/
+	--textbright: 					200,200,200;				/* default: 200,200,200			(text color for bright texts)													*/
+	--textdark: 					160,160,160;				/* default: 160,160,160			(text color for dark texts)														*/
+	--textdarker: 					125,125,125;				/* default: 125,125,125			(text color for darker texts)													*/
+	--textdarkest: 					90,90,90;					/* default: 90,90,90			(text color for the darkest texts)												*/
+	
+	--version1_0_5:					none;						/* DO NOT CHANGE THIS VARIABLE , USED TO HIDE UPDATE NOTICE														*/
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.guilds-2JjMmN {
+  width: var(--guild-list-width);
+}
+
+.listItem-3SmSlK,
+.wrapper-38slSD,
+.svg-2ifYOU,
+.blobContainer-ikKyFs,
+.listItem-3SmSlK>.wrapper-z5ab_q+div:not([class]),
+.wrapper-2PSQCG,
+.svg-2ifYOU>foreignObject {
+  width: var(--guild-list-width);
+  mask: none !important;
+}
+
+.listItem-3SmSlK:not(:has(.guildSeparator-a4uisj)),
+.wrapper-2PSQCG,
+.svg-2ifYOU>foreignObject {
+  height: var(--guild-list-height);
+}
+
+.expandedFolderBackground-1kSAf6 {
+  width: calc(var(--guild-list-width) - 24px);
+  border-radius: min(24px, var(--guild-item-radius));
+}
+
+.svg-2ifYOU>foreignObject {
+  transform: translateX(calc(((var(--guild-list-width)*-1)/2) + 50%));
+}
+
+.wrapper-3kah-n,
+.folder-241Joy,
+.circleIconButton-1VxDrg {
+  margin-left: 12px;
+  width: calc(var(--guild-list-width) - 24px);
+  justify-content: start;
+  border-radius: var(--guild-item-radius) !important;
+  height: var(--guild-list-height);
+}
+
+.wrapper-3kah-n img,
+.folderIconWrapper-1oRIZr,
+.childWrapper-1j_1ub,
+.expandedFolderIconWrapper-3RwQpD,
+.closedFolderIconWrapper-3tRb2d {
+  border-radius: var(--guild-item-radius) !important;
+  height: var(--guild-list-height);
+  width: var(--guild-list-height);
+}
+
+.svg-2ifYOU {
+  position: static;
+}
+
+[data-dnd-name]:has(>.wrapper-2PSQCG)::after {
+  content: attr(data-dnd-name);
+  width: calc(var(--guild-list-width) - 24px - var(--guild-list-height) - 12px);
+  position: absolute;
+  top: 0;
+  left: calc(12px + var(--guild-list-height) + 6px);
+  flex-wrap: nowrap;
+  align-items: center;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  color: var(--channels-default);
+  font-size: var(--guild-item-font-size);
+  line-height: var(--guild-list-height);
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  pointer-events: none;
+  transition: color .15s ease-out, background-color .15s ease-out;
+}
+
+[data-dnd-name]:has(>.wrapper-2PSQCG .selected-1Drb7Z, >.wrapper-2PSQCG .hover-3m7-WT)::after {
+  color: var(--interactive-active);
+}
+
+:has(>.wrapper-2PSQCG .selected-1Drb7Z, >.wrapper-2PSQCG .hover-3m7-WT) :is(.wrapper-3kah-n, .folder-241Joy, .circleIconButton-1VxDrg) {
+  background-color: var(--background-primary) !important;
+}
+
+.wrapperSimple-2SFl9K {
+  border-radius: 0 !important;
+}
+
+.circleIcon-3489FI {
+  margin-left: 12px;
+  height: var(--guild-list-height);
+}
+
+.circleIconButton-1VxDrg::after {
+  content: attr(aria-label);
+  width: calc(var(--guild-list-width) - 24px - var(--guild-list-height) - 12px);
+  position: absolute;
+  top: 0;
+  left: calc(12px + var(--guild-list-height) + 6px);
+  align-items: center;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  color: var(--green-360);
+  font-size: var(--guild-item-font-size);
+  line-height: var(--guild-list-height);
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color .15s ease-out, background-color .15s ease-out;
+  pointer-events: none;
+}
+
+.circleIconButton-1VxDrg.selected-2r1Hvo::after,
+.ColorwaySelectorBtn:hover::after {
+  color: var(--interactive-active);
+}
+
+.wrapper-3kah-n[data-list-item-id*="guildsnav___"]::after {
+  content: attr(aria-label);
+  width: calc(var(--guild-list-width) - 24px - var(--guild-list-height) - 12px);
+  position: absolute;
+  top: 0;
+  left: calc(12px + var(--guild-list-height) + 6px);
+  align-items: center;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  color: var(--channels-default);
+  font-size: var(--guild-item-font-size);
+  line-height: var(--guild-list-height);
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color .15s ease-out, background-color .15s ease-out;
+  pointer-events: none;
+}
+
+.wrapper-3kah-n[data-list-item-id*="guildsnav___"].selected-1Drb7Z::after {
+  color: var(--interactive-active);
+}
+
+.colorwaySelectorIcon {
+  height: var(--guild-list-height) !important;
+  width: var(--guild-list-height) !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.ColorwaySelectorBtn {
+  position: relative;
+  width: calc(var(--guild-list-width) - 24px) !important;
+  border-radius: 0 !important;
+  background-color: transparent !important;
+  justify-content: start !important;
+  gap: 6px;
+  height: var(--guild-list-height) !important;
+}
+
+.ColorwaySelectorBtn::before {
+  content: "";
+  position: absolute;
+  background-color: var(--background-primary);
+  border-radius: var(--guild-item-radius);
+  height: var(--guild-list-height) !important;
+  width: var(--guild-list-height) !important;
+  transition: .15s ease-out;
+  left: 0;
+}
+
+.ColorwaySelectorBtn:hover::before {
+  background-color: var(--brand-experiment);
+}
+
+.ColorwaySelectorBtn::after {
+  content: "Colorways";
+  width: calc(var(--guild-list-width) - 24px - 48px - 12px);
+  position: absolute;
+  top: 0;
+  left: calc(6px + 48px);
+  align-items: center;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  color: var(--channels-default);
+  font-size: var(--guild-item-font-size);
+  line-height: var(--guild-list-height);
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color .15s ease-out, background-color .15s ease-out;
+  pointer-events: none;
+}
+
+.wrapper-38slSD>[id*="folder-items-"] {
+  height: fit-content !important;
+}
+
+.expandedFolderBackground-1kSAf6 {
+  height: 100%;
+}
+
+.upperBadge-1d6YsW,
+.lowerBadge-3j0ZAg {
+  transform: translateX(-50%) !important;
+  box-shadow: 0 0 0 3px var(--background-floating);
+  border-radius: 50%;
+}
+
+.pill-1NRFie,
+.wrapper-z5ab_q,
+.colorwaysBtnPill {
+  height: var(--guild-list-height) !important;
+  width:
+  align-items: center;
+}
+
+.item-2LIpTv {
+  max-height: var(--guild-list-height);
+}
+
+.ColorwaySelectorBtn::after {
+  position: static;
+  height: unset !important;
+  line-height: var(--guild-list-height);
+  transform: translateX(6px);
+}
+
+.ColorwaySelectorBtn {
+  gap: 0 !important;
+}
+
+.circleIcon-3489FI {
+  margin-left: 0;
+}
+
+.circleIcon-3489FI {
+  width: var(--guild-list-height);
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  padding: calc(var(--guild-list-height)/7);
+}
+
+.blobContainer-ikKyFs .wrapper-3kah-n[data-list-item-id*="guildsnav___"]::after {
+  content: none;
+}
+
+.listItem-3SmSlK {
+  margin: 0 0 var(--guild-item-spacing);
+}
+
+.wordmarkWindows-2dq6rw {
+  display: block !important;
+  background: url("https://i.imgur.com/vn6ObWd.png");
+  background-size: 80%;
+  background-position: 5px -20px;
+  background-repeat: no-repeat;
+  left: calc(100vw - 130px);
+  width: 80px;
+  height: 28px;
+  z-index: 0;
+}
+
+.wordmarkWindows-2dq6rw > svg {
+  display: none;
+}
+
+/*read all button*/
+.scroller-3X7KbA > button {
+  width: 91%;
+  background-color:white;
+  animation: rainbowText 5s infinite linear;;
+  border-style: solid;
+  border-color: white;
+  border-width: 1px;
+  border-radius: 5px;
+}
+
+.upperBadge-1d6YsW,.lowerBadge-3j0ZAg,.numberBadge-37OJ3S{box-shadow:0 0 0 0!important;color: #white!important;
+  animation: flash 1s infinite linear;}
+.iconBadge-32fMme,.icon-2Ug6UV{background-color: #1b6911;min-height: 22px;min-width: 24px;border-radius: 5px;}
+.icon-2Ug6UV{padding:0px;}
+.baseShapeRound-3epLEv{border-radius:5px;font-size:93%;min-height: 22px;min-width: 24px;}
+.unreadMentionsIndicatorBottom-3RJMnQ, .unreadMentionsIndicatorTop-2bTgUU{align-self:center;width:100%;}
+.bar-2eAyLE{align-items:self-end;}
+
+/*=====================================================================*/
+
+
+
+
+/*CHANNEL CATEGORYS BIGGER*/ /*Channel Highlighter/Resizer*/
+/*CHANNEL CATEGORYS BIGGER*/
+.container-q97qHp {
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+}
+/*Channel Highlighter/Resizer*/
+.containerDefault-YUSmu3,
+.wrapper-NhbLHG,
+.name-28HaxV {
+  padding-bottom: 3px;
+  border-radius: 8px;
+  font-size: 105%;
+}
+div.unread-36eUEm.unreadRelevant-2f-VSK {
+  background-color: white;
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+  width: 5px;
+}
+.modeUnread-3Cxepe,
+.unread-36eUEm-VSK {
+  background-color: #0072b45e;
+  border-radius: 8px;
+  padding: 0px;
+}
+
+/*NEW UNREADS*/
+.bar-wDIGjg{background-color:#0072b4a5!important;border-radius: 5px;animation: flash 1s infinite linear;}
+
+
+
+
+
+
+
+/* ----------------------------------------------------------------------- */
+/*chat bar and shit*/
+/* ----------------------------------------------------------------------- */
+.form-3gdLxP {
+  flex-direction: column-reverse;
+  background:none!important;
+  display: flex;
+  align-self: center;
+  width: 100%;
+  padding-bottom: 0px;
+  border-bottom-left-radius:0px!important;
+
+}
+.buttons-uaqb-5{padding-right:1%;}
+.channelTextArea-1VQBuV{background:none;}
+.base-3bcbY3 {
+  position: sticky;
+  background-color: #3aaaff99;
+  border-top-left-radius: 7px;
+  border-top-right-radius: 7px;
+  align-self: center;
+  width: 94% !important;
+}
+.jumpToPresentBar-1cEnH0 {
+  background-color: #00000066;
+  align-content:center;
+  justify-content:center;
+  padding-left: 5%;
+  padding-right: 5%;
+}
+.themedBackground-3uF0xW {
+  background-color: #0072b46a;
+}
+/*.typing-2J1mQU{}*/
+/*
+.form-3gdLxP{padding:0px;margin-top:0px;border-radius: 0px;display: flex;flex-direction: column;}
+.scrollableContainer-15eg7h{height: 55px;margin-top:0px;margin-bottom: 0px;z-index:3;border-bottom-right-radius: 0px;border-bottom-left-radius:0px;}
+.channelTextArea-1VQBuV{height:34px;border-radius: 0px;z-index: 1;}
+.a-1FufC0{machannelTextArergin-bottom: 0;border-radius: 0;}
+.typing-2J1mQU{margin-right:90px;margin-left:35px;padding-right:8px;width:fit-content;justify-self:center;padding-bottom:42px;background:#054e79;;z-index: 0;border-top-left-radius: 15px;border-top-right-radius: 15px;}
+*/
+/*---------------------*/
+.newMessagesBar-1hF-9G {
+  height: 36px;
+  background-color: #0072b4a5;
+}
+.span-3lFnWr {
+  font-size: 160%;
+}
+.channelTextArea-1FufC,
+.channelTextArea-1VQBuV {
+  border-radius: 6px;
+}
+
+.wrapper-2SplAX {
+  margin-bottom: 0;
+  border-radius: 0;
+  padding: 1.5px 0;
+}
+.form-3gdLxP::after {
+  padding: 0;
+  margin-top: 0;
+  display: flex;
+}
+.channelTextArea-1FufC0 {
+  margin-bottom: 0;
+  border-radius: 0;
+}
+.placeholder-1rCBhr {
+  color: white;
+  text-transform: lowercase;
+}
+/*
+.base-3bcbY3 {
+  position: static;
+  width: 100%;
+  order: 1;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 0px;
+  box-sizing: border-box;
+}
+.base-3bcbY3 > .cooldownWrapper-2k1jHK {
+  margin: 0;
+  position: static;
+}
+.scroller-kQBbkU {
+  position: static;
+}
+.scrollerSpacer-3AqkT9 {
+  height: 15px;
+}
+.scrollableContainer-15eg7h {
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+  height: 50px;
+}*/
+.scrollableContainer-15eg7h > .inner-NQg18Y {
+  min-height: 52px;
+  align-items: center;
+}
+.attachWrapper-3slhXI {
+  display: flex;
+  position: static;
+  align-items: center;
+}
+.attachedBars-2BCP3l {
+  border-radius: 0;
+}
+.slateTextArea-27tkG0 {
+  color: white !important;
+}
+.themedBackground-3uF0xW{border-radius:0px;}
+/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+
+/* ----------------------------------------------------------------------- */
+/*MESSAGE BACKGROUNDS*/
+/* ----------------------------------------------------------------------- */
+.message-2CShn3 {
+  margin-left: 5px;
+  border-radius: 10px;
+  background-color: #0000002a;
+}
+.mentioned-Tre-dv:before {
+  width: 100%;
+  border-radius: 10px;
+  background-color: #ffe55362;
+}
+/*#channels{background-color:#1e1f22;}*/
+.contents-2MsGLg .avatar-2e8lTP {
+  left: 12px;
+}
+.cozy-VmLDNB .contents-2MsGLg {
+  margin-left: -8px;
+  border-width: 1px;
+  border-left-style: groove;
+  border-radius:3px;
+  border-color: rgba(255, 255, 255, 0.466);
+}
+.contents-2MsGLg > * {
+  left: 10px;
+}
+/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+/*~~~~~~~~~~~xxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
