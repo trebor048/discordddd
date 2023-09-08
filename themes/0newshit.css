@@ -364,10 +364,10 @@ div.avatarWrapper-1B9FTW.withTagAsButton-OsgQ9L{margin-right:-4%;}
 
 
 #app-mount .layers-OrUESM {
-    margin-top: 1px;
-    margin-bottom: 1px;
-    margin-left: 1px;
-    margin-right: 1px;
+    margin-top: -1px;
+    margin-bottom: -1px;
+    margin-left: -1px;
+    margin-right: -1px;
     border-bottom-right-radius: 22px;
     border-bottom-left-radius: 22px;
         border-top-right-radius: 22px;
@@ -406,7 +406,7 @@ div.avatarWrapper-1B9FTW.withTagAsButton-OsgQ9L{margin-right:-4%;}
     display: none;
 }
 
-.bg-1QIAus{background:url(https://i.imgur.com/4iXQHua.png);background-size:cover;}
+.bg-1QIAus{background:url(https://i.imgur.com/4iXQHua.png);background-size:cover;border-radius:22xp;}
 
 
 
