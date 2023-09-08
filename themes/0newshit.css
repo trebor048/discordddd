@@ -14,8 +14,8 @@
 
 /* ENABLE PLATFORM INDICATORS, MORE USER TAGS, AND MEMBERLIST */
 
- @import url(//raw.githubusercontent.com/coolesding/shiggycord/v2/Files/Radialstatus.css);
-
+@import url(//raw.githubusercontent.com/coolesding/shiggycord/v2/Files/Radialstatus.css);
+@import url(https://mwittrien.github.io/BetterDiscordAddons/Themes/BasicBackground/BasicBackground.css);
 
  /* ----------------------------------------------------------------------- */
  
@@ -409,23 +409,7 @@ div.avatarWrapper-1B9FTW.withTagAsButton-OsgQ9L{margin-right:-4%;}
 */
 
 
-/**
- * @name BasicBackground
- * @description Allows you to use a Background Image without greatly altering the basic Layout of Discord
- * @author DevilBro
- * @version 1.0.5
- * @authorId 278543574059057154
- * @invite Jx3TjNS
- * @donate https://www.paypal.me/MircoWittrien
- * @patreon https://www.patreon.com/MircoWittrien
- * @website https://mwittrien.github.io/
- * @source https://github.com/mwittrien/BetterDiscordAddons/tree/master/Themes/BasicBackground/
- * @updateUrl https://mwittrien.github.io/BetterDiscordAddons/Themes/BasicBackground/BasicBackground.theme.css
- */
 
-/* To change stuff like the colors, transparency and background image, change the variables inside the root {}, do NOT change the @import url() */
-
-@import url(https://mwittrien.github.io/BetterDiscordAddons/Themes/BasicBackground/BasicBackground.css);
 
 :root {
 	--transparencycolor:			0,0,0;						/* default:	0,0,0																								*/
