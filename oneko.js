@@ -22,9 +22,12 @@
   let idleAnimation = null;
   let idleAnimationFrame = 0;
 
-  const nekoSpeed = 16;
+  const nekoSpeed = 20;
   const spriteSets = {
-       idle: [[-3, -3]],
+       idle: [      [-5, 0],
+      [-6, 0],
+      [-7, 0],
+    ],
     alert: [[-7, -3]],
     scratchSelf: [
       [-5, 0],
@@ -198,7 +201,7 @@
     const diffY = nekoPosY - mousePosY;
     const distance = Math.sqrt(diffX ** 2 + diffY ** 2);
 
-    if (distance < nekoSpeed || distance < 48) {
+    if (distance < nekoSpeed || distance < 16) {
       idle();
       return;
     }
