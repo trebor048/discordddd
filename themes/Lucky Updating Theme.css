@@ -12,7 +12,7 @@
  * @updateUrl https://github.com/trebor048/discordddd/tree/main/themes/windowButtons.css
  */
 
- :root{
+:root{
   --BG-GRADIENT:linear-gradient(120deg, #283c79, #0e3e6e, rgb(29, 78, 111));
 }
 
@@ -135,7 +135,9 @@ html, body, #app-mount{border-radius: 16px;}
 
 /*Animations*/
  @keyframes bg { 0%{background-position:0% 0%}25%{background-position:37% 88%}38%{background-position: 0% 0%;}50%{background-position:100% 100%;}76%{background-position: 0% 0%;}89%{background-position: 92% 66%;}100%{background-position:0% 0%}}
- /*@keyframes flash {0%{opacity: 30%;}50%{opacity: 100%;}100%{opacity: 30%;}}*/
+ @keyframes flash {0%{opacity: 30%;}50%{opacity: 100%;}100%{opacity: 30%;}}
+ @keyframes blinkColor {0% {color: white;}50% {color: #835454; /* Dull grey color */}100% {color: white;}}
+  @keyframes blinkBGColor {0% {background-color: white;}50% {background-color: #835454; /* Dull grey color */}100% {background-color: white;}}
 
 /*Mention Notifications
 [data-has-mention^="true"]{animation:flash 10s infinite ease-in-out;}*/
@@ -249,15 +251,23 @@ body,html,.app_de4237,.bg__12180,.platform-win,.theme-dark,.privateChannels__934
 .channel_c21703:hover 
 {margin-left: 18px;}
 
+/*Home Icon*/
+[data-list-item-id="guildsnav___home"] > div{background-image:url('https://media.discordapp.net/stickers/1160743966094925926.webp?size=160')!important;background-size:contain;background-repeat: no-repeat;}
+[data-list-item-id="guildsnav___home"] > div > svg{display:none!important;}
+/*Read all messages button*/
+div.GuildsSidebar__scroller.scroller__3d071.Scroller__none.none__51a8f.Scroller__scrollerBase.scrollerBase_dc3aa9 > button{width:85%;height:24px;border-radius:4px;transition: 0.3s ease-out;margin:6px!important;}
+.guilds__2b93a:hover div.GuildsSidebar__scroller.scroller__3d071.Scroller__none.none__51a8f.Scroller__scrollerBase.scrollerBase_dc3aa9 > button{width:94%;transition: 1.25s ease-out 0.075s;}
 
 /*99 new messages since 69:69 Mark as Read*/
+.jumpToPresentBar__0ff7f{display:none!important;margin-bottom: 42vh;background-color:black;border-radius: 0px 0px 14px 14px;}
+.newMessagesBar__8b6d7 {height:20vh;background-color: #bb9735;border:4px inset black;border-top:none;animation:flash 0.8s infinite ease-in-out;}
 .newMessagesBar__8b6d7 > .barButtonAlt__4b48f
 {
   display:none;
 }
+#app-mount > div.App__appAsidePanelWrapper.appAsidePanelWrapper__714a6 > div.App__notAppAsidePanel.notAppAsidePanel__9d124 > div.App__app.app_b1f720 > div > div.BaseLayer__layers.layers__1c917.AppLayers__layers.layers_a23c37 > div > div.LeftSidebar__container.container__037ed > div > div > div.Channel__chat.chat__52833 > div > div.ChatContainer__container.container__93316 > div.ChatContainer__chatContainer.chatContainer__23434 > main > div.Messages__messagesWrapper.messagesWrapper_ea2b0b.group-spacing-16 > div.ChatBar__newMessagesBar.newMessagesBar__8b6d7.ChatBar__barBase.barBase__4e0ba > button.ChatBar__barButtonMain.barButtonMain__0f5c6.ChatBar__barButtonBase.barButtonBase__8fa46{text-align: center;transform: scale(5);}
 .barBase__4e0ba, .newMessagesBar__8b6d7.barBase_4e0ba{
   width: -moz-fit-content;
-  width:fit-content;
   margin-left: auto;}
  
 /*Server Banner bg*/
@@ -379,6 +389,8 @@ a.link__95dc0{background:var(--transfull)}
 /*=====================================================================*/
 
 /*NEW UNREADS*/
+.modeUnreadImportant_efb53e .name__8d1ec{color:white; animation: blinkColor 2s infinite; /* Adjust the duration as needed */}
+.GuildChannelInner__unreadImportant.unreadImportant_c775b3{animation: blinkBGColor 2s infinite;}
 /*.bar__004d9{background-color:#0072b4a5!important;border-radius: 5px;animation: flash 1s infinite linear;}*/
  
 /*GUILD SEPERATOR*/
@@ -446,3 +458,9 @@ a.link__95dc0{background:var(--transfull)}
 
 
   /*---SERVER & GUILD LIST---*/
+
+
+
+  
+
+  
