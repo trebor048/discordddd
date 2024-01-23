@@ -465,10 +465,9 @@ html, body, #app-mount{border-radius: 16px;}
 /*Guilds*/
 
   /*GUILD SEPERATOR*/
-  .guildSeparator_dcb3cc{background:var(--blacktrans); width:85%;height:12px;border-radius:4px}
-
+  .guildSeparator_dcb3cc{}
   /*Home Icon*/
-  [data-list-item-id="guildsnav___home"] > div{background-image:url('https://media.discordapp.net/stickers/1160743966094925926.webp?size=160')!important;background-size:contain;background-repeat: no-repeat;}
+  [data-list-item-id="guildsnav___home"] > div{background-image:url('https://media.discordapp.net/stickers/1092742917535318016.webp?size=96')!important;background-size:contain;background-repeat: no-repeat;}
   [data-list-item-id="guildsnav___home"] > div > svg{display:none!important;}
   /*Read all messages button*/
   div.GuildsSidebar__scroller.scroller__3d071.Scroller__none.none__51a8f.Scroller__scrollerBase.scrollerBase_dc3aa9 > button{width:85%;height:24px;border-radius:4px;transition: 0.3s ease-out;margin:6px!important;}
@@ -508,17 +507,24 @@ html, body, #app-mount{border-radius: 16px;}
   .listItem_fa7b36{margin:0 0 var(--guild-item-spacing)}
   .upperBadge_c7cfb3,.lowerBadge__669e7,.numberBadge__50328{box-shadow:0 0 0 0!important;color: white!important;}
   .iconBadge_fdf33a,.icon__92653{background-color:var(--gren);border-radius: 5px;padding:3px;min-width:fit-content;min-height:18px;}
-  .lowerBadge__669e7{background-color: var(--transfull); border-radius: 5px;padding:2px;min-width: fit-content;min-height: 18px;margin-right:-2px;}
+  .lowerBadge__669e7{background-color: var(--transfull); border-radius: 5px;padding:3px;min-width: fit-content;min-height: 18px;margin-right:4px;}
   .iconBadge_fdf33a{margin-right:-6px;}
   .baseShapeRound__95d0f{border-radius:5px;font-size:120%;min-height: 22px;min-width: fit-content;padding:2px}
-  .unreadMentionsIndicatorBottom_fdb943, .unreadMentionsIndicatorTop_ada847{align-self:center;width:100%;box-shadow:var(--elevation-high);}
-  .expandedFolderBackground__1bec6{background-color: rgba(185, 185, 185, 0.566);}
+  .unreadMentionsIndicatorBotto_fdb943, .unreadMentionsIndicatorTop_ada847{align-self:center;width:100%;box-shadow:var(--elevation-high);}
 
 /*Guild Sidebar*/
-    .guilds__2b93a:hover{--guild-list-width: 198px; /* Set the initial width */transition: 1.25s ease-out 0.075s;width: var(--guild-list-width);/* Set the transition for width change */}
-    .guilds__2b93a{--guild-list-width: 70px; /* Change width on hover */transition: .25s ease-in-out 0.075s;}
-
-
-  
-
-  
+    .guilds__2b93a:hover .folderIconWrapper__72239{width:174px;transition: 0.55s ease-in-out 0.075s;}
+    .folderIconWrapper__72239{ margin: 0px!important;width: 48px;transition: 0.55s ease-in-out 0.075s;}
+    .scroller__3d071{padding:12px 12px 0px 5px!important;}
+    .GuildListItemIcon__wrapper.wrapper_d281dd,.GuildListFolder__folder.folder__17546{margin-left:6px;width:48px;transition: 0.55s ease-in-out 0.075s;}
+    .GuildListFolder__expanded{background-color: var(--blacktrans2)!important;}
+    .guilds__2b93a:hover .GuildListItemIcon__wrapper.wrapper_d281dd{width:174px;transition: 0.75s ease-out 0.075s;}
+    .guilds__2b93a:hover .GuildListFolder__folderIconWrapper, .guilds__2b93a:hover GuildListFolder__collapsed{width:174px;transition: 0.75s ease-out 0.075s;}
+    .guilds__2b93a:hover{transition: 0.75s ease-out 0.075s;width:198px;/* Set the transition for width change */}
+    .guilds__2b93a{width:70px;/* Change width on hover */transition: .55s ease-in-out 0.075s;}
+.lowerBadge__669e7 > div,
+.upperBadge_c7cfb3 > div {
+    margin-left: 247px;
+    opacity: 100%;
+    transition: opacity 0.1, margin-left 3s ease-in-out
+}
