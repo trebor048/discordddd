@@ -363,7 +363,8 @@ html, body, #app-mount{border-radius: 16px;}
   /*Chat*/
 
     /*Messages*/
-      .message__80c10 {margin-left: 5px;border-radius: 10px;background-color:var(--blacktrans3);margin-top:5px;box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;}
+      .cozy_f5c119{box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;}
+      .message__80c10 {margin-left: 5px;border-radius: 10px;background-color:var(--blacktrans3);margin-top:5px;}
       .mentioned__58017:before {width: 100%;border-radius: 10px;background-color: #ffe55362;}
       .contents_f41bb2 .avatar__08316 {left: 12px;}
       .cozy_f5c119 .contents_f41bb2 {margin-left: -8px;border-width: 1px;border-radius:7px;border-color: rgba(255, 255, 255, 0.466);}
@@ -376,9 +377,9 @@ html, body, #app-mount{border-radius: 16px;}
 
     /*New Messages Bars*/
       .jumpToPresentBar__0ff7f{display:none!important;margin-bottom: 42vh;background-color:black;border-radius: 0px 0px 14px 14px;}
-      .newMessagesBar__8b6d7 {height:20vh;background-color: #9e7a16;border:6px inset black;border-top:none;animation:flash 0.8s infinite ease-in-out;}
+      .newMessagesBar__8b6d7 {height:6vh;width:90%;margin-left:5%;margin-right:3.5%;background-color: #3194ce;border:white 3px inset;border-top:none;animation:flash 0.8s infinite ease-in-out;border-radius: 0 0 14px 14px;}
       .newMessagesBar__8b6d7 > .barButtonAlt__4b48f{display:none;}
-      #app-mount > div.App__appAsidePanelWrapper.appAsidePanelWrapper__714a6 > div.App__notAppAsidePanel.notAppAsidePanel__9d124 > div.App__app.app_b1f720 > div > div.BaseLayer__layers.layers__1c917.AppLayers__layers.layers_a23c37 > div > div.LeftSidebar__container.container__037ed > div > div > div.Channel__chat.chat__52833 > div > div.ChatContainer__container.container__93316 > div.ChatContainer__chatContainer.chatContainer__23434 > main > div.Messages__messagesWrapper.messagesWrapper_ea2b0b.group-spacing-16 > div.ChatBar__newMessagesBar.newMessagesBar__8b6d7.ChatBar__barBase.barBase__4e0ba > button.ChatBar__barButtonMain.barButtonMain__0f5c6.ChatBar__barButtonBase.barButtonBase__8fa46{text-align: center;transform: scale(5);}
+      #app-mount > div.App__appAsidePanelWrapper.appAsidePanelWrapper__714a6 > div.App__notAppAsidePanel.notAppAsidePanel__9d124 > div.App__app.app_b1f720 > div > div.BaseLayer__layers.layers__1c917.AppLayers__layers.layers_a23c37 > div > div.LeftSidebar__container.container__037ed > div > div > div.Channel__chat.chat__52833 > div > div.ChatContainer__container.container__93316 > div.ChatContainer__chatContainer.chatContainer__23434 > main > div.Messages__messagesWrapper.messagesWrapper_ea2b0b.group-spacing-16 > div.ChatBar__newMessagesBar.newMessagesBar__8b6d7.ChatBar__barBase.barBase__4e0ba > button.ChatBar__barButtonMain.barButtonMain__0f5c6.ChatBar__barButtonBase.barButtonBase__8fa46{text-align: center;transform: scale(3);}
       .barBase__4e0ba, .newMessagesBar__8b6d7.barBase_4e0ba{width: -moz-fit-content;margin-left: auto;}
       
 
