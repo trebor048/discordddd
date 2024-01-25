@@ -11,8 +11,6 @@
  * @source https://github.com/trebor048/discordddd/tree/main/themes/windowButtons.css
  * @updateUrl https://github.com/trebor048/discordddd/tree/main/themes/windowButtons.css
  */
-@import url("https://minidiscordthemes.github.io/Snippets/SettingsAsOverlay/main.css");
-
 
 :root {
   --BG-GRADIENT: linear-gradient(120deg, rgba(40, 60, 121, 0.5), rgba(14, 62, 110, 0.5), rgba(29, 78, 111, 0.5));
