@@ -11,9 +11,11 @@
  * @source https://github.com/trebor048/discordddd/tree/main/themes/windowButtons.css
  * @updateUrl https://github.com/trebor048/discordddd/tree/main/themes/windowButtons.css
  */
+@import url("https://minidiscordthemes.github.io/Snippets/SettingsAsOverlay/main.css");
 
-:root{
-  --BG-GRADIENT:linear-gradient(120deg, #283c79, #0e3e6e, rgb(29, 78, 111));
+
+:root {
+  --BG-GRADIENT: linear-gradient(120deg, rgba(40, 60, 121, 0.5), rgba(14, 62, 110, 0.5), rgba(29, 78, 111, 0.5));
 }
 
 
@@ -112,21 +114,21 @@ html, body, #app-mount{border-radius: 16px;}
   [aria-label^="Close"] > svg:hover {transform: scale(1.6);transition: transform 0.2s ease-in-out;background-color: #f97a7a !important;}
   [aria-label^="Close"] > svg{transform: scale(1.3);transition: transform 0.4s ease-out;background-color: #f25056 !important;background-size: cover !important;border:1px rgba(75, 75, 75, 0.8) solid;border-radius: 25px;}
   [aria-label^="Close"] > svg > polygon{display:none;}
-  [aria-label^="Close"]{background:none!important;right:var(--title-button-right);margin-top:2px;}
-
+  [aria-label^="Close"]{background:none!important;right:var(--title-button-right);margin-top: -26px;transition: margin-top 0.15s ease 0.56s;}
+  body:hover [aria-label^="Close"]{margin-top:2px;transition: margin-top 0.8s ease 0.1s;}
 /*minimise----------------------------*/
-  [aria-label^="Minimise"] > svg:hover{transform: scale(1.6);transition: transform 0.2s ease-in-out;background-color: #fbe096 !important;}
-  [aria-label^="Minimise"] > svg{transform: scale(1.3);transition: transform 0.4s ease-out;background-color: #fac536 !important;background-size: cover !important;border:1px rgba(75, 75, 75, 0.8) solid;border-radius: 25px;}
-  [aria-label^="Minimise"] > svg > rect{display:none;}
-  [aria-label^="Minimise"]{background:none!important;right:var(--title-button-right);margin-top: -26px;transition: margin-top 0.5s ease 0.46s;}
-  body:hover [aria-label^="Minimise"]{margin-top:2px;transition: margin-top 0.5s ease 0.66s;}
+  [aria-label^="Minimize"] > svg:hover{transform: scale(1.6);transition: transform 0.2s ease-in-out;background-color: #fbe096 !important;}
+  [aria-label^="Minimize"] > svg{transform: scale(1.3);transition: transform 0.4s ease-out;background-color: #fac536 !important;background-size: cover !important;border:1px rgba(75, 75, 75, 0.8) solid;border-radius: 25px;}
+  [aria-label^="Minimize"] > svg > rect{display:none;}
+  [aria-label^="Minimize"]{background:none!important;right:var(--title-button-right);margin-top: -40px;transition: margin-top 0.15s ease 0.26s;}
+  body:hover [aria-label^="Minimize"]{margin-top:2px;transition: margin-top 0.8s ease 0.65s;}
 
 /*maximise----------------------------*/
-  [aria-label^="Maximise"] > svg:hover {transform: scale(1.6);transition: transform 0.2s ease-in-out;background-color: #85fb8f !important;}
-  [aria-label^="Maximise"] > svg{transform: scale(1.3);transition: transform 0.4s ease-out;background-color: var(--gren)!important;background-size: cover !important;border:1px rgba(75, 75, 75, 0.8) solid;border-radius:25px;}
-  [aria-label^="Maximise"] > svg > rect{display:none;}
-  [aria-label^="Maximise"]{background:none!important;right:var(--title-button-right);margin-top: -26px;transition: margin-top 0.5s ease 0.66s;}
-  body:hover [aria-label^="Maximise"]{margin-top:2px;transition: margin-top 0.5s ease 0.46s;}
+  [aria-label^="Maximize"] > svg:hover {transform: scale(1.6);transition: transform 0.2s ease-in-out;background-color: #85fb8f !important;}
+  [aria-label^="Maximize"] > svg{transform: scale(1.3);transition: transform 0.4s ease-out;background-color: var(--gren)!important;background-size: cover !important;border:1px rgba(75, 75, 75, 0.8) solid;border-radius:25px;}
+  [aria-label^="Maximize"] > svg > rect{display:none;}
+  [aria-label^="Maximize"]{background:none!important;right:var(--title-button-right);margin-top: -35px;transition: margin-top 0.15s ease 0.4s;}
+  body:hover [aria-label^="Maximize"]{margin-top:2px;transition: margin-top 0.8s ease 0.4s;}
 /*titlebar----------------------------*/
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
@@ -363,12 +365,13 @@ html, body, #app-mount{border-radius: 16px;}
   /*Chat*/
 
     /*Messages*/
+    /*
       .cozy_f5c119{box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;}
       .message__80c10 {margin-left: 5px;border-radius: 10px;background-color:var(--blacktrans3);margin-top:5px;}
       .mentioned__58017:before {width: 100%;border-radius: 10px;background-color: #ffe55362;}
       .contents_f41bb2 .avatar__08316 {left: 12px;}
       .cozy_f5c119 .contents_f41bb2 {margin-left: -8px;border-width: 1px;border-radius:7px;border-color: rgba(255, 255, 255, 0.466);}
-      .contents_f41bb2 > * {left: 10px;}
+      .contents_f41bb2 > * {left: 10px;}*/
 
     /*Chat Bar*/
       .channelTextArea__2e60f, .themedBackground__6b1b6{background-color:var(--blacktrans2);}
@@ -390,13 +393,9 @@ html, body, #app-mount{border-radius: 16px;}
 
 
 
-
-
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-
-
 
 
 
@@ -449,6 +448,69 @@ html, body, #app-mount{border-radius: 16px;}
 
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+[id^=chat-messages-] {
+    background-color: var(--blacktrans);
+    margin: 0px 15px;
+    }
+
+[id="---new-messages-bar"]:not(:has(+ [id^=chat-messages-] [id^=message-username-])) {
+    transform-style: preserve-3d;
+}
+
+[id="---new-messages-bar"]:not(:has(+ [id^=chat-messages-] [id^=message-username-]))::before {
+    content: "";
+    background: #070707;
+    width: calc(100% + 30px);
+    height: 9px;
+    position: absolute;
+    top: -5px;
+    left: -16px;
+    transform: translateZ(-1px);
+}
+
+[id^=chat-messages-]:has([id^=message-username-]),[id^=chat-messages-]:has(.isSystemMessage__2ef37) {
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+
+[id^=chat-messages-]:is(:has(+ [class*=scrollerSpacer__]), :has(+ :not([id^=chat-messages-]) + [id^=chat-messages-] [id^=message-username-]), :has(+ [id^=chat-messages-] [id^=message-username-])) {
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    box-shadow: rgba(0, 0, 0, 0.4) 1px 6px 5px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+}
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+.message__80c10:not(.groupStart__56db5) .headerText_f47574 {
+    display: none;
+}
+
+
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*dashless*/
+@font-face
+ { font-family: "Twemoji Mozilla";
+   src: url("https://vendicated.github.io/random-files/Twemoji.Mozilla.ttf") format("truetype");
+   unicode-range: U+1F1E6-1F1FF; }
+@font-face
+ { font-family: "dashless";
+   size-adjust: 200%;
+   src: url("https://vendicated.github.io/random-files/Dashless.woff2") format("woff2");
+   unicode-range: U+002D; }
+[data-list-item-id^=channels___], /* channel list */
+[class^=titleWrapper] > h1, /* top bar with topic */
+[class^=resultChannel], /* channel name in search */
+[class^=channelMention], /* channel mentions in chat */
+[class^=placeholder][class*=slateTextArea] /* "Send a message in #blah" */
+ { font-family: "Twemoji Mozilla", "dashless", var(--font-primary); }
+
+
+
+
+
+
 
 
 
