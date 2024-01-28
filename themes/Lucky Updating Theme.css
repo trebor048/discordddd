@@ -14,7 +14,6 @@
 
 :root {
   --BG-GRADIENT: linear-gradient(120deg, rgba(40, 60, 121, 0.5), rgba(14, 62, 110, 0.5), rgba(29, 78, 111, 0.5));
-  --enable-MEMBERLIST-ani: 0;
 }
 
 
@@ -318,32 +317,37 @@ html, body, #app-mount{border-radius: 16px;}
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 /*---MEMBER LIST---*/
+/* --animated
+  .container_b2ce9c{Background:var(--transfull)}
+   .container_b2ce9c:hover{width:260px;};
+   .container_b2ce9c{margin-left:-4px;width: 65px;transition: 1.5s ease 0.075s;}
+*/
+    .members__9f47b.thin_b1c063.scrollerBase_dc3aa9.fade_ba0fa0.customTheme_db4d28{margin-left:4px;background:var(--blacktrans);border-radius:16px 0px 0px 16px;}
+    .container_b2ce9c{margin-left:8px;width: 260px;margin-top:1vh;overflow-x:visible;max-height: 86.2vh;}
 
+  /*Member Cards*/
+    .members__9f47b{background:var(--transfull)}
+    .member_b44d5d{background: var(--transfull);}
 
-/* Member List bg */
-.container_b2ce9c { Background: var(--transfull); transition: var(--enable-MEMBERLIST-ani) ? 1.5s ease 0.075s : none; }
-.members__9f47b.thin_b1c063.scrollerBase_dc3aa9.fade_ba0fa0.customTheme_db4d28 { margin-left: 4px; background: var(--blacktrans); border-radius: 16px 0px 0px 16px; transition: var(--enable-MEMBERLIST-ani) ? 1.5s ease 0.075s : none; }
-.container_b2ce9c:hover { width: var(--enable-MEMBERLIST-ani) ? 260px : auto; transition: var(--enable-MEMBERLIST-ani) ? 1.5s ease 0.075s : none; }
-.container_b2ce9c { margin-left: -4px; width: 65px; }
+  /*Member List Avatars*/
+    .memberInner_a32223.layout_bb8e67 > .avatar__6337f{transform:scale(1.2);margin: 20px 20px 0px 0px;}
+    .memberInner_a32223 .content_a6999d{transform:scale(1.075);margin-top:12px;}
+    /*MEMBER ROLE GROUPS*/
+      .container_de798d{font-size:16px;font-weight:bold;color:white;}
 
-/* Member Cards */
-.members__9f47b { background: var(--transfull); transition: var(--enable-MEMBERLIST-ani) ? 1.5s ease 0.075s : none; }
-.member_b44d5d { background: var(--transfull); }
+    /*member count*/
+    /* --animated
+      #vc-membercount{opacity:0;transition: 1.85s ease 0.075s;}
+      .container_b2ce9c:hover #vc-membercount{opacity:1;transition: 1.85s ease-in-out 0.075s;}
+    */
+   #vc-membercount{opacity:1}
 
-/* Member List Avatars */
-.memberInner_a32223.layout_bb8e67 > .avatar__6337f { transform: scale(1.2); margin: 20px 20px 0px 0px; }
-
-/* MEMBER ROLE GROUPS */
-.container_de798d { font-size: 16px; font-weight: bold; color: white; }
-
-/* Member Count */
-#vc-membercount { opacity: 0; transition: var(--enable-MEMBERLIST-ani) ? 1.85s ease 0.075s : none; }
-.container_b2ce9c:hover #vc-membercount { opacity: 1; transition: var(--enable-MEMBERLIST-ani) ? 1.85s ease-in-out 0.075s : none; }
-
-/* Member Card Content */
-.content_a6999d { opacity: 0; transition: var(--enable-MEMBERLIST-ani) ? 1.85s ease 0.075s : none; }
-.container_b2ce9c:hover .content_a6999d { opacity: 1; transition: var(--enable-MEMBERLIST-ani) ? 1.85s ease-in-out 0.075s : none; }
-
+    /*member card content*/
+    /*
+      .content_a6999d{opacity:0;transition: 1.85s ease 0.075s;}
+      .container_b2ce9c:hover .content_a6999d{opacity:1;transition: 1.85s ease-in-out 0.075s;}
+    */
+     .content_a6999d{opacity:1;transition: 1.85s ease 0.075s;}
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 
