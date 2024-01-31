@@ -99,6 +99,7 @@
 
 /*body round*/
 html, body, #app-mount{border-radius: 16px;}
+.winButton__88672{margin:6px;}
   /*buttons--------------------------*/
    /*CHANNELTABS*/
  .vc-channeltabs-tab .baseShapeRound__95d0f{background-color:var(--transfull)!important;}
@@ -109,25 +110,29 @@ html, body, #app-mount{border-radius: 16px;}
  .vc-channeltabs-tab{border-radius:8px 8px 0px 0px;margin-left:0px;background-color:var(--blacktrans);}
  .vc-channeltabs-tab-container{width:calc(100vw - 125px);}
 /*close----------------------------*/
-  .titleBar__01af6 > [aria-label^="Close"] > svg:hover {transform: scale(1.6);transition: transform 0.2s ease-in-out;background-color: #f97a7a !important;}
-  .titleBar__01af6 > [aria-label^="Close"] > svg{transform: scale(1.3);transition: transform 0.4s ease-out;background-color: #f25056 !important;background-size: cover !important;border:1px rgba(75, 75, 75, 0.8) solid;border-radius: 25px;}
+  .titleBar__01af6 > [aria-label^="Close"] > svg:hover {transform: scale(1.8);transition: transform 0.2s ease-in-out;background-color: #f97a7a !important;}
+  .titleBar__01af6 > [aria-label^="Close"] > svg{transform: scale(1.5);transition: transform 0.4s ease-out;background-color: #f25056 !important;background-size: cover !important;border:1px rgba(75, 75, 75, 0.8) solid;border-radius: 25px;}
   .titleBar__01af6 > [aria-label^="Close"] > svg > polygon{display:none;}
   .titleBar__01af6 > [aria-label^="Close"]{background:none!important;right:var(--title-button-right);margin-top: -26px;transition: margin-top 0.15s ease 0.56s;}
   body:hover .titleBar__01af6 > [aria-label^="Close"]{margin-top:2px;transition: margin-top 0.8s ease 0.1s;}
 /*minimise----------------------------*/
-  [aria-label^="Minimize"] > svg:hover{transform: scale(1.6);transition: transform 0.2s ease-in-out;background-color: #fbe096 !important;}
-  [aria-label^="Minimize"] > svg{transform: scale(1.3);transition: transform 0.4s ease-out;background-color: #fac536 !important;background-size: cover !important;border:1px rgba(75, 75, 75, 0.8) solid;border-radius: 25px;}
-  [aria-label^="Minimize"] > svg > rect{display:none;}
-  [aria-label^="Minimize"]{background:none!important;right:var(--title-button-right);margin-top: -40px;transition: margin-top 0.15s ease 0.26s;}
-  body:hover [aria-label^="Minimize"]{margin-top:2px;transition: margin-top 0.8s ease 0.65s;}
+  [aria-label^="Minimise"] > svg:hover, [aria-label^="Minimize"] > svg:hover{transform: scale(1.8);transition: transform 0.2s ease-in-out;background-color: #fbe096 !important;}
+  [aria-label^="Minimise"] > svg, [aria-label^="Minimize"] > svg{transform: scale(1.5);transition: transform 0.4s ease-out;background-color: #fac536 !important;background-size: cover !important;border:1px rgba(75, 75, 75, 0.8) solid;border-radius: 25px;}
+  [aria-label^="Minimise"] > svg > rect, [aria-label^="Minimize"] > svg > rect{display:none;}
+  [aria-label^="Minimise"], [aria-label^="Minimize"]{background:none!important;right:var(--title-button-right);margin-top: -40px;transition: margin-top 0.15s ease 0.26s;}
+  body:hover [aria-label^="Minimise"],body:hover [aria-label^="Minimize"]{margin-top:2px;transition: margin-top 0.8s ease 0.65s;}
 
 /*maximise----------------------------*/
-  [aria-label^="Maximize"] > svg:hover {transform: scale(1.6);transition: transform 0.2s ease-in-out;background-color: #85fb8f !important;}
-  [aria-label^="Maximize"] > svg{transform: scale(1.3);transition: transform 0.4s ease-out;background-color: var(--gren)!important;background-size: cover !important;border:1px rgba(75, 75, 75, 0.8) solid;border-radius:25px;}
-  [aria-label^="Maximize"] > svg > rect{display:none;}
-  [aria-label^="Maximize"]{background:none!important;right:var(--title-button-right);margin-top: -35px;transition: margin-top 0.15s ease 0.4s;}
-  body:hover [aria-label^="Maximize"]{margin-top:2px;transition: margin-top 0.8s ease 0.4s;}
+  [aria-label^="Maximise"] > svg:hover, [aria-label^="Maximize"] > svg:hover  {transform: scale(1.8);transition: transform 0.2s ease-in-out;background-color: #85fb8f !important;}
+  [aria-label^="Maximise"] > svg, [aria-label^="Maximize"] > svg {transform: scale(1.5);transition: transform 0.4s ease-out;background-color: var(--gren)!important;background-size: cover !important;border:1px rgba(75, 75, 75, 0.8) solid;border-radius:25px;}
+  [aria-label^="Maximise"] > svg > rect,   [aria-label^="Maximize"] > svg > rect{display:none;}
+  [aria-label^="Maximise"],  [aria-label^="Maximize"]{background:none!important;right:var(--title-button-right);margin-top: -35px;transition: margin-top 0.15s ease 0.4s;}
+  body:hover [aria-label^="Maximise"], body:hover [aria-label^="Maximize"]{margin-top:2px;transition: margin-top 0.8s ease 0.4s;}
 /*titlebar----------------------------*/
+.titleBar__01af6{margin-bottom: -26px;margin-left:40%;}
+.wordmarkWindows__05c46{display:none;}
+.winButton__88672 > svg {margin-bottom:-10px!important;}
+
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 
@@ -184,10 +189,10 @@ html, body, #app-mount{border-radius: 16px;}
   .pictureInPictureWindow_dc49a8.elevationHigh__80ea8.borderRadius__3965c{border-radius:var(--bradius);box-shadow:none;}
 
 /*Avatars*/
-  [class^="avatar-"], img.avatar__08316,svg.Avatar__mask > foreignObject {mask: none!important;border-radius: 20%;}
+  [class^="avatar-"], img.avatar__08316,svg.Avatar__mask > foreignObject {mask: none!important;border-radius: 10px;}
   .svg_ad7356{border-radius:0;}
   .svg_ad7356 mask{display:none;}
-  .svg_ad7356 foreignObject{border-radius: 5px;}
+  .svg_ad7356 foreignObject{border-radius: 10px;}
 
 /*WHITE SCROLL BARS*/ /*keeps the scroll bars white, so i can fucking see them */
   .auto_a48086::-webkit-scrollbar-thumb {background-color:white!important;}
@@ -254,20 +259,20 @@ html, body, #app-mount{border-radius: 16px;}
     .panels__58331 {border-top-left-radius: 12px; border-top-right-radius: 12px; margin-bottom: -2px;}
     .container__ca50b9 > withTAgAsButton_cc125f{min-width:50px; margin-right:-120px;}
     
-      /*User Area Buttons*/
+      /*User Area Buttons
     .UserPanel__container button.button__4f306, .UserPanel__container span.button__4f306 {right: 100%; padding: 0px; margin: 0px; transition: right 0.85s ease-in-out 0.075s;}
     .sidebar_ded4b5:hover .UserPanel__container button.button__4f306, .UserPanel__container span.button__4f306 {right: 24%; transition: right 0.85s ease-in-out 0.075s;}
     .UserPanel__container .avatar_f8541f {transform: scale(0.8);}
     .panels__58331 div.u.u992.u992__inner.inner_ab95dc > div > a > div, .panels__58331 div.u.u992.u992__inner.inner_ab95dc > div > div > div{opacity:0;transition: 0.5625s ease-in-out;}
-    .panels__58331:hover div.u.u992.u992__inner.inner_ab95dc > div > a > div, .panels__58331:hover div.u.u992.u992__inner.inner_ab95dc > div > div > div{opacity:1;transition: 0.5625s ease-in-out;}
+    .panels__58331:hover div.u.u992.u992__inner.inner_ab95dc > div > a > div, .panels__58331:hover div.u.u992.u992__inner.inner_ab95dc > div > div > div{opacity:1;transition: 0.5625s ease-in-out;}*/
 
-  /* User Area Name */
+  /* User Area Name 
     .withTagAsButton_cc125f, .withTagless__98b7d:hover{min-width: 120px;width:120px;margin-right:5px;transition: 0.11249999999999999s}
     .container_ca50b9:hover .withTagAsButton_cc125f, .container_ca50b9:hover .withTagless__98b7d:hover{min-width: 100px;width:100px;margin-right:25px;transition: 0.11249999999999999s}
     .container_ca50b9 .canCopy__81263 {opacity: 0%; padding: 4px; margin: 0; transition: 0.15000000000000002s ease-in-out 0.075s;}
     .sidebar_ded4b5:hover .UserPanel__nameTag.nameTag__0e320.UserPanel__canCopy.canCopy__81263 {opacity: 100%; transition: 1.3125s ease-in-out 0.075s;}
     .nameTag__0e320 > .panelTitleContainer__7a748 {display: none;}
-    .nameTag__0e320 > .panelSubtextContainer_f28bed > div {font-weight: 700; font-size: 18px; padding-top: 2px; height: 100%; margin-right: 5px;} 
+    .nameTag__0e320 > .panelSubtextContainer_f28bed > div {font-weight: 700; font-size: 18px; padding-top: 2px; height: 100%; margin-right: 5px;} */
 
   /* VC Call User Area */
     .container_d667ff {background: var(--transfull); border-bottom-left-radius: 12px; border-bottom-right-radius: 12px; border-top-right-radius: 0px; border-top-left-radius: 0px;}
@@ -429,9 +434,9 @@ html, body, #app-mount{border-radius: 16px;}
   /*Server Banner bg*/
   div.animatedContainer__341f6{background:var(--transfull);}
 
-  /*Channel Resizer*/
+  /*Channel Resizer
   .sidebar_ded4b5{width:138px;transition: 0.6375s ease-in-out 0.075s;}
-  .sidebar_ded4b5:hover{width:210px;transition: 0.6375s ease-out 0.075s;}
+  .sidebar_ded4b5:hover{width:210px;transition: 0.6375s ease-out 0.075s;}*/
 
   /*Channel Background*/
   .theme-dark .container__590e2{border-radius: 16px 0px 16px 16px;background:var(--blacktrans)!important;}
@@ -576,10 +581,10 @@ html, body, #app-mount{border-radius: 16px;}
 
   /*GUILD SEPERATOR*/
   /*Home Icon*/
-  [data-list-item-id="guildsnav___home"] > div{background-image:url('https://media.discordapp.net/stickers/1092742917535318016.webp?size=96')!important;background-size:contain;background-repeat: no-repeat;}
+  [data-list-item-id="guildsnav___home"] > div{background-image:url('https://media.discordapp.net/stickers/1092742917535318016.webp?size=96');background-size:contain;background-repeat: no-repeat;}
   [data-list-item-id="guildsnav___home"] > div > svg{display:none!important;}
   /*Read all messages button*/
-  div.GuildsSidebar__scroller.scroller__3d071.Scroller__none.none__51a8f.Scroller__scrollerBase.scrollerBase_dc3aa9 > button{width:85%;height:24px;border-radius:4px;transition: 0.22499999999999998s ease-out;margin:6px!important;}
+  div.GuildsSidebar__scroller.scroller__3d071.Scroller__none.none__51a8f.Scroller__scrollerBase.scrollerBase_dc3aa9 > button{width:85%;height:24px;border-radius:4px;transition: 0.22499999999999998s ease-out;margin:6px;}
   .guilds__2b93a:hover div.GuildsSidebar__scroller.scroller__3d071.Scroller__none.none__51a8f.Scroller__scrollerBase.scrollerBase_dc3aa9 > button{width:94%;transition: 0.9375s ease-out 0.075s;}
 
 
@@ -622,15 +627,15 @@ html, body, #app-mount{border-radius: 16px;}
   .unreadMentionsIndicatorBotto_fdb943, .unreadMentionsIndicatorTop_ada847{align-self:center;width:100%;box-shadow:var(--elevation-high);}
 
 /*Guild Sidebar*/
+    .guilds__2b93a{width:70px;/* Change width on hover */transition: 0.41250000000000003s ease-in-out 0.075s;}
     .guilds__2b93a:hover .folderIconWrapper__72239{width:174px;transition: 0.41250000000000003s ease-in-out 0.075s;}
     .folderIconWrapper__72239{ margin: 0px!important;width: 48px;transition: 0.41250000000000003s ease-in-out 0.075s;}
-    .scroller__3d071{padding:12px 12px 0px 5px!important;}
     .GuildListItemIcon__wrapper.wrapper_d281dd,.GuildListFolder__folder.folder__17546{margin-left:6px;width:48px;transition: 0.41250000000000003s ease-in-out 0.075s;}
-    .GuildListFolder__expanded{background-color: var(--blacktrans2)!important;}
     .guilds__2b93a:hover .GuildListItemIcon__wrapper.wrapper_d281dd{width:174px;transition: 0.5625s ease-out 0.075s;}
     .guilds__2b93a:hover .GuildListFolder__folderIconWrapper, .guilds__2b93a:hover GuildListFolder__collapsed{width:174px;transition: 0.5625s ease-out 0.075s;}
     .guilds__2b93a:hover{transition: 0.5625s ease-out 0.075s;width:198px;/* Set the transition for width change */}
-    .guilds__2b93a{width:70px;/* Change width on hover */transition: 0.41250000000000003s ease-in-out 0.075s;}
+    .scroller__3d071{padding:12px 12px 0px 5px!important;}
+    .GuildListFolder__expanded{background-color: var(--blacktrans2)!important;}
 .lowerBadge__669e7 > div,
 .upperBadge_c7cfb3 > div {
     margin-left: 247px;
