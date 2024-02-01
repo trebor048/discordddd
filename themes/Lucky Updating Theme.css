@@ -16,6 +16,13 @@
   --BG-GRADIENT: linear-gradient(120deg, rgba(40, 60, 121, 0.5), rgba(14, 62, 110, 0.5), rgba(29, 78, 111, 0.5));
 }
 
+:root {
+  --word-spacing: 0.05rem;
+  --letter-spacing: 0.02rem;
+}
+/* Apply styles */
+body{word-spacing: var(--word-spacing, initial);letter-spacing: var(--letter-spacing, initial);}
+[class*="group-spacing" i] [class*="timestamp"],[class*="messageContent-" i] time{font-size: 0.9rem;color:rgba(255, 255, 255, 0.15)}
 
  /*Background*/
 #app-mount {
