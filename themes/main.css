@@ -24,7 +24,7 @@
     --hue-cycler-2: #043874;
     --hue-cycler-3: #101455;
     --gradient-colors: var(--hue-cycler-1), var(--hue-cycler-2), var(--hue-cycler-3); /* Define gradient colors */
-    --gradient-speed: 60s; /* Adjust the default speed as needed */
+    --gradient-speed: 10s; /* Adjust the default speed as needed */
   }
   
 
@@ -52,7 +52,7 @@
     background-image: linear-gradient(120deg, var(--gradient-colors)); /* Use the gradient colors variable */
     width: 100%;
     height: 100%; /* Adjust height as needed */
-    background-size: 300% 100%; /* Make the background really big */
+    background-size: 1120% 360%; /* Make the background really big */
     animation: moveGradient var(--gradient-speed) linear infinite; /* Use the CSS variable for animation duration */
      /*background-image: var(--BG-GRADIENT);
      background-size: 120% 750%;
