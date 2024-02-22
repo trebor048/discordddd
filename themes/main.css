@@ -811,7 +811,8 @@
 
  .modeUnreadImportant_efb53e .name__8d1ec {
      color: white;
-     animation: blinkColor 2s infinite;
+     text-transform: uppercase;
+     font-style:oblique;
  }
 
  .GuildChannelInner__unreadImportant.unreadImportant_c775b3 {
@@ -852,14 +853,14 @@
 
  [id^=chat-messages-]:has([id^=message-username-]),
  [id^=chat-messages-]:has(.isSystemMessage__2ef37) {
-     border-top-left-radius: 20px;
-     border-top-right-radius: 20px;
+     border-top-left-radius: 14px;
+     border-top-right-radius: 14px;
      margin-top: 16px;
  }
 
  [id^=chat-messages-]:is( :has(+ [class*=scrollerSpacer__]), :has(+ :not([id^=chat-messages-]) + [id^=chat-messages-] [id^=message-username-]), :has(+ [id^=chat-messages-] [id^=message-username-]), :has(+ [id^=chat-messages-] .isSystemMessage__2ef37)) {
-     border-bottom-left-radius: 20px;
-     border-bottom-right-radius: 20px;
+     border-bottom-left-radius: 14px;
+     border-bottom-right-radius: 14px;
      box-shadow: rgba(0, 0, 0, 0.4) 1px 6px 5px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
  }
 
@@ -1318,3 +1319,11 @@
     background-color: var(--blacktrans);
     border-radius: 8px;
 }
+
+.Typing__base.base__512ed{
+    width:auto;
+    background-color:rgba(0,0,0,0.66);
+    height:30px;
+}
+
+.Channel__form.form__13a2c{margin-bottom:-10px;}
