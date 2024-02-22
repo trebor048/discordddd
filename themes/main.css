@@ -20,9 +20,9 @@
 
 
  :root {
-    --hue-cycler-1: #ff0000; /* Adjust color values as needed */
-    --hue-cycler-2: #00ff00;
-    --hue-cycler-3: #0000ff;
+    --hue-cycler-1: #0064a7; /* Adjust color values as needed */
+    --hue-cycler-2: #043874;
+    --hue-cycler-3: #101455;
     --gradient-colors: var(--hue-cycler-1), var(--hue-cycler-2), var(--hue-cycler-3); /* Define gradient colors */
     --gradient-speed: 60s; /* Adjust the default speed as needed */
   }
