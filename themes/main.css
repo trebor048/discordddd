@@ -23,7 +23,7 @@
     --hue-cycler-2: #043874;
     --hue-cycler-3: #101455;
     --gradient-colors: var(--hue-cycler-1), var(--hue-cycler-2), var(--hue-cycler-3);
-    --gradient-speed: 20s;
+    --gradient-speed: 40s;
   }
   
   @keyframes hueCycler1 {
@@ -51,10 +51,10 @@
   }
   
   #app-mount {
-    background-image: linear-gradient(120deg, var(--gradient-colors));
+    background-image: linear-gradient(120deg, var(--gradient-colors))!important;
     width: 100%;
     height: 100%;
-    background-size: 1120% 360%;
+    background-size: 120% 750%;
     animation: bg var(--gradient-speed) linear infinite;
   }
   
