@@ -18,10 +18,45 @@
      color: rgba(255, 255, 255, 0.15)
  }
 
+
+ :root {
+    --hue-cycler-1: #ff0000; /* Adjust color values as needed */
+    --hue-cycler-2: #00ff00;
+    --hue-cycler-3: #0000ff;
+    --gradient-colors: var(--hue-cycler-1), var(--hue-cycler-2), var(--hue-cycler-3); /* Define gradient colors */
+    --gradient-speed: 60s; /* Adjust the default speed as needed */
+  }
+  
+
+ @keyframes hueCycler1 {
+    0%, 100% {filter: hue-rotate(0deg);}
+    33.33% {filter: hue-rotate(120deg);}
+    66.66% {filter: hue-rotate(240deg);}}
+      
+    @keyframes hueCycler2 {
+    0%, 100% {filter: hue-rotate(0deg);}
+    33.33% {filter: hue-rotate(120deg);}
+    66.66% {filter: hue-rotate(240deg);}}
+      
+    @keyframes hueCycler3 {
+    0%, 100% {filter: hue-rotate(0deg);}
+    33.33% {filter: hue-rotate(120deg);}
+    66.66% {filter: hue-rotate(240deg);}}
+      
+    @keyframes moveGradient {
+    0% {background-position: 0% 50%;}
+    100% {background-position: 100% 50%;}}
+      
+
  #app-mount {
-     background-image: var(--BG-GRADIENT);
+    background-image: linear-gradient(120deg, var(--gradient-colors)); /* Use the gradient colors variable */
+    width: 100%;
+    height: 100%; /* Adjust height as needed */
+    background-size: 300% 100%; /* Make the background really big */
+    animation: moveGradient var(--gradient-speed) linear infinite; /* Use the CSS variable for animation duration */
+     /*background-image: var(--BG-GRADIENT);
      background-size: 120% 750%;
-     animation: bg 60s ease-in-out infinite;
+     animation: bg 60s ease-in-out infinite;*/
  }
 
  :root {
@@ -1327,3 +1362,6 @@
 }
 
 .Channel__form.form__13a2c{margin-bottom:-10px;}
+
+
+
