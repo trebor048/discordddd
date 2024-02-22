@@ -18,44 +18,46 @@
      color: rgba(255, 255, 255, 0.15)
  }
 
-:root {
-  --hue-cycler-1: #0064a7;
-  --hue-cycler-2: #043874;
-  --hue-cycler-3: #101455;
-  --gradient-colors: var(--hue-cycler-1), var(--hue-cycler-2), var(--hue-cycler-3);
-  --gradient-speed: 10s;
-}
-
-@keyframes hueCycler1 {
-  0%, 100% { filter: hue-rotate(0deg); }
-  33.33% { filter: hue-rotate(120deg); }
-  66.66% { filter: hue-rotate(240deg); }
-}
-
-@keyframes hueCycler2 {
-  0%, 100% { filter: hue-rotate(0deg); }
-  33.33% { filter: hue-rotate(120deg); }
-  66.66% { filter: hue-rotate(240deg); }
-}
-
-@keyframes hueCycler3 {
-  0%, 100% { filter: hue-rotate(0deg); }
-  33.33% { filter: hue-rotate(120deg); }
-  66.66% { filter: hue-rotate(240deg); }
-}
-
-@keyframes moveGradient {
-  0% { background-position: 0% 50%; }
-  100%, 200% { background-position: 100% 50%; }
-}
-
-#app-mount {
-  background-image: linear-gradient(120deg, var(--gradient-colors));
-  width: 100%;
-  height: 100%;
-  background-size: 1120% 360%;
-  animation: moveGradient var(--gradient-speed) linear infinite;
-}
+ :root {
+    --hue-cycler-1: #0064a7;
+    --hue-cycler-2: #043874;
+    --hue-cycler-3: #101455;
+    --gradient-colors: var(--hue-cycler-1), var(--hue-cycler-2), var(--hue-cycler-3);
+    --gradient-speed: 20s;
+  }
+  
+  @keyframes hueCycler1 {
+    0%, 100% { filter: hue-rotate(0deg); }
+    33.33% { filter: hue-rotate(120deg); }
+    66.66% { filter: hue-rotate(240deg); }
+  }
+  
+  @keyframes hueCycler2 {
+    0%, 100% { filter: hue-rotate(0deg); }
+    33.33% { filter: hue-rotate(120deg); }
+    66.66% { filter: hue-rotate(240deg); }
+  }
+  
+  @keyframes hueCycler3 {
+    0%, 100% { filter: hue-rotate(0deg); }
+    33.33% { filter: hue-rotate(120deg); }
+    66.66% { filter: hue-rotate(240deg); }
+  }
+  
+  @keyframes moveGradient {
+    0% { background-position: 0% 91%; }
+    50% { background-position: 100% 71%;}
+    100% { background-position: 0% 91%; }
+  }
+  
+  #app-mount {
+    background-image: linear-gradient(120deg, var(--gradient-colors));
+    width: 100%;
+    height: 100%;
+    background-size: 1120% 360%;
+    animation: moveGradient var(--gradient-speed) linear infinite;
+  }
+  
 
 
  :root {
