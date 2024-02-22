@@ -47,7 +47,6 @@
   @keyframes moveGradient {
     0% { background-position: 0% 91%; }
     50% { background-position: 100% 71%;}
-    100% { background-position: 0% 91%; }
   }
   
   #app-mount {
