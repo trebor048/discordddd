@@ -13,8 +13,9 @@
 #app-mount {
       background-image: radial-gradient(circle at bottom, var(--blueg), transparent 80%), linear-gradient(to top, var(--greeng), transparent 70%), linear-gradient(to bottom, transparent, var(--whiteg), var(--blueg));
       animation: bgg 60s infinite
-}.platform-win .bg__12180 {
-      background-image: --var(--TEXTURE);
+}
+.platform-win .bg__12180 {
+      background-image: var(--TEXTURE);
       opacity: var(--textureBrightness);
       background-size: auto;
       background-repeat: round;
