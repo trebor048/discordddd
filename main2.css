@@ -187,7 +187,7 @@
           max-height: 100%;
           aspect-ratio: var(--PIP-aspect-ratio) !important
     }.menu_dc52c6 {
-          background: var(--BG-GRADIENT);
+          background: var(--blacktrans);
           border-radius: var(--bradius)
     }.menu_dc52c6 .button__3ecb4 {
           background-color: var(--blacktrans)
@@ -865,5 +865,5 @@ text-overflow:none;
     }.flex_f5fbb7.horizontal__992f6.justifyStart__42744.alignStretch_e239ef.noWrap__5c413 {
           margin-left: 12px
     }
-
+[class^="imageWrapper_"] img[class^="lazyImg"] { object-fit: contain !important; }
 /*what the heck*/
