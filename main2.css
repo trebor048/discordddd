@@ -26,6 +26,8 @@
     
     
     :root{
+      --__header-bar-background: var(--blacktrans);
+     --profile-body-background-color: var(--blacktrans);
       --brand-experiment: rgb(0, 123, 255);
       --interactive-hover: rgba(var(--brand-experiment), 0.4);
           --transfull: transparent;
@@ -107,6 +109,8 @@
           box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px, var(--brand-experiment) 0px 2px 0px -3px, var(--brand-experiment) 0px -20px 36px -20px inset
     }.vc-channeltabs-tab-container {
           width: calc(100vw - 125px)
+    }.vc-channeltabs-new-button:hover {
+        background:var(--interactive-hover)!important;
     }.titleBar__01af6 [aria-label^=Close]>svg:hover {
           transform: scale(1.6);
           transition: transform .2s ease-in-out;
