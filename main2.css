@@ -27,7 +27,7 @@
     
     
     :root{
-      --__header-bar-background: var(--blacktrans);
+      ----__header-bar-background: var(--blacktrans);
      --profile-body-background-color: var(--blacktrans);
       --brand-experiment: rgb(0, 123, 255);
       --interactive-hover: rgba(var(--brand-experiment), 0.4);
