@@ -1,0 +1,29 @@
+
+[id^=chat-messages-] {
+          background-color: var(--blacktrans);
+          margin: 0 15px;
+          border-radius: 0
+    }[id=new-messages-bar]:not(:has(+[id^=chat-messages-] [id^=message-username-])) {
+          transform-style: preserve-3d
+    }[id=new-messages-bar]:not(:has(+[id^=chat-messages-] [id^=message-username-]))::before {
+          content: "";
+          background-color: #070707;
+          width: calc(100% + 30px);
+          height: 9px;
+          position: absolute;
+          top: -5px;
+          left: -16px;
+          transform: translateZ(-1px)
+    }[id^=chat-messages-]:has(.isSystemMessage__2ef37),
+    [id^=chat-messages-]:has([id^=message-username-]) {
+          border-top-left-radius: 14px;
+          border-top-right-radius: 14px
+    }[id^=chat-messages-]:is(:has(+[class*=scrollerSpacer__]), :has(+:not([id^=chat-messages-])+[id^=chat-messages-] [id^=message-username-]), :has(+[id^=chat-messages-] [id^=message-username-])) {
+          border-bottom-left-radius: 14px;
+          border-bottom-right-radius: 14px;
+          box-shadow: rgba(0, 0, 0, .4) 1px 6px 5px, rgba(0, 0, 0, .3)0 7px 13px -3px, rgba(0, 0, 0, .2)0-3px 0 inset
+    }.message__80c10:not(.groupStart__56db5) .headerText_f47574 {
+          display: none
+    }.groupStart__56db5 {
+          margin-top: 15px !important
+    }
