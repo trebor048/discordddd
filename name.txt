@@ -9,32 +9,14 @@ const fontFamilies: Record<string, string> = {
     'Amazonas.ttf': 'Amazonas',
     'AnonymousPro-Bold.ttf': 'Anonymous Pro',
     'AnonymousPro-Regular.ttf': 'Anonymous Pro',
-<<<<<<< HEAD
-=======
-    'AntipastoPro-Bold_trial.ttf': 'Antipasto Pro Bold',
-    'AntipastoPro-Extralight_trial.ttf': 'Antipasto Pro Extralight',
->>>>>>> 2fe50a82bd75bfacd8c02fc9544fe55e22dca495
     'Aotani-Bold.ttf': 'Aotani Bold',
     'Aotani-ExtraBold.ttf': 'Aotani Extra Bold',
     'Aotani-Light.ttf': 'Aotani Light ',
     'Aotani-Medium.ttf': 'Aotani Medium',
     'Arcon-Regular_MOD_by_zFontTool.ttf': 'Arcon',
     'Arcon-Rounded-Regular_MOD_by_zFontTool.ttf': 'Arcon Rounded-',
-<<<<<<< HEAD
     'AvantGarde.ttf': 'AvantGarde-Book Th',
     'AveriaLibre-Bold.ttf': 'Averia Libre',
-=======
-    'Arista-Pro-Alternate-Bold-trial.ttf': 'Arista Pro Alternate Bold',
-    'Arista-Pro-Alternate-ExtraLight-trial.ttf': 'Arista Pro Alternate ExtraLight',
-    'Arista-Pro-Bold-trial.ttf': 'Arista Pro Bold',
-    'Arista-Pro-ExtraLight-trial.ttf': 'Arista Pro ExtraLight',
-    'Aristotelica-Display-Bold-trial (1).ttf': 'Aristotelica Display Trial',
-    'Aristotelica-Display-Bold-trial.ttf': 'Aristotelica Display Trial',
-    'Aristotelica-Display-ExtraLight-trial.ttf': 'Aristotelica Display Trial',
-    'AvantGarde.ttf': 'AvantGarde-Book Th',
-    'AveriaLibre-Bold.ttf': 'Averia Libre',
-    'bariol_bold-webfont.ttf': 'Bariol Bold',
->>>>>>> 2fe50a82bd75bfacd8c02fc9544fe55e22dca495
     'Bellota-Bold.ttf': 'Bellota',
     'Bellota-Light.ttf': 'Bellota Light',
     'BeVietnamPro-Black.ttf': 'Be Vietnam Pro Black',
@@ -54,10 +36,6 @@ const fontFamilies: Record<string, string> = {
     'cabin.medium.ttf': 'Cabin',
     'cabin.regular.ttf': 'Cabin',
     'cabin.semibold.ttf': 'Cabin',
-<<<<<<< HEAD
-=======
-    'Caviar.ttf': 'Caviar Dreams',
->>>>>>> 2fe50a82bd75bfacd8c02fc9544fe55e22dca495
     'CaviarDreamBold.ttf': 'Caviar Dreams',
     'CaviarDreams-Bofa.ttf': 'Caviar Dreams',
     'CaviarDreams-Bold.ttf': 'Caviar Dreams',
@@ -70,12 +48,6 @@ const fontFamilies: Record<string, string> = {
     'CircularSpotifyTxT-Light.ttf': 'Circular Spotify Tx T Light',
     'Clockopia.ttf': 'UKIJ Qolyazma',
     'ClockopiaBIG.ttf': 'UKIJ Qolyazma',
-<<<<<<< HEAD
-=======
-    'Codec-Cold-Light-trial.ttf': 'Codec Cold Trial',
-    'Codec-Warm-Light-trial.ttf': 'Codec Warm Trial',
-    'CodecPro-Italic.ttf': 'Codec Pro',
->>>>>>> 2fe50a82bd75bfacd8c02fc9544fe55e22dca495
     'CodecPro-Regular.ttf': 'Codec Pro',
     'Comfortaa-Bold.ttf': 'Comfortaa',
     'Comfortaa-Light.ttf': 'Comfortaa Light',
@@ -89,10 +61,6 @@ const fontFamilies: Record<string, string> = {
     'CormorantInfant-Light.ttf': 'Cormorant Infant Light',
     'CormorantInfant-Regular.ttf': 'Cormorant Infant',
     'criticized.ttf': 'Criticized',
-<<<<<<< HEAD
-=======
-    'cunt.ttf': 'SF Pro Display',
->>>>>>> 2fe50a82bd75bfacd8c02fc9544fe55e22dca495
     'DarkerGrotesque-Light.ttf': 'Darker Grotesque Light',
     'Dearest.ttf': 'Dearest',
     'debussy.ttf': 'Debussy',
@@ -109,10 +77,6 @@ const fontFamilies: Record<string, string> = {
     'EXCITE__.ttf': 'Excite',
     'Explora.ttf': 'Explora',
     'Fabada-regular.ttf': 'Fabada',
-<<<<<<< HEAD
-=======
-    'fak.ttf': 'Spartan ExtraLight',
->>>>>>> 2fe50a82bd75bfacd8c02fc9544fe55e22dca495
     'FontsFree-Net-SF-Pro-Rounded-Regular.ttf': 'SF Pro Rounded',
     'FontsFree-Net-SF-UI-Display-Ultralight.ttf': 'SF UI Display',
     'FontsFree-Net-SFProDisplay-Light.ttf': 'SF Pro Display',
@@ -134,25 +98,14 @@ const fontFamilies: Record<string, string> = {
     'HeroLight.ttf': 'Hero Light',
     'HomemadeApple-Regular.ttf': 'Homemade Apple',
     'Intimacy.ttf': 'Intimacy',
-<<<<<<< HEAD
     'ios.ttf': 'Noto Color Emoji',
     'Itim-Regular.ttf': 'Itim',
     'JosefinSans-Bold.ttf': 'Josefin Sans',
     'JosefinSans-ExtraLight.ttf': 'Josefin Sans ExtraLight',
-=======
-    'Itim-Regular.ttf': 'Itim',
-    'JosefinSans-Bold.ttf': 'Josefin Sans',
-    'JosefinSans-ExtraLight.ttf': 'Josefin Sans ExtraLight',
-    'JosefinSans-Italic-VariableFont_wght.ttf': 'Josefin Sans Thin',
->>>>>>> 2fe50a82bd75bfacd8c02fc9544fe55e22dca495
     'JosefinSans-Light.ttf': 'Josefin Sans Light',
     'JosefinSans-Medium.ttf': 'Josefin Sans Medium',
     'JosefinSans-Regular.ttf': 'Josefin Sans',
     'JosefinSans-SemiBold.ttf': 'Josefin Sans SemiBold',
-<<<<<<< HEAD
-=======
-    'JosefinSans-SemiBoldItalic.ttf': 'Josefin Sans SemiBold',
->>>>>>> 2fe50a82bd75bfacd8c02fc9544fe55e22dca495
     'JosefinSans-Thin.ttf': 'Josefin Sans Thin',
     'JosefinSans-VariableFont_wght.ttf': 'Josefin Sans Thin',
     'JosefinSlab-ExtraLight.ttf': 'Josefin Slab ExtraLight',
@@ -164,16 +117,10 @@ const fontFamilies: Record<string, string> = {
     'Jura-VariableFont_wght.ttf': 'Jura Light',
     'Kelvetica.ttf': 'Kelvetica',
     'KGThinkingOutLoud.ttf': 'KG Thinking Out Loud',
-<<<<<<< HEAD
     'KleeOne-Regular.ttf': 'Klee One',
     'KleeOne-SemiBold.ttf': 'Klee One SemiBold',
     'Lastwaerk black oblique.ttf': 'Lastwaerk black',
     'Lastwaerk black.ttf': 'Lastwaerk black',
-=======
-    'Lastwaerk black oblique.ttf': 'Lastwaerk black',
-    'Lastwaerk black.ttf': 'Lastwaerk black',
-    'Lastwaerk bold (1).ttf': 'Lastwaerk bold',
->>>>>>> 2fe50a82bd75bfacd8c02fc9544fe55e22dca495
     'Lastwaerk bold oblique.ttf': 'Lastwaerk bold',
     'Lastwaerk bold.ttf': 'Lastwaerk bold',
     'Lastwaerk light oblique.ttf': 'Lastwaerk light',
@@ -238,10 +185,6 @@ const fontFamilies: Record<string, string> = {
     'PetitaBold.ttf': 'PetitaBold',
     'PoiretOne-Regular.ttf': 'Poiret One',
     'Poppins-ExtraLight.ttf': 'Poppins ExtraLight',
-<<<<<<< HEAD
-=======
-    'Proxima-Nova-Soft-Semibold.ttf': 'ProximaNovaSoft-Semibold',
->>>>>>> 2fe50a82bd75bfacd8c02fc9544fe55e22dca495
     'Questrial-Regular.ttf': 'Questrial',
     'Questrial_Regular.ttf': 'Questrial',
     'Quicksand-Bold.ttf': 'Quicksand',
@@ -311,15 +254,8 @@ const fontFamilies: Record<string, string> = {
     'Street Corner Extend.ttf': 'Street Corner Extend',
     'Street Corner Narrow.ttf': 'Street Corner Narrow',
     'Street Corner SemiBold.ttf': 'Street Corner SemiBold',
-<<<<<<< HEAD
     'Street Corner Thin.ttf': 'Street Corner Thin',
     'Street Corner.ttf': 'Street Corner',
-=======
-    'Street Corner Slab HyperExtend.ttf': 'Street Corner Slab HyperExtend',
-    'Street Corner Thin.ttf': 'Street Corner Thin',
-    'Street Corner.ttf': 'Street Corner',
-    'StudioGothic-ExtraBoldItalic Trial.ttf': 'Studio Gothic Trial',
->>>>>>> 2fe50a82bd75bfacd8c02fc9544fe55e22dca495
     'StudioGothicAlternate-ExtraLigh Trial.ttf': 'Studio Gothic Alternate Trial',
     'SulphurPoint-Light.ttf': 'Sulphur Point Light',
     'Syne-Bold.ttf': 'Syne',
@@ -327,10 +263,6 @@ const fontFamilies: Record<string, string> = {
     'Syne-Medium.ttf': 'Syne Medium',
     'Syne-Regular.ttf': 'Syne',
     'Syne-SemiBold.ttf': 'Syne SemiBold',
-<<<<<<< HEAD
-=======
-    'Syne-VariableFont_wght (1).ttf': 'Syne',
->>>>>>> 2fe50a82bd75bfacd8c02fc9544fe55e22dca495
     'Syne-VariableFont_wght.ttf': 'Syne',
     'SyneMono-Regular.ttf': 'Syne Mono',
     'tecnico_bold.ttf': 'Tecnico',
@@ -344,8 +276,4 @@ const fontFamilies: Record<string, string> = {
     'Urbanist-ExtraLight.ttf': 'Urbanist ExtraLight',
     'Urbanist-VariableFont_wght.ttf': 'Urbanist',
     'Winter.ttf': 'Winter',
-<<<<<<< HEAD
 };
-=======
-};
->>>>>>> 2fe50a82bd75bfacd8c02fc9544fe55e22dca495
