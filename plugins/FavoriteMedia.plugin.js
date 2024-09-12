@@ -1,10 +1,11 @@
 /**
  * @name FavoriteMedia
- * @description Allows to favorite GIFs, images, videos and audios.
- * @version 1.7.3
+ * @description Allows to favorite GIFs, images, videos, audios and files.
+ * @version 1.10.1
  * @author Dastan
  * @authorId 310450863845933057
  * @source https://github.com/Dastan21/BDAddons/blob/main/plugins/FavoriteMedia
+ * @donate https://ko-fi.com/dastan
  */
 /*@cc_on
 @if (@_jscript)
@@ -36,78 +37,39 @@ const config = {
     author: "Dastan",
     authorId: "310450863845933057",
     authorLink: "",
-    version: "1.7.3",
-    description: "Allows to favorite GIFs, images, videos and audios.",
+    version: "1.10.1",
+    description: "Allows to favorite GIFs, images, videos, audios and files.",
     website: "",
     source: "https://github.com/Dastan21/BDAddons/blob/main/plugins/FavoriteMedia",
     patreon: "",
-    donate: "",
+    donate: "https://ko-fi.com/dastan",
     invite: "",
     defaultConfig: [
         {
             type: "switch",
             id: "hideUnsortedMedias",
-            name: "Hide Medias",
-            note: "Hide unsorted medias from the picker tab",
+            name: "Hide medias",
+            note: "Hide medias in the picker tab which are in a category",
             value: true
         },
         {
             type: "switch",
             id: "hideThumbnail",
-            name: "Hide Thumbnail",
+            name: "Hide thumbnail",
             note: "Show the category color instead of a random media thumbnail",
             value: false
         },
         {
             type: "switch",
-            id: "alwaysUploadFile",
-            name: "Always upload as file",
-            note: "Uploads media as file instead of sending a link",
-            value: false
-        },
-        {
-            type: "switch",
-            id: "alwaysDeleteDeadMedias",
-            name: "Always delete dead medias",
-            note: "Automatically remove no longer available medias",
-            value: false
-        },
-        {
-            type: "switch",
-            id: "disableMediasTabKeybind",
-            name: "Disable medias tab keybind",
-            note: "Disable media tab opening with CTRL+ALT+I/V/A",
-            value: false
-        },
-        {
-            type: "dropdown",
-            id: "alwaysSendUpload",
-            name: "Send/upload instantly medias",
-            note: "Send instantly medias links and/or files",
-            value: "both",
-            options: [
-                {
-                    label: "None",
-                    value: "none"
-                },
-                {
-                    label: "Links",
-                    value: "link"
-                },
-                {
-                    label: "Files",
-                    value: "file"
-                },
-                {
-                    label: "Both",
-                    value: "both"
-                }
-            ]
+            id: "allowCaching",
+            name: "Allow medias preview caching",
+            note: "Uses local offline database to cache medias preview",
+            value: true
         },
         {
             type: "slider",
             id: "mediaVolume",
-            name: "Preview Media Volume",
+            name: "Preview media volume",
             note: "Volume of the previews medias on the picker tab",
             min: 0,
             max: 100,
@@ -127,33 +89,37 @@ const config = {
             value: 10
         },
         {
+            type: "dropdown",
+            id: "maxMediasPerPage",
+            name: "Max medias per page",
+            note: "The maximum amount of displayed medias per page in the picker tab",
+            value: 50,
+            options: [
+                {
+                    label: "20",
+                    value: 20
+                },
+                {
+                    label: "50",
+                    value: 50
+                },
+                {
+                    label: "100",
+                    value: 100
+                }
+            ]
+        },
+        {
             type: "category",
             id: "position",
-            name: "Buttons Position",
+            name: "Buttons position",
             collapsible: true,
             shown: false,
             settings: [
                 {
                     type: "dropdown",
-                    id: "btnsPosition",
-                    name: "Buttons Direction",
-                    note: "Direction of the buttons on the chat",
-                    value: "right",
-                    options: [
-                        {
-                            label: "Right",
-                            value: "right"
-                        },
-                        {
-                            label: "Left",
-                            value: "left"
-                        }
-                    ]
-                },
-                {
-                    type: "dropdown",
                     id: "btnsPositionKey",
-                    name: "Buttons Relative Position",
+                    name: "Buttons relative position",
                     note: "Near which other button the buttons have to be placed",
                     value: "emoji",
                     options: [
@@ -174,13 +140,30 @@ const config = {
                             value: "emoji"
                         }
                     ]
+                },
+                {
+                    type: "dropdown",
+                    id: "btnsPosition",
+                    name: "Buttons direction",
+                    note: "Direction of the buttons on the chat",
+                    value: "right",
+                    options: [
+                        {
+                            label: "Right",
+                            value: "right"
+                        },
+                        {
+                            label: "Left",
+                            value: "left"
+                        }
+                    ]
                 }
             ]
         },
         {
             type: "category",
             id: "gif",
-            name: "GIF Settings",
+            name: "GIFs settings",
             collapsible: true,
             shown: false,
             settings: [
@@ -190,13 +173,27 @@ const config = {
                     name: "General",
                     note: "Replace Discord GIFs tab",
                     value: true
+                },
+                {
+                    type: "switch",
+                    id: "alwaysSendInstantly",
+                    name: "Instant send",
+                    note: "Send instantly medias links and/or files",
+                    value: true
+                },
+                {
+                    type: "switch",
+                    id: "alwaysUploadFile",
+                    name: "Always upload as file",
+                    note: "Uploads media as file instead of sending a link",
+                    value: false
                 }
             ]
         },
         {
             type: "category",
             id: "image",
-            name: "Image Settings",
+            name: "Images settings",
             collapsible: true,
             shown: false,
             settings: [
@@ -204,29 +201,43 @@ const config = {
                     type: "switch",
                     id: "enabled",
                     name: "General",
-                    note: "Enable images",
+                    note: "Enable this type of media",
                     value: true
                 },
                 {
                     type: "switch",
                     id: "showBtn",
                     name: "Button",
-                    note: "Show image button on chat",
+                    note: "Show button on chat",
                     value: true
                 },
                 {
                     type: "switch",
                     id: "showStar",
                     name: "Star",
-                    note: "Show favorite star on image medias",
+                    note: "Show favorite star on medias",
                     value: true
+                },
+                {
+                    type: "switch",
+                    id: "alwaysSendInstantly",
+                    name: "Instant send",
+                    note: "Send instantly medias links and/or files",
+                    value: true
+                },
+                {
+                    type: "switch",
+                    id: "alwaysUploadFile",
+                    name: "Upload",
+                    note: "Uploads media as file instead of sending a link",
+                    value: false
                 }
             ]
         },
         {
             type: "category",
             id: "video",
-            name: "Video Settings",
+            name: "Videos settings",
             collapsible: true,
             shown: false,
             settings: [
@@ -234,29 +245,43 @@ const config = {
                     type: "switch",
                     id: "enabled",
                     name: "General",
-                    note: "Enable videos",
+                    note: "Enable this type of media",
                     value: true
                 },
                 {
                     type: "switch",
                     id: "showBtn",
                     name: "Button",
-                    note: "Show video button on chat",
+                    note: "Show button on chat",
                     value: true
                 },
                 {
                     type: "switch",
                     id: "showStar",
                     name: "Star",
-                    note: "Show favorite star on video medias",
+                    note: "Show favorite star on medias",
                     value: true
+                },
+                {
+                    type: "switch",
+                    id: "alwaysSendInstantly",
+                    name: "Instant send",
+                    note: "Send instantly medias links and/or files",
+                    value: true
+                },
+                {
+                    type: "switch",
+                    id: "alwaysUploadFile",
+                    name: "Upload",
+                    note: "Uploads media as file instead of sending a link",
+                    value: false
                 }
             ]
         },
         {
             type: "category",
             id: "audio",
-            name: "Audio Settings",
+            name: "Audios settings",
             collapsible: true,
             shown: false,
             settings: [
@@ -264,33 +289,87 @@ const config = {
                     type: "switch",
                     id: "enabled",
                     name: "General",
-                    note: "Enable audios",
+                    note: "Enable this type of media",
                     value: true
                 },
                 {
                     type: "switch",
                     id: "showBtn",
                     name: "Button",
-                    note: "Show audio button on chat",
+                    note: "Show button on chat",
                     value: true
                 },
                 {
                     type: "switch",
                     id: "showStar",
                     name: "Star",
-                    note: "Show favorite star on audio medias",
+                    note: "Show favorite star on medias",
                     value: true
+                }
+            ]
+        },
+        {
+            type: "category",
+            id: "file",
+            name: "Files settings",
+            collapsible: true,
+            shown: false,
+            settings: [
+                {
+                    type: "switch",
+                    id: "enabled",
+                    name: "General",
+                    note: "Enable this type of media",
+                    value: true
+                },
+                {
+                    type: "switch",
+                    id: "showBtn",
+                    name: "Button",
+                    note: "Show button on chat",
+                    value: true
+                },
+                {
+                    type: "switch",
+                    id: "showStar",
+                    name: "Star",
+                    note: "Show favorite star on medias",
+                    value: true
+                },
+                {
+                    type: "switch",
+                    id: "alwaysSendInstantly",
+                    name: "Instant send",
+                    note: "Send instantly medias links and/or files",
+                    value: true
+                },
+                {
+                    type: "switch",
+                    id: "alwaysUploadFile",
+                    name: "Upload",
+                    note: "Uploads media as file instead of sending a link",
+                    value: false
                 }
             ]
         }
     ],
     changelog: [
         {
+            title: "Features",
+            type: "added",
+            items: [
+                "Added new medias type: `file`",
+                "Added medias previews cache (go to Local database, near media search, and do 'Cache all medias')",
+                "Added medias import",
+                "Added fixed category thumbnail (not random)",
+                "Added settings translations"
+            ]
+        },
+        {
             title: "Bugs",
             type: "fixed",
             items: [
-                "Reworked how to get medias dimensions to avoid floating/clipping medias (should be more stable)",
-                "Removed medias preloading (causes slowness & crashes above 1k+)"
+                "Fixed wheel/middle-click on images not working"
             ]
         }
     ]
@@ -325,71 +404,71 @@ if (!global.ZeresPluginLibrary) {
 module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
      const plugin = (Plugin, Library) => {
   const {
-    WebpackModules,
     ReactComponents,
     ContextMenu,
     Utilities,
     ColorConverter,
-    Toasts,
-    Modals,
-    Tooltip,
     DOMTools,
     ReactTools,
+    Settings,
     DiscordModules: {
       React,
       ElectronModule,
       Dispatcher,
-      LocaleManager,
       MessageStore,
       SelectedChannelStore,
       ChannelStore,
-      UserStore,
       Permissions,
-      Strings
-    }, Patcher
+      Strings,
+    }, Patcher,
   } = Library
-  const { mkdir, lstat, writeFile } = require('fs')
+  const { mkdir, lstat, readFileSync, writeFileSync } = require('fs')
   const path = require('path')
-  const https = require('https')
-  const BdApi = new window.BdApi('FavoriteMedia')
-  const { Webpack, openDialog } = BdApi
+  const BdApi = new window.BdApi(config.name)
+  const { Webpack, Net, Plugins, ContextMenu: BDContextMenu, UI: { openDialog, showToast, createTooltip, showConfirmationModal } } = BdApi
+  const plugin = Plugins.get(config.name)
 
   const classModules = {
-    icon: WebpackModules.getByProps('hoverScale', 'buttonWrapper', 'button'),
-    menu: WebpackModules.getByProps('menu', 'scroller', 'colorDefault'),
-    result: WebpackModules.getByProps('desiredItemWidth', 'results', 'result'),
-    input: WebpackModules.getByProps('inputWrapper', 'input', 'focused'),
-    role: WebpackModules.getByProps('roleCircle'),
-    _gif: WebpackModules.getByProps('container', 'gifFavoriteButton', 'embedWrapper'),
-    gif: WebpackModules.getByProps('size', 'gifFavoriteButton', 'selected'),
-    image: WebpackModules.getByProps('flexCenter', 'imageWrapper', 'imageWrapperBackground'),
-    control: WebpackModules.getByProps('container', 'labelRow', 'control'),
-    category: WebpackModules.getByProps('container', 'categoryFade', 'categoryFadeBlurple'),
-    textarea: WebpackModules.getByProps('textAreaHeight', 'channelTextArea', 'highlighted'),
-    gutter: WebpackModules.getByProps('gutterSize', 'container', 'content'),
-    _flex: WebpackModules.getByProps('_flex', '_horizontal', '_horizontalReverse'),
-    flex: WebpackModules.getByProps('flex', 'alignStart', 'alignEnd'),
-    title: WebpackModules.getByProps('title', 'h1', 'h2'),
-    container: WebpackModules.getByProps('container', 'inner', 'pointer'),
-    scroller: WebpackModules.getByProps('scrollerBase', 'thin', 'fade'),
-    look: WebpackModules.getByProps('lowSaturationUnderline', 'button', 'lookFilled'),
-    audio: WebpackModules.getByProps('wrapper', 'wrapperAudio', 'wrapperPaused'),
-    contentWrapper: WebpackModules.getByProps('contentWrapper', 'resizeHandle', 'drawerSizingWrapper'),
-    buttons: WebpackModules.getByProps('profileBioInput', 'buttons', 'attachButton')
+    icon: Webpack.getByKeys('icon', 'active', 'buttonWrapper'),
+    menu: Webpack.getByKeys('menu', 'labelContainer', 'colorDefault'),
+    result: Webpack.getByKeys('result', 'emptyHints', 'emptyHintText'),
+    input: Webpack.getByKeys('inputDefault', 'inputWrapper', 'inputPrefix'),
+    role: Webpack.getByKeys('roleCircle', 'dot'),
+    gif: Webpack.getByKeys('size', 'gifFavoriteButton', 'selected'),
+    gif2: Webpack.getByKeys('container', 'gifFavoriteButton', 'embedWrapper'),
+    image: Webpack.getByKeys('clickable', 'imageWrapper', 'imageAccessory'),
+    control: Webpack.getByKeys('container', 'labelRow', 'control'),
+    category: Webpack.getByKeys('container', 'categoryFade', 'categoryName'),
+    textarea: Webpack.getByKeys('channelTextArea', 'buttonContainer', 'button'),
+    gutter: Webpack.getByKeys('header', 'backButton', 'searchHeader'),
+    horizontal: Webpack.getByKeys('flex', 'flexChild', 'horizontal'),
+    flex: Webpack.getByKeys('flex', 'alignStart', 'alignEnd'),
+    title: Webpack.getByKeys('title', 'h1', 'h5'),
+    container: Webpack.getByKeys('container', 'inner', 'pointer'),
+    scroller: Webpack.getByKeys('disableScrollAnchor', 'thin', 'fade'),
+    look: Webpack.getByKeys('button', 'lookBlank', 'colorBrand'),
+    audio: Webpack.getByKeys('wrapperAudio', 'wrapperPaused', 'wrapperPlaying'),
+    contentWrapper: Webpack.getByKeys('contentWrapper', 'nav', 'positionLayer'),
+    buttons: Webpack.getByKeys('profileBioInput', 'buttons', 'attachButton'),
+    upload: Webpack.getByKeys('actionBarContainer', 'actionBar', 'upload'),
+    button: Webpack.getByKeys('button', 'separator', 'dangerous'),
+    color: Webpack.getByKeys('colorStandard', 'colorBrand', 'colorError'),
+    visual: Webpack.getByKeys('nonVisualMediaItemContainer', 'nonVisualMediaItem', 'visualMediaItemContainer'),
+    code: Webpack.getByKeys('newMosaicStyle', 'attachmentName', 'codeView'),
   }
   const classes = {
     icon: {
       icon: classModules.icon.icon,
       active: classModules.icon.active,
       button: classModules.icon.button,
-      buttonWrapper: classModules.icon.buttonWrapper
+      buttonWrapper: classModules.icon.buttonWrapper,
     },
     menu: {
       item: classModules.menu.item,
       labelContainer: classModules.menu.labelContainer,
       label: classModules.menu.label,
       colorDefault: classModules.menu.colorDefault,
-      focused: classModules.menu.focused
+      focused: classModules.menu.focused,
     },
     result: {
       result: classModules.result.result,
@@ -400,26 +479,26 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
       emptyHintFavorite: classModules.result.emptyHintFavorite,
       emptyHintText: classModules.result.emptyHintText,
       gif: classModules.result.gif,
-      endContainer: classModules.result.endContainer
+      endContainer: classModules.result.endContainer,
     },
     input: {
       inputDefault: classModules.input.inputDefault,
-      inputWrapper: classModules.input.inputWrapper
+      inputWrapper: classModules.input.inputWrapper,
     },
     roleCircle: classModules.role.roleCircle,
     gif: {
-      gifFavoriteButton1: classModules._gif.gifFavoriteButton,
+      gifFavoriteButton1: classModules.gif2.gifFavoriteButton,
       size: classModules.gif.size,
       gifFavoriteButton2: classModules.gif.gifFavoriteButton,
       selected: classModules.gif.selected,
       showPulse: classModules.gif.showPulse,
-      icon: classModules.gif.icon
+      icon: classModules.gif.icon,
     },
     image: {
       imageAccessory: classModules.image.imageAccessory,
       clickable: classModules.image.clickable,
-      embedWrapper: classModules._gif.embedWrapper,
-      imageWrapper: classModules.image.imageWrapper
+      embedWrapper: classModules.gif2.embedWrapper,
+      imageWrapper: classModules.image.imageWrapper,
     },
     control: classModules.control.control,
     category: {
@@ -427,12 +506,12 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
       categoryText: classModules.category.categoryText,
       categoryName: classModules.category.categoryName,
       categoryIcon: classModules.category.categoryIcon,
-      container: classModules.category.container
+      container: classModules.category.container,
     },
     textarea: {
       channelTextArea: classModules.textarea.channelTextArea,
       buttonContainer: classModules.textarea.buttonContainer,
-      button: classModules.textarea.button
+      button: classModules.textarea.button,
     },
     gutter: {
       header: classModules.gutter.header,
@@ -440,14 +519,14 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
       searchHeader: classModules.gutter.searchHeader,
       searchBar: classModules.gutter.searchBar,
       content: classModules.gutter.content,
-      container: classModules.gutter.container
+      container: classModules.gutter.container,
     },
     flex: {
-      flex: classModules._flex.flex,
-      horizontal: classModules._flex.horizontal,
+      flex: classModules.horizontal.flex,
+      horizontal: classModules.horizontal.horizontal,
       justifyStart: classModules.flex.justifyStart,
       alignCenter: classModules.flex.alignCenter,
-      noWrap: classModules.flex.noWrap
+      noWrap: classModules.flex.noWrap,
     },
     h5: classModules.title.h5,
     container: {
@@ -459,76 +538,136 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
       iconContainer: classModules.container.iconContainer,
       pointer: classModules.container.pointer,
       clear: classModules.container.clear,
-      visible: classModules.container.visible
+      visible: classModules.container.visible,
     },
     scroller: {
       thin: classModules.scroller.thin,
-      scrollerBase: classModules.scroller.scrollerBase,
       fade: classModules.scroller.fade,
-      content: classModules.scroller.content
+      content: classModules.scroller.content,
     },
     look: {
       button: classModules.look.button,
       lookBlank: classModules.look.lookBlank,
       colorBrand: classModules.look.colorBrand,
       grow: classModules.look.grow,
-      contents: classModules.look.contents
+      contents: classModules.look.contents,
     },
     audio: {
-      wrapperAudio: classModules.audio.wrapperAudio
+      wrapperAudio: classModules.audio.wrapperAudio,
     },
     contentWrapper: {
-      contentWrapper: classModules.contentWrapper.contentWrapper
+      contentWrapper: classModules.contentWrapper.contentWrapper,
     },
     buttons: {
-      buttons: classModules.buttons.buttons
-    }
+      buttons: classModules.buttons.buttons,
+      button: classModules.button.button,
+    },
+    upload: {
+      actionBarContainer: classModules.upload.actionBarContainer,
+    },
+    color: {
+      colorStandard: classModules.color.colorStandard,
+    },
+    visual: {
+      nonVisualMediaItemContainer: classModules.visual.nonVisualMediaItemContainer,
+    },
+    code: {
+      newMosaicStyle: classModules.code.newMosaicStyle,
+    },
   }
 
   const canClosePicker = { context: '', value: true }
-  let closeExpressionPickerKey = ''
   let currentChannelId = ''
   let currentTextareaInput = null
+  let closeExpressionPickerKey = ''
 
   let ChannelTextAreaButtons
-  let ComponentDispatch
+  const ComponentDispatch = Webpack.getAllByKeys('safeDispatch', 'dispatchToLastSubscribed', { searchExports: true })?.slice(-1)?.[0]
   const EPS = {}
   const EPSModules = Webpack.getModule(m => Object.keys(m).some(key => m[key]?.toString?.().includes('isSearchSuggestion')))
   const EPSConstants = Webpack.getModule(Webpack.Filters.byProps('FORUM_CHANNEL_GUIDELINES', 'CREATE_FORUM_POST'), { searchExports: true })
   const GIFUtils = {
-    favorite: Webpack.getModule(m => m.toString?.()?.includes('updateAsync("favoriteGifs'), { searchExports: true }),
-    unfavorite: Webpack.getModule(m => m.toString?.()?.includes('delete t.gifs'), { searchExports: true })
+    favorite: Webpack.getByStrings('Object.values(t.gifs)', { searchExports: true }),
+    unfavorite: Webpack.getByStrings('delete t.gifs', { searchExports: true }),
   }
   const PermissionsConstants = Webpack.getModule(Webpack.Filters.byProps('ADD_REACTIONS'), { searchExports: true })
-  const MediaPlayer = Webpack.getModule(m => m.Types?.VIDEO, { searchExports: true })
-  const Image = Webpack.getModule(m => m.defaultProps?.zoomable)
+  const MediaPlayerModule = Webpack.getModule(m => m.Types?.VIDEO, { searchExports: true })
+  const ImageModule = Webpack.getAllByStrings('readyState', 'zoomable', 'minHeight', { searchExports: true })?.slice(-1)?.[0]
+  const FileModule = Webpack.getByStrings('fileName', 'fileSize', 'renderAdjacentContent', { defaultExport: false })
+  const FileRenderedModule = Webpack.getByStrings('getObscureReason', 'mediaLayoutType', { defaultExport: false })
   const FilesUpload = Webpack.getModule(Webpack.Filters.byProps('addFiles'))
   const MessagesManager = Webpack.getModule(Webpack.Filters.byProps('sendMessage'))
+  const PageControl = Webpack.getModule(m => typeof m === 'function' && m.toString()?.includes('totalCount'), { searchExports: true })
+  const DiscordComponents = Webpack.getByKeys('Button', 'Card', 'Modal')
 
   const DEFAULT_BACKGROUND_COLOR = '#202225'
-  const MediaLoadFailImg = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAABVCAYAAACBzexXAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAxtSURBVHhe7Z17cBXVGcC/b3fvKyFvDCDUgCCd0lKpL5BAEhIgGCBoASmjdKYdSnW0Wlst9I+OdsaOTK3tTGtbpZ1pdRxxLD5AURKQCAKiKIgPKFIUEEkIgUCSe3Mfu/v1O2c3EDqRkAA153p+M5s9+7h3d+/3Pmd3AxqNRqPRaDQajUaj0Wg0Go1Go9FoNBqNRqPRaDQajSaNQH+eVtAlMxASSYSWqL+mJxCAYQDkZRMee4UXNEpAhTORQqUmwVjTX3XeUKiMNSG9SQsPQOZEA503XH8R6BsLcuHo8UJoamYB9vQSicAyLbhs0GH85NlmgnEmwlbH35h2KK8ABFcZCNtd+v6DIXi+rgriqTl8VaPBpVxwTulETzEgYB2DQQUL8eDz2yij3MLYetvfllYorQAEV1sI79qUM3Ucx/xHIGmPZ8H7Wy8AlnmAp0qM1+0hY4KF7qa0UwJlYxzBGLZ8Fn7h9DnQ1v4qxJMsfJcFxAog1Jq3MsIFCI3ozWSDbReB7ayk4XO/LoRP4UkWr08rlPQAFC4zMf66w5Y/GaLxVSykCK+1AQ0LAuY2zuKfZRe+E1qjbXyJ53KNnDjSSTDNG1mJfs3iFwogPpfkKQhB6yMIhyqxpfZzgvGcE2xJ25ygz0M5lVKgNGxOIQVL9rFAOGsrtjkRtClz8mL624qA3LEXULBsLmGx+D6HcILLk2gn5TECJdvo6h8M9vYrTRtPoJwHoABbYGqLQ/0m3w/R9gfYVh2+CoSszDvZQv/KposQKTHBNghSKWHJZ0c4CCLOJTYnKTRpASSTT0r7N/Aj9gg7IGXfyktJ/tYge5UtkJ1VhU0vn0znxLDPQvlVnvWPvCWLLf4D3/qJLfIpuR5GmzRkdo+Vmq1eWjQrwC2+BxDT+6xkeRQp/ycZcjkujxcsfY2m3J0t9x8w84L1OXxZqJUEJhKecBsar2FpF8m2gQ5kRpbJduYAwEPPdW/1X0xn5QlAW6sNDSsXgmW9INSDN8ch5ZTDhveepEhpEI+85FBWpdKdRWqdfMr2BJTk7BwoS7YN3A/52e/JNhm9K/xNDheCsJXyqgdeNI0wZGVnYE6WDUVD5nMSWMPqEeZwkeDjz+LA8zTNWRLG1hqX+k9XVgnUOvGkH3ITydCpej8QaIZw0NsQYSPtDaGg92UufMayPyHbREPZ8q+T7b17knDlFQvAMjd4ngASXHnMhlfeXkYwysCm1S7lTFNSCdTUXJL1vYdlGJDvOQMu17x5Twn6CjBiyHYuIT+WkUAoWEvbUiqoGoHwDuFby45CKDyDleVt3lMoYAJiiQUQKnycNu428OQa9gQzOocQJVDVdZ3+oTk9A9cvy0W7F2Dzq0ThUhN3/CPO3uRRPwwkwXFHwcm2dRSZdCflVt4AA3JyYGRRNSvdDt8TpDgsLYRpd/6RbrzXgKZ98vtUQtnYdRohrA596L0BYnyDQzDMgNa1T7Grf4JXBXmy2dUXQTz5J2iLvQCfNW6Gw0cGQjBQxaFnF28PyN7H9vgdULt9FsJuInOCUpVBGijABSQylBCRIBS5jZO+R8FEL6YIx2LbJiRTReDQTVz/N8Dgwls55DTxFlNujyUGil15u5ypglaATmB7HdElMxFb18QxXvcTiIRnQiiwgiuCfWzxxJb/IWcfy+XORQW7edsn4mNyWXgLBdEK0AnKqEA8+hJRfiW7gUEGtq17GZ5+aB5khK+Hywd/B4YPrsCWmj1y53iKLZ86dzv3Pv58iaSBApybyyUYz8V+AQv2SqRB1WcIi6wSXn+tgbHXiIxiA4/XEEK9S8EyE2df72Lr2qO4Z/lHuPvpRirwa37L4gPzxxRHVQU4/cOLmC3u4TsLlDUFEba4ULWQ5zsJ61cJK5cfolAZor2RBb7NpdG3muhuPlViYvJ1h/KnI4XKkXKnGlwJIFgcCtIIVRWgo+AndsMWZ+meRbMY/xfKm2awBRNlT/0m1L65gku6ZTRu0QC2cpf6TbIg0eztZ5Usgd0HayijvFIuB8bL3waPryZMrCc8UeviiRo6t9FldVBLASy/wgoGGrhWFy4YwaW98PCidrkeu+gJbt7pzZOppZzJ38TK8iPY/em/aO6v+mNbnS08AhkTHuJyjye7guv6x2nsoixMbVGyY6enKKUA7Kq5yPoWsmt+gROzRZAR+j0Eg/dg2ViXMtnNN7zYhXvO8GamUe8P/UahNTYRXtr0JHuD/mRO/C0r0RLeI+Hv1wDzK+OyHU6bYf8vRLkQgPChFDJn6H/nevzneGLNIbkcXdt1bC4c5a2/tHAJe46NvGcml3IpiCdu4Ex+AzjufbxVuI4Q5xKfQiC4EH86O0XAyeChrhQqvVA1B+AYPdEka4JJmZPP6qaxkcu67CkG7l1+HApy5kFADOgAl29oszcYxW3Rj2ywd/iYM/tqbK1lDWPhw+lkMJ1RVgEw9YbDVu1idF23Voota11OBi08vLIBrhj6Xc4lDvJq4d9TPAnh2xC05nNo+ZCTweBXRfgCJRWACrw7g/Dg8+IOnW6vgYZ/D7F5jU3EZcLBw4vZ7Q8Rq3kSHTmurCRsdzENm5PJeUaSIuVpn/x1oJwC0MAqFM/s0dZdBk29JwOTG1yCorMLbN8z3jy38g8Qi/8CSBo4cswX1YMoLWxwnJvhUONyGnZzDravJ8qs+EoogVIKQP0mc6bPws+Zkgtld/wFNu6o5XWlCAfYtou7vBaCq8XgrsgD7uPs/25wXZHhGxAOHIL+2XN40xqeRDiIQcqZCQ1HH5UfjO4Euqzn9xeqhloeoC3qnW8sOQsSyR9zTV/MAn2AqpcEkDa7VHjjGQKj62/j5Xe9Bdup5n1FK8zVQD0U5M7FxtWvQHbWD7mk3Mz+gOtFjgq2M53GLcpDaCJo96rBdEaxEOCfbsqOnOoMNoxcaGwSY/fcPtNg8c3HCHCiv2A8zNPHEAzugPycWfj5i1s51gexpaYexoycCxmh1fz5wxCwfoNblzWLMQM8ulqXgX2Uzk/mON7ATNcgvcE5wlXI1cIqtvwKtvwp2LBqG8F1Jsf6pOjjxy2P1cPwr82DSHgCxtY/Ij8YzpezdEdVBehs6sgR3m92DcJ20d1rYKLuENa/eEyMDCK8LZVI9PHTwGrE95+IYvS1TwkGye/GeF3aW79AVQXohJBTh6y+WGbobnIpUGqIR8vkyGAn2COQUALxQgiE+m4E3/lY3eyqAKoqwOlfXvTvdwwHdzNSh6kNLp6s6VJqQgkw8Xr3HUDoH8vg6vHM4ympDWoqAFfwfktk7S40erfyc1XgzS8mHZXBkeOcjHZ6AwV2aIZaqHXSYf8OrEgocSrjT9p5kHC9Ybt2b1T4otKhZK2xAKRSebItzkWck6DjHBVBLQUI+nfjhIP72eJaZJtoGLRFr5Ft8/9wPZZ/DNu9lv9eLtviXMKB/bLdcY6KoJYCZEa8H3dk0TtsdQdk2yUDou23y3a0HqhwxkW7JhpQjdBW7y20tS8Cx78FCXE/jBjyjmxnhJVSgLNnTX0QMQSM9iaHMioWczxeyh5AvBnEZAu8C9vrZDeufNxbWKLjdnu/YLeIElMMIpmc8SV2uggnXOo3+XaIxv/M68W7CSwIBX/JZeNSsor53DZ37qPQXGjEDZ5yPmJeHlklH/jP8tuEE2wu4+6nirsy5Y4XATGayIp3LxkTbXlM8b4Aq+TfNHR2f7ndPzeVUO6EBRSaJDp1hCUWQ3tiFThOPl9Kiq8mAJb5AVv/SrCsrZBINssETVxlbxyzKPOEFzEN8RzgGEik5vCxivm7xEMgFlhGFEKhmRhdV0cZ5SbG1itn/UoqgIDCk0x2uxwKyku5EniGy0HxaJYnGIEQvHjZE0rRn891im/hOCJCgVzmY5AFpnkC+ucsxCMvPye7lf2eRdVQVgEEFCm3sH29TfnTvs0x+UFI2dNlUnjRYA0QOYVlvslx/2fYunYrwVUWwnYlHwsTKK0AAlYCMagjrY/yplVAPDGfS7QxHLAL2SvIfc4bg92JwaWeaeyCcGgFjB29Emt/F/fuNXi3+97DPozyCiCQL3VO/IdT9UPSSctEcNeBS6G+SYQDz3H3GpZvFueVA/ObcO+z4mlgCQXKDEydQ9dxHyctFEAgM3DHNiAW44t666LEY4LRBgTyELKzXDyWHvcKpI0CdIYGz0KIJRCaW/015wPLWbx7KDNC2KT/f4BGo9FoNBqNRqPRaDQajUaj0Wg0Go1Go9FoNBqNRqPpuwD8F4Nj88ZHDvtKAAAAAElFTkSuQmCC'
   const ImageSVG = () => React.createElement('svg', { className: classes.icon.icon, 'aria-hidden': 'false', viewBox: '0 0 384 384', width: '24', height: '24' }, React.createElement('path', { fill: 'currentColor', d: 'M341.333,0H42.667C19.093,0,0,19.093,0,42.667v298.667C0,364.907,19.093,384,42.667,384h298.667 C364.907,384,384,364.907,384,341.333V42.667C384,19.093,364.907,0,341.333,0z M42.667,320l74.667-96l53.333,64.107L245.333,192l96,128H42.667z' }))
   const VideoSVG = () => React.createElement('svg', { className: classes.icon.icon, 'aria-hidden': 'false', viewBox: '0 0 298 298', width: '24', height: '24' }, React.createElement('path', { fill: 'currentColor', d: 'M298,33c0-13.255-10.745-24-24-24H24C10.745,9,0,19.745,0,33v232c0,13.255,10.745,24,24,24h250c13.255,0,24-10.745,24-24V33zM91,39h43v34H91V39z M61,259H30v-34h31V259z M61,73H30V39h31V73z M134,259H91v-34h43V259z M123,176.708v-55.417c0-8.25,5.868-11.302,12.77-6.783l40.237,26.272c6.902,4.519,6.958,11.914,0.056,16.434l-40.321,26.277C128.84,188.011,123,184.958,123,176.708z M207,259h-43v-34h43V259z M207,73h-43V39h43V73z M268,259h-31v-34h31V259z M268,73h-31V39h31V73z' }))
   const AudioSVG = () => React.createElement('svg', { className: classes.icon.icon, 'aria-hidden': 'false', viewBox: '0 0 115.3 115.3', width: '24', height: '24' }, React.createElement('path', { fill: 'currentColor', d: 'M47.9,14.306L26,30.706H6c-3.3,0-6,2.7-6,6v41.8c0,3.301,2.7,6,6,6h20l21.9,16.4c4,3,9.6,0.2,9.6-4.8v-77C57.5,14.106,51.8,11.306,47.9,14.306z' }), React.createElement('path', { fill: 'currentColor', d: 'M77.3,24.106c-2.7-2.7-7.2-2.7-9.899,0c-2.7,2.7-2.7,7.2,0,9.9c13,13,13,34.101,0,47.101c-2.7,2.7-2.7,7.2,0,9.899c1.399,1.4,3.199,2,4.899,2s3.601-0.699,4.9-2.1C95.8,72.606,95.8,42.606,77.3,24.106z' }), React.createElement('path', { fill: 'currentColor', d: 'M85.1,8.406c-2.699,2.7-2.699,7.2,0,9.9c10.5,10.5,16.301,24.4,16.301,39.3s-5.801,28.8-16.301,39.3c-2.699,2.7-2.699,7.2,0,9.9c1.4,1.399,3.2,2.1,4.9,2.1c1.8,0,3.6-0.7,4.9-2c13.1-13.1,20.399-30.6,20.399-49.2c0-18.6-7.2-36-20.399-49.2C92.3,5.706,87.9,5.706,85.1,8.406z' }))
+  const FileSVG = () => React.createElement('svg', { className: classes.icon.icon, 'aria-hidden': 'false', viewBox: '2 2 20 20', width: '24', height: '24' }, React.createElement('path', { fill: 'currentColor', d: 'M16,2l4,4H16ZM14,2H5A1,1,0,0,0,4,3V21a1,1,0,0,0,1,1H19a1,1,0,0,0,1-1V8H14Z' }))
+  const ImportSVG = () => React.createElement('svg', { className: classes.icon.icon, 'aria-hidden': 'false', viewBox: '0 0 24 24', width: '24', height: '24' }, React.createElement('path', { fill: 'currentColor', d: 'M6.29289 9.70711L11.2929 14.7071L12 15.4142L12.7071 14.7071L17.7071 9.70711L16.2929 8.29289L13 11.5858V4H18C19.1046 4 20 4.89543 20 6V18C20 19.1046 19.1046 20 18 20H6C4.89543 20 4 19.1046 4 18V6C4 4.89543 4.89543 4 6 4H11L11 11.5858L7.70711 8.29289L6.29289 9.70711Z' }))
+  const DatabaseSVG = () => React.createElement('svg', { className: classes.icon.icon, 'aria-hidden': 'false', viewBox: '0 -8 72 72', width: '24', height: '24' }, React.createElement('path', { fill: 'currentColor', d: 'M36,4.07c-11.85,0-21.46,3.21-21.46,7.19v5.89c0,4,9.61,7.19,21.46,7.19s21.45-3.21,21.45-7.19V11.26C57.46,7.28,47.85,4.07,36,4.07Z' }), React.createElement('path', { fill: 'currentColor', d: 'M36,27.78c-11.32,0-20.64-2.93-21.46-6.66,0,.18,0,9.75,0,9.75,0,4,9.61,7.18,21.46,7.18s21.45-3.21,21.45-7.18c0,0,0-9.57,0-9.75C56.63,24.85,47.32,27.78,36,27.78Z' }), React.createElement('path', { fill: 'currentColor', d: 'M57.44,35c-.82,3.72-10.12,6.66-21.43,6.66S15.37,38.72,14.55,35v9.75c0,4,9.61,7.18,21.46,7.18s21.45-3.21,21.45-7.18Z' }))
+  const CogSVG = () => React.createElement('svg', { className: classes.icon.icon, 'aria-hidden': 'false', viewBox: '-15 -15 30 30', width: '24', height: '24' }, React.createElement('path', { fill: 'currentColor', d: 'M-1.4420000314712524,-10.906000137329102 C-1.8949999809265137,-10.847000122070312 -2.1470000743865967,-10.375 -2.078000068664551,-9.92300033569336 C-1.899999976158142,-8.756999969482422 -2.265000104904175,-7.7210001945495605 -3.061000108718872,-7.390999794006348 C-3.8570001125335693,-7.060999870300293 -4.8480000495910645,-7.534999847412109 -5.546000003814697,-8.484999656677246 C-5.816999912261963,-8.852999687194824 -6.329999923706055,-9.008999824523926 -6.691999912261963,-8.730999946594238 C-7.458000183105469,-8.142999649047852 -8.142999649047852,-7.458000183105469 -8.730999946594238,-6.691999912261963 C-9.008999824523926,-6.329999923706055 -8.852999687194824,-5.816999912261963 -8.484999656677246,-5.546000003814697 C-7.534999847412109,-4.8480000495910645 -7.060999870300293,-3.8570001125335693 -7.390999794006348,-3.061000108718872 C-7.7210001945495605,-2.265000104904175 -8.756999969482422,-1.899999976158142 -9.92300033569336,-2.078000068664551 C-10.375,-2.1470000743865967 -10.847000122070312,-1.8949999809265137 -10.906000137329102,-1.4420000314712524 C-10.968000411987305,-0.9700000286102295 -11,-0.48899999260902405 -11,0 C-11,0.48899999260902405 -10.968000411987305,0.9700000286102295 -10.906000137329102,1.4420000314712524 C-10.847000122070312,1.8949999809265137 -10.375,2.1470000743865967 -9.92300033569336,2.078000068664551 C-8.756999969482422,1.899999976158142 -7.7210001945495605,2.265000104904175 -7.390999794006348,3.061000108718872 C-7.060999870300293,3.8570001125335693 -7.534999847412109,4.8470001220703125 -8.484999656677246,5.546000003814697 C-8.852999687194824,5.816999912261963 -9.008999824523926,6.328999996185303 -8.730999946594238,6.691999912261963 C-8.142999649047852,7.458000183105469 -7.458000183105469,8.142999649047852 -6.691999912261963,8.730999946594238 C-6.329999923706055,9.008999824523926 -5.816999912261963,8.852999687194824 -5.546000003814697,8.484999656677246 C-4.8480000495910645,7.534999847412109 -3.8570001125335693,7.060999870300293 -3.061000108718872,7.390999794006348 C-2.265000104904175,7.7210001945495605 -1.899999976158142,8.756999969482422 -2.078000068664551,9.92300033569336 C-2.1470000743865967,10.375 -1.8949999809265137,10.847000122070312 -1.4420000314712524,10.906000137329102 C-0.9700000286102295,10.968000411987305 -0.48899999260902405,11 0,11 C0.48899999260902405,11 0.9700000286102295,10.968000411987305 1.4420000314712524,10.906000137329102 C1.8949999809265137,10.847000122070312 2.1470000743865967,10.375 2.078000068664551,9.92300033569336 C1.899999976158142,8.756999969482422 2.2660000324249268,7.7210001945495605 3.062000036239624,7.390999794006348 C3.8580000400543213,7.060999870300293 4.8480000495910645,7.534999847412109 5.546000003814697,8.484999656677246 C5.816999912261963,8.852999687194824 6.328999996185303,9.008999824523926 6.691999912261963,8.730999946594238 C7.458000183105469,8.142999649047852 8.142999649047852,7.458000183105469 8.730999946594238,6.691999912261963 C9.008999824523926,6.328999996185303 8.852999687194824,5.816999912261963 8.484999656677246,5.546000003814697 C7.534999847412109,4.8480000495910645 7.060999870300293,3.8570001125335693 7.390999794006348,3.061000108718872 C7.7210001945495605,2.265000104904175 8.756999969482422,1.899999976158142 9.92300033569336,2.078000068664551 C10.375,2.1470000743865967 10.847000122070312,1.8949999809265137 10.906000137329102,1.4420000314712524 C10.968000411987305,0.9700000286102295 11,0.48899999260902405 11,0 C11,-0.48899999260902405 10.968000411987305,-0.9700000286102295 10.906000137329102,-1.4420000314712524 C10.847000122070312,-1.8949999809265137 10.375,-2.1470000743865967 9.92300033569336,-2.078000068664551 C8.756999969482422,-1.899999976158142 7.7210001945495605,-2.265000104904175 7.390999794006348,-3.061000108718872 C7.060999870300293,-3.8570001125335693 7.534999847412109,-4.8480000495910645 8.484999656677246,-5.546000003814697 C8.852999687194824,-5.816999912261963 9.008999824523926,-6.329999923706055 8.730999946594238,-6.691999912261963 C8.142999649047852,-7.458000183105469 7.458000183105469,-8.142999649047852 6.691999912261963,-8.730999946594238 C6.328999996185303,-9.008999824523926 5.817999839782715,-8.852999687194824 5.546999931335449,-8.484999656677246 C4.848999977111816,-7.534999847412109 3.8580000400543213,-7.060999870300293 3.062000036239624,-7.390999794006348 C2.2660000324249268,-7.7210001945495605 1.9010000228881836,-8.756999969482422 2.0789999961853027,-9.92300033569336 C2.1480000019073486,-10.375 1.8949999809265137,-10.847000122070312 1.4420000314712524,-10.906000137329102 C0.9700000286102295,-10.968000411987305 0.48899999260902405,-11 0,-11 C-0.48899999260902405,-11 -0.9700000286102295,-10.968000411987305 -1.4420000314712524,-10.906000137329102z M4,0 C4,2.2090001106262207 2.2090001106262207,4 0,4 C-2.2090001106262207,4 -4,2.2090001106262207 -4,0 C-4,-2.2090001106262207 -2.2090001106262207,-4 0,-4 C2.2090001106262207,-4 4,-2.2090001106262207 4,0z' }))
+  const MusicNoteSVG = (props) => React.createElement('svg', { className: classes.icon.icon, 'aria-hidden': false, viewBox: '0 0 500 500', width: '16', height: '16', ...props }, React.createElement('path', { fill: 'currentColor', d: 'M328.712,264.539c12.928-21.632,21.504-48.992,23.168-76.064c1.056-17.376-2.816-35.616-11.2-52.768c-13.152-26.944-35.744-42.08-57.568-56.704c-16.288-10.912-31.68-21.216-42.56-35.936l-1.952-2.624c-6.432-8.64-13.696-18.432-14.848-26.656c-1.152-8.32-8.704-14.24-16.96-13.76c-8.384,0.576-14.88,7.52-14.88,15.936v285.12c-13.408-8.128-29.92-13.12-48-13.12c-44.096,0-80,28.704-80,64s35.904,64,80,64s80-28.704,80-64V165.467c24.032,9.184,63.36,32.576,74.176,87.2c-2.016,2.976-3.936,6.176-6.176,8.736c-5.856,6.624-5.216,16.736,1.44,22.56c6.592,5.888,16.704,5.184,22.56-1.44c4.288-4.864,8.096-10.56,11.744-16.512C328.04,265.563,328.393,265.083,328.712,264.539z' }))
+  const MiniFileSVG = (props) => React.createElement('svg', { className: classes.icon.icon, 'aria-hidden': false, viewBox: '-32 0 512 512', width: '16', height: '16', ...props }, React.createElement('path', { fill: 'currentColor', d: 'M96 448Q81 448 73 440 64 431 64 416L64 96Q64 81 73 73 81 64 96 64L217 64Q240 64 256 80L368 192Q384 208 384 231L384 416Q384 431 376 440 367 448 352 448L96 448ZM336 400L336 240 208 240 208 112 112 112 112 400 336 400Z' }))
+  const RefreshSVG = () => React.createElement('svg', { className: classes.icon.icon, 'aria-hidden': 'false', viewBox: '0 0 24 24', width: '24', height: '24' }, React.createElement('path', { fill: 'none', stroke: 'currentColor', 'stroke-width': 2, 'stroke-linecap': 'round', 'stroke-linejoin': 'round', d: 'M3 12C3 16.9706 7.02944 21 12 21C14.3051 21 16.4077 20.1334 18 18.7083L21 16M21 12C21 7.02944 16.9706 3 12 3C9.69494 3 7.59227 3.86656 6 5.29168L3 8M21 21V16M21 16H16M3 3V8M3 8H8' }))
   const ColorDot = props => React.createElement('div', { className: classes.roleCircle + ' fm-colorDot', style: { 'background-color': props.color || DEFAULT_BACKGROUND_COLOR } })
-  const labels = setLabelsByLanguage()
+
+  const RestAPI = Webpack.getModules(m => Object.keys(m).some(key => Object.prototype.hasOwnProperty.call(m[key] ?? {}, 'post')))?.slice(-1)?.[0]?.Z
+
+  const allTypes = ['image', 'video', 'audio', 'file']
+  const mediasCache = {}
+
+  function getMediaFromCache (key) {
+    return mediasCache[key] ?? key
+  }
 
   function getUrlName (url) {
     // tenor case, otherwise it would always return 'tenor'
     if (url.startsWith('https://tenor.com/view/') || url.startsWith('https://media.tenor.com/view/')) return url.match(/view\/(.*)-gif-/)?.[1]
-    return url.replace(/\.([^.]*)$/gm, '').split('/').pop()
+    return url.replace(/(\.|\/)([^./]*)$/gm, '').split('/').pop()
   }
 
-  function getUrlExt (url) {
-    return url.match(/\.([0-9a-z]+)(?=[?#])|(\.)(?:[\w]+)$/gmi)?.[0] ?? ''
+  function getUrlExt (url, type) {
+    const ext = url.match(/\.([0-9a-z]+)(?=[?#])|(\.)(?:[\w]+)$/gmi)?.[0]
+    if (ext != null) return ext
+    return {
+      image: '.png',
+      video: '.mp4',
+      audio: '.mp3',
+      gif: '.gif',
+    }[type] ?? ''
   }
 
-  async function sendInTextarea () {
+  function cleanUrl (url) {
+    if (url == null) return
+    try {
+      const urlObj = new URL(url)
+      urlObj.searchParams.delete('width')
+      urlObj.searchParams.delete('height')
+      urlObj.searchParams.delete('quality')
+      urlObj.searchParams.delete('format')
+      urlObj.searchParams.delete('')
+      // force cdn link because on PC media link videos can't be played
+      return urlObj.toString().replace('media.discordapp.net', 'cdn.discordapp.com')
+    } catch {
+      return url
+    }
+  }
+
+  function removeProxyUrl (url) {
+    const tmpUrl = url?.split('https/')[1]
+    if (tmpUrl == null) return url
+    return 'https://' + tmpUrl
+  }
+
+  async function sendInTextarea (clear = false) {
     return await new Promise((resolve, reject) => {
       try {
-        const enterEvent = new KeyboardEvent('keydown', { charCode: 13, keyCode: 13, bubbles: true })
+        const enterEvent = new window.KeyboardEvent('keydown', { charCode: 13, keyCode: 13, bubbles: true })
         setTimeout(() => {
           currentTextareaInput?.dispatchEvent(enterEvent)
+          if (clear) ComponentDispatch.dispatchToLastSubscribed('CLEAR_TEXT')
           resolve()
         })
       } catch (error) {
@@ -539,9 +678,10 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
 
   function uploadFile (type, buffer, media) {
     // if the textarea has not been patched, file uploading will fail
-    if (currentTextareaInput == null || !document.body.contains(currentTextareaInput)) return console.error('[FavoriteMedia]', 'Could not find current textarea, upload file canceled.')
+    if (currentTextareaInput == null || !document.body.contains(currentTextareaInput)) return console.error(`[${config.name}]`, 'Could not find current textarea, upload file canceled.')
+
     const isGIF = type === 'gif'
-    const ext = getUrlExt(media.url)
+    const ext = getUrlExt(media.url, type)
     const fileName = `${isGIF ? getUrlName(media.url).replace(/ /g, '_') : media.name}${ext}`
     const mime = `${isGIF ? 'image' : type}/${ext.slice(1)}`
     const file = new File([buffer], fileName, { type: mime })
@@ -549,41 +689,36 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
       channelId: currentChannelId,
       draftType: 0,
       files: [{ file, platform: 1 }],
-      showLargeMessageDialog: false
+      showLargeMessageDialog: false,
     })
   }
 
   async function fetchMedia (media) {
-    return await new Promise((resolve, reject) => {
-      https.get(media.url, (res) => {
-        let bufs = []
-        res.on('data', (chunk) => bufs.push(chunk))
-        res.on('end', async () => {
-          // no longer cached on Discord CDN
-          const td = new TextDecoder('utf-8')
-          if (td.decode(bufs[0].subarray(0, 5)) === '<?xml') return reject(new Error('Media no longer cached on the server'))
-          // tenor GIF case
-          if (media.url.startsWith('https://tenor.com/view/')) {
-            const td = new TextDecoder('utf-8')
-            if (td.decode(bufs[0].subarray(0, 15)) === '<!DOCTYPE html>') {
-              bufs = bufs.map((b) => td.decode(b))
-              media.url = String(bufs).match(/src="(https:\/\/media\.tenor\.com\/[^"]*)"/)?.[1]
-              media.name = media.url.match(/view\/(.*)-gif-/)?.[1]
-              bufs = await new Promise((resolve, reject) => {
-                https.get(media.url, (res) => {
-                  const bufsGIF = []
-                  res.on('data', chunk => bufsGIF.push(chunk))
-                  res.on('end', () => resolve(bufsGIF))
-                  res.on('error', (err) => reject(err))
-                })
-              })
-            }
-          }
-          resolve(Buffer.concat(bufs))
-        })
-        res.on('error', (err) => reject(err))
-      })
-    })
+    media = structuredClone(media)
+
+    let mediaBuffer = await fmdb.get(media.url)
+    if (mediaBuffer != null) return new Uint8Array(mediaBuffer)
+
+    const fetchUrl = (media.url.startsWith('//') ? 'https:' : '') + media.url
+    mediaBuffer = await Net.fetch(fetchUrl).then((r) => r.arrayBuffer())
+    const td = new TextDecoder('utf-8')
+    // no longer cached on Discord CDN
+    if (td.decode(mediaBuffer.slice(0, 5)) === '<?xml') throw new Error('Media no longer cached on the server')
+    // tenor GIF case
+    if (media.url.startsWith('https://tenor.com/view/')) {
+      if (td.decode(mediaBuffer.slice(0, 15)) === '<!DOCTYPE html>') {
+        const url = td.decode(mediaBuffer).match(/src="(https:\/\/media([^.]*)\.tenor\.com\/[^"]*)"/)?.[1]
+        if (url == null) throw new Error('GIF no longer exists on tenor')
+        media.url = url
+        media.name = url.match(/view\/(.*)-gif-/)?.[1]
+        mediaBuffer = await Net.fetch(media.url).then((r) => r.arrayBuffer())
+      }
+    }
+
+    // not resolving external link
+    if (td.decode(mediaBuffer.slice(0, 15)) === '<!DOCTYPE html>') return null
+
+    return new Uint8Array(mediaBuffer)
   }
 
   function findTextareaInput ($button = document.getElementsByClassName(classes.textarea.buttonContainer).item(0)) {
@@ -591,7 +726,7 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
   }
 
   function findSpoilerButton () {
-    return currentTextareaInput?.closest(`.${classes.textarea.channelTextArea}`)?.querySelector('[role="button"]:first-child')
+    return currentTextareaInput?.closest(`.${classes.textarea.channelTextArea}`)?.querySelector(`.${classes.upload.actionBarContainer} [role="button"]:first-child`)
   }
 
   function findMessageIds ($target) {
@@ -605,10 +740,10 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
     if ($target == null) return
     try {
       const [channelId, messageId] = findMessageIds($target)
-      const guildId = location.href.match(/channels\/(\d+)/)?.[1]
-      return `${location.origin}/channels/${guildId}/${channelId}/${messageId}`
+      const guildId = window.location.href.match(/channels\/(\d+)/)?.[1]
+      return `${window.location.origin}/channels/${guildId}/${channelId}/${messageId}`
     } catch (error) {
-      console.error('[FavoriteMedia]', error)
+      console.error(`[${config.name}]`, error)
     }
   }
 
@@ -616,22 +751,26 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
     if ($target == null) return
     try {
       const [channelId, messageId] = findMessageIds($target)
+      const fields = ['image', 'thumbnail', 'video']
       const embed = MessageStore.getMessage(channelId, messageId)?.embeds?.find((e) => {
-        if (Array.isArray(e.images)) return e.images.find((i) => i.url === url) != null
-        if (e.thumbnail != null) return e.thumbnail?.url === url || e.thumbnail?.proxyURL === url
-        return e.image?.url === url || e.image?.proxyURL === url
+        if (e.type !== 'link') return false
+        return fields.some((f) => e[f]?.url?.startsWith(url) || e[f]?.proxyURL?.startsWith(url))
       })
       if (embed == null) return
       return embed.url
     } catch (error) {
-      console.error('[FavoriteMedia]', error)
+      console.error(`[${config.name}]`, error)
     }
   }
 
-  async function getMediaDimensions ($target) {
+  async function getMediaDimensions (props) {
+    if (props.width > 0 && props.height > 0) return { width: props.width, height: props.height }
+
     const dimensions = { width: 0, height: 0 }
+    const $target = props.target?.current?.parentElement?.querySelector('img, video')
     if ($target == null) return dimensions
-    const src = $target.src?.replace(/\?width=([\d]*)&height=([\d]*)/, '')
+
+    const src = cleanUrl($target.src)
     if (src == null) return dimensions
     return new Promise((resolve) => {
       if ($target.tagName === 'VIDEO') {
@@ -657,28 +796,26 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
 
   function loadModules () {
     loadEPS()
-    loadComponentDispatch()
     loadChannelTextAreaButtons()
   }
 
   function loadEPS () {
-    if (EPSModules == null) return
+    if (EPSModules == null) {
+      console.warn(`[${config.name}]`, 'Failed to load module ExpressionPickerStore')
+      return
+    }
+
     Object.entries(EPSModules).forEach(([key, fn]) => {
       const code = String(fn)
       if (code.includes('useDebugValue') && fn.getState) {
         EPS.useExpressionPickerStore = fn
-      } else if (code.includes('===')) {
+      } else if (code.includes('activeView===')) {
         EPS.toggleExpressionPicker = fn
-      } else if (code.includes('activeView:null,activeViewType:null')) {
+      } else if (code.includes('activeView:null')) {
         EPS.closeExpressionPicker = fn
         closeExpressionPickerKey = key
       }
     })
-  }
-
-  function loadComponentDispatch () {
-    if (ComponentDispatch != null) return
-    ComponentDispatch = Webpack.getModule(m => m.dispatchToLastSubscribed && m.emitter?.listeners('CLEAR_TEXT').length && m.emitter?.listeners('INSERT_TEXT').length, { searchExports: true })
   }
 
   // https://github.com/Strencher/BetterDiscordStuff/blob/master/InvisibleTyping/InvisibleTyping.plugin.js#L483-L494
@@ -694,6 +831,122 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
       }
     }
   }
+
+  const FMDB = class {
+    static DB_NAME = config.name
+    static STORE_NAME = 'FMCache'
+
+    async open () {
+      const openRequest = window.indexedDB.open(FMDB.DB_NAME, 4)
+      return await new Promise((resolve, reject) => {
+        openRequest.onerror = () => { reject(new Error(`Error loading database: ${FMDB.DB_NAME}`)) }
+        openRequest.onsuccess = () => { resolve(openRequest.result) }
+        openRequest.onupgradeneeded = () => {
+          openRequest.result.onerror = () => { reject(new Error(`Error loading database: ${FMDB.DB_NAME}`)) }
+          const request = openRequest.result.createObjectStore(FMDB.STORE_NAME)
+          request.transaction.oncomplete = () => { resolve(openRequest.result) }
+        }
+      })
+    }
+
+    async get (key) {
+      const db = await this.open()
+      let data
+      return await new Promise((resolve) => {
+        const transaction = db.transaction(FMDB.STORE_NAME)
+        const objectStore = transaction.objectStore(FMDB.STORE_NAME)
+        const request = objectStore.get(key)
+        request.onerror = () => { throw new Error(request.error?.message) }
+        request.onsuccess = () => { data = request.result }
+        transaction.onabort = () => { throw new Error(transaction.error?.message) }
+        transaction.oncomplete = () => {
+          db.close()
+          resolve(data)
+        }
+      })
+    }
+
+    async getAll () {
+      const db = await this.open()
+      let data
+      return await new Promise((resolve) => {
+        const transaction = db.transaction(FMDB.STORE_NAME)
+        const objectStore = transaction.objectStore(FMDB.STORE_NAME)
+        const request = objectStore.getAll()
+        request.onerror = () => { throw new Error(request.error?.message) }
+        request.onsuccess = () => { data = request.result }
+        transaction.onabort = () => { throw new Error(transaction.error?.message) }
+        transaction.oncomplete = () => {
+          db.close()
+          resolve(data)
+        }
+      })
+    }
+
+    async getKeys () {
+      const db = await this.open()
+      let data
+      return await new Promise((resolve) => {
+        const transaction = db.transaction(FMDB.STORE_NAME)
+        const objectStore = transaction.objectStore(FMDB.STORE_NAME)
+        const request = objectStore.getAllKeys()
+        request.onerror = () => { throw new Error(request.error?.message) }
+        request.onsuccess = () => { data = request.result }
+        transaction.onabort = () => { throw new Error(transaction.error?.message) }
+        transaction.oncomplete = () => {
+          db.close()
+          resolve(data)
+        }
+      })
+    }
+
+    async set (key, data) {
+      if (data == null) throw new Error('Data is null')
+      const db = await this.open()
+      const transaction = db.transaction(FMDB.STORE_NAME, 'readwrite')
+      const objectStore = transaction.objectStore(FMDB.STORE_NAME)
+      objectStore.put(data, key)
+      transaction.onabort = () => { throw new Error(transaction.error?.message) }
+      transaction.oncomplete = () => { db.close() }
+    }
+
+    async delete (key) {
+      const db = await this.open()
+      const transaction = db.transaction(FMDB.STORE_NAME, 'readwrite')
+      const objectStore = transaction.objectStore(FMDB.STORE_NAME)
+      objectStore.delete(key)
+      transaction.onabort = () => { throw new Error(transaction.error?.message) }
+      transaction.oncomplete = () => { db.close() }
+    }
+
+    async clear () {
+      await new Promise((resolve, reject) => {
+        const deleteRequest = window.indexedDB.deleteDatabase(FMDB.DB_NAME)
+        deleteRequest.onerror = () => { reject(new Error(`Error deleting database: ${FMDB.DB_NAME}`)) }
+        deleteRequest.onsuccess = () => { resolve() }
+      })
+    }
+
+    async cache (url) {
+      const data = await this.get(url)
+      if (data != null) return
+
+      const buf = await fetchMedia({ url })
+      if (buf == null) return
+
+      await this.set(url, buf)
+      const blob = new Blob([buf])
+      mediasCache[url] = URL.createObjectURL(blob)
+    }
+
+    static sizeOf (bytes) {
+      if (bytes === 0) return '0.00 B'
+      const e = Math.floor(Math.log(bytes) / Math.log(1024))
+      return (bytes / Math.pow(1024, e)).toFixed(2) + ' ' + ' KMGTP'.charAt(e) + 'B'
+    }
+  }
+
+  const fmdb = new FMDB()
 
   const MediaMenuItemInput = class extends React.Component {
     componentDidMount () {
@@ -726,15 +979,15 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
         className: `${classes.menu.item} ${classes.menu.labelContainer}`,
         role: 'menuitem',
         id: 'media-input',
-        tabindex: '-1'
+        tabindex: '-1',
       },
       React.createElement('input', {
         className: classes.input.inputDefault,
         name: 'media-name',
         type: 'text',
-        placeholder: labels.media.placeholder[this.props.type],
+        placeholder: plugin.instance.strings.media.placeholder[this.props.type],
         maxlength: '40',
-        ref: 'inputName'
+        ref: 'inputName',
       })
       )
     }
@@ -745,7 +998,7 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
       super(props)
 
       this.state = {
-        focused: false
+        focused: false,
       }
     }
 
@@ -756,7 +1009,7 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
         id: `${this.props.name}-${this.props.key}`,
         tabindex: '-1',
         onMouseOver: () => this.setState({ focused: true }),
-        onMouseOut: () => this.setState({ focused: false })
+        onMouseOut: () => this.setState({ focused: false }),
       },
       React.createElement(ColorDot, { color: this.props.color }),
       React.createElement('div', { className: classes.menu.label }, this.props.name)
@@ -770,7 +1023,7 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
 
       this.state = {
         favorited: this.isFavorited,
-        pulse: false
+        pulse: false,
       }
 
       this.updateFavorite = this.updateFavorite.bind(this)
@@ -779,111 +1032,156 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
     }
 
     componentDidMount () {
-      this.tooltipFav = Tooltip.create(this.refs.tooltipFav, this.isFavorited ? Strings.Messages.GIF_TOOLTIP_REMOVE_FROM_FAVORITES : Strings.Messages.GIF_TOOLTIP_ADD_TO_FAVORITES, { style: 'primary' })
-      Dispatcher.subscribe('FAVORITE_MEDIA', this.updateFavorite)
+      this.tooltipFav = createTooltip(this.refs.tooltipFav, this.isFavorited ? Strings.Messages.GIF_TOOLTIP_REMOVE_FROM_FAVORITES : Strings.Messages.GIF_TOOLTIP_ADD_TO_FAVORITES, { style: 'primary' })
+      Dispatcher.subscribe('FM_FAVORITE_MEDIA', this.updateFavorite)
     }
 
     componentWillUnmount () {
-      Dispatcher.unsubscribe('FAVORITE_MEDIA', this.updateFavorite)
+      Dispatcher.unsubscribe('FM_FAVORITE_MEDIA', this.updateFavorite)
     }
 
     get isFavorited () {
-      return Utilities.loadData(config.name, this.props.type, { medias: [] }).medias.find(e => e.url === this.props.url) !== undefined
+      if (!this.props.url) return false
+      return Utilities.loadData(config.name, this.props.type, { medias: [] }).medias.find(e => MediaFavButton.checkSameUrl(e.url, this.props.url)) !== undefined
+    }
+
+    static checkSameUrl (url1, url2) {
+      return url1 === url2 || url1.split('?')[0] === url2.split('?')[0]
+    }
+
+    static getThumbnail (type, media) {
+      switch (type) {
+        case 'video': return media.poster
+        case 'gif': return media.src
+        case 'image': return media.url
+        default: return null
+      }
+    }
+
+    static hasPreview (type) {
+      return !['audio', 'file'].includes(type)
+    }
+
+    static isPlayable (type) {
+      return ['video', 'audio'].includes(type)
     }
 
     updateFavorite (data) {
       if (this.props.fromPicker) return
-      if (data.url !== this.props.url) return
+      if (!MediaFavButton.checkSameUrl(data.url, this.props.url)) return
       const fav = this.isFavorited
       this.setState({ favorited: fav })
       this.tooltipFav.label = fav ? Strings.Messages.GIF_TOOLTIP_REMOVE_FROM_FAVORITES : Strings.Messages.GIF_TOOLTIP_ADD_TO_FAVORITES
     }
 
     async changeFavorite () {
-      if (this.state.favorited) await MediaFavButton.unfavoriteMedia(this.props)
-      else await MediaFavButton.favoriteMedia(this.props)
-      if (!this.props.fromPicker) this.setState({ favorited: this.isFavorited })
-      Dispatcher.dispatch({ type: 'FAVORITE_MEDIA', url: this.props.url })
-      if (this.props.fromPicker) return
-      this.tooltipFav.label = this.state.favorited ? Strings.Messages.GIF_TOOLTIP_ADD_TO_FAVORITES : Strings.Messages.GIF_TOOLTIP_REMOVE_FROM_FAVORITES
-      this.tooltipFav.hide()
-      this.tooltipFav.show()
-      this.setState({ pulse: true })
-      setTimeout(() => {
-        this.setState({ pulse: false })
-      }, 200)
+      const switchFavorite = this.state.favorited ? MediaFavButton.unfavoriteMedia : MediaFavButton.favoriteMedia
+      switchFavorite(this.props).then((props) => {
+        if (!props.fromPicker) this.setState({ favorited: this.isFavorited })
+        Dispatcher.dispatch({ type: 'FM_FAVORITE_MEDIA', url: props.url })
+        if (props.fromPicker) return
+        this.tooltipFav.label = this.state.favorited ? Strings.Messages.GIF_TOOLTIP_ADD_TO_FAVORITES : Strings.Messages.GIF_TOOLTIP_REMOVE_FROM_FAVORITES
+        this.tooltipFav.hide()
+        this.tooltipFav.show()
+        this.setState({ pulse: true })
+        setTimeout(() => {
+          this.setState({ pulse: false })
+        }, 200)
+      }).catch((err) => {
+        console.error(`[${config.name}]`, err.message ?? err)
+      })
     }
 
     static async getMediaDataFromProps (props) {
-      let data = null
-      const dimensions = await getMediaDimensions(props.target?.current?.parentElement?.querySelector('img, video'))
+      const dimensions = await getMediaDimensions(props)
+
+      if (!['audio', 'file'].includes(props.type) && (dimensions.width === 0 || dimensions.height === 0)) {
+        throw new Error('Could not fetch media dimensions')
+      }
+
       switch (props.type) {
         case 'gif':
-          data = {
+          return {
             url: props.url,
             src: props.src,
             width: props.width || dimensions.width,
             height: props.height || dimensions.height,
             name: getUrlName(props.url),
             message: props.message,
-            source: props.source
+            source: props.source,
           }
-          break
+
         case 'video':
-          data = {
+          return {
             url: props.url,
             poster: props.poster,
             width: dimensions.width,
             height: dimensions.height,
             name: getUrlName(props.url),
             message: props.message,
-            source: props.source
+            source: props.source,
           }
-          break
+
         case 'audio':
-          data = {
+          return {
             url: props.url,
             name: getUrlName(props.url),
-            ext: getUrlExt(props.url),
+            ext: getUrlExt(props.url, 'audio'),
             message: props.message,
-            source: props.source
+            source: props.source,
           }
-          break
+
+        case 'file':
+          return {
+            url: props.url,
+            name: getUrlName(props.url),
+            message: props.message,
+            source: props.source,
+          }
+
         default: // image
-          data = {
+          return {
             url: props.url,
             width: dimensions.width,
             height: dimensions.height,
             name: getUrlName(props.url),
             message: props.message,
-            source: props.source
+            source: props.source,
           }
       }
-      return data
     }
 
     static async favoriteMedia (props) {
       // get message and source links
-      const $target = props.target.current
+      const $target = props.target?.current
       if ($target != null) {
         props.message = findMessageLink($target)
         props.source = findSourceLink($target, props.url)
       }
       const typeData = Utilities.loadData(config.name, props.type, { medias: [] })
-      if (typeData.medias.find(m => m.url === props.url)) return
+      if (typeData.medias.find(m => MediaFavButton.checkSameUrl(m.url, props.url))) return
       const data = await MediaFavButton.getMediaDataFromProps(props)
       if (props.type === 'gif') await MediaFavButton.favoriteGIF(data)
       typeData.medias.push(data)
       Utilities.saveData(config.name, props.type, typeData)
+      if (plugin.instance.settings.allowCaching) MediaFavButton.cacheMedia(data.url)
+      return props
     }
 
     static async unfavoriteMedia (props) {
-      const typeData = Utilities.loadData(config.name, props.type, { medias: [] })
+      const typeData = Utilities.loadData(config.name, props.type, { medias: [], categories: [] })
       if (!typeData.medias.length) return
-      typeData.medias = typeData.medias.filter(e => e.url !== props.url)
+      typeData.medias = typeData.medias.filter(e => !MediaFavButton.checkSameUrl(e.url, props.url))
       if (props.type === 'gif') await MediaFavButton.unfavoriteGIF(props)
+      typeData.categories.forEach((c) => {
+        if (c.thumbnail === MediaFavButton.getThumbnail(props.type, props)) {
+          c.thumbnail = undefined
+        }
+      })
       Utilities.saveData(config.name, props.type, typeData)
-      if (props.fromPicker) Dispatcher.dispatch({ type: 'UPDATE_MEDIAS' })
+      if (props.fromPicker) Dispatcher.dispatch({ type: 'FM_UPDATE_MEDIAS' })
+      if (plugin.instance.settings.allowCaching) MediaFavButton.uncacheMedia(props.url)
+      return props
     }
 
     static async favoriteGIF (props) {
@@ -893,12 +1191,28 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
         src: props.src,
         order: props.order,
         width: props.width,
-        height: props.height
+        height: props.height,
       })
     }
 
     static async unfavoriteGIF (props) {
       GIFUtils.unfavorite(props.url)
+    }
+
+    static async cacheMedia (url) {
+      await fmdb.cache(url).then(() => {
+        console.info(`[${config.name}]`, 'Successfully cached media:', url)
+      }).catch((err) => {
+        console.warn(`[${config.name}]`, `Failed to cache media (${err.message ?? err}):`, url)
+      })
+    }
+
+    static async uncacheMedia (url) {
+      await fmdb.delete(url).then(() => {
+        console.info(`[${config.name}]`, 'Successfully uncached media:', url)
+      }).catch((err) => {
+        console.warn(`[${config.name}]`, `Failed to uncache media (${err.message ?? err}):`, url)
+      })
     }
 
     favButton () {
@@ -907,10 +1221,10 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
         tabindex: '-1',
         role: 'button',
         ref: 'tooltipFav',
-        onClick: this.changeFavorite
+        onClick: this.changeFavorite,
       },
       React.createElement(StarSVG, {
-        filled: this.state.favorited
+        filled: this.state.favorited,
       })
       )
     }
@@ -919,7 +1233,7 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
       return this.props.fromPicker
         ? this.favButton()
         : React.createElement('div', {
-          className: `${classes.image.imageAccessory} ${classes.image.clickable} fm-favBtn fm-${this.props.type}${!this.props.uploaded ? 'fm-uploaded' : ''}`
+          className: `${classes.image.imageAccessory} ${classes.image.clickable} fm-favBtn fm-${this.props.type}${this.props.uploaded ? ' fm-uploaded' : ''}`,
         }, this.favButton())
     }
   }
@@ -931,7 +1245,7 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
         'aria-hidden': 'false',
         viewBox: '0 0 24 24',
         width: '16',
-        height: '16'
+        height: '16',
       },
       this.props.filled
         ? React.createElement('path', { fill: 'currentColor', d: 'M12.5,17.6l3.6,2.2a1,1,0,0,0,1.5-1.1l-1-4.1a1,1,0,0,1,.3-1l3.2-2.8A1,1,0,0,0,19.5,9l-4.2-.4a.87.87,0,0,1-.8-.6L12.9,4.1a1.05,1.05,0,0,0-1.9,0l-1.6,4a1,1,0,0,1-.8.6L4.4,9a1.06,1.06,0,0,0-.6,1.8L7,13.6a.91.91,0,0,1,.3,1l-1,4.1a1,1,0,0,0,1.5,1.1l3.6-2.2A1.08,1.08,0,0,1,12.5,17.6Z' })
@@ -950,14 +1264,14 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
     render () {
       return React.createElement('div', {
         className: 'category-input-color',
-        style: { width: '48px', height: '48px', 'margin-top': '8px', 'border-radius': '100%' }
+        style: { width: '48px', height: '48px', 'margin-top': '8px', 'border-radius': '100%' },
       },
       React.createElement('input', {
         type: 'color',
         id: 'category-input-color',
         name: 'category-input-color',
         ref: 'inputColor',
-        onChange: e => { e.target.parentNode.style['background-color'] = e.target.value }
+        onChange: e => { e.target.parentNode.style['background-color'] = e.target.value },
       })
       )
     }
@@ -966,44 +1280,44 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
   const EmptyFavorites = class extends React.Component {
     render () {
       return React.createElement('div', {
-        className: classes.result.emptyHints
+        className: classes.result.emptyHints,
       },
       React.createElement('div', {
-        className: classes.result.emptyHint
+        className: classes.result.emptyHint,
       },
       React.createElement('div', {
-        className: classes.result.emptyHintCard
+        className: classes.result.emptyHintCard,
       },
       React.createElement('svg', {
         className: classes.result.emptyHintFavorite,
         'aria-hidden': 'false',
         viewBox: '0 0 24 24',
         width: '16',
-        height: '16'
+        height: '16',
       },
       React.createElement('path', {
         d: 'M0,0H24V24H0Z',
-        fill: 'none'
+        fill: 'none',
       }),
       React.createElement('path', {
         fill: 'currentColor',
-        d: 'M12.5,17.6l3.6,2.2a1,1,0,0,0,1.5-1.1l-1-4.1a1,1,0,0,1,.3-1l3.2-2.8A1,1,0,0,0,19.5,9l-4.2-.4a.87.87,0,0,1-.8-.6L12.9,4.1a1.05,1.05,0,0,0-1.9,0l-1.6,4a1,1,0,0,1-.8.6L4.4,9a1.06,1.06,0,0,0-.6,1.8L7,13.6a.91.91,0,0,1,.3,1l-1,4.1a1,1,0,0,0,1.5,1.1l3.6-2.2A1.08,1.08,0,0,1,12.5,17.6Z'
+        d: 'M12.5,17.6l3.6,2.2a1,1,0,0,0,1.5-1.1l-1-4.1a1,1,0,0,1,.3-1l3.2-2.8A1,1,0,0,0,19.5,9l-4.2-.4a.87.87,0,0,1-.8-.6L12.9,4.1a1.05,1.05,0,0,0-1.9,0l-1.6,4a1,1,0,0,1-.8.6L4.4,9a1.06,1.06,0,0,0-.6,1.8L7,13.6a.91.91,0,0,1,.3,1l-1,4.1a1,1,0,0,0,1.5,1.1l3.6-2.2A1.08,1.08,0,0,1,12.5,17.6Z',
       })
       ),
       React.createElement('div', {
-        className: classes.result.emptyHintText
-      }, this.props.type === 'gif' ? Strings.Messages.NO_GIF_FAVORITES_HOW_TO_FAVORITE : labels.media.emptyHint[this.props.type])
+        className: classes.result.emptyHintText,
+      }, this.props.type === 'gif' ? Strings.Messages.NO_GIF_FAVORITES_HOW_TO_FAVORITE : plugin.instance.strings.media.emptyHint[this.props.type])
       )
       ),
       React.createElement('div', {
-        className: classes.result.emptyHint
+        className: classes.result.emptyHint,
       },
       React.createElement('div', {
-        className: classes.result.emptyHintCard
+        className: classes.result.emptyHintCard,
       },
       React.createElement('div', {
-        className: classes.result.emptyHintText
-      }, labels.category.emptyHint)
+        className: classes.result.emptyHintText,
+      }, plugin.instance.strings.category.emptyHint)
       )
       )
       )
@@ -1034,32 +1348,421 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
     getValues () {
       return {
         name: this.refs.inputName && this.refs.inputName.value,
-        color: this.inputColor && this.inputColor.value
+        color: this.inputColor && this.inputColor.value,
       }
     }
 
     render () {
       return React.createElement('div', {
         className: classes.control,
-        style: { display: 'grid', 'grid-template-columns': 'auto 70px', 'margin-right': '-16px' }
+        style: { display: 'grid', 'grid-template-columns': 'auto 70px', 'margin-right': '-16px' },
       },
       React.createElement('div', {
         className: classes.input.inputWrapper,
-        style: { padding: '1em 0', 'margin-right': '16px' }
+        style: { padding: '1em 0', 'margin-right': '16px' },
       },
       React.createElement('input', {
         className: classes.input.inputDefault,
         name: 'category-name',
         type: 'text',
-        placeholder: labels.category.placeholder,
+        placeholder: plugin.instance.strings.category.placeholder,
         maxlength: '20',
-        ref: 'inputName'
+        ref: 'inputName',
       })
       ),
       React.createElement(ColorPicker, {
         color: this.props.color,
-        setRef: this.setRef
+        setRef: this.setRef,
       })
+      )
+    }
+  }
+
+  const ImportPanel = class extends React.Component {
+    constructor (props) {
+      super(props)
+
+      this.state = {
+        loading: true,
+        imported: false,
+      }
+
+      this.initImport = this.initImport.bind(this)
+      this.importMedias = this.importMedias.bind(this)
+
+      this.data = {}
+    }
+
+    componentDidMount () {
+      this.initImport()
+    }
+
+    async initImport () {
+      for (const path of this.props.paths) {
+        try {
+          const conf = JSON.parse(readFileSync(path, { encoding: 'utf-8' }))
+          if (conf == null) continue
+
+          for (const mediaType of allTypes) {
+            this.data[mediaType] = { medias: [], categories: [] }
+            const typeData = conf[mediaType]
+            if (typeData == null) continue
+
+            const currentTypeData = Utilities.loadData(config.name, mediaType, { medias: [], categories: [] })
+
+            if (typeData.categories != null && Array.isArray(typeData.categories) && typeData.categories.length > 0) {
+              typeData.categories.forEach((category) => {
+                if (this.data[mediaType].categories.findIndex((c) => c.name === category.name) >= 0) return
+
+                const currentCategory = currentTypeData.categories.find((c) => c.name === category.name)
+                if (currentCategory != null) {
+                  typeData.medias.forEach((media) => {
+                    if (media.category_id === category.id) media.category_id = 'import_' + currentCategory.id
+                  })
+                  return
+                }
+
+                this.data[mediaType].categories.push(category)
+              })
+            }
+
+            if (typeData.medias != null && Array.isArray(typeData.medias) && typeData.medias.length > 0) {
+              typeData.medias.forEach((media) => {
+                if (this.data[mediaType].medias.findIndex((m) => MediaFavButton.checkSameUrl(m.url, media.url)) >= 0) return
+                if (currentTypeData.medias.findIndex((m) => MediaFavButton.checkSameUrl(m.url, media.url)) >= 0) return
+
+                this.data[mediaType].medias.push(media)
+              })
+            }
+          }
+        } catch (err) {
+          console.error(`[${config.name}]`, `Failed to load config (${err.message ?? err}):`, path)
+        }
+      }
+
+      this.setState({ loading: false })
+    }
+
+    importMedias () {
+      for (const mediaType of allTypes) {
+        const importTypeData = structuredClone(this.importData[mediaType])
+        if (importTypeData == null) continue
+
+        const currentTypeData = Utilities.loadData(config.name, mediaType, { medias: [], categories: [] })
+
+        importTypeData.categories.forEach((category) => {
+          const importCatId = category.id
+          category.id = getNewCategoryId(currentTypeData.categories)
+          importTypeData.medias.forEach((media) => {
+            if (media.category_id === importCatId) media.category_id = category.id
+          })
+
+          currentTypeData.categories.push(category)
+        })
+
+        importTypeData.medias.forEach((media) => {
+          if (/import_\d*/.test(media.category_id)) {
+            const oldCatId = Number(media.category_id.replace('import_', ''))
+            if (isNaN(oldCatId)) return
+
+            media.category_id = oldCatId
+          }
+
+          if (importTypeData.categories.findIndex((c) => c.id === media.category_id) < 0 && currentTypeData.categories.findIndex((c) => c.id === media.category_id) < 0) {
+            delete media.category_id
+          }
+        })
+
+        currentTypeData.medias = currentTypeData.medias.concat(importTypeData.medias)
+
+        Utilities.saveData(config.name, mediaType, currentTypeData)
+      }
+
+      this.setState({ imported: true })
+      Dispatcher.dispatch({ type: 'FM_UPDATE_MEDIAS' })
+      Dispatcher.dispatch({ type: 'FM_UPDATE_CATEGORIES' })
+      showToast(plugin.instance.strings.import.success, { type: 'success' })
+      MediaPicker.fetchMediasIntoDB()
+    }
+
+    get importData () {
+      const data = structuredClone(this.data)
+
+      for (const mediaType of Object.keys(this.data)) {
+        const checkboxMedias = this.refs[`checkboxImport-medias-${mediaType}`]
+        if (checkboxMedias != null && !checkboxMedias.checked) {
+          data[mediaType].medias = []
+        }
+
+        const checkboxCategories = this.refs[`checkboxImport-categories-${mediaType}`]
+        if (checkboxCategories != null && !checkboxCategories.checked) {
+          data[mediaType].categories = []
+        }
+      }
+
+      return data
+    }
+
+    get isEmpty () {
+      return Object.keys(this.data).reduce((t, k) => {
+        t += this.data[k].medias?.length ?? 0
+        t += this.data[k].categories?.length ?? 0
+        return t
+      }, 0) <= 0
+    }
+
+    get getMediasCountLines () {
+      const $types = []
+      const $medias = []
+      const $categories = []
+
+      $types.push(React.createElement('span', {
+        className: 'fm-importLabel',
+      }, plugin.instance.strings.import.label.types))
+      $medias.push(React.createElement('span', {
+        className: 'fm-importLabel',
+      }, plugin.instance.strings.import.label.medias))
+      $categories.push(React.createElement('span', {
+        className: 'fm-importLabel',
+      }, plugin.instance.strings.import.label.categories))
+
+      for (const mediaType of Object.keys(this.data)) {
+        $types.push(React.createElement('span', {
+          className: 'fm-importValue',
+        },
+        plugin.instance.strings.tabName[mediaType]
+        ))
+
+        const mediasCount = Object.keys(this.data[mediaType].medias).length
+        $medias.push(React.createElement('span', {
+          className: 'fm-importValue',
+        },
+        !this.isEmpty && !this.state.imported
+          ? React.createElement('input', {
+            type: 'checkbox',
+            defaultChecked: true,
+            ref: `checkboxImport-medias-${mediaType}`,
+            style: { visibility: mediasCount > 0 ? 'visible' : 'hidden' },
+          })
+          : null,
+        mediasCount
+        ))
+
+        const categoriesCount = Object.keys(this.data[mediaType].categories).length
+        $categories.push(React.createElement('span', {
+          className: 'fm-importValue',
+        },
+        !this.isEmpty && !this.state.imported
+          ? React.createElement('input', {
+            type: 'checkbox',
+            defaultChecked: true,
+            ref: `checkboxImport-categories-${mediaType}`,
+            style: { visibility: categoriesCount > 0 ? 'visible' : 'hidden' },
+          })
+          : null,
+        categoriesCount
+        ))
+      }
+
+      return [
+        React.createElement('div', {
+          className: `${classes.color.colorStandard} fm-importLines`,
+        }, ...$types),
+        React.createElement('div', {
+          className: `${classes.color.colorStandard} fm-importLines`,
+        }, ...$medias),
+        React.createElement('div', {
+          className: `${classes.color.colorStandard} fm-importLines`,
+        }, ...$categories),
+      ]
+    }
+
+    render () {
+      return !this.state.loading
+        ? React.createElement('div', {
+          className: 'fm-importPanel',
+        },
+        React.createElement('div', {
+          className: 'fm-importRecap',
+        },
+        ...this.getMediasCountLines
+        ),
+        React.createElement('div', {
+          className: 'fm-importActions',
+        },
+        !this.isEmpty && !this.state.imported
+          ? React.createElement(DiscordComponents.Button, {
+            className: 'fm-importMediasButton',
+            onClick: this.importMedias,
+          }, plugin.instance.strings.import.buttonImport)
+          : null
+        )
+        )
+        : React.createElement(DiscordComponents.Spinner)
+    }
+  }
+
+  const DatabasePanel = class extends React.Component {
+    constructor (props) {
+      super(props)
+
+      this.state = {
+        count: 0,
+        size: null,
+        loadingStats: true,
+        loadingCache: false,
+        fetchMediasProgress: '',
+      }
+
+      this.loadStats = this.loadStats.bind(this)
+      this.getSettingsPanel = this.getSettingsPanel.bind(this)
+      this.saveSettings = this.saveSettings.bind(this)
+      this.openModalClearDatabase = this.openModalClearDatabase.bind(this)
+      this.clearDatabase = this.clearDatabase.bind(this)
+      this.openCacheMediasConfirm = this.openCacheMediasConfirm.bind(this)
+      this.updateFetchMediasProgress = this.updateFetchMediasProgress.bind(this)
+    }
+
+    componentDidMount () {
+      this.loadStats()
+      Dispatcher.subscribe('FM_FETCH_INTO_DB', this.updateFetchMediasProgress)
+    }
+
+    componentDidUpdate () {
+      if (this.state.loadingStats === false && this.tooltipRefresh == null) {
+        this.tooltipRefresh = createTooltip(this.refs.refreshButton, plugin.instance.strings.cache.refreshButton, { style: 'primary' })
+      }
+    }
+
+    componentWillUnmount () {
+      if (!plugin.instance.settings.allowCaching) {
+        for (const key of Object.getOwnPropertyNames(mediasCache)) {
+          delete mediasCache[key]
+        }
+      }
+
+      Dispatcher.unsubscribe('FM_FETCH_INTO_DB', this.updateFetchMediasProgress)
+    }
+
+    async loadStats () {
+      this.setState({ loadingStats: true })
+      const values = await fmdb.getAll()
+      const totalSize = values.reduce((t, v) => { t += v.byteLength; return t }, 0)
+      this.setState({
+        count: values.length,
+        size: FMDB.sizeOf(totalSize),
+        loadingStats: false,
+      })
+    }
+
+    getSettingsPanel () {
+      return ReactTools.createWrappedElement(Settings.SettingPanel.build(this.saveSettings,
+        new Settings.Switch(plugin.instance.strings.settings.allowCaching.name, plugin.instance.strings.settings.allowCaching.note, plugin.instance.settings.allowCaching, (e) => { plugin.instance.settings.allowCaching = e })
+      ))
+    }
+
+    saveSettings () {
+      Utilities.saveSettings(config.name, plugin.instance.settings)
+    }
+
+    openModalClearDatabase () {
+      showConfirmationModal(plugin.instance.strings.cache.clear.button, plugin.instance.strings.cache.clear.confirm, {
+        danger: true,
+        onConfirm: this.clearDatabase,
+      })
+    }
+
+    updateFetchMediasProgress (data) {
+      this.setState({ fetchMediasProgress: `${data.done}/${data.total}` })
+    }
+
+    async clearDatabase () {
+      await fmdb.clear().then(() => {
+        showToast(plugin.instance.strings.cache.clear.success, { type: 'success' })
+        this.loadStats()
+      }).catch((err) => {
+        console.error(err)
+        showToast(plugin.instance.strings.cache.clear.error, { type: 'error' })
+      })
+    }
+
+    async openCacheMediasConfirm () {
+      showConfirmationModal(plugin.instance.strings.cache.cacheAll.button, plugin.instance.strings.cache.cacheAll.confirm, {
+        onConfirm: () => {
+          this.setState({ loadingCache: true })
+          MediaPicker.fetchMediasIntoDB().then((count) => {
+            if (count > 0) this.loadStats()
+            showToast(plugin.instance.strings.cache.cacheAll.noMedia, { type: 'info' })
+            this.setState({ loadingCache: false })
+          })
+        },
+      })
+    }
+
+    render () {
+      return React.createElement('div', {
+        className: 'fm-databasePanel',
+      },
+      React.createElement('div', {
+        className: 'fm-settings',
+      },
+      this.getSettingsPanel()
+      ),
+      !this.state.loadingStats && !this.state.loadingCache
+        ? React.createElement('div', {
+          className: 'fm-database',
+        },
+        React.createElement('div', {
+          className: 'fm-stats',
+        },
+        React.createElement('div', {
+          className: 'fm-statsLines ' + classes.color.colorStandard,
+        },
+        React.createElement('div', {
+          className: 'fm-statsLine',
+        },
+        React.createElement('span', {}, plugin.instance.strings.cache.total),
+        React.createElement('span', {
+          className: 'fm-statsCount',
+        }, this.state.count)
+        ),
+        React.createElement('div', {
+          className: 'fm-statsLine',
+        },
+        React.createElement('span', {}, plugin.instance.strings.cache.size),
+        React.createElement('span', {
+          className: 'fm-statsCount',
+        }, this.state.size)
+        )
+        ),
+        React.createElement('div', {
+          ref: 'refreshButton',
+          className: `${classes.buttons.button} fm-refreshStatsButton fm-btn-icon`,
+          onClick: this.loadStats,
+        }, RefreshSVG())
+        ),
+        React.createElement('div', {
+          className: 'fm-databaseActions',
+        },
+        this.state.count > 0
+          ? React.createElement(DiscordComponents.Button, {
+            color: DiscordComponents.ButtonColors.RED,
+            className: 'fm-clearDatabaseButton',
+            onClick: this.openModalClearDatabase,
+          }, plugin.instance.strings.cache.clear.button)
+          : null,
+        React.createElement(DiscordComponents.Button, {
+          className: 'fm-cacheDatabaseButton',
+          onClick: this.openCacheMediasConfirm,
+        }, plugin.instance.strings.cache.cacheAll.button)
+        )
+        )
+        : React.createElement('div', {
+          className: `${classes.color.colorStandard} fm-databaseFetchMediasProgress`,
+        },
+        React.createElement(DiscordComponents.Spinner),
+        React.createElement('span', {}, this.state.fetchMediasProgress)
+        )
       )
     }
   }
@@ -1068,10 +1771,24 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
     constructor (props) {
       super(props)
 
+      this.state = {
+        thumbnailError: false,
+        src: getMediaFromCache(this.thumbnail),
+      }
+
       this.onContextMenu = this.onContextMenu.bind(this)
       this.onDragStart = this.onDragStart.bind(this)
       this.onDrop = this.onDrop.bind(this)
       this.onError = this.onError.bind(this)
+
+      this.prev_thumbnail = this.thumbnail
+    }
+
+    componentDidUpdate () {
+      if (this.prev_thumbnail !== this.thumbnail) {
+        this.prev_thumbnail = this.thumbnail
+        this.setState({ src: getMediaFromCache(this.thumbnail) })
+      }
     }
 
     get nameColor () {
@@ -1082,11 +1799,15 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
     }
 
     get showColor () {
-      return Utilities.loadSettings(config.name).hideThumbnail || !this.props.thumbnail
+      return plugin.instance.settings.hideThumbnail || (!(this.thumbnail && !this.state.thumbnailError) && !this.state.src?.startsWith('blob:'))
     }
 
     get isGIF () {
       return this.props.type === 'gif'
+    }
+
+    get thumbnail () {
+      return this.props.thumbnail ?? this.props.random_thumbnail
     }
 
     onContextMenu (e) {
@@ -1096,45 +1817,53 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
       if (this.props.index > 0) {
         moveItems.push({
           id: 'category-movePrevious',
-          label: labels.category.movePrevious,
-          action: () => moveCategory(this.props.type, this.props.id, -1)
+          label: plugin.instance.strings.category.movePrevious,
+          action: () => moveCategory(this.props.type, this.props.id, -1),
         })
       }
       if (this.props.index < this.props.length - 1) {
         moveItems.push({
           id: 'category-moveNext',
-          label: labels.category.moveNext,
-          action: () => moveCategory(this.props.type, this.props.id, 1)
+          label: plugin.instance.strings.category.moveNext,
+          action: () => moveCategory(this.props.type, this.props.id, 1),
         })
       }
       const items = [
         {
           id: 'category-copyColor',
-          label: labels.category.copyColor,
-          action: () => ElectronModule.copy(this.props.color || DEFAULT_BACKGROUND_COLOR)
+          label: plugin.instance.strings.category.copyColor,
+          action: () => ElectronModule.copy(this.props.color || DEFAULT_BACKGROUND_COLOR),
         },
         {
           id: 'category-download',
-          label: labels.category.download,
-          action: () => MediaPicker.downloadCategory({ type: this.props.type, name: this.props.name, categoryId: this.props.id })
+          label: plugin.instance.strings.category.download,
+          action: () => MediaPicker.downloadCategory({ type: this.props.type, name: this.props.name, categoryId: this.props.id }),
         },
         {
           id: 'category-edit',
-          label: labels.category.edit,
-          action: () => MediaPicker.openCategoryModal(this.props.type, 'edit', { name: this.props.name, color: this.props.color, id: this.props.id })
-        }
+          label: plugin.instance.strings.category.edit,
+          action: () => MediaPicker.openCategoryModal(this.props.type, 'edit', { name: this.props.name, color: this.props.color, id: this.props.id }),
+        },
       ]
       if (this.props.category_id != null) {
         items.push({
           id: 'category-removeFrom',
-          label: labels.media.removeFrom,
+          label: plugin.instance.strings.media.removeFrom,
           danger: true,
-          action: () => MediaPicker.removeCategoryCategory(this.props.type, this.props.id)
+          action: () => MediaPicker.removeCategoryCategory(this.props.type, this.props.id),
+        })
+      }
+      if (this.props.thumbnail != null) {
+        items.push({
+          id: 'category-unsetThumbnail',
+          label: plugin.instance.strings.category.unsetThumbnail,
+          danger: true,
+          action: () => MediaPicker.unsetCategoryThumbnail(this.props.type, this.props.id),
         })
       }
       items.push({
         id: 'category-delete',
-        label: labels.category.delete,
+        label: plugin.instance.strings.category.delete,
         danger: true,
         action: () => {
           const deleteCategories = () => {
@@ -1142,33 +1871,32 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
             this.props.setCategory()
           }
           if (MediaPicker.categoryHasSubcategories(this.props.type, this.props.id)) {
-            Modals.showConfirmationModal(labels.category.delete, labels.category.deleteConfirm, {
+            showConfirmationModal(plugin.instance.strings.category.delete, plugin.instance.strings.category.deleteConfirm, {
               danger: true,
               onConfirm: () => deleteCategories(),
-              confirmText: labels.category.delete,
-              cancelText: Strings.Messages.CANCEL
+              confirmText: plugin.instance.strings.category.delete,
             })
           } else {
             deleteCategories()
           }
-        }
+        },
       })
       if (moveItems.length > 0) {
         items.unshift({
           id: 'category-move',
-          label: labels.category.move,
+          label: plugin.instance.strings.category.move,
           type: 'submenu',
-          items: moveItems
+          items: moveItems,
         })
       }
       ContextMenu.openContextMenu(e, ContextMenu.buildMenu([{
         type: 'group',
-        items
+        items,
       }]), {
         onClose: () => {
           canClosePicker.context = 'contextmenu'
           canClosePicker.value = true
-        }
+        },
       })
     }
 
@@ -1182,7 +1910,7 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
       try {
         data = JSON.parse(data)
       } catch (err) {
-        console.error('[FavoriteMedia]', err)
+        console.error(`[${config.name}]`, err.message ?? err)
       }
       if (data == null) return
       if (data.type === 'media') {
@@ -1193,9 +1921,20 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
       this.refs.category.classList.remove('category-dragover')
     }
 
-    onError (e) {
-      console.warn('[FavoriteMedia]', 'Could not load media:', this.props.thumbnail)
-      e.target.src = MediaLoadFailImg
+    async onError () {
+      console.warn(`[${config.name}]`, 'Could not load media:', this.state.src, this.thumbnail)
+
+      const key = this.thumbnail
+      const media = await fmdb.get(key)
+      if (media == null) {
+        this.setState({ thumbnailError: true })
+        return
+      }
+
+      const blob = new Blob([media])
+      const url = URL.createObjectURL(blob)
+      mediasCache[key] = url
+      this.setState({ src: url })
     }
 
     render () {
@@ -1208,7 +1947,7 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
           top: `${this.props.positions.top}px`,
           left: `${this.props.positions.left}px`,
           width: `${this.props.positions.width}px`,
-          height: '110px'
+          height: '110px',
         },
         ref: 'category',
         onClick: () => this.props.setCategory({ name: this.props.name, color: this.props.color, id: this.props.id, category_id: this.props.category_id }),
@@ -1218,29 +1957,29 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
         onDragOver: e => { e.stopPropagation(); e.preventDefault() },
         onDragStart: this.onDragStart,
         onDrop: this.onDrop,
-        draggable: true
+        draggable: true,
       },
       React.createElement('div', {
         className: classes.category.categoryFade,
-        style: { 'background-color': `${this.showColor ? (this.props.color || DEFAULT_BACKGROUND_COLOR) : ''}` }
+        style: { 'background-color': `${this.showColor ? (this.props.color || DEFAULT_BACKGROUND_COLOR) : ''}` },
       }),
       React.createElement('div', { className: classes.category.categoryText },
         React.createElement('span', {
           className: classes.category.categoryName,
-          style: this.showColor ? { color: this.nameColor, 'text-shadow': 'none' } : {}
+          style: this.showColor ? { color: this.nameColor, 'text-shadow': 'none' } : {},
         }, this.props.name)
       ),
-      this.props.thumbnail && !Utilities.loadSettings(config.name).hideThumbnail
-        ? React.createElement(this.isGIF && !this.props.thumbnail.endsWith('.gif') ? 'video' : 'img', {
+      !this.showColor
+        ? React.createElement(this.isGIF && !this.state.src?.split('?')[0].endsWith('.gif') ? 'video' : 'img', {
           className: classes.result.gif,
           preload: 'auto',
           autoplay: this.isGIF ? '' : undefined,
           loop: this.isGIF ? 'true' : undefined,
           muted: this.isGIF ? 'true' : undefined,
-          src: this.props.thumbnail,
+          src: this.state.src,
           height: '110px',
           width: '100%',
-          onError: this.onError
+          onError: this.onError,
         })
         : null
       )
@@ -1253,73 +1992,97 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
 
       this.state = {
         showControls: false,
-        visible: this.props.positions.top < 350
+        src: getMediaFromCache(this.src),
+        poster: getMediaFromCache(this.props.poster),
       }
 
       this.changeControls = this.changeControls.bind(this)
       this.hideControls = this.hideControls.bind(this)
       this.sendMedia = this.sendMedia.bind(this)
-      this.handleVisible = this.handleVisible.bind(this)
       this.onDragStart = this.onDragStart.bind(this)
       this.onError = this.onError.bind(this)
-    }
-
-    get isPlayable () {
-      return ['video', 'audio'].includes(this.props.type)
     }
 
     get isGIF () {
       return this.props.type === 'gif'
     }
 
-    get elementTag () {
-      if (this.props.type === 'audio') return 'audio'
-      else if (this.state.showControls || (this.isGIF && !this.props.src?.endsWith('.gif'))) return 'video'
+    get tag () {
+      if (this.props.type === 'file') return null
+      if (this.state.showControls) return this.props.type === 'audio' ? 'audio' : 'video'
+      if (this.isGIF && !this.props.src?.split('?')[0].endsWith('.gif')) return 'video'
+      if (this.props.type === 'audio') return null
       return 'img'
     }
 
-    get elementSrc () {
-      if (this.props.type === 'video' && !this.state.showControls) return this.props.poster
+    get src () {
+      if (this.props.type === 'video' && !this.state?.showControls) return this.state?.poster ?? this.props.poster
       if (this.isGIF) return this.props.src
       return this.props.url
     }
 
-    handleVisible ({ scroll }) {
-      if (scroll > this.props.positions.top) this.setState({ visible: true })
+    get titleIcon () {
+      if (this.props.type === 'audio') return MusicNoteSVG({ className: classes.category.categoryIcon, style: { overflow: 'visible' } })
+      if (this.props.type === 'file') return MiniFileSVG({ className: classes.category.categoryIcon, style: { overflow: 'visible' } })
+      return null
+    }
+
+    get fileName () {
+      const name = this.props.name.replace(/_/gm, ' ')
+      if (this.props.type === 'audio') return name
+      return name + getUrlExt(this.src, this.props.type)
     }
 
     componentDidMount () {
+      Dispatcher.subscribe('FM_TOGGLE_CONTROLS', this.hideControls)
+      Dispatcher.subscribe('FM_SEND_MEDIA', this.sendMedia)
       this.url = this.props.url
-      if (this.isPlayable) this.tooltipControls = Tooltip.create(this.refs.tooltipControls, this.state.showControls ? labels.media.controls.hide : labels.media.controls.show, { style: 'primary' })
-      Dispatcher.subscribe('TOGGLE_CONTROLS', this.hideControls)
-      Dispatcher.subscribe('SCROLLING_MEDIAS', this.handleVisible)
-      Dispatcher.subscribe('SEND_MEDIA', this.sendMedia)
+      if (MediaFavButton.isPlayable(this.props.type) && this.refs.tooltipControls) this.tooltipControls = createTooltip(this.refs.tooltipControls, this.state.showControls ? plugin.instance.strings.media.controls.hide : plugin.instance.strings.media.controls.show, { style: 'primary' })
     }
 
     componentWillUnmount () {
-      Dispatcher.unsubscribe('TOGGLE_CONTROLS', this.hideControls)
-      Dispatcher.unsubscribe('SCROLLING_MEDIAS', this.handleVisible)
-      Dispatcher.unsubscribe('SEND_MEDIA', this.sendMedia)
+      Dispatcher.unsubscribe('FM_TOGGLE_CONTROLS', this.hideControls)
+      Dispatcher.unsubscribe('FM_SEND_MEDIA', this.sendMedia)
     }
 
     componentDidUpdate () {
-      if (this.url !== this.props.url && this.state.showControls) this.changeControls(false)
-      if (this.isPlayable && !this.tooltipControls) this.tooltipControls = Tooltip.create(this.refs.tooltipControls, this.state.showControls ? labels.media.controls.hide : labels.media.controls.show, { style: 'primary' })
+      if (!MediaFavButton.checkSameUrl(this.url, this.props.url)) {
+        if (this.state.showControls) this.changeControls(false)
+        this.setState({ src: null, poster: null }, () => {
+          this.setState({
+            src: getMediaFromCache(this.src),
+            poster: getMediaFromCache(this.props.poster),
+          })
+        })
+      }
+      if (MediaFavButton.isPlayable(this.props.type) && !this.tooltipControls && this.refs.tooltipControls) this.tooltipControls = createTooltip(this.refs.tooltipControls, this.state.showControls ? plugin.instance.strings.media.controls.hide : plugin.instance.strings.media.controls.show, { style: 'primary' })
+      if (this.state.showControls && this.refs.media) this.refs.media.volume = this.props.settings.mediaVolume / 100 || 0.1
       this.url = this.props.url
-      if (this.state.showControls) this.refs.media.volume = this.props.settings.mediaVolume / 100 || 0.1
     }
 
-    changeControls (force) {
-      this.setState((prevState) => {
-        const newControls = force !== undefined ? force : !prevState.showControls
+    async changeControls (force) {
+      this.setState((previousState) => {
+        const newControls = force !== undefined ? force : !previousState.showControls
+
         if (this.tooltipControls) {
-          this.tooltipControls.label = newControls ? labels.media.controls.hide : labels.media.controls.show
+          this.tooltipControls.label = newControls ? plugin.instance.strings.media.controls.hide : plugin.instance.strings.media.controls.show
           this.tooltipControls.hide()
           this.tooltipControls.show()
           if (force !== undefined) this.tooltipControls.hide()
         }
-        if (newControls) Dispatcher.dispatch({ type: 'TOGGLE_CONTROLS' })
-        return ({ showControls: newControls })
+
+        if (newControls) {
+          Dispatcher.dispatch({ type: 'FM_TOGGLE_CONTROLS' })
+
+          MediaPicker.refreshUrls([this.props.url]).then(([refreshedUrl]) => {
+            this.setState({ src: refreshedUrl.refreshed ?? refreshedUrl.original })
+          })
+        }
+
+        let src = this.src
+        if (this.props.type === 'video' && !newControls) src = this.state?.poster ?? this.props.poster
+
+        return ({ showControls: newControls, src: getMediaFromCache(src) })
       })
     }
 
@@ -1332,28 +2095,34 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
       e.dataTransfer.effectAllowed = 'move'
     }
 
-    sendMedia (e) {
-      loadComponentDispatch()
-      const sendMedia = e.type === 'SEND_MEDIA'
+    async sendMedia (e) {
+      const sendMedia = e.type === 'FM_SEND_MEDIA'
       if (sendMedia) {
         if (e.mediaId !== this.props.id) return
         e = e.e
       }
       if (['path', 'svg'].includes(e.target.tagName)) return
-      const shiftPressed = e.shiftKey
-      if (!sendMedia && (this.props.settings.alwaysUploadFile || this.props.type === 'audio')) {
-        const media = { url: this.props.url, name: this.props.name }
-        fetchMedia(media).then((buffer) => {
-          uploadFile(this.props.type, buffer, media)
-          if (['both', 'file'].includes(this.props.settings.alwaysSendUpload)) {
-            sendInTextarea().then(() => ComponentDispatch.dispatchToLastSubscribed('CLEAR_TEXT'))
-          }
-          if (!shiftPressed) EPS.closeExpressionPicker()
-        }).catch((err) => console.error('[FavoriteMedia]', err))
+
+      e.preventDefault()
+      this.hideControls()
+
+      if (!sendMedia && (this.props.type === 'audio' || this.props.settings[this.props.type].alwaysUploadFile)) {
+        const [refreshedUrl] = await MediaPicker.refreshUrls([this.props.url])
+        const media = {
+          url: refreshedUrl.refreshed ?? refreshedUrl.original,
+          name: this.props.name,
+        }
+
+        const buffer = await fetchMedia(media).catch((err) => console.error(`[${config.name}]`, err.message ?? err))
+        if (buffer == null) throw new Error('Failed to upload media:', media)
+
+        uploadFile(this.props.type, buffer, media)
+        if (this.props.settings[this.props.type].alwaysSendInstantly) sendInTextarea(true)
+        if (!e.shiftKey) EPS.closeExpressionPicker()
       } else {
-        if (!shiftPressed) {
-          ComponentDispatch.dispatchToLastSubscribed('INSERT_TEXT', { content: this.props.url, plainText: this.props.url })
-          if (['both', 'link'].includes(this.props.settings.alwaysSendUpload)) sendInTextarea().catch((err) => console.error('[FavoriteMedia]', err))
+        if (!e.shiftKey) {
+          ComponentDispatch.dispatchToLastSubscribed('INSERT_TEXT', { rawText: this.props.url, plainText: this.props.url })
+          if (this.props.settings[this.props.type].alwaysSendInstantly) sendInTextarea().catch((err) => console.error(`[${config.name}]`, err.message ?? err))
           EPS.closeExpressionPicker()
         } else {
           MessagesManager.sendMessage(currentChannelId, { content: this.props.url, validNonShortcutEmojis: [] })
@@ -1361,10 +2130,18 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
       }
     }
 
-    onError (e) {
-      if (e.target.tagName !== 'IMG') return
-      console.warn('[FavoriteMedia]', 'Could not load media:', this.props.url)
-      e.target.src = MediaLoadFailImg
+    async onError (e) {
+      if (e.target.tagName !== 'IMG' || mediasCache[this.src] != null) return
+
+      console.warn(`[${config.name}]`, 'Could not load media:', this.src)
+      const key = this.src
+      const media = await fmdb.get(key)
+      if (media == null) return
+
+      const blob = new Blob([media])
+      const url = URL.createObjectURL(blob)
+      mediasCache[key] = url
+      this.setState({ src: url })
     }
 
     render () {
@@ -1378,27 +2155,27 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
           left: `${this.props.positions.left}px`,
           width: `${this.props.positions.width}px`,
           height: `${this.props.positions.height}px`,
-          'background-color': DEFAULT_BACKGROUND_COLOR
+          'background-color': DEFAULT_BACKGROUND_COLOR,
         },
         onContextMenu: e => this.props.onMediaContextMenu(e, this.props.id),
         onClick: this.sendMedia,
         onDragStart: this.onDragStart,
-        draggable: true
+        draggable: true,
       },
-      this.isPlayable
+      MediaFavButton.isPlayable(this.props.type)
         ? React.createElement('div', {
           className: `show-controls ${classes.gif.size}${this.state.showControls ? ` ${classes.gif.selected} active` : ''}`,
           tabindex: '-1',
           role: 'button',
           ref: 'tooltipControls',
-          onClick: () => this.changeControls()
+          onClick: () => this.changeControls(),
         },
         React.createElement('svg', {
           className: classes.gif.icon,
           'aria-hidden': 'false',
           viewBox: '0 0 780 780',
           width: '16',
-          height: '16'
+          height: '16',
         },
         React.createElement('path', { fill: 'currentColor', d: 'M490.667,405.333h-56.811C424.619,374.592,396.373,352,362.667,352s-61.931,22.592-71.189,53.333H21.333C9.557,405.333,0,414.891,0,426.667S9.557,448,21.333,448h270.144c9.237,30.741,37.483,53.333,71.189,53.333s61.931-22.592,71.189-53.333h56.811c11.797,0,21.333-9.557,21.333-21.333S502.464,405.333,490.667,405.333zM362.667,458.667c-17.643,0-32-14.357-32-32s14.357-32,32-32s32,14.357,32,32S380.309,458.667,362.667,458.667z' }),
         React.createElement('path', { fill: 'currentColor', d: 'M490.667,64h-56.811c-9.259-30.741-37.483-53.333-71.189-53.333S300.736,33.259,291.477,64H21.333C9.557,64,0,73.557,0,85.333s9.557,21.333,21.333,21.333h270.144C300.736,137.408,328.96,160,362.667,160s61.931-22.592,71.189-53.333h56.811c11.797,0,21.333-9.557,21.333-21.333S502.464,64,490.667,64z M362.667,117.333c-17.643,0-32-14.357-32-32c0-17.643,14.357-32,32-32s32,14.357,32,32C394.667,102.976,380.309,117.333,362.667,117.333z' }),
@@ -1410,47 +2187,40 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
         type: this.props.type,
         url: this.props.url,
         poster: this.props.poster,
-        fromPicker: true
+        fromPicker: true,
       }),
-      this.state.visible
-        ? React.createElement(this.elementTag, {
+      this.tag != null
+        ? React.createElement(this.tag, {
           className: classes.result.gif,
           preload: 'auto',
           autoplay: this.isGIF ? '' : undefined,
           loop: this.isGIF ? 'true' : undefined,
           muted: this.isGIF ? 'true' : undefined,
-          src: this.elementSrc,
-          poster: this.props.poster,
+          src: this.state.src,
+          poster: this.state.poster,
           width: this.props.positions.width,
           height: this.props.positions.height,
           ref: 'media',
           controls: this.state.showControls,
-          style: this.props.type === 'audio' ? { position: 'absolute', bottom: '0', left: '0', 'z-index': '2' } : null,
+          style: !MediaFavButton.hasPreview(this.props.type) ? { position: 'absolute', bottom: '0', left: '0', 'z-index': '2' } : null,
           draggable: false,
-          onError: this.onError
+          onError: this.onError,
         })
         : null,
-      this.props.type === 'audio'
+      !MediaFavButton.hasPreview(this.props.type)
         ? React.createElement('div', {
           className: classes.category.categoryFade,
-          style: { 'background-color': DEFAULT_BACKGROUND_COLOR }
+          style: { 'background-color': DEFAULT_BACKGROUND_COLOR },
         })
         : null,
-      this.props.type === 'audio'
+      !MediaFavButton.hasPreview(this.props.type)
         ? React.createElement('div', {
           className: classes.category.categoryText,
-          style: { top: this.state.showControls ? '-50%' : null }
+          style: { top: this.state.showControls ? '-50%' : null },
         },
-        React.createElement('svg', {
-          className: classes.category.categoryIcon,
-          'aria-hidden': false,
-          viewBox: '0 0 500 500',
-          width: '16',
-          height: '16'
-        },
-        React.createElement('path', { fill: 'currentColor', d: 'M328.712,264.539c12.928-21.632,21.504-48.992,23.168-76.064c1.056-17.376-2.816-35.616-11.2-52.768c-13.152-26.944-35.744-42.08-57.568-56.704c-16.288-10.912-31.68-21.216-42.56-35.936l-1.952-2.624c-6.432-8.64-13.696-18.432-14.848-26.656c-1.152-8.32-8.704-14.24-16.96-13.76c-8.384,0.576-14.88,7.52-14.88,15.936v285.12c-13.408-8.128-29.92-13.12-48-13.12c-44.096,0-80,28.704-80,64s35.904,64,80,64s80-28.704,80-64V165.467c24.032,9.184,63.36,32.576,74.176,87.2c-2.016,2.976-3.936,6.176-6.176,8.736c-5.856,6.624-5.216,16.736,1.44,22.56c6.592,5.888,16.704,5.184,22.56-1.44c4.288-4.864,8.096-10.56,11.744-16.512C328.04,265.563,328.393,265.083,328.712,264.539z' })
-        ),
-        React.createElement('span', { className: classes.category.categoryName }, React.createElement('div', {}, this.props.name.replace(/_/gm, ' ')))
+        this.titleIcon,
+        React.createElement('span', { className: classes.category.categoryName },
+          React.createElement('div', {}, this.fileName))
         )
         : null
       )
@@ -1459,17 +2229,20 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
 
   const RenderList = class extends React.Component {
     render () {
-      return React.createElement(React.Fragment, {
+      return React.createElement('div', {
         children: this.props.items.map((itemProps, i) => React.createElement(this.props.component, {
           ...itemProps,
           ...this.props.componentProps,
-          index: i
-        }))
+          index: i,
+        })),
+        className: `fm-${this.props.component.name.startsWith('Cat') ? 'categories' : 'medias'}List`,
       })
     }
   }
 
   const MediaPicker = class extends React.Component {
+    static HEIGHT = 400
+
     constructor (props) {
       super(props)
 
@@ -1478,12 +2251,14 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
         categories: Utilities.loadData(config.name, this.props.type, { categories: [] }).categories,
         category: null,
         medias: Utilities.loadData(config.name, this.props.type, { medias: [] }).medias,
-        contentWidth: null
+        contentWidth: null,
+        page: 1,
       }
 
       this.type = this.props.type
-      this.contentHeight = 400
+      this.contentHeight = MediaPicker.HEIGHT
 
+      this.createButtonsTooltips = this.createButtonsTooltips.bind(this)
       this.clearSearch = this.clearSearch.bind(this)
       this.setCategory = this.setCategory.bind(this)
       this.onContextMenu = this.onContextMenu.bind(this)
@@ -1495,31 +2270,44 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
       this.uploadMedia = this.uploadMedia.bind(this)
       this.setContentHeight = this.setContentHeight.bind(this)
       this.sendMedia = this.sendMedia.bind(this)
+      this.resetScroll = this.resetScroll.bind(this)
     }
 
     componentDidMount () {
-      this.refs.input.focus()
-      this.setState({ contentWidth: this.refs.content.clientWidth })
-      Dispatcher.subscribe('UPDATE_MEDIAS', this.loadMedias)
-      Dispatcher.subscribe('UPDATE_CATEGORIES', this.loadCategories)
-      Dispatcher.dispatch({ type: 'PICKER_BUTTON_ACTIVE' })
+      this.refs.input?.focus()
+      this.setState({ contentWidth: this.refs.content?.clientWidth })
+      Dispatcher.subscribe('FM_UPDATE_MEDIAS', this.loadMedias)
+      Dispatcher.subscribe('FM_UPDATE_CATEGORIES', this.loadCategories)
+      Dispatcher.dispatch({ type: 'FM_PICKER_BUTTON_ACTIVE' })
+      this.createButtonsTooltips()
     }
 
     componentDidUpdate () {
       if (this.type !== this.props.type) {
         this.type = this.props.type
-        this.setState({ category: null })
+        this.setState({
+          category: null,
+          page: 1,
+        })
         this.loadCategories()
         this.loadMedias()
-        Dispatcher.dispatch({ type: 'PICKER_BUTTON_ACTIVE' })
+        Dispatcher.dispatch({ type: 'FM_PICKER_BUTTON_ACTIVE' })
       }
-      if (this.state.contentWidth !== this.refs.content.clientWidth) this.setState({ contentWidth: this.refs.content.clientWidth })
+      if (this.state.contentWidth !== this.refs.content?.clientWidth) this.setState({ contentWidth: this.refs.content?.clientWidth })
+      this.createButtonsTooltips()
     }
 
     componentWillUnmount () {
-      Dispatcher.unsubscribe('UPDATE_MEDIAS', this.loadMedias)
-      Dispatcher.unsubscribe('UPDATE_CATEGORIES', this.loadCategories)
-      Dispatcher.dispatch({ type: 'PICKER_BUTTON_ACTIVE' })
+      Dispatcher.unsubscribe('FM_UPDATE_MEDIAS', this.loadMedias)
+      Dispatcher.unsubscribe('FM_UPDATE_CATEGORIES', this.loadCategories)
+      Dispatcher.dispatch({ type: 'FM_PICKER_BUTTON_ACTIVE' })
+    }
+
+    createButtonsTooltips () {
+      if (this.databaseButton == null && this.refs.databaseButton != null) this.databaseButton = createTooltip(this.refs.databaseButton, plugin.instance.strings.cache.panel, { style: 'primary' })
+      if (this.importButton == null && this.refs.importButton != null) this.importButton = createTooltip(this.refs.importButton, plugin.instance.strings.import.panel, { style: 'primary' })
+      if (this.settingsButton == null && this.refs.settingsButton != null) this.settingsButton = createTooltip(this.refs.settingsButton, plugin.instance.strings.settings.panel, { style: 'primary' })
+      if (this.mediasCounter == null && this.refs.mediasCounter != null) this.mediasCounter = createTooltip(this.refs.mediasCounter, plugin.instance.strings.mediasCounter, { style: 'primary' })
     }
 
     clearSearch () {
@@ -1540,7 +2328,7 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
     get heights () {
       const cols = this.numberOfColumns
       const heights = new Array(cols).fill(0)
-      const categoriesLen = this.filteredCategories.length
+      const categoriesLen = this.currentPageCategories.length
       const rows = Math.ceil(categoriesLen / cols)
       const max = (categoriesLen % cols) || 999
       for (let i = 0; i < cols; i++) { heights[i] = (rows - (i < max ? 0 : 1)) * 122 }
@@ -1576,22 +2364,42 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
 
     get filteredMedias () {
       const filter = this.state.textFilter
-      if (!filter) return this.mediasInCategory
-      return this.listWithId(this.state.medias).filter(m => this.filterCondition(m.name.toLowerCase(), filter.toString().toLowerCase()))
+      if (!filter) return this.mediasInCategory.reverse()
+      return this.listWithId(this.state.medias).filter(m => this.filterCondition(m.name.toLowerCase(), filter.toString().toLowerCase())).reverse()
+    }
+
+    get currentPageCategories () {
+      if (PageControl == null) return this.filteredCategories
+
+      const start = plugin.instance.settings.maxMediasPerPage * (this.state.page - 1)
+      return this.filteredCategories.slice(start, start + plugin.instance.settings.maxMediasPerPage)
+    }
+
+    get currentPageMedias () {
+      if (PageControl == null) return this.filteredMedias
+
+      let offset = this.currentPageCategories.length
+      if (offset >= plugin.instance.settings.maxMediasPerPage) return []
+
+      else if (offset > 0) return this.filteredMedias.slice(0, plugin.instance.settings.maxMediasPerPage - offset)
+
+      offset = (plugin.instance.settings.maxMediasPerPage * Math.floor(this.filteredCategories.length / plugin.instance.settings.maxMediasPerPage) + (plugin.instance.settings.maxMediasPerPage - this.filteredCategories.length % plugin.instance.settings.maxMediasPerPage)) % plugin.instance.settings.maxMediasPerPage
+      const start = offset + (this.state.page - 1 - Math.ceil(this.filteredCategories.length / plugin.instance.settings.maxMediasPerPage)) * plugin.instance.settings.maxMediasPerPage
+      return this.filteredMedias.slice(start, start + plugin.instance.settings.maxMediasPerPage)
     }
 
     get positionedCategories () {
       const thumbnails = this.randomThumbnails
-      const categories = this.filteredCategories
+      const categories = this.currentPageCategories
       const width = this.state.contentWidth || 200
       const n = Math.floor(width / 200)
       const itemWidth = (width - (12 * (n - 1))) / n
       for (let c = 0; c < categories.length; c++) {
-        if (this.props.type !== 'audio') categories[c].thumbnail = thumbnails[categories[c].id]
+        if (MediaFavButton.hasPreview(this.props.type)) categories[c].random_thumbnail = thumbnails[categories[c].id]
         categories[c].positions = {
           left: (itemWidth + 12) * (c % n),
           top: 122 * Math.floor(c / n),
-          width: itemWidth
+          width: itemWidth,
         }
       }
       return categories
@@ -1601,27 +2409,27 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
       const heights = this.heights
       const width = this.state.contentWidth || 200
       const n = Math.floor(width / 200)
-      const offset = this.filteredCategories.length
+      const offset = this.currentPageCategories.length
       const placed = new Array(n)
       placed.fill(false)
       placed.fill(true, 0, offset % n)
       const itemWidth = (width - (12 * (n - 1))) / n
-      const medias = this.filteredMedias.reverse()
+      const medias = this.currentPageMedias
       for (let m = 0; m < medias.length; m++) {
         const min = {
           height: Math.min(...heights),
-          index: heights.indexOf(Math.min(...heights))
+          index: heights.indexOf(Math.min(...heights)),
         }
         const max = Math.max(...heights)
         const itemHeight = Math.round(100 * itemWidth * medias[m].height / medias[m].width) / 100
         let placedIndex = placed.indexOf(false)
         if (placedIndex === -1) { placed.fill(false); placedIndex = 0 }
-        if (this.props.type === 'audio') {
+        if (!MediaFavButton.hasPreview(this.props.type)) {
           medias[m].positions = {
             left: (itemWidth + 12) * ((offset + m) % n),
             top: 122 * Math.floor((offset + m) / n),
             width: itemWidth,
-            height: 110
+            height: 110,
           }
           heights[min.index] = heights[min.index] + 110 + 12
         } else {
@@ -1630,7 +2438,7 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
               left: (itemWidth + 12) * (min.index % n),
               top: min.height,
               width: itemWidth,
-              height: itemHeight
+              height: itemHeight,
             }
             heights[min.index] = heights[min.index] + itemHeight + 12
           } else {
@@ -1638,7 +2446,7 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
               left: (itemWidth + 12) * (placedIndex % n),
               top: Math.round(100 * heights[placedIndex]) / 100,
               width: itemWidth,
-              height: itemHeight
+              height: itemHeight,
             }
             heights[placedIndex] = heights[placedIndex] + itemHeight + 12
           }
@@ -1656,7 +2464,7 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
 
     get mediasInCategory () {
       if (!this.state.category) {
-        if (!Utilities.loadSettings(config.name).hideUnsortedMedias) return this.listWithId(this.state.medias)
+        if (!plugin.instance.settings.hideUnsortedMedias) return this.listWithId(this.state.medias)
         else return this.listWithId(this.state.medias).filter(m => m.category_id === undefined)
       }
       return this.listWithId(this.state.medias).filter(m => m.category_id === this.state.category.id)
@@ -1668,139 +2476,219 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
 
     static openCategoryModal (type, op, values, categoryId) {
       let modal
-      Modals.showModal(op === 'create' ? labels.category.create : labels.category.edit,
+      showConfirmationModal(op === 'create' ? plugin.instance.strings.category.create : plugin.instance.strings.category.edit,
         React.createElement(CategoryModal, {
           ...values,
-          modalRef: ref => { modal = ref }
+          modalRef: ref => { modal = ref },
         }),
         {
-          danger: false,
-          confirmText: op === 'create' ? labels.create : Strings.Messages.EDIT,
-          cancelText: Strings.Messages.CANCEL,
+          confirmText: op === 'create' ? plugin.instance.strings.create : Strings.Messages.EDIT,
           onConfirm: () => {
             let res = false
             if (op === 'create') res = createCategory(type, modal.getValues(), categoryId)
             else res = editCategory(type, modal.getValues(), values.id)
-            if (res) Dispatcher.dispatch({ type: 'UPDATE_CATEGORIES' })
-          }
+            if (res) Dispatcher.dispatch({ type: 'FM_UPDATE_CATEGORIES' })
+          },
         }
       )
     }
 
-    static downloadCategory (props) {
-      openDialog({ openDirectory: true }).then(({ filePaths }) => {
-        if (!filePaths?.[0]) return
-        const categoryFolder = path.join(filePaths[0], props.name ?? '')
-        mkdir(categoryFolder, {}, () => {
-          const medias = Utilities.loadData(config.name, props.type, { medias: [] }).medias.filter(m => m.category_id === props.categoryId).map(m => { return props.type === 'audio' ? m : { ...m, ext: props.type === 'gif' ? '.gif' : getUrlExt(m.url) } })
-          Promise.allSettled(medias.map((media) => new Promise((resolve, reject) => {
-            const mediaFileName = `${media.name.replace(/ /g, '_')}${media.ext}`
-            const mediaPath = path.join(categoryFolder, mediaFileName)
-            lstat(mediaPath, {}, (err) => {
-              // checking if the file already exists -> err is not null if that's the case
-              if (!err) return resolve()
-              fetchMedia(media).then((buffer) => {
-                writeFile(mediaPath, buffer, (err) => {
-                  if (err) reject(err)
-                  else resolve()
-                })
-              }).catch((err) => reject(err))
-            })
-          }))).then((results) => {
-            Toasts.success(labels.category.success.download)
-            results.forEach((res) => {
-              if (res.status === 'rejected') console.error('[FavoriteMedia]', 'Failed to download media:', res.reason)
-            })
-          })
+    static async downloadCategory (props) {
+      const { filePaths } = await openDialog({ openDirectory: true, openFile: false })
+      if (!filePaths?.[0]) return
+
+      const categoryFolder = path.join(filePaths[0], props.name ?? '')
+      await MediaPicker.createFolder(categoryFolder)
+
+      const medias = Utilities.loadData(config.name, props.type, { medias: [] }).medias.filter(m => m.category_id === props.categoryId).map(m => {
+        if (!MediaFavButton.hasPreview(props.type)) return m
+        return { ...m, ext: props.type === 'gif' ? '.gif' : getUrlExt(m.url, props.type) }
+      })
+
+      const refreshedUrls = await MediaPicker.refreshUrls(medias.map((m) => m.url))
+      medias.forEach((m) => {
+        const refreshedMedia = refreshedUrls.find((r) => r.original === m.url && r.refreshed != null)
+        if (refreshedMedia != null) m.url = refreshedMedia.refreshed
+      })
+
+      const results = await Promise.allSettled(medias.map((media) => new Promise((resolve, reject) => {
+        const mediaFileName = `${media.name.replace(/ /g, '_')}${media.ext}`
+        const mediaPath = path.join(categoryFolder, mediaFileName)
+        lstat(mediaPath, {}, (err) => {
+          // checking if the file already exists -> err is not null if that's the case
+          if (!err) return resolve()
+          fetchMedia(media).then((buffer) => {
+            try {
+              writeFileSync(mediaPath, buffer)
+              resolve()
+            } catch (err) {
+              reject(err)
+            }
+          }).catch((err) => reject(err))
+        })
+      })))
+
+      results.forEach((res) => {
+        if (res.status === 'rejected') console.error(`[${config.name}]`, 'Could not download media:', res.reason)
+      })
+
+      showToast(plugin.instance.strings.category.success.download, { type: 'success' })
+    }
+
+    static async createFolder (folder) {
+      return await new Promise((resolve, reject) => {
+        mkdir(folder, {}, (err) => {
+          if (err) {
+            if (err.message.startsWith('EEXIST')) resolve()
+            else reject(err)
+          } else resolve()
         })
       })
+    }
+
+    static async downloadMedia (media, type) {
+      media = structuredClone(media)
+
+      const ext = type === 'gif' ? '.gif' : getUrlExt(media.url, type)
+      media.name = media.name.replace(/ /g, '_')
+      const { filePath } = await openDialog({ mode: 'save', defaultPath: media.name + ext })
+      if (filePath === '') return
+
+      const [refreshedUrl] = await MediaPicker.refreshUrls([media.url])
+      media.url = refreshedUrl.refreshed ?? refreshedUrl.original
+
+      const buffer = await fetchMedia(media).catch((err) => {
+        console.error(`[${config.name}]`, err.message ?? err)
+        showToast(plugin.instance.strings.media.error.download[type], { type: 'error' })
+      })
+
+      try {
+        writeFileSync(filePath, buffer)
+        showToast(plugin.instance.strings.media.success.download[type], { type: 'success' })
+      } catch (err) {
+        console.error(`[${config.name}]`, err.message ?? err)
+        showToast(plugin.instance.strings.media.error.download[type], { type: 'error' })
+      }
     }
 
     onContextMenu (e) {
       canClosePicker.context = 'contextmenu'
       canClosePicker.value = false
+
+      const items = [
+        {
+          id: 'category-create',
+          label: plugin.instance.strings.category.create,
+          action: () => MediaPicker.openCategoryModal(this.props.type, 'create', null, this.state.category?.id),
+        }, {
+          id: 'category-download',
+          label: plugin.instance.strings.category.download,
+          action: () => MediaPicker.downloadCategory({ type: this.props.type, name: this.state.category?.name, categoryId: this.state.category?.id }),
+        },
+      ]
+
       ContextMenu.openContextMenu(e,
         ContextMenu.buildMenu([{
           type: 'group',
-          items: [
-            {
-              id: 'category-create',
-              label: labels.category.create,
-              action: () => MediaPicker.openCategoryModal(this.props.type, 'create', null, this.state.category?.id)
-            }, {
-              id: 'category-download',
-              label: labels.category.download,
-              action: () => MediaPicker.downloadCategory({ type: this.props.type, name: this.state.category?.name, categoryId: this.state.category?.id })
-            }
-          ]
+          items,
         }]), {
           onClose: () => {
             canClosePicker.context = 'contextmenu'
             canClosePicker.value = true
-          }
+          },
         })
     }
 
-    onScroll (e) {
-      Dispatcher.dispatch({ type: 'SCROLLING_MEDIAS', scroll: e.target.scrollTop + 350 })
+    resetScroll () {
+      this.refs.pickerScroll?.scroll(0, 0)
     }
 
     static changeCategoryCategory (type, id, categoryId) {
       const typeData = Utilities.loadData(config.name, type, { medias: [] })
-      const index = typeData.categories.findIndex(m => m.id === id)
+      const index = typeData.categories.findIndex(c => c.id === id)
       if (index < 0) return
       typeData.categories[index].category_id = categoryId
       Utilities.saveData(config.name, type, typeData)
-      Toasts.success(labels.category.success.move)
-      Dispatcher.dispatch({ type: 'UPDATE_CATEGORIES' })
+      showToast(plugin.instance.strings.category.success.move, { type: 'success' })
+      Dispatcher.dispatch({ type: 'FM_UPDATE_CATEGORIES' })
     }
 
     static changeMediaCategory (type, url, categoryId) {
-      const typeData = Utilities.loadData(config.name, type, { medias: [] })
-      const index = typeData.medias.findIndex(m => m.url === url)
+      const typeData = Utilities.loadData(config.name, type, { medias: [], categories: [] })
+      const index = typeData.medias.findIndex(m => MediaFavButton.checkSameUrl(m.url, url))
       if (index < 0) return
       typeData.medias[index].category_id = categoryId
+      typeData.categories.forEach((c) => {
+        if (c.thumbnail === MediaFavButton.getThumbnail(type, typeData.medias[index])) {
+          c.thumbnail = undefined
+        }
+      })
       Utilities.saveData(config.name, type, typeData)
-      Toasts.success(labels.media.success.move[type])
-      Dispatcher.dispatch({ type: 'UPDATE_MEDIAS' })
+      showToast(plugin.instance.strings.media.success.move[type], { type: 'success' })
+      Dispatcher.dispatch({ type: 'FM_UPDATE_MEDIAS' })
     }
 
     static removeCategoryCategory (type, categoryId) {
-      const typeData = Utilities.loadData(config.name, type)
+      const typeData = Utilities.loadData(config.name, type, { categories: [] })
       const index = typeData.categories.findIndex(m => m.id === categoryId)
       if (index < 0) return
       delete typeData.categories[index].category_id
       Utilities.saveData(config.name, type, typeData)
-      Toasts.success(labels.category.success.move)
-      Dispatcher.dispatch({ type: 'UPDATE_CATEGORIES' })
+      showToast(plugin.instance.strings.category.success.move, { type: 'success' })
+      Dispatcher.dispatch({ type: 'FM_UPDATE_CATEGORIES' })
     }
 
     static removeMediaCategory (type, mediaId) {
-      const typeData = Utilities.loadData(config.name, type)
+      const typeData = Utilities.loadData(config.name, type, { medias: [], categories: [] })
       delete typeData.medias[mediaId].category_id
+      typeData.categories.forEach((c) => {
+        if (c.thumbnail === MediaFavButton.getThumbnail(type, typeData.medias[mediaId])) {
+          c.thumbnail = undefined
+        }
+      })
       Utilities.saveData(config.name, type, typeData)
-      Toasts.success(labels.media.success.remove[type])
-      Dispatcher.dispatch({ type: 'UPDATE_MEDIAS' })
+      showToast(plugin.instance.strings.media.success.remove[type], { type: 'success' })
+      Dispatcher.dispatch({ type: 'FM_UPDATE_MEDIAS' })
+    }
+
+    static setCategoryThumbnail (type, url, categoryId) {
+      const typeData = Utilities.loadData(config.name, type, { categories: [] })
+      const index = typeData.categories.findIndex(m => m.id === categoryId)
+      if (index < 0) return
+      typeData.categories[index].thumbnail = url
+      Utilities.saveData(config.name, type, typeData)
+      showToast(plugin.instance.strings.category.success.setThumbnail, { type: 'success' })
+      Dispatcher.dispatch({ type: 'FM_UPDATE_CATEGORIES' })
+    }
+
+    static unsetCategoryThumbnail (type, categoryId) {
+      const typeData = Utilities.loadData(config.name, type, { categories: [] })
+      const index = typeData.categories.findIndex(m => m.id === categoryId)
+      if (index < 0) return
+      typeData.categories[index].thumbnail = undefined
+      Utilities.saveData(config.name, type, typeData)
+      showToast(plugin.instance.strings.category.success.unsetThumbnail, { type: 'success' })
+      Dispatcher.dispatch({ type: 'FM_UPDATE_CATEGORIES' })
     }
 
     categoriesItems (media) {
       return this.state.categories
-        .filter(c => c.id !== (this.state.category?.id) && c.id !== MediaPicker.isMediaInCategory(this.props.type, media.id))
-        .map(c => {
-          return {
-            id: `category-menu-${c.id}`,
-            label: c.name,
-            key: c.id,
-            action: () => MediaPicker.changeMediaCategory(this.props.type, media.url, c.id),
-            render: () => React.createElement(CategoryMenuItem, { ...c, key: c.id })
-          }
-        })
+        .filter(c => c.id !== (media.category_id) && c.id !== MediaPicker.getMediaCategoryId(this.props.type, media.id))
+        .map(c => ({
+          id: `category-menu-${c.id}`,
+          label: c.name,
+          key: c.id,
+          action: () => MediaPicker.changeMediaCategory(this.props.type, media.url, c.id),
+          render: () => React.createElement(CategoryMenuItem, { ...c, key: c.id }),
+        }))
     }
 
-    static isMediaInCategory (type, mediaId) {
-      const media = Utilities.loadData(config.name, type, { medias: [] }).medias[mediaId]
-      if (!media) return undefined
-      return media.category_id
+    static getMediaCategoryId (type, mediaId) {
+      return Utilities.loadData(config.name, type, { medias: [] }).medias[mediaId]?.category_id
+    }
+
+    static getCategoryThumbnail (type, categoryId) {
+      return Utilities.loadData(config.name, type, { categories: [] }).categories.find(c => c.id === categoryId)?.thumbnail
     }
 
     get randomThumbnails () {
@@ -1827,27 +2715,31 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
 
     backCategory () {
       const prevCategory = this.state.categories.find((c) => c.id === this.state.category.category_id)
-      this.setState({ category: prevCategory })
+      this.setState({
+        category: prevCategory,
+        page: 1,
+      })
+      this.resetScroll()
     }
 
-    uploadMedia (mediaId, spoiler = false) {
-      loadComponentDispatch()
-      const media = this.state.medias[mediaId]
-      if (!media) return
-      fetchMedia(media).then((buffer) => {
-        uploadFile(this.props.type, buffer, media)
-        setTimeout(() => {
-          if (spoiler) findSpoilerButton()?.click()
-          if (['both', 'file'].includes(this.props.settings.alwaysSendUpload)) {
-            sendInTextarea().then(() => ComponentDispatch.dispatchToLastSubscribed('CLEAR_TEXT'))
-          }
-        }, 50)
-        EPS.closeExpressionPicker()
-      }).catch((err) => console.error('[FavoriteMedia]', err))
+    async uploadMedia (mediaId, spoiler = false) {
+      const media = structuredClone(this.state.medias[mediaId])
+      if (media == null) return
+
+      const [refreshedUrl] = await MediaPicker.refreshUrls([media.url])
+      media.url = refreshedUrl.refreshed ?? refreshedUrl.original
+
+      const buffer = await fetchMedia(media).catch((err) => console.error(`[${config.name}]`, err.message ?? err))
+      uploadFile(this.props.type, buffer, media)
+
+      setTimeout(() => {
+        if (spoiler) findSpoilerButton()?.click()
+      }, 50)
+      EPS.closeExpressionPicker()
     }
 
     sendMedia (e, mediaId) {
-      Dispatcher.dispatch({ type: 'SEND_MEDIA', e, mediaId })
+      Dispatcher.dispatch({ type: 'FM_SEND_MEDIA', e, mediaId })
     }
 
     onMediaContextMenu (e, mediaId) {
@@ -1855,82 +2747,73 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
       const items = [{
         id: 'media-input',
         label: 'media-input',
-        render: () => React.createElement(MediaMenuItemInput, { id: mediaId, type: this.props.type, loadMedias: this.loadMedias })
+        render: () => React.createElement(MediaMenuItemInput, { id: mediaId, type: this.props.type, loadMedias: this.loadMedias }),
       }, {
         id: 'media-copy-url',
         label: Strings.Messages.COPY_MEDIA_LINK,
-        action: () => ElectronModule.copy(media.url)
+        action: () => ElectronModule.copy(media.url),
       }]
       if (media.message != null) {
         items.push({
           id: 'media-copy-message',
           label: Strings.Messages.COPY_MESSAGE_LINK,
-          action: () => ElectronModule.copy(media.message ?? '')
+          action: () => ElectronModule.copy(media.message ?? ''),
         })
       }
       if (media.source != null) {
         items.push({
           id: 'media-copy-source',
-          label: labels.media.copySource,
-          action: () => ElectronModule.copy(media.source ?? '')
+          label: plugin.instance.strings.media.copySource,
+          action: () => ElectronModule.copy(media.source ?? ''),
         })
       }
       items.push({
         id: 'media-send-title',
         label: Strings.Messages.USER_POPOUT_MESSAGE,
-        action: (e) => this.sendMedia(e, mediaId)
+        action: (e) => this.sendMedia(e, mediaId),
       }, {
         id: 'media-upload-title',
-        label: labels.media.upload.title,
+        label: plugin.instance.strings.media.upload.title,
         type: 'submenu',
         items: [{
           id: 'media-upload-normal',
-          label: labels.media.upload.normal,
-          action: () => this.uploadMedia(mediaId)
+          label: plugin.instance.strings.media.upload.normal,
+          action: () => this.uploadMedia(mediaId),
         }, {
           id: 'media-upload-spoiler',
-          label: labels.media.upload.spoiler,
-          action: () => this.uploadMedia(mediaId, true)
-        }]
+          label: plugin.instance.strings.media.upload.spoiler,
+          action: () => this.uploadMedia(mediaId, true),
+        }],
       }, {
         id: 'media-download',
         label: Strings.Messages.DOWNLOAD,
-        action: () => {
-          const ext = this.props.type === 'gif' ? '.gif' : getUrlExt(media.url)
-          media.name = media.name.replace(/ /g, '_')
-          openDialog({ mode: 'save', defaultPath: media.name + ext }).then(({ filePath }) => {
-            if (filePath === '') return
-            fetchMedia(media).then((buffer) => {
-              writeFile(filePath, buffer, (err) => {
-                if (err) {
-                  console.error('[FavoriteMedia]', err)
-                  Toasts.error(labels.media.error.download[this.props.type])
-                } else {
-                  Toasts.success(labels.media.success.download[this.props.type])
-                }
-              })
-            }).catch((err) => {
-              console.error('[FavoriteMedia]', err)
-              Toasts.error(labels.media.error.download[this.props.type])
-            })
-          })
-        }
+        action: () => MediaPicker.downloadMedia(media, this.props.type),
       })
       const itemsCategories = this.categoriesItems(media)
+      const mediaCategoryId = MediaPicker.getMediaCategoryId(this.props.type, mediaId)
       if (itemsCategories.length > 0) {
         items.splice(1, 0, {
           id: 'media-moveAddTo',
-          label: this.state.category || MediaPicker.isMediaInCategory(this.props.type, mediaId) !== undefined ? labels.media.moveTo : labels.media.addTo,
+          label: this.state.category || mediaCategoryId != null ? plugin.instance.strings.media.moveTo : plugin.instance.strings.media.addTo,
           type: 'submenu',
-          items: itemsCategories
+          items: itemsCategories,
         })
       }
-      if (MediaPicker.isMediaInCategory(this.props.type, mediaId) !== undefined) {
+      if (mediaCategoryId != null) {
+        const mediaThumbnail = MediaFavButton.getThumbnail(this.props.type, media)
+        const categoryThumbnail = MediaPicker.getCategoryThumbnail(this.props.type, mediaCategoryId)
+        if (mediaThumbnail !== categoryThumbnail) {
+          items.push({
+            id: 'category-setThumbnail',
+            label: plugin.instance.strings.category.setThumbnail,
+            action: () => MediaPicker.setCategoryThumbnail(this.props.type, mediaThumbnail, mediaCategoryId),
+          })
+        }
         items.push({
           id: 'media-removeFrom',
-          label: labels.media.removeFrom,
+          label: plugin.instance.strings.media.removeFrom,
           danger: true,
-          action: () => MediaPicker.removeMediaCategory(this.props.type, mediaId)
+          action: () => MediaPicker.removeMediaCategory(this.props.type, mediaId),
         })
       }
       canClosePicker.context = 'contextmenu'
@@ -1938,14 +2821,100 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
       ContextMenu.openContextMenu(e, ContextMenu.buildMenu([
         {
           type: 'group',
-          items
-        }
+          items,
+        },
       ]), {
         onClose: () => {
           canClosePicker.context = 'contextmenu'
           canClosePicker.value = true
-        }
+        },
       })
+    }
+
+    static async openImportModal () {
+      const { filePaths } = await openDialog({
+        defaultPath: Plugins.folder,
+        multiSelections: true,
+        filters: [{ name: 'Config', extensions: ['config.json'] }],
+      })
+      if (!filePaths?.[0]) return
+
+      showConfirmationModal(
+        plugin.instance.strings.import.panel,
+        React.createElement(ImportPanel, {
+          paths: filePaths,
+        }), {
+          confirmText: null,
+          cancelText: null,
+        })
+    }
+
+    static async openDatabasePanel () {
+      showConfirmationModal(plugin.instance.strings.cache.panel, React.createElement(DatabasePanel), {
+        confirmText: null,
+        cancelText: null,
+      })
+    }
+
+    static async fetchMediasIntoDB () {
+      const time = new Date().getTime()
+      const mediasUrlToCache = []
+      const keys = await fmdb.getKeys()
+      const types = ['image', 'video', 'gif']
+      for (const type of types) {
+        const medias = Utilities.loadData(config.name, type, { medias: [] }).medias
+        for (const media of medias) {
+          const url = MediaFavButton.getThumbnail(type, media)
+          if (url != null && !keys.includes(url)) mediasUrlToCache.push(url)
+        }
+      }
+
+      if (mediasUrlToCache.length <= 0) {
+        console.info(`[${config.name}]`, 'There is no media to cache')
+        return 0
+      }
+
+      let totalCached = 0
+      const cacheMedia = async (r) => {
+        const buf = await fetchMedia({ url: r.refreshed ?? r.original })
+        await fmdb.set(r.original, buf)
+      }
+
+      const refreshedUrls = await MediaPicker.refreshUrls(mediasUrlToCache)
+      for (const refreshedUrl of refreshedUrls) {
+        await cacheMedia(refreshedUrl).then(() => {
+          totalCached++
+          Dispatcher.dispatch({ type: 'FM_FETCH_INTO_DB', done: totalCached, total: mediasUrlToCache.length })
+        }).catch((err) => {
+          console.warn(`[${config.name}]`, 'Failed to cache media:', refreshedUrl.original, err.message ?? err)
+        })
+      }
+
+      console.info(`[${config.name}]`, `Saved ${totalCached}/${mediasUrlToCache.length} medias in the database in ${((new Date().getTime() - time) / 1000).toFixed(2)}s`)
+
+      return totalCached
+    }
+
+    static async refreshUrls (urls) {
+      const wait = async (delay = 1000) => { await new Promise((resolve) => { setTimeout(resolve) }, delay) }
+
+      const ret = []
+
+      const CHUNKS_SIZE = 50
+      for (let i = 0; i < Math.ceil(urls.length / CHUNKS_SIZE); i++) {
+        const chunkUrls = urls.slice(i * CHUNKS_SIZE, (i + 1) * CHUNKS_SIZE)
+        const response = await RestAPI.post({
+          url: '/attachments/refresh-urls',
+          body: { attachment_urls: chunkUrls },
+          trackedActionData: {},
+        }).catch((err) => console.warn(`[${config.name}]`, 'Could not load medias:', chunkUrls, `(${err.message ?? err}):`))
+        if (response.ok) ret.push(...response.body.refreshed_urls)
+
+        // to prevent rate-limit
+        await wait(500)
+      }
+
+      return ret
     }
 
     render () {
@@ -1953,42 +2922,62 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
         id: `${this.props.type}-picker-tab-panel`,
         role: 'tabpanel',
         'aria-labelledby': `${this.props.type}-picker-tab`,
-        className: `${classes.gutter.container} fm-pickerContainer`
+        className: `${classes.gutter.container} fm-pickerContainer`,
       },
       React.createElement('div', {
-        className: `${classes.gutter.header} fm-header`
+        className: `${classes.gutter.header} fm-header`,
       },
       React.createElement('div', {
-        className: `${classes.h5} fm-mediasCounter`
+        className: `${classes.h5} fm-headerRight`,
+      },
+      React.createElement('span', {
+        ref: 'mediasCounter',
+        className: 'fm-mediasCounter',
       }, this.filteredMedias.length),
       React.createElement('div', {
+        ref: 'databaseButton',
+        className: `${classes.buttons.button} fm-databaseButton fm-buttonIcon`,
+        onClick: MediaPicker.openDatabasePanel,
+      }, DatabaseSVG()),
+      React.createElement('div', {
+        ref: 'importButton',
+        className: `${classes.buttons.button} fm-importButton fm-buttonIcon`,
+        onClick: MediaPicker.openImportModal,
+      }, ImportSVG()),
+      React.createElement('div', {
+        ref: 'settingsButton',
+        className: `${classes.buttons.button} fm-settingsButton fm-buttonIcon`,
+        onClick: () => Dispatcher.dispatch({ type: 'FM_OPEN_SETTINGS' }),
+      }, CogSVG())
+      ),
+      React.createElement('div', {
         className: `${classes.flex.flex} ${classes.flex.horizontal} ${classes.flex.justifyStart} ${classes.flex.alignCenter} ${classes.flex.noWrap}`,
-        style: { flex: '1 1 auto' }
+        style: { flex: '1 1 auto' },
       },
       this.state.category
         ? React.createElement('div', {
           className: classes.gutter.backButton,
           role: 'button',
           tabindex: '0',
-          onClick: () => this.backCategory()
+          onClick: () => this.backCategory(),
         },
         React.createElement('svg', {
           'aria-hidden': false,
           width: '24',
           height: '24',
           viewBox: '0 0 24 24',
-          fill: 'none'
+          fill: 'none',
         },
         React.createElement('path', {
           fill: 'currentColor',
-          d: 'M20 10.9378H14.2199H8.06628L10.502 8.50202L9 7L4 12L9 17L10.502 15.498L8.06628 13.0622H20V10.9378Z'
+          d: 'M20 10.9378H14.2199H8.06628L10.502 8.50202L9 7L4 12L9 17L10.502 15.498L8.06628 13.0622H20V10.9378Z',
         })
         )
         )
         : null,
       this.state.category
         ? React.createElement('h5', {
-          className: `${classes.h5} ${classes.gutter.searchHeader}`
+          className: `${classes.h5} ${classes.gutter.searchHeader}`,
         }, this.state.category.name)
         : null,
       this.state.textFilter && !this.state.category
@@ -1996,55 +2985,58 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
           className: classes.gutter.backButton,
           role: 'button',
           tabindex: '0',
-          onClick: this.clearSearch
+          onClick: this.clearSearch,
         },
         React.createElement('svg', {
           'aria-hidden': false,
           width: '24',
           height: '24',
           viewBox: '0 0 24 24',
-          fill: 'none'
+          fill: 'none',
         },
         React.createElement('path', {
           fill: 'currentColor',
-          d: 'M20 10.9378H14.2199H8.06628L10.502 8.50202L9 7L4 12L9 17L10.502 15.498L8.06628 13.0622H20V10.9378Z'
+          d: 'M20 10.9378H14.2199H8.06628L10.502 8.50202L9 7L4 12L9 17L10.502 15.498L8.06628 13.0622H20V10.9378Z',
         })
         )
         )
         : null,
       !this.state.category
         ? React.createElement('div', {
-          className: `${classes.gutter.searchBar} ${classes.container.container} ${classes.container.medium}`
+          className: `${classes.gutter.searchBar} ${classes.container.container} ${classes.container.medium}`,
         },
         React.createElement('div', {
-          className: classes.container.inner
+          className: classes.container.inner,
         },
         React.createElement('input', {
           className: classes.container.input,
-          placeholder: labels.searchItem[this.props.type],
+          placeholder: plugin.instance.strings.searchItem[this.props.type],
           autofocus: true,
           ref: 'input',
-          onChange: e => this.setState({ textFilter: e.target.value })
+          onChange: e => {
+            this.setState({ textFilter: e.target.value })
+            this.resetScroll()
+          },
         }),
         React.createElement('div', {
           className: `${classes.container.iconLayout} ${classes.container.medium} ${this.state.textFilter ? classes.container.pointer : ''}`,
           tabindex: '-1',
           role: 'button',
-          onClick: this.clearSearch
+          onClick: this.clearSearch,
         },
         React.createElement('div', {
-          className: classes.container.iconContainer
+          className: classes.container.iconContainer,
         },
         React.createElement('svg', {
           className: `${classes.container.clear} ${this.state.textFilter ? '' : ` ${classes.container.visible}`}`,
           'aria-hidden': false,
           width: '24',
           height: '24',
-          viewBox: '0 0 24 24'
+          viewBox: '0 0 24 24',
         },
         React.createElement('path', {
           fill: 'currentColor',
-          d: 'M21.707 20.293L16.314 14.9C17.403 13.504 18 11.799 18 10C18 7.863 17.167 5.854 15.656 4.344C14.146 2.832 12.137 2 10 2C7.863 2 5.854 2.832 4.344 4.344C2.833 5.854 2 7.863 2 10C2 12.137 2.833 14.146 4.344 15.656C5.854 17.168 7.863 18 10 18C11.799 18 13.504 17.404 14.9 16.314L20.293 21.706L21.707 20.293ZM10 16C8.397 16 6.891 15.376 5.758 14.243C4.624 13.11 4 11.603 4 10C4 8.398 4.624 6.891 5.758 5.758C6.891 4.624 8.397 4 10 4C11.603 4 13.109 4.624 14.242 5.758C15.376 6.891 16 8.398 16 10C16 11.603 15.376 13.11 14.242 14.243C13.109 15.376 11.603 16 10 16Z'
+          d: 'M21.707 20.293L16.314 14.9C17.403 13.504 18 11.799 18 10C18 7.863 17.167 5.854 15.656 4.344C14.146 2.832 12.137 2 10 2C7.863 2 5.854 2.832 4.344 4.344C2.833 5.854 2 7.863 2 10C2 12.137 2.833 14.146 4.344 15.656C5.854 17.168 7.863 18 10 18C11.799 18 13.504 17.404 14.9 16.314L20.293 21.706L21.707 20.293ZM10 16C8.397 16 6.891 15.376 5.758 14.243C4.624 13.11 4 11.603 4 10C4 8.398 4.624 6.891 5.758 5.758C6.891 4.624 8.397 4 10 4C11.603 4 13.109 4.624 14.242 5.758C15.376 6.891 16 8.398 16 10C16 11.603 15.376 13.11 14.242 14.243C13.109 15.376 11.603 16 10 16Z',
         })
         ),
         React.createElement('svg', {
@@ -2052,11 +3044,11 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
           'aria-hidden': false,
           width: '24',
           height: '24',
-          viewBox: '0 0 24 24'
+          viewBox: '0 0 24 24',
         },
         React.createElement('path', {
           fill: 'currentColor',
-          d: 'M18.4 4L12 10.4L5.6 4L4 5.6L10.4 12L4 18.4L5.6 20L12 13.6L18.4 20L20 18.4L13.6 12L20 5.6L18.4 4Z'
+          d: 'M18.4 4L12 10.4L5.6 4L4 5.6L10.4 12L4 18.4L5.6 20L12 13.6L18.4 20L20 18.4L13.6 12L20 5.6L18.4 4Z',
         })
         )
         )
@@ -2068,20 +3060,20 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
       ),
       React.createElement('div', {
         className: `${classes.gutter.content} fm-pickerContent`,
-        style: { height: '100%' }
+        style: { height: '100%' },
       },
       React.createElement('div', {
-        className: `${classes.category.container} ${classes.scroller.thin} ${classes.scroller.scrollerBase} ${classes.scroller.fade} fm-pickerContentContainer`,
+        ref: 'pickerScroll',
+        className: `${classes.category.container} ${classes.scroller.thin} ${classes.scroller.fade} fm-pickerContentContainer`,
         style: { overflow: 'hidden scroll', 'padding-right': '0' },
         onContextMenu: this.onContextMenu,
-        onScroll: this.onScroll
       },
       React.createElement('div', {
-        className: `${classes.scroller.content} fm-pickerContentContainerContent`
+        className: `${classes.scroller.content} fm-pickerContentContainerContent`,
       },
       React.createElement('div', {
         style: { position: 'absolute', left: '12px', top: '12px', width: 'calc(100% - 16px)' },
-        ref: 'content'
+        ref: 'content',
       },
       !this.state.category && (this.state.categories.length + this.state.medias.length === 0)
         ? React.createElement(EmptyFavorites, { type: this.props.type })
@@ -2093,8 +3085,8 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
           componentProps: {
             type: this.props.type,
             setCategory: this.setCategory,
-            length: this.filteredCategories.length
-          }
+            length: this.filteredCategories.length,
+          },
         })
         : null,
       this.state.medias.length > 0 && this.state.contentWidth
@@ -2104,8 +3096,8 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
           componentProps: {
             type: this.props.type,
             onMediaContextMenu: this.onMediaContextMenu,
-            settings: this.props.settings
-          }
+            settings: this.props.settings,
+          },
         })
         : null
       ),
@@ -2116,9 +3108,9 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
             left: '12px',
             top: `${this.contentHeight + 12}px`,
             width: 'calc(100% - 16px)',
-            height: '220px'
+            height: '220px',
           },
-          ref: 'endSticker'
+          ref: 'endSticker',
         },
         React.createElement('div', {
           className: classes.result.endContainer,
@@ -2127,13 +3119,29 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
             top: '0px',
             left: '0px',
             width: '100%',
-            height: '220px'
-          }
+            height: '220px',
+          },
         })
         )
         : null
       )
-      )
+      ),
+      PageControl != null
+        ? React.createElement('div', {
+          className: 'fm-pageControl',
+        },
+        React.createElement(PageControl, {
+          currentPage: this.state.page,
+          maxVisiblePages: 5,
+          onPageChange: (page) => {
+            this.setState({ page: Number(page) })
+            this.resetScroll()
+          },
+          pageSize: plugin.instance.settings.maxMediasPerPage,
+          totalCount: this.filteredCategories.length + this.filteredMedias.length,
+        })
+        )
+        : null
       )
       )
     }
@@ -2144,7 +3152,7 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
       super(props)
 
       this.state = {
-        active: false
+        active: false,
       }
 
       this.changeActive = this.changeActive.bind(this)
@@ -2171,15 +3179,22 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
     }
 
     componentDidMount () {
-      Dispatcher.subscribe('PICKER_BUTTON_ACTIVE', this.changeActive)
+      Dispatcher.subscribe('FM_PICKER_BUTTON_ACTIVE', this.changeActive)
     }
 
     componentWillUnmount () {
-      Dispatcher.unsubscribe('PICKER_BUTTON_ACTIVE', this.changeActive)
+      Dispatcher.unsubscribe('FM_PICKER_BUTTON_ACTIVE', this.changeActive)
     }
 
     render () {
       return React.createElement('div', {
+        className: `${classes.textarea.buttonContainer} fm-buttonContainer fm-${this.props.type}`,
+        ref: 'button',
+      },
+      React.createElement('button', {
+        className: `${classes.look.button} ${classes.look.lookBlank} ${classes.look.colorBrand} ${classes.look.grow}${this.state.active ? ` ${classes.icon.active}` : ''} fm-button`,
+        tabindex: '0',
+        type: 'button',
         onMouseDown: this.checkPicker,
         onClick: () => {
           const EPSState = EPS.useExpressionPickerStore.getState()
@@ -2188,24 +3203,18 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
           }
           EPS.toggleExpressionPicker(this.props.type, this.props.pickerType ?? EPSConstants.NORMAL)
         },
-        className: `${classes.textarea.buttonContainer} fm-buttonContainer fm-${this.props.type}`,
-        ref: 'button'
-      },
-      React.createElement('button', {
-        className: `${classes.look.button} ${classes.look.lookBlank} ${classes.look.colorBrand} ${classes.look.grow}${this.state.active ? ` ${classes.icon.active}` : ''} fm-button`,
-        tabindex: '0',
-        type: 'button'
       },
       React.createElement('div', {
-        className: `${classes.look.contents} ${classes.textarea.button} ${classes.icon.button} fm-buttonContent`
+        className: `${classes.look.contents} ${classes.textarea.button} ${classes.icon.button} fm-buttonContent`,
       },
       React.createElement('div', {
         className: `${classes.icon.buttonWrapper} fm-buttonWrapper`,
-        style: { opacity: '1', transform: 'none' }
+        style: { opacity: '1', transform: 'none' },
       },
       this.props.type === 'image' ? ImageSVG() : null,
       this.props.type === 'video' ? VideoSVG() : null,
-      this.props.type === 'audio' ? AudioSVG() : null
+      this.props.type === 'audio' ? AudioSVG() : null,
+      this.props.type === 'file' ? FileSVG() : null
       )
       )
       )
@@ -2214,41 +3223,52 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
   }
 
   function categoryValidator (type, name, color, id) {
-    if (!name || typeof name !== 'string') return { error: 'error', message: labels.category.error.needName }
-    if (name.length > 20) return { error: 'error', message: labels.category.error.invalidNameLength }
-    if (!color || typeof color !== 'string' || !color.startsWith('#')) return { error: 'error', message: labels.category.error.wrongColor }
+    if (!name || typeof name !== 'string') return { error: 'error', message: plugin.instance.strings.category.error.needName }
+    if (name.length > 20) return { error: 'error', message: plugin.instance.strings.category.error.invalidNameLength }
+    if (!color || typeof color !== 'string' || !color.startsWith('#')) return { error: 'error', message: plugin.instance.strings.category.error.wrongColor }
     const typeData = Utilities.loadData(config.name, type, { categories: [], medias: [] })
-    if (typeData.categories.find(c => c.name === name && c.id !== id) !== undefined) return { error: 'error', message: labels.category.error.nameExists }
+    if (typeData.categories.find(c => c.name === name && c.id !== id) !== undefined) return { error: 'error', message: plugin.instance.strings.category.error.nameExists }
     return typeData
+  }
+
+  function getNewCategoryId (categories = []) {
+    const id = Math.max(...categories.map(c => c.id))
+    if (isNaN(id) || id < 1) return 1
+    return id + 1
   }
 
   function createCategory (type, { name, color }, categoryId) {
     const res = categoryValidator(type, name, color)
     if (res.error) {
-      console.error('[FavoriteMedia]', res.error)
-      Toasts.error(res.message)
+      console.error(`[${config.name}]`, res.error)
+      showToast(res.message, { type: 'error' })
       return false
     }
 
-    res.categories.push({ id: ((res.categories.slice(-1)[0] && res.categories.slice(-1)[0].id) || 0) + 1, name, color, category_id: categoryId })
+    res.categories.push({
+      id: getNewCategoryId(res.categories),
+      name,
+      color,
+      category_id: categoryId,
+    })
     Utilities.saveData(config.name, type, res)
 
-    Toasts.success(labels.category.success.create)
+    showToast(plugin.instance.strings.category.success.create, { type: 'success' })
     return true
   }
 
   function editCategory (type, { name, color }, id) {
     const res = categoryValidator(type, name, color, id)
     if (res.error) {
-      console.error('[FavoriteMedia]', res.error)
-      Toasts.error(res.message)
+      console.error(`[${config.name}]`, res.error)
+      showToast(res.message, { type: 'error' })
       return false
     }
 
     res.categories[res.categories.findIndex(c => c.id === id)] = { id, name, color }
     Utilities.saveData(config.name, type, res)
 
-    Toasts.success(labels.category.success.edit)
+    showToast(plugin.instance.strings.category.success.edit, { type: 'success' })
     return true
   }
 
@@ -2269,13 +3289,16 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
     typeData.categories[newCategoryIndex] = oldCategory
     Utilities.saveData(config.name, type, typeData)
 
-    Toasts.success(labels.category.success.move)
-    Dispatcher.dispatch({ type: 'UPDATE_CATEGORIES' })
+    showToast(plugin.instance.strings.category.success.move, { type: 'success' })
+    Dispatcher.dispatch({ type: 'FM_UPDATE_CATEGORIES' })
   }
 
   function deleteCategory (type, id) {
     const typeData = Utilities.loadData(config.name, type, { categories: [], medias: [] })
-    if (typeData.categories.find(c => c.id === id) === undefined) { Toasts.error(labels.category.error.invalidCategory); return false }
+    if (typeData.categories.find(c => c.id === id) === undefined) {
+      showToast(plugin.instance.strings.category.error.invalidCategory, { type: 'error' })
+      return false
+    }
     const deleteCategoryId = (id) => {
       typeData.categories = typeData.categories.filter(c => c.id !== id)
       typeData.medias = typeData.medias.map(m => { if (m.category_id === id) delete m.category_id; return m })
@@ -2285,21 +3308,25 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
     deleteCategoryId(id)
     Utilities.saveData(config.name, type, typeData)
 
-    Toasts.success(labels.category.success.delete)
+    showToast(plugin.instance.strings.category.success.delete, { type: 'success' })
     return true
   }
 
   return class FavoriteMedia extends Plugin {
     onStart () {
+      plugin.instance.strings = getPluginStrings()
       loadModules()
-      this.openMediaTabsByKeybinds()
+
       this.patchExpressionPicker()
       this.patchMessageContextMenu()
       this.patchGIFTab()
       this.patchClosePicker()
       this.patchMedias()
       this.patchChannelTextArea()
-      if (this.settings.alwaysDeleteDeadMedias) this.deleteDeadMedias()
+
+      this.openSettings = this.openSettings.bind(this)
+      Dispatcher.subscribe('FM_OPEN_SETTINGS', this.openSettings)
+
       DOMTools.addStyle(this.getName() + '-css', `
         .category-input-color > input[type='color'] {
           opacity: 0;
@@ -2313,10 +3340,11 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
         .category-input-color:hover {
           transform: scale(1.1);
         }
-        .fm-favBtn.fm-video:not(.fm-uploaded) {
-          top: calc(50% - 1em);
+        .${classes.image.imageAccessory}:not(.fm-favBtn):has(+ .fm-favBtn) {
+          display: none;
         }
-        .fm-favBtn.fm-audio {
+        .fm-favBtn.fm-audio,
+        .fm-favBtn.fm-file {
           right: 0;
           left: auto;
           width: auto;
@@ -2340,7 +3368,8 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
           height: 26px;
           color: var(--interactive-normal);
         }
-        .show-controls:hover, .show-controls.active {
+        .show-controls:hover,
+        .show-controls.active {
           -webkit-transform: none;
           transform: none;
           color: var(--interactive-active);
@@ -2365,13 +3394,15 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
           margin-left: 0;
         }
         .${classes.image.embedWrapper}:not(.${classes.audio.wrapperAudio.split(' ')[0]}):focus-within .${classes.gif.gifFavoriteButton1},
-        .${classes.image.embedWrapper}:not(.${classes.audio.wrapperAudio.split(' ')[0]}):hover .${classes.gif.gifFavoriteButton1} {
+        .${classes.image.embedWrapper}:not(.${classes.audio.wrapperAudio.split(' ')[0]}):hover .${classes.gif.gifFavoriteButton1},
+        .${classes.visual.nonVisualMediaItemContainer}:hover .${classes.gif.gifFavoriteButton1} {
           opacity: 0;
           -webkit-transform: unset;
           transform: unset;
         }
         .${classes.image.imageWrapper}:not(.${classes.audio.wrapperAudio.split(' ')[0]}):focus-within .${classes.gif.gifFavoriteButton1},
-        .${classes.image.imageWrapper}:not(.${classes.audio.wrapperAudio.split(' ')[0]}):hover .${classes.gif.gifFavoriteButton1} {
+        .${classes.image.imageWrapper}:not(.${classes.audio.wrapperAudio.split(' ')[0]}):hover .${classes.gif.gifFavoriteButton1},
+        .${classes.visual.nonVisualMediaItemContainer}:hover .${classes.gif.gifFavoriteButton1} {
           opacity: 1;
           -webkit-transform: translateY(0);f
           transform: translateY(0);
@@ -2382,23 +3413,143 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
         #gif-picker-tab-panel .fm-header {
           padding-top: 16px;
         }
-        .fm-header .fm-mediasCounter {
+        .fm-header .fm-headerRight {
           height: 100%;
           display: flex;
-          float: right;
           align-items: center;
-          margin: 0 4px 0 16px;
+          margin-left: 4px;
+          float: right;
+        }
+        .fm-header .fm-mediasCounter {
+          padding: 6px 7px;
+        }
+        .fm-pageControl {
+          width: 100%;
+          position: absolute;
+          display: flex;
+          justify-content: center;
+          bottom: 0;
+          pointer-events: none;
+          z-index: 10;
+        }
+        .fm-pageControl > div {
+          width: auto;
+          margin-top: 0;
+          background-color: var(--background-secondary);
+          border-top-left-radius: 8px;
+          border-top-right-radius: 8px;
+          pointer-events: all;
+        }
+        .fm-pageControl > div > nav {
+          padding: 8px 0;
+          height: 28px;
+        }
+        .fm-databasePanel {
+          height: 100%;
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
+          padding-top: 16px;
+        }
+        .fm-databasePanel > * {
+          height: 100%;
+          width: 100%;
+        }
+        .fm-databasePanel > button {
+          width: fit-content;
+        }
+        .fm-database {
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
+        }
+        .fm-stats {
+          display: flex;
+          justify-content: space-between;
+        }
+        .fm-stats .fm-statsLines {
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+        }
+        .fm-stats .fm-statsLines .fm-statsLine {
+          display: flex;
+          gap: 8px;
+        }
+        .fm-stats .fm-statsLines .fm-statsCount {
+          font-weight: bold;
+        }
+        .fm-databaseActions {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px;
+        }
+        .fm-buttonIcon {
+          display: flex;
+          border-radius: 4px;
+          padding: 2px;
+        }
+        .fm-databaseFetchMediasProgress {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          gap: 24px;
+        }
+        .${classes.category.categoryText} {
+          padding: 4px;
+        }
+        .${classes.category.categoryName} {
+          text-align: center;
+          min-width: 0;
+        }
+        .${classes.category.categoryName} > div {
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+        .fm-importPanel {
+          display: flex;
+          flex-direction: column;
+          gap: 32px;
+        }
+        .fm-importRecap {
+          display: flex;
+          gap: 48px;
+        }
+        .fm-importLines {
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+        }
+        .fm-importLines > :first-child {
+          margin-bottom: 8px;
+        }
+        .fm-importLabel {
+          font-weight: bold;
+        }
+        .fm-importValue {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
+        .fm-importValue > input[type="checkbox"] {
+          width: 20px;
+          height: 20px;
+          margin: 0;
         }
       `)
     }
 
     onStop () {
-      DOMTools.removeStyle(this.getName() + '-css')
-      document.removeEventListener('keydown', this.onKeyDown)
-      document.removeEventListener('keyup', this.onKeyUp)
       this.contextMenu?.()
       Patcher.unpatchAll()
-      Dispatcher.dispatch({ type: 'UNPATCH_ALL' })
+      Dispatcher.dispatch({ type: 'FM_UNPATCH_ALL' })
+      Dispatcher.unsubscribe('FM_OPEN_SETTINGS', this.openSettings)
+      Object.keys(mediasCache).forEach((url) => URL.revokeObjectURL(url))
+
+      DOMTools.removeStyle(this.getName() + '-css')
     }
 
     onSwitch () {
@@ -2409,33 +3560,10 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
       return this.buildSettingsPanel().getElement()
     }
 
-    detectMultiKeysPressing (keys, callback) {
-      const keysDown = {}
-      this.onKeyDown = function (e) {
-        keysDown[e.key] = true
-        if (keys.every(k => keysDown[k] === true)) {
-          e.preventDefault()
-          e.stopPropagation()
-          callback?.(keysDown)
-        }
-      }
-      this.onKeyUp = function (e) {
-        delete keysDown[e.key]
-      }
-      document.addEventListener('keydown', this.onKeyDown)
-      document.addEventListener('keyup', this.onKeyUp)
-    }
-
-    openMediaTabsByKeybinds () {
-      this.detectMultiKeysPressing(['Control', 'm'], (keysDown) => {
-        if (this.settings.disableMediasTabKeybind) return
-        if (keysDown.i) {
-          EPS.toggleExpressionPicker('image', EPSConstants.NORMAL)
-        } else if (keysDown.v) {
-          EPS.toggleExpressionPicker('video', EPSConstants.NORMAL)
-        } else if (keysDown.a) {
-          EPS.toggleExpressionPicker('audio', EPSConstants.NORMAL)
-        }
+    openSettings () {
+      showConfirmationModal(this.name + ' Settings', ReactTools.createWrappedElement(this.getSettingsPanel()), {
+        confirmText: null,
+        cancelText: null,
       })
     }
 
@@ -2447,19 +3575,19 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
         'aria-selected': selected,
         className: 'fm-pickerTab',
         viewType: mediaType,
-        isActive: selected
-      }, labels.tabName[mediaType])
+        isActive: selected,
+      }, plugin.instance.strings.tabName[mediaType])
     }
 
     async waitExpressionPicker () {
       return new Promise((resolve, reject) => {
         const unpatch = () => { reject(new Error('Plugin stopped')) }
-        Dispatcher.subscribe('UNPATCH_ALL', unpatch)
+        Dispatcher.subscribe('FM_UNPATCH_ALL', unpatch)
         const selector = `.${classes.contentWrapper.contentWrapper}`
         const observerSubscription = DOMTools.observer.subscribeToQuerySelector(() => {
           const $el = document.querySelector(selector)
           if ($el == null) return
-          Dispatcher.unsubscribe('UNPATCH_ALL', unpatch)
+          Dispatcher.unsubscribe('FM_UNPATCH_ALL', unpatch)
           resolve(ReactTools.getOwnerInstance($el))
           DOMTools.observer.unsubscribe(observerSubscription)
         }, selector, null, true)
@@ -2470,39 +3598,47 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
       let ExpressionPicker = null
       try {
         ExpressionPicker = await this.waitExpressionPicker()
-      } catch (_) {
+      } catch {
         // plugin stopped while waiting to expression picker, prevent duplicate patching
         return
       }
+
       if (ExpressionPicker == null) {
-        console.error('[FavoriteMedia]', 'ExpressionPicker module not found')
+        console.error(`[${config.name}]`, 'ExpressionPicker module not found')
         return
       }
+
       ExpressionPicker.forceUpdate()
+
       // https://github.com/BetterDiscord/BetterDiscord/blob/3b9ad9b75b6ac64e6740e9c2f1d19fd4615010c7/renderer/src/builtins/emotes/emotemenu.js
       Patcher.after(ExpressionPicker.constructor.prototype, 'render', (_, __, returnValue) => {
         const originalChildren = returnValue.props?.children
         if (originalChildren == null) return
+
         returnValue.props.children = (...args) => {
           const childrenReturn = originalChildren(...args)
           const head = Utilities.findInTree(childrenReturn, (e) => e?.role === 'tablist', { walkable: ['props', 'children', 'return', 'stateNode'] })?.children
           const body = Utilities.findInTree(childrenReturn, (e) => e?.[0]?.type === 'nav', { walkable: ['props', 'children', 'return', 'stateNode'] })
           if (head == null || body == null) return childrenReturn
+
           try {
             const elementType = head[0].type.type
             if (this.settings.image.enabled) head.push(this.MediaTab('image', elementType))
             if (this.settings.video.enabled) head.push(this.MediaTab('video', elementType))
             if (this.settings.audio.enabled) head.push(this.MediaTab('audio', elementType))
+            if (this.settings.file.enabled) head.push(this.MediaTab('file', elementType))
+
             const activeMediaPicker = EPS.useExpressionPickerStore.getState().activeView
-            if (['image', 'video', 'audio'].includes(activeMediaPicker)) {
+            if (allTypes.includes(activeMediaPicker)) {
               body.push(React.createElement(MediaPicker, {
                 type: activeMediaPicker,
-                settings: this.settings
+                settings: this.settings,
               }))
             }
           } catch (err) {
-            console.error('[FavoriteMedia]', 'Error in ExpressionPicker\n', err)
+            console.error(`[${config.name}]`, 'Error in ExpressionPicker patch:', err.message ?? err)
           }
+
           return childrenReturn
         }
       })
@@ -2514,25 +3650,29 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
       this.patchedCTA = true
 
       Patcher.after(ChannelTextAreaButtons, 'type', (_, [props], returnValue) => {
-        if (Utilities.getNestedProp(returnValue, 'props.children.1.props.type') === 'sidebar') return
+        if (returnValue == null || Utilities.getNestedProp(returnValue, 'props.children.1.props.type') === 'sidebar') return
+
         currentChannelId = SelectedChannelStore.getChannelId()
         const channel = ChannelStore.getChannel(currentChannelId)
-        const perms = Permissions.can({
-          permission: PermissionsConstants.SEND_MESSAGES,
-          user: UserStore.getCurrentUser(),
-          context: channel
-        })
+        const perms = Permissions.can(PermissionsConstants.SEND_MESSAGES, channel)
         if (!channel.type && !perms) return
+
         const buttons = returnValue.props.children
-        if (!buttons || !Array.isArray(buttons)) return
+        if (buttons == null || !Array.isArray(buttons)) return
+        // in user note
+        if (buttons.length === 1 && buttons[0].key === 'emoji') return
+
         const fmButtons = []
-        if (this.settings.image.showBtn && this.settings.image.enabled) fmButtons.push(React.createElement(MediaButton, { type: 'image', pickerType: props.type, channelId: props.channel.id }))
-        if (this.settings.video.showBtn && this.settings.video.enabled) fmButtons.push(React.createElement(MediaButton, { type: 'video', pickerType: props.type, channelId: props.channel.id }))
-        if (this.settings.audio.showBtn && this.settings.audio.enabled) fmButtons.push(React.createElement(MediaButton, { type: 'audio', pickerType: props.type, channelId: props.channel.id }))
+        if (this.settings.image.enabled && this.settings.image.showBtn) fmButtons.push(React.createElement(MediaButton, { type: 'image', pickerType: props.type, channelId: props.channel.id }))
+        if (this.settings.video.enabled && this.settings.video.showBtn) fmButtons.push(React.createElement(MediaButton, { type: 'video', pickerType: props.type, channelId: props.channel.id }))
+        if (this.settings.audio.enabled && this.settings.audio.showBtn) fmButtons.push(React.createElement(MediaButton, { type: 'audio', pickerType: props.type, channelId: props.channel.id }))
+        if (this.settings.file.enabled && this.settings.file.showBtn) fmButtons.push(React.createElement(MediaButton, { type: 'file', pickerType: props.type, channelId: props.channel.id }))
+
         let index = (buttons.findIndex((b) => b.key === this.settings.position.btnsPositionKey) + (this.settings.position.btnsPosition === 'right' ? 1 : 0))
         if (index < 0) index = buttons.length - 1
         buttons.splice(index, 0, ...fmButtons)
-        buttons.forEach((b) => { if (['image', 'video', 'audio'].includes(b.props?.type)) b.key = b.props.type })
+        buttons.forEach((b) => { if (allTypes.includes(b.props?.type)) b.key = b.props.type })
+
         setTimeout(() => {
           currentTextareaInput = findTextareaInput()
         }, 50)
@@ -2540,64 +3680,81 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
     }
 
     patchMedias () {
-      if (MediaPlayer == null) {
-        console.error('[FavoriteMedia]', 'MediaPlayer module not found')
+      // Videos & Audios
+      if (MediaPlayerModule == null) {
+        console.error(`[${config.name}]`, 'MediaPlayer module not found')
       } else {
-        Patcher.after(MediaPlayer.prototype, 'render', ({ props }, __, returnValue) => {
+        Patcher.after(MediaPlayerModule.prototype, 'render', ({ props }, __, returnValue) => {
           const type = returnValue.props.children[1].type === 'audio' ? 'audio' : 'video'
           if (!this.settings[type].enabled || !this.settings[type].showStar) return
-          let url = props.src
-          if (!url) return
-          url = url.split('https/')[1]
-          if (!url) url = props.src
-          else url = 'https://' + url
-          // force cdn link because on PC media link videos can't be played
-          url = url.replace('media.discordapp.net', 'cdn.discordapp.com')
+
           returnValue.props.children.push(React.createElement(MediaFavButton, {
             type,
-            url,
+            url: cleanUrl(removeProxyUrl(props.src)),
             poster: props.poster,
-            width: props.width,
-            height: props.height,
-            uploaded: returnValue.props.children[0] != null,
-            target: returnValue.props.children[1]?.ref
+            uploaded: props.fileSize != null,
+            target: returnValue.props.children[1]?.ref,
           }))
         })
       }
-      if (Image == null) {
-        console.error('[FavoriteMedia]', 'Image module not found')
+
+      // Images & GIFs
+      if (ImageModule == null) {
+        console.error(`[${config.name}]`, 'Image module not found')
       } else {
-        Patcher.after(Image.prototype, 'render', (_, __, returnValue) => {
-          const propsButton = returnValue.props?.children?.props?.children?.[1]?.props
+        Patcher.after(ImageModule.prototype, 'render', (_this, __, returnValue) => {
+          const propsButton = Utilities.getNestedProp(returnValue, 'props.children.props.children.1.props')
           if (propsButton == null) return
-          const propsImg = propsButton.children?.props
-          if (propsImg == null) return
-          const data = {}
-          data.type = propsImg.play != null || propsImg.src?.split('?')[0].endsWith('.gif') ? 'gif' : 'image'
-          if (!this.settings[data.type].enabled || !this.settings[data.type].showStar) return
-          data.url = returnValue.props.focusTarget.current?.firstChild?.getAttribute('href') || propsImg.src || ''
-          let tmpUrl = data.url.split('https/')[1]
-          if (!tmpUrl) tmpUrl = data.url
-          else tmpUrl = 'https://' + tmpUrl
-          data.url = tmpUrl.replace(/\?width=([\d]*)&height=([\d]*)/, '')
+
+          const propsImg = Utilities.getNestedProp(propsButton, 'children.props.children.props')
+          if (propsImg == null || propsImg.type === 'VIDEO' || propsImg.type === 'GIF') return
+
+          const data = { url: cleanUrl(_this.props.src) }
           if (data.url == null) return
-          const onclick = propsButton.onClick
-          propsButton.onClick = e => {
-            if (e.target?.alt === undefined) e.preventDefault()
-            else onclick(e)
-          }
-          const index = returnValue.props.children.props.children[2] != null ? 2 : returnValue.props.children.props.children
+
+          data.type = propsImg.play != null || data.url?.split('?')[0].endsWith('.gif') ? 'gif' : 'image'
+          if (!this.settings[data.type].enabled || !this.settings[data.type].showStar) return
+
           if (data.type === 'gif') {
-            data.src = propsImg.src
+            data.src = propsImg.src || propsImg.children?.props?.src
             data.url = returnValue.props.focusTarget.current?.parentElement.firstElementChild.getAttribute('href') || data.url
           }
-          returnValue.props.children.props.children.splice(index, 1, React.createElement(MediaFavButton, {
+
+          returnValue.props.children.props.children.push(React.createElement(MediaFavButton, {
             type: data.type,
             src: data.src,
-            url: data.url.replace('media.discordapp.net', 'cdn.discordapp.com').replace(/\?width=([\d]*)&height=([\d]*)/, ''),
-            width: null,
-            height: null,
-            target: returnValue.props.focusTarget
+            url: data.url,
+            target: returnValue.props.focusTarget,
+          }))
+        })
+      }
+
+      // Files
+      if (FileModule == null) {
+        console.error(`[${config.name}]`, 'File module not found')
+      } else {
+        Patcher.after(FileModule, 'Z', (_, [props], returnValue) => {
+          returnValue.props.children.push(React.createElement(MediaFavButton, {
+            type: 'file',
+            name: getUrlName(props.fileName),
+            url: cleanUrl(removeProxyUrl(props.url)),
+            target: { current: document.getElementById(`message-accessories-${props.message.id}`) },
+          }))
+        })
+      }
+
+      // Files rendered
+      if (FileRenderedModule == null) {
+        console.error(`[${config.name}]`, 'FileRendered module not found')
+      } else {
+        Patcher.after(FileRenderedModule, 'ZP', (_, [props], returnValue) => {
+          if (props.item.type !== 'PLAINTEXT_PREVIEW') return
+
+          returnValue.props.children.props.children.push(React.createElement(MediaFavButton, {
+            type: 'file',
+            name: getUrlName(props.item.originalItem.filename),
+            url: cleanUrl(removeProxyUrl(props.item.originalItem.url)),
+            target: { current: document.getElementById(`message-accessories-${props.message.id}`) },
           }))
         })
       }
@@ -2611,22 +3768,25 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
     }
 
     async patchGIFTab () {
-      const GIFPicker = await ReactComponents.getComponent('GIFPicker', '#gif-picker-tab-panel')
-      if (GIFPicker == null) {
-        console.error('[FavoriteMedia]', 'GIFPicker module not found')
+      const GIFPickerModule = await ReactComponents.getComponent('GIFPicker', '#gif-picker-tab-panel')
+      if (GIFPickerModule == null) {
+        console.error(`[${config.name}]`, 'GIFPicker module not found')
         return
       }
-      Patcher.after(GIFPicker.component.prototype, 'renderContent', (_this, _, returnValue) => {
+
+      Patcher.after(GIFPickerModule.component.prototype, 'renderContent', (_this, _, returnValue) => {
         if (!this.settings.gif.enabled || _this.state.resultType !== 'Favorites') return
         if (!Array.isArray(returnValue.props.data)) return
-        const favorites = returnValue.props.data.reverse()
+        const favorites = [...returnValue.props.data].reverse()
         const savedGIFs = Utilities.loadData(config.name, 'gif', { medias: [] })
         const newGIFs = []
         // keep only favorited GIFs
         Promise.allSettled(favorites.map(async (props) => {
           MediaFavButton.getMediaDataFromProps({ ...props, type: 'gif' }).then((data) => {
-            const foundGIF = savedGIFs.medias.find((g) => g.url === data.url)
+            const foundGIF = savedGIFs.medias.find((g) => MediaFavButton.checkSameUrl(g.url, data.url))
             newGIFs.push(foundGIF ?? data)
+          }).catch((err) => {
+            console.warn(`[${config.name}]`, err.message)
           })
         })).then(() => {
           savedGIFs.medias = newGIFs
@@ -2636,84 +3796,88 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
         returnValue.type = MediaPicker
         returnValue.props = {
           type: 'gif',
-          settings: this.settings
+          settings: this.settings,
         }
       })
     }
 
     patchMessageContextMenu () {
-      this.contextMenu = BdApi.ContextMenu.patch('message', (returnValue, props) => {
-        if (props == null) return
-        if (returnValue.props?.children?.find(e => e?.props?.id === 'favoriteMedia')) return
+      this.contextMenu = BDContextMenu.patch('message', (returnValue, props) => {
+        if (props == null || returnValue.props?.children?.find(e => e?.props?.id === 'favoriteMedia')) return
 
         const getMediaContextMenuItems = () => {
           if (props.target == null) return []
+
           let type = null
-          if (props.target.tagName === 'IMG') type = 'image'
-          else if (props.target.tagName === 'A' && ['IMG', 'VIDEO'].includes(props.target.nextSibling?.firstChild?.tagName)) type = 'gif'
+          if (props.target.tagName === 'IMG' || (props.target.tagName === 'A' && props.target.nextSibling?.firstChild?.firstChild?.tagName === 'IMG')) type = 'image'
+          else if (props.target.tagName === 'A' && props.target.nextSibling?.firstChild?.firstChild?.tagName === 'VIDEO') type = 'gif'
           else if (props.target.parentElement.firstElementChild.tagName === 'VIDEO') type = 'video'
-          else if (props.target.closest('[class*="wrapperAudio"]')) {
+          else if (props.target.closest('[class*="wrapperAudio_"]')) {
             type = 'audio'
-            props.target = props.target.closest('[class*="wrapperAudio"]')
+            props.target = props.target.closest('[class*="attachment_"]')
+          } else if (props.target.closest('[class*="attachment_"]')) {
+            type = 'file'
+            props.target = props.target.closest('[class*="attachment_"]')
+          } else if (props.target.closest('[class*="newMosaicStyle_"]')) {
+            type = 'file'
+            props.target = props.target.closest('[class*="newMosaicStyle_"]')
           }
           if (type == null) return []
+
           const data = {
             type,
-            url: props.target.getAttribute('href') || props.target.src,
+            url: props.target.getAttribute('href') ?? props.target.getAttribute('src'),
             poster: null,
-            width: 0,
-            height: 0,
             favorited: undefined,
-            target: { current: props.target }
+            target: { current: props.target },
           }
+
+          if (data.url?.split('?')[0].endsWith('.gif')) data.type = 'gif'
           if (data.type === 'image') {
-            let tmpUrl = data.url.split('https/')[1]
-            if (!tmpUrl) tmpUrl = data.url
-            else tmpUrl = 'https://' + tmpUrl
-            data.url = (tmpUrl || data.url || props.target.src).replace(/\?width=([\d]*)&height=([\d]*)/, '')
-            data.width = Number(props.target.src.match(/\?width=([\d]*)/, '')?.[1])
-            data.height = Number(props.target.src.match(/&height=([\d]*)/, '')?.[1])
+            data.url = data.url ?? props.target.src
           } else if (data.type === 'gif') {
-            data.src = props.target.nextSibling.firstChild?.src
-            data.width = props.target.nextSibling.firstChild?.width
-            data.height = props.target.nextSibling.firstChild?.height
+            data.src = props.target.nextSibling.firstChild?.src ?? props.target.nextSibling.firstChild?.firstChild?.src
           } else if (data.type === 'video') {
             data.url = props.target.parentElement.firstElementChild.src
             data.poster = props.target.parentElement.firstElementChild.poster
-            data.width = props.target.parentElement.firstElementChild.width
-            data.height = props.target.parentElement.firstElementChild.height
           } else if (data.type === 'audio') {
             data.url = props.target.querySelector('audio').firstElementChild?.src
+          } else if (data.type === 'file') {
+            data.url = props.target.querySelector('a[class*="fileNameLink_"],a[class*="downloadSection_"]').href
           }
-          data.url = data.url.replace('media.discordapp.net', 'cdn.discordapp.com')
+
+          data.url = cleanUrl(removeProxyUrl(data.url))
           data.favorited = this.isFavorited(data.type, data.url)
           const menuItems = [{
             id: `media-${data.favorited ? 'un' : ''}favorite`,
             label: data.favorited ? Strings.Messages.GIF_TOOLTIP_REMOVE_FROM_FAVORITES : Strings.Messages.GIF_TOOLTIP_ADD_TO_FAVORITES,
             icon: () => React.createElement(StarSVG, { filled: !data.favorited }),
             action: async () => {
-              if (data.favorited) await MediaFavButton.unfavoriteMedia(data)
-              else await MediaFavButton.favoriteMedia(data)
-              Dispatcher.dispatch({ type: 'FAVORITE_MEDIA', url: data.url })
-            }
+              const switchFavorite = data.favorited ? MediaFavButton.unfavoriteMedia : MediaFavButton.favoriteMedia
+              switchFavorite(data).then(() => {
+                Dispatcher.dispatch({ type: 'FM_FAVORITE_MEDIA', url: data.url })
+              }).catch((err) => {
+                console.error(`[${config.name}]`, err.message ?? err)
+              })
+            },
           }]
           menuItems.push({
             id: 'media-copy-url',
             label: Strings.Messages.COPY_MEDIA_LINK,
-            action: () => ElectronModule.copy(data.url)
+            action: () => ElectronModule.copy(data.url),
           })
           if (data.message != null) {
             menuItems.push({
               id: 'media-copy-message',
               label: Strings.Messages.COPY_MESSAGE_LINK,
-              action: () => ElectronModule.copy(data.message ?? '')
+              action: () => ElectronModule.copy(data.message ?? ''),
             })
           }
           if (data.source != null) {
             menuItems.push({
               id: 'media-copy-source',
-              label: labels.media.copySource,
-              action: () => ElectronModule.copy(data.source ?? '')
+              label: plugin.instance.strings.media.copySource,
+              action: () => ElectronModule.copy(data.source ?? ''),
             })
           }
           menuItems.push({
@@ -2721,41 +3885,24 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
             label: Strings.Messages.DOWNLOAD,
             action: () => {
               const media = { url: data.url, name: getUrlName(data.url) }
-              const ext = data.type === 'gif' ? '.gif' : getUrlExt(media.url)
-              media.name = media.name.replace(/ /g, '_')
-              openDialog({ mode: 'save', defaultPath: media.name + ext }).then(({ filePath }) => {
-                if (filePath === '') return
-                fetchMedia(media).then((buffer) => {
-                  writeFile(filePath, buffer, (err) => {
-                    if (err) {
-                      console.error('[FavoriteMedia]', err)
-                      Toasts.error(labels.media.error.download[data.type])
-                    } else {
-                      Toasts.success(labels.media.success.download[data.type])
-                    }
-                  })
-                }).catch((err) => {
-                  console.error('[FavoriteMedia]', err)
-                  Toasts.error(labels.media.error.download[data.type])
-                })
-              })
-            }
+              MediaPicker.downloadMedia(media, data.type)
+            },
           })
           if (data.favorited) {
             const medias = Utilities.loadData(this._config.name, data.type, { medias: [] }).medias
-            const mediaId = medias.findIndex(m => m.url === data.url)
+            const mediaId = medias.findIndex(m => MediaFavButton.checkSameUrl(m.url, data.url))
             const categoryId = medias[mediaId]?.category_id
             const categories = Utilities.loadData(this._config.name, data.type, { categories: [] }).categories
             const category = categories.find((c) => c.id === categoryId)
             const buttonCategories = categories.filter(c => categoryId != null ? c.id !== categoryId : true)
             if (buttonCategories.length) {
               const moveAddToItems = []
-              if (MediaPicker.isMediaInCategory(data.type, mediaId)) {
+              if (MediaPicker.getMediaCategoryId(data.type, mediaId) != null) {
                 moveAddToItems.push({
                   id: 'media-removeFrom',
-                  label: `${labels.media.removeFrom} (${category?.name})`,
+                  label: `${plugin.instance.strings.media.removeFrom} (${category?.name})`,
                   danger: true,
-                  action: () => MediaPicker.removeMediaCategory(data.type, mediaId)
+                  action: () => MediaPicker.removeMediaCategory(data.type, mediaId),
                 })
               }
               moveAddToItems.push(...buttonCategories.map(c => ({
@@ -2765,13 +3912,13 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
                 action: () => {
                   MediaPicker.changeMediaCategory(data.type, data.url, c.id)
                 },
-                render: () => React.createElement(CategoryMenuItem, { ...c, key: c.id })
+                render: () => React.createElement(CategoryMenuItem, { ...c, key: c.id }),
               })))
               menuItems.push({
                 id: 'media-moveAddTo',
-                label: categoryId !== undefined ? labels.media.moveTo : labels.media.addTo,
+                label: categoryId !== undefined ? plugin.instance.strings.media.moveTo : plugin.instance.strings.media.addTo,
                 type: 'submenu',
-                items: moveAddToItems
+                items: moveAddToItems,
               })
             }
           } else {
@@ -2779,19 +3926,22 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
             if (categories.length) {
               menuItems.push({
                 id: 'media-addTo',
-                label: labels.media.addTo,
+                label: plugin.instance.strings.media.addTo,
                 type: 'submenu',
                 items: categories.map(c => ({
                   id: `category-name-${c.id}`,
                   label: c.name,
                   key: c.id,
                   action: async () => {
-                    await MediaFavButton.favoriteMedia(data)
-                    MediaPicker.changeMediaCategory(data.type, data.url, c.id)
-                    Dispatcher.dispatch({ type: 'FAVORITE_MEDIA', url: data.url })
+                    MediaFavButton.favoriteMedia(data).then(() => {
+                      MediaPicker.changeMediaCategory(data.type, data.url, c.id)
+                      Dispatcher.dispatch({ type: 'FM_FAVORITE_MEDIA', url: data.url })
+                    }).catch((err) => {
+                      console.error(`[${config.name}]`, err.message ?? err)
+                    })
                   },
-                  render: () => React.createElement(CategoryMenuItem, { ...c, key: c.id })
-                }))
+                  render: () => React.createElement(CategoryMenuItem, { ...c, key: c.id }),
+                })),
               })
             }
           }
@@ -2804,33 +3954,33 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
           return [
             {
               id: 'category-list',
-              label: labels.category.list,
+              label: plugin.instance.strings.category.list,
               type: 'submenu',
               items: mediaTypes.map((type) => ({
                 id: `category-create-${type}`,
-                label: type === 'gif' ? Strings.Messages.GIF : labels.tabName[type],
+                label: type === 'gif' ? Strings.Messages.GIF : plugin.instance.strings.tabName[type],
                 type: 'submenu',
                 items: (() => {
                   const items = [{
                     id: `category-create-${type}`,
-                    label: labels.category.create,
-                    action: () => MediaPicker.openCategoryModal(type, 'create')
+                    label: plugin.instance.strings.category.create,
+                    action: () => MediaPicker.openCategoryModal(type, 'create'),
                   }]
                   if (getCategories(type).length > 0) {
                     items.push({
                       id: 'category-edit',
-                      label: labels.category.edit,
+                      label: plugin.instance.strings.category.edit,
                       type: 'submenu',
                       items: getCategories(type).map((c) => ({
                         id: `category-edit-${c.id}`,
                         label: c.name,
                         key: c.id,
                         action: () => MediaPicker.openCategoryModal(type, 'edit', { name: c.name, color: c.color, id: c.id }),
-                        render: () => React.createElement(CategoryMenuItem, { ...c, key: c.id })
-                      }))
+                        render: () => React.createElement(CategoryMenuItem, { ...c, key: c.id }),
+                      })),
                     }, {
                       id: 'category-delete',
-                      label: labels.category.delete,
+                      label: plugin.instance.strings.category.delete,
                       type: 'submenu',
                       danger: true,
                       items: getCategories(type).map((c) => ({
@@ -2840,24 +3990,23 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
                         action: () => {
                           const deleteCategories = () => deleteCategory(type, c.id)
                           if (MediaPicker.categoryHasSubcategories(type, c.id)) {
-                            Modals.showConfirmationModal(labels.category.delete, labels.category.deleteConfirm, {
+                            showConfirmationModal(plugin.instance.strings.category.delete, plugin.instance.strings.category.deleteConfirm, {
                               danger: true,
                               onConfirm: () => deleteCategories(),
-                              confirmText: labels.category.delete,
-                              cancelText: Strings.Messages.CANCEL
+                              confirmText: plugin.instance.strings.category.delete,
                             })
                           } else {
                             deleteCategories()
                           }
                         },
-                        render: () => React.createElement(CategoryMenuItem, { ...c, key: c.id })
-                      }))
+                        render: () => React.createElement(CategoryMenuItem, { ...c, key: c.id }),
+                      })),
                     })
                   }
                   return items
-                })()
-              }))
-            }
+                })(),
+              })),
+            },
           ]
         }
 
@@ -2870,7 +4019,7 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
           id: 'favoriteMediaMenu',
           label: this._config.name,
           type: 'submenu',
-          items: menuItems
+          items: menuItems,
         })
         const fmIndex = returnValue.props.children.findIndex((i) => i?.props?.children?.props?.id === 'devmode-copy-id')
         if (fmIndex > -1) returnValue.props.children.splice(fmIndex, 0, separator, fmContextMenu)
@@ -2879,2724 +4028,7765 @@ module.exports = !global.ZeresPluginLibrary ? Dummy : (([Plugin, Api]) => {
     }
 
     isFavorited (type, url) {
-      return Utilities.loadData(this._config.name, type, { medias: [] }).medias.find(e => e.url === url) !== undefined
-    }
-
-    deleteDeadMedias () {
-      const types = ['image', 'video', 'audio']
-      types.forEach((type) => {
-        const typeData = Utilities.loadData(this._config.name, type, { medias: [] })
-        typeData.medias = typeData.medias.filter((m) => !m.dead)
-        Utilities.saveData(this._config.name, type, typeData)
-      })
+      return Utilities.loadData(this._config.name, type, { medias: [] }).medias.find((e) => MediaFavButton.checkSameUrl(e.url, url)) !== undefined
     }
   }
 
-  function setLabelsByLanguage () {
-    switch (LocaleManager.getLocale() ?? 'en') {
-      case 'bg': // Bulgarian
-        return {
-          tabName: {
-            image: 'Изображения',
-            video: 'Видео',
-            audio: 'Аудио'
-          },
-          create: 'Създайте',
-          category: {
-            list: 'Категории',
-            unsorted: 'Не са сортирани',
-            create: 'Създайте категория',
-            edit: 'Редактиране на категорията',
-            delete: 'Изтриване на категорията',
-            deleteConfirm: 'Тази категория съдържа подкатегории. Всички те ще бъдат изтрити. Сигурни ли сте, че искате да изтриете категории?',
-            download: 'Изтеглете мултимедия',
-            placeholder: 'Име на категория',
-            move: 'Ход',
-            moveNext: 'След',
-            movePrevious: 'Преди',
-            color: 'Цвят',
-            copyColor: 'Копиране на цвят',
-            error: {
-              needName: 'Името не може да бъде празно',
-              invalidNameLength: 'Името трябва да съдържа максимум 20 знака',
-              wrongColor: 'Цветът е невалиден',
-              nameExists: 'това име вече съществува',
-              invalidCategory: 'Категорията не съществува',
-              download: 'Изтеглянето на мултимедия не бе успешно'
-            },
-            success: {
-              create: 'Категорията е създадена!',
-              delete: 'Категорията е изтрита!',
-              edit: 'Категорията е променена!',
-              move: 'Категорията е преместена!',
-              download: 'Медиите са качени!'
-            },
-            emptyHint: 'Щракнете с десния бутон, за да създадете категория!'
-          },
-          media: {
-            emptyHint: {
-              image: 'Кликнете върху звездата в ъгъла на изображението, за да го поставите в любимите си',
-              video: 'Кликнете върху звездата в ъгъла на видеоклипа, за да го поставите в любимите си',
-              audio: 'Кликнете върху звездата в ъгъла на звука, за да го поставите в любимите си'
-            },
-            addTo: 'Добавяне',
-            moveTo: 'Ход',
-            removeFrom: 'Премахване от категорията',
-            copySource: 'Копиране на медийния източник',
-            upload: {
-              title: 'Качване',
-              normal: 'Нормално',
-              spoiler: 'Спойлер'
-            },
-            success: {
-              move: {
-                gif: 'GIF е преместен!',
-                image: 'Изображението е преместено!',
-                video: 'Видеото е преместено!',
-                audio: 'Аудиото е преместено!'
-              },
-              remove: {
-                gif: 'GIF-ът е премахнат от категориите!',
-                image: 'Изображението е премахнато от категориите!',
-                video: 'Видеото е премахнато от категориите!',
-                audio: 'Аудиото е премахнато от категориите!'
-              },
-              download: {
-                gif: 'GIF е качен!',
-                image: 'Изображението е качено!',
-                video: 'Видеото е качено!',
-                audio: 'Аудиото е изтеглено!'
-              }
-            },
-            error: {
-              download: {
-                gif: 'Неуспешно изтегляне на GIF',
-                image: 'Качването на изображението не бе успешно',
-                video: 'Изтеглянето на видеоклипа не бе успешно',
-                audio: 'Изтеглянето на аудио не бе успешно'
-              }
-            },
-            controls: {
-              show: 'Показване на поръчки',
-              hide: 'Скриване на поръчките'
-            },
-            placeholder: {
-              gif: 'Име на GIF',
-              image: 'Име на изображението',
-              video: 'Име на видеоклипа',
-              audio: 'Име на звука'
-            }
-          },
-          searchItem: {
-            gif: 'Търсете GIF файлове или категории',
-            image: 'Търсене на изображения или категории',
-            video: 'Търсете видеоклипове или категории',
-            audio: 'Търсене на аудио или категории'
-          }
-        }
-      case 'da': // Danish
-        return {
-          tabName: {
-            image: 'Billede',
-            video: 'Video',
-            audio: 'Lyd'
-          },
-          create: 'skab',
-          category: {
-            list: 'Kategorier',
-            unsorted: 'Ikke sorteret',
-            create: 'Opret en kategori',
-            edit: 'Rediger kategori',
-            delete: 'Slet kategori',
-            deleteConfirm: 'Denne kategori indeholder underkategorier. De vil alle blive slettet. Er du sikker på, at du vil slette kategorier?',
-            download: 'Download medier',
-            placeholder: 'Kategorinavn',
-            move: 'Bevæge sig',
-            moveNext: 'Efter',
-            movePrevious: 'Før',
-            color: 'Farve',
-            copyColor: 'Kopier farve',
-            error: {
-              needName: 'Navnet kan ikke være tomt',
-              invalidNameLength: 'Navnet skal maksimalt indeholde 20 tegn',
-              wrongColor: 'Farven er ugyldig',
-              nameExists: 'dette navn findes allerede',
-              invalidCategory: 'Kategorien findes ikke',
-              download: 'Kunne ikke downloade medier'
-            },
-            success: {
-              create: 'Kategorien er oprettet!',
-              delete: 'Kategorien er blevet slettet!',
-              edit: 'Kategorien er blevet ændret!',
-              move: 'Kategorien er flyttet!',
-              download: 'Medierne er blevet uploadet!'
-            },
-            emptyHint: 'Højreklik for at oprette en kategori!'
-          },
-          media: {
-            emptyHint: {
-              image: 'Klik på stjernen i hjørnet af et billede for at placere det i dine favoritter',
-              video: 'Klik på stjernen i hjørnet af en video for at placere den i dine favoritter',
-              audio: 'Klik på stjernen i hjørnet af en lyd for at placere den i dine favoritter'
-            },
-            addTo: 'Tilføje',
-            moveTo: 'Bevæge sig',
-            removeFrom: 'Fjern fra kategori',
-            copySource: 'Kopier mediekilde',
-            upload: {
-              title: 'Upload',
-              normal: 'Normal',
-              spoiler: 'Spoiler'
-            },
-            success: {
-              move: {
-                gif: 'GIF\'en er blevet flyttet!',
-                image: 'Billedet er flyttet!',
-                video: 'Videoen er flyttet!',
-                audio: 'Lyden er flyttet!',
-                download: {
-                  image: 'Billedet er uploadet!',
-                  video: 'Videoen er blevet uploadet!',
-                  audio: 'Lyden er downloadet!'
-                }
-              },
-              remove: {
-                gif: 'GIF\'en er blevet fjernet fra kategorierne!',
-                image: 'Billedet er fjernet fra kategorierne!',
-                video: 'Videoen er fjernet fra kategorierne!',
-                audio: 'Lyd er fjernet fra kategorier!'
-              },
-              download: {
-                gif: 'GIF\'en er blevet uploadet!',
-                image: 'Billedet er uploadet!',
-                video: 'Videoen er blevet uploadet!',
-                audio: 'Lyden er downloadet!'
-              }
-            },
-            error: {
-              download: {
-                gif: 'Kunne ikke downloade GIF',
-                image: 'Billedet kunne ikke uploades',
-                video: 'Videoen kunne ikke downloades',
-                audio: 'Kunne ikke downloade lyd'
-              }
-            },
-            controls: {
-              show: 'Vis ordrer',
-              hide: 'Skjul ordrer'
-            },
-            placeholder: {
-              gif: 'GIF navn',
-              image: 'Billednavn',
-              video: 'Video navn',
-              audio: 'Audio navn'
-            }
-          },
-          searchItem: {
-            gif: 'Søg efter GIF\'er eller kategorier',
-            image: 'Søg efter billeder eller kategorier',
-            video: 'Søg efter videoer eller kategorier',
-            audio: 'Søg efter lydbånd eller kategorier'
-          }
-        }
-      case 'de': // German
-        return {
-          tabName: {
-            image: 'Bild',
-            video: 'Video',
-            audio: 'Audio'
-          },
-          create: 'Erstellen',
-          category: {
-            list: 'Kategorien',
-            unsorted: 'Nicht sortiert',
-            create: 'Erstellen Sie eine Kategorie',
-            edit: 'Kategorie bearbeiten',
-            delete: 'Kategorie löschen',
-            deleteConfirm: 'Diese Kategorie enthält Unterkategorien. Sie werden alle gelöscht. Möchten Sie Kategorien wirklich löschen?',
-            download: 'Medien herunterladen',
-            placeholder: 'Kategoriename',
-            move: 'Bewegung',
-            moveNext: 'Nach dem',
-            movePrevious: 'Vor',
-            color: 'Farbe',
-            copyColor: 'Farbe kopieren',
-            error: {
-              needName: 'Name darf nicht leer sein',
-              invalidNameLength: 'Der Name darf maximal 20 Zeichen lang sein',
-              wrongColor: 'Farbe ist ungültig',
-              nameExists: 'Dieser Name existiert bereits',
-              invalidCategory: 'Die Kategorie existiert nicht',
-              download: 'Fehler beim Herunterladen der Medien'
-            },
-            success: {
-              create: 'Die Kategorie wurde erstellt!',
-              delete: 'Die Kategorie wurde gelöscht!',
-              edit: 'Die Kategorie wurde geändert!',
-              move: 'Die Kategorie wurde verschoben!',
-              download: 'Die Medien wurden hochgeladen!'
-            },
-            emptyHint: 'Rechtsklick um eine Kategorie zu erstellen!'
-          },
-          media: {
-            emptyHint: {
-              image: 'Klicken Sie auf den Stern in der Ecke eines Bildes, um es in Ihre Favoriten aufzunehmen',
-              video: 'Klicke auf den Stern in der Ecke eines Videos, um es zu deinen Favoriten hinzuzufügen',
-              audio: 'Klicken Sie auf den Stern in der Ecke eines Audios, um es in Ihre Favoriten aufzunehmen'
-            },
-            addTo: 'Hinzufügen',
-            moveTo: 'Bewegung',
-            removeFrom: 'Aus Kategorie entfernen',
-            copySource: 'Medienquelle kopieren',
-            upload: {
-              title: 'Hochladen',
-              normal: 'Normal',
-              spoiler: 'Spoiler'
-            },
-            success: {
-              move: {
-                gif: 'Das GIF wurde verschoben!',
-                image: 'Das Bild wurde verschoben!',
-                video: 'Das Video wurde verschoben!',
-                audio: 'Der Ton wurde verschoben!'
-              },
-              remove: {
-                gif: 'Das GIF wurde aus den Kategorien entfernt!',
-                image: 'Das Bild wurde aus den Kategorien entfernt!',
-                video: 'Das Video wurde aus den Kategorien entfernt!',
-                audio: 'Audio wurde aus den Kategorien entfernt!'
-              },
-              download: {
-                gif: 'Das GIF wurde hochgeladen!',
-                image: 'Das Bild wurde hochgeladen!',
-                video: 'Das Video wurde hochgeladen!',
-                audio: 'Die Audiodatei wurde heruntergeladen!'
-              }
-            },
-            error: {
-              download: {
-                gif: 'GIF konnte nicht heruntergeladen werden',
-                image: 'Fehler beim Hochladen des Bildes',
-                video: 'Video konnte nicht heruntergeladen werden',
-                audio: 'Audio konnte nicht heruntergeladen werden'
-              }
-            },
-            controls: {
-              show: 'Bestellungen anzeigen',
-              hide: 'Bestellungen ausblenden'
-            },
-            placeholder: {
-              gif: 'GIF-Name',
-              image: 'Bildname',
-              video: 'Videoname',
-              audio: 'Audioname'
-            }
-          },
-          searchItem: {
-            gif: 'Nach GIFs oder Kategorien suchen',
-            image: 'Nach Bildern oder Kategorien suchen',
-            video: 'Nach Videos oder Kategorien suchen',
-            audio: 'Nach Audios oder Kategorien suchen'
-          }
-        }
-      case 'el': // Greek
-        return {
-          tabName: {
-            image: 'Εικόνα',
-            video: 'βίντεο',
-            audio: 'Ήχος'
-          },
-          create: 'Δημιουργώ',
-          category: {
-            list: 'Κατηγορίες',
-            unsorted: 'Χωρίς ταξινόμηση',
-            create: 'Δημιουργήστε μια κατηγορία',
-            edit: 'Επεξεργασία κατηγορίας',
-            delete: 'Διαγραφή κατηγορίας',
-            deleteConfirm: 'Αυτή η κατηγορία περιέχει υποκατηγορίες. Θα διαγραφούν όλα. Είστε βέβαιοι ότι θέλετε να διαγράψετε κατηγορίες;',
-            download: 'Λήψη μέσων',
-            placeholder: 'Ονομα κατηγορίας',
-            move: 'Κίνηση',
-            moveNext: 'Μετά',
-            movePrevious: 'Πριν',
-            color: 'Χρώμα',
-            copyColor: 'Αντιγραφή χρώματος',
-            error: {
-              needName: 'Το όνομα δεν μπορεί να είναι κενό',
-              invalidNameLength: 'Το όνομα πρέπει να περιέχει έως και 20 χαρακτήρες',
-              wrongColor: 'Το χρώμα δεν είναι έγκυρο',
-              nameExists: 'αυτό το όνομα υπάρχει ήδη',
-              invalidCategory: 'Η κατηγορία δεν υπάρχει',
-              download: 'Αποτυχία λήψης μέσων'
-            },
-            success: {
-              create: 'Η κατηγορία έχει δημιουργηθεί!',
-              delete: 'Η κατηγορία διαγράφηκε!',
-              edit: 'Η κατηγορία άλλαξε!',
-              move: 'Η κατηγορία έχει μετακινηθεί!',
-              download: 'Τα μέσα έχουν ανέβει!'
-            },
-            emptyHint: 'Κάντε δεξί κλικ για να δημιουργήσετε μια κατηγορία!'
-          },
-          media: {
-            emptyHint: {
-              image: 'Κάντε κλικ στο αστέρι στη γωνία μιας εικόνας για να την βάλετε στα αγαπημένα σας',
-              video: 'Κάντε κλικ στο αστέρι στη γωνία ενός βίντεο για να το βάλετε στα αγαπημένα σας',
-              audio: 'Κάντε κλικ στο αστέρι στη γωνία ενός ήχου για να το βάλετε στα αγαπημένα σας'
-            },
-            addTo: 'Προσθήκη',
-            moveTo: 'Κίνηση',
-            removeFrom: 'Κατάργηση από την κατηγορία',
-            copySource: 'Αντιγραφή πηγής πολυμέσων',
-            upload: {
-              title: 'Μεταφόρτωση',
-              normal: 'Κανονικός',
-              spoiler: 'Φθείρων'
-            },
-            success: {
-              move: {
-                gif: 'Το GIF έχει μετακινηθεί!',
-                image: 'Η εικόνα μετακινήθηκε!',
-                video: 'Το βίντεο μετακινήθηκε!',
-                audio: 'Ο ήχος μετακινήθηκε!'
-              },
-              remove: {
-                gif: 'Το GIF έχει αφαιρεθεί από τις κατηγορίες!',
-                image: 'Η εικόνα έχει αφαιρεθεί από τις κατηγορίες!',
-                video: 'Το βίντεο καταργήθηκε από τις κατηγορίες!',
-                audio: 'Ο ήχος καταργήθηκε από κατηγορίες!'
-              },
-              download: {
-                gif: 'Το GIF έχει ανέβει!',
-                image: 'Η εικόνα ανέβηκε!',
-                video: 'Το βίντεο ανέβηκε!',
-                audio: 'Ο ήχος έχει γίνει λήψη!'
-              }
-            },
-            error: {
-              download: {
-                gif: 'Αποτυχία λήψης GIF',
-                image: 'Αποτυχία μεταφόρτωσης εικόνας',
-                video: 'Αποτυχία λήψης βίντεο',
-                audio: 'Αποτυχία λήψης ήχου'
-              }
-            },
-            controls: {
-              show: 'Εμφάνιση παραγγελιών',
-              hide: 'Απόκρυψη παραγγελιών'
-            },
-            placeholder: {
-              gif: 'Όνομα GIF',
-              image: 'Όνομα εικόνας',
-              video: 'Όνομα βίντεο',
-              audio: 'Όνομα ήχου'
-            }
-          },
-          searchItem: {
-            gif: 'Αναζήτηση για GIF ή κατηγορίες',
-            image: 'Αναζήτηση εικόνων ή κατηγοριών',
-            video: 'Αναζήτηση βίντεο ή κατηγοριών',
-            audio: 'Αναζήτηση ήχων ή κατηγοριών'
-          }
-        }
-      case 'es': // Spanish
-        return {
-          tabName: {
-            image: 'Imagen',
-            video: 'Video',
-            audio: 'Audio'
-          },
-          create: 'Crear',
-          category: {
-            list: 'Categorías',
-            unsorted: 'No ordenado',
-            create: 'Crea una categoria',
-            edit: 'Editar categoria',
-            delete: 'Eliminar categoría',
-            deleteConfirm: 'Esta categoría contiene subcategorías. Todos serán eliminados. ¿Seguro que quieres eliminar categorías?',
-            download: 'Descargar medios',
-            placeholder: 'Nombre de la categoría',
-            move: 'Moverse',
-            moveNext: 'Después',
-            movePrevious: 'Antes',
-            color: 'Color',
-            copyColor: 'Copiar color',
-            error: {
-              needName: 'El nombre no puede estar vacío',
-              invalidNameLength: 'El nombre debe contener un máximo de 20 caracteres.',
-              wrongColor: 'El color no es válido',
-              nameExists: 'Este nombre ya existe',
-              invalidCategory: 'La categoría no existe',
-              download: '¡Los medios han sido cargados!'
-            },
-            success: {
-              create: '¡La categoría ha sido creada!',
-              delete: '¡La categoría ha sido eliminada!',
-              edit: '¡La categoría ha sido cambiada!',
-              move: '¡La categoría ha sido movida!',
-              download: '¡Los medios han sido cargados!'
-            },
-            emptyHint: '¡Haz clic derecho para crear una categoría!'
-          },
-          media: {
-            emptyHint: {
-              image: 'Haga clic en la estrella en la esquina de una imagen para ponerla en sus favoritos',
-              video: 'Haga clic en la estrella en la esquina de un video para ponerlo en sus favoritos',
-              audio: 'Haga clic en la estrella en la esquina de un audio para ponerlo en sus favoritos'
-            },
-            addTo: 'Agregar',
-            moveTo: 'Moverse',
-            removeFrom: 'Quitar de la categoría',
-            copySource: 'Copiar fuente multimedia',
-            upload: {
-              title: 'Subir',
-              normal: 'normal',
-              spoiler: 'Revelación'
-            },
-            success: {
-              move: {
-                gif: '¡El GIF ha sido movido!',
-                image: '¡La imagen se ha movido!',
-                video: '¡El video se ha movido!',
-                audio: '¡El audio se ha movido!'
-              },
-              remove: {
-                gif: '¡El GIF ha sido eliminado de las categorías!',
-                image: '¡La imagen ha sido eliminada de las categorías!',
-                video: '¡El video ha sido eliminado de las categorías!',
-                audio: '¡El audio ha sido eliminado de las categorías!'
-              },
-              download: {
-                gif: '¡El GIF ha sido subido!',
-                image: '¡La imagen ha sido cargada!',
-                video: '¡El video ha sido subido!',
-                audio: '¡El audio se ha descargado!'
-              }
-            },
-            error: {
-              download: {
-                gif: 'No se pudo descargar del GIF',
-                image: 'No se pudo cargar la imagen.',
-                video: 'No se pudo descargar el video',
-                audio: 'No se pudo descargar el audio'
-              }
-            },
-            controls: {
-              show: 'Mostrar pedidos',
-              hide: 'Ocultar pedidos'
-            },
-            placeholder: {
-              gif: 'Nombre del GIF',
-              image: 'Nombre de la imágen',
-              video: 'Nombre del video',
-              audio: 'Nombre de audio'
-            }
-          },
-          searchItem: {
-            gif: 'Buscar GIFs o categorías',
-            image: 'Buscar imágenes o categorías',
-            video: 'Buscar videos o categorías',
-            audio: 'Busque audios o categorías'
-          }
-        }
-      case 'fi': // Finnish
-        return {
-          tabName: {
-            image: 'Kuva',
-            video: 'Video',
-            audio: 'Audio'
-          },
-          create: 'Luoda',
-          category: {
-            list: 'Luokat',
-            unsorted: 'Ei lajiteltu',
-            create: 'Luo luokka',
-            edit: 'Muokkaa kategoriaa',
-            delete: 'Poista luokka',
-            deleteConfirm: 'Tämä luokka sisältää alaluokkia. Ne kaikki poistetaan. Haluatko varmasti poistaa luokkia?',
-            download: 'Lataa media',
-            placeholder: 'Kategorian nimi',
-            move: 'Liikkua',
-            moveNext: 'Jälkeen',
-            movePrevious: 'Ennen',
-            color: 'Väri',
-            copyColor: 'Kopioi väri',
-            error: {
-              needName: 'Nimi ei voi olla tyhjä',
-              invalidNameLength: 'Nimi saa sisältää enintään 20 merkkiä',
-              wrongColor: 'Väri on virheellinen',
-              nameExists: 'tämä nimi on jo olemassa',
-              invalidCategory: 'Luokkaa ei ole olemassa',
-              download: 'Median lataaminen epäonnistui'
-            },
-            success: {
-              create: 'Luokka on luotu!',
-              delete: 'Luokka on poistettu!',
-              edit: 'Luokkaa on muutettu!',
-              move: 'Luokka on siirretty!',
-              download: 'Media on ladattu!'
-            },
-            emptyHint: 'Napsauta hiiren kakkospainikkeella luodaksesi luokan!'
-          },
-          media: {
-            emptyHint: {
-              image: 'Napsauta kuvan kulmassa olevaa tähteä lisätäksesi sen suosikkeihisi',
-              video: 'Napsauta videon kulmassa olevaa tähteä lisätäksesi sen suosikkeihisi',
-              audio: 'Napsauta äänen kulmassa olevaa tähteä lisätäksesi sen suosikkeihisi'
-            },
-            addTo: 'Lisätä',
-            moveTo: 'Liikkua',
-            removeFrom: 'Poista luokasta',
-            copySource: 'Kopioi medialähde',
-            upload: {
-              title: 'Lähetä',
-              normal: 'Normaali',
-              spoiler: 'Spoileri'
-            },
-            success: {
-              move: {
-                gif: 'GIF on siirretty!',
-                image: 'Kuva on siirretty!',
-                video: 'Video on siirretty!',
-                audio: 'Ääni on siirretty!'
-              },
-              remove: {
-                gif: 'GIF on poistettu luokista!',
-                image: 'Kuva on poistettu luokista!',
-                video: 'Video on poistettu luokista!',
-                audio: 'Ääni on poistettu luokista!'
-              },
-              download: {
-                gif: 'GIF on ladattu!',
-                image: 'Kuva on ladattu!',
-                video: 'Video on ladattu!',
-                audio: 'Ääni on ladattu!'
-              }
-            },
-            error: {
-              download: {
-                gif: 'GIF:n lataaminen epäonnistui',
-                image: 'Kuvan lataaminen epäonnistui',
-                video: 'Videon lataaminen epäonnistui',
-                audio: 'Äänen lataaminen epäonnistui'
-              }
-            },
-            controls: {
-              show: 'Näytä tilaukset',
-              hide: 'Piilota tilaukset'
-            },
-            placeholder: {
-              gif: 'GIF-nimi',
-              image: 'Kuvan nimi',
-              video: 'Videon nimi',
-              audio: 'Äänen nimi'
-            }
-          },
-          searchItem: {
-            gif: 'Hae GIF-tiedostoja tai luokkia',
-            image: 'Hae kuvia tai luokkia',
-            video: 'Hae videoita tai luokkia',
-            audio: 'Hae ääniä tai luokkia'
-          }
-        }
-      case 'fr': // French
-        return {
-          tabName: {
-            image: 'Image',
-            video: 'Vidéo',
-            audio: 'Audio'
-          },
-          create: 'Créer',
-          category: {
-            list: 'Catégories',
-            unsorted: 'Non trié',
-            create: 'Créer une catégorie',
-            edit: 'Modifier la catégorie',
-            delete: 'Supprimer la catégorie',
-            deleteConfirm: 'Cette catégorie contient des sous-catégories. Elles vont toutes être supprimées. Voulez-vous vraiment supprimer les catégories ?',
-            download: 'Télécharger les médias',
-            placeholder: 'Nom de la catégorie',
-            move: 'Déplacer',
-            moveNext: 'Après',
-            movePrevious: 'Avant',
-            color: 'Couleur',
-            copyColor: 'Copier la couleur',
-            error: {
-              needName: 'Le nom ne peut être vide',
-              invalidNameLength: 'Le nom doit contenir au maximum 20 caractères',
-              wrongColor: 'La couleur est invalide',
-              nameExists: 'Ce nom existe déjà',
-              invalidCategory: 'La catégorie n\'existe pas',
-              download: 'Échec lors du téléchargement des médias'
-            },
-            success: {
-              create: 'La catégorie a été créée !',
-              delete: 'La catégorie a été supprimée !',
-              edit: 'La catégorie a été modifiée !',
-              move: 'La catégorie a été déplacée !',
-              download: 'Les médias ont été téléchargés !'
-            },
-            emptyHint: 'Fais un clique-droit pour créer une catégorie !'
-          },
-          media: {
-            emptyHint: {
-              image: 'Clique sur l\'étoile dans le coin d\'une image pour la mettre dans tes favoris',
-              video: 'Clique sur l\'étoile dans le coin d\'une vidéo pour la mettre dans tes favoris',
-              audio: 'Clique sur l\'étoile dans le coin d\'un audio pour le mettre dans tes favoris'
-            },
-            addTo: 'Ajouter',
-            moveTo: 'Déplacer',
-            removeFrom: 'Retirer de la catégorie',
-            copySource: 'Copier la source du média',
-            upload: {
-              title: 'Uploader',
-              normal: 'Normal',
-              spoiler: 'Spoiler'
-            },
-            success: {
-              move: {
-                gif: 'Le GIF a été déplacé !',
-                image: 'L\'image a été déplacée !',
-                video: 'La vidéo a été déplacée !',
-                audio: 'L\'audio a été déplacé !'
-              },
-              remove: {
-                gif: 'Le GIF a été enlevé des catégories !',
-                image: 'L\'image a été enlevée des catégories !',
-                video: 'La vidéo a été enlevée des catégories !',
-                audio: 'L\'audio a été enlevé des catégories !'
-              },
-              download: {
-                gif: 'Le GIF a été téléchargé !',
-                image: 'L\'image a été téléchargée !',
-                video: 'La vidéo a été téléchargée !',
-                audio: 'L\'audio a été téléchargé !'
-              }
-            },
-            error: {
-              download: {
-                gif: 'Échec lors du téléchargement du GIF',
-                image: 'Échec lors du téléchargement de l\'image',
-                video: 'Échec lors du téléchargement de la vidéo',
-                audio: 'Échec lors du téléchargement de l\'audio'
-              }
-            },
-            controls: {
-              show: 'Afficher les commandes',
-              hide: 'Cacher les commandes'
-            },
-            placeholder: {
-              gif: 'Nom du GIF',
-              image: 'Nom de l\'image',
-              video: 'Nom de la vidéo',
-              audio: 'Nom de l\'audio'
-            }
-          },
-          searchItem: {
-            gif: 'Recherche des GIFs ou des catégories',
-            image: 'Recherche des images ou des catégories',
-            video: 'Recherche des vidéos ou des catégories',
-            audio: 'Recherche des audios ou des catégories'
-          }
-        }
-      case 'hr': // Croatian
-        return {
-          tabName: {
-            image: 'Slika',
-            video: 'Video',
-            audio: 'Audio'
-          },
-          create: 'Stvoriti',
-          category: {
-            list: 'Kategorije',
-            unsorted: 'Nije sortirano',
-            create: 'Stvorite kategoriju',
-            edit: 'Uredi kategoriju',
-            delete: 'Izbriši kategoriju',
-            deleteConfirm: 'Ova kategorija sadrži potkategorije. Svi će biti izbrisani. Jeste li sigurni da želite izbrisati kategorije?',
-            download: 'Preuzmite medije',
-            placeholder: 'Ime kategorije',
-            move: 'Potez',
-            moveNext: 'Nakon',
-            movePrevious: 'Prije',
-            color: 'Boja',
-            copyColor: 'Kopiraj u boji',
-            error: {
-              needName: 'Ime ne može biti prazno',
-              invalidNameLength: 'Ime mora sadržavati najviše 20 znakova',
-              wrongColor: 'Boja je nevaljana',
-              nameExists: 'ovo ime već postoji',
-              invalidCategory: 'Kategorija ne postoji',
-              download: 'Preuzimanje medija nije uspjelo'
-            },
-            success: {
-              create: 'Kategorija je stvorena!',
-              delete: 'Kategorija je izbrisana!',
-              edit: 'Izmijenjena je kategorija!',
-              move: 'Kategorija je premještena!',
-              download: 'Mediji su učitani!'
-            },
-            emptyHint: 'Desni klik za stvaranje kategorije!'
-          },
-          media: {
-            emptyHint: {
-              image: 'Kliknite zvjezdicu u kutu slike da biste je stavili među svoje favorite',
-              video: 'Kliknite zvjezdicu u kutu videozapisa da biste je stavili među svoje favorite',
-              audio: 'Kliknite zvjezdicu u kutu zvuka da biste je stavili među svoje favorite'
-            },
-            addTo: 'Dodati',
-            moveTo: 'Potez',
-            removeFrom: 'Ukloni iz kategorije',
-            copySource: 'Kopiraj izvor medija',
-            upload: {
-              title: 'Učitaj',
-              normal: 'Normalan',
-              spoiler: 'Spoiler'
-            },
-            success: {
-              move: {
-                gif: 'GIF je premješten!',
-                image: 'Slika je premještena!',
-                video: 'Video je premješten!',
-                audio: 'Zvuk je premješten!'
-              },
-              remove: {
-                gif: 'GIF je uklonjen iz kategorija!',
-                image: 'Slika je uklonjena iz kategorija!',
-                video: 'Videozapis je uklonjen iz kategorija!',
-                audio: 'Audio je uklonjen iz kategorija!'
-              },
-              download: {
-                gif: 'GIF je učitan!',
-                image: 'Slika je učitana!',
-                video: 'Video je postavljen!',
-                audio: 'Zvuk je preuzet!'
-              }
-            },
-            error: {
-              download: {
-                gif: 'Preuzimanje GIF-a nije uspjelo',
-                image: 'Učitavanje slike nije uspjelo',
-                video: 'Preuzimanje videozapisa nije uspjelo',
-                audio: 'Preuzimanje zvuka nije uspjelo'
-              }
-            },
-            controls: {
-              show: 'Prikaži narudžbe',
-              hide: 'Sakrij narudžbe'
-            },
-            placeholder: {
-              gif: 'Naziv GIF-a',
-              image: 'Naziv slike',
-              video: 'Naziv videozapisa',
-              audio: 'Naziv zvuka'
-            }
-          },
-          searchItem: {
-            gif: 'Potražite GIF-ove ili kategorije',
-            image: 'Potražite slike ili kategorije',
-            video: 'Potražite videozapise ili kategorije',
-            audio: 'Potražite audio ili kategorije'
-          }
-        }
-      case 'hu': // Hungarian
-        return {
-          tabName: {
-            image: 'Kép',
-            video: 'Videó',
-            audio: 'Hang'
-          },
-          create: 'Teremt',
-          category: {
-            list: 'Kategóriák',
-            unsorted: 'Nincs rendezve',
-            create: 'Hozzon létre egy kategóriát',
-            edit: 'Kategória szerkesztése',
-            delete: 'Kategória törlése',
-            deleteConfirm: 'Ez a kategória alkategóriákat tartalmaz. Mindegyik törlődik. Biztosan törölni szeretné a kategóriákat?',
-            download: 'Média letöltése',
-            placeholder: 'Kategória név',
-            move: 'Mozog',
-            moveNext: 'Utána',
-            movePrevious: 'Előtt',
-            color: 'Szín',
-            copyColor: 'Szín másolása',
-            error: {
-              needName: 'A név nem lehet üres',
-              invalidNameLength: 'A név legfeljebb 20 karakterből állhat',
-              wrongColor: 'A szín érvénytelen',
-              nameExists: 'Ez a név már létezik',
-              invalidCategory: 'A kategória nem létezik',
-              download: 'Nem sikerült letölteni a médiát'
-            },
-            success: {
-              create: 'A kategória elkészült!',
-              delete: 'A kategória törölve lett!',
-              edit: 'A kategória megváltozott!',
-              move: 'A kategória áthelyezve!',
-              download: 'A média feltöltve!'
-            },
-            emptyHint: 'Kattintson jobb gombbal a kategória létrehozásához!'
-          },
-          media: {
-            emptyHint: {
-              image: 'Kattintson a kép sarkában lévő csillagra, hogy a kedvencek közé helyezze',
-              video: 'Kattintson a videó sarkában lévő csillagra, hogy a kedvencek közé tegye',
-              audio: 'Kattintson a csillagra egy hang sarkában, hogy a kedvencek közé helyezze'
-            },
-            addTo: 'Hozzáadás',
-            moveTo: 'Mozog',
-            removeFrom: 'Törlés a kategóriából',
-            copySource: 'Médiaforrás másolása',
-            upload: {
-              title: 'Feltöltés',
-              normal: 'Normál',
-              spoiler: 'Spoiler'
-            },
-            success: {
-              move: {
-                gif: 'A GIF át lett helyezve!',
-                image: 'A kép áthelyezve!',
-                video: 'A videó áthelyezve!',
-                audio: 'A hang áthelyezve!'
-              },
-              remove: {
-                gif: 'A GIF eltávolítva a kategóriákból!',
-                image: 'A képet eltávolítottuk a kategóriákból!',
-                video: 'A videót eltávolítottuk a kategóriákból!',
-                audio: 'A hangot eltávolítottuk a kategóriákból!'
-              },
-              download: {
-                gif: 'A GIF feltöltve!',
-                image: 'A kép feltöltve!',
-                video: 'A videó feltöltve!',
-                audio: 'A hanganyag letöltve!'
-              }
-            },
-            error: {
-              download: {
-                gif: 'A GIF letöltése sikertelen',
-                image: 'Nem sikerült feltölteni a képet',
-                video: 'Nem sikerült letölteni a videót',
-                audio: 'Nem sikerült letölteni a hangot'
-              }
-            },
-            controls: {
-              show: 'Mutasson megrendeléseket',
-              hide: 'Parancsok elrejtése'
-            },
-            placeholder: {
-              gif: 'GIF név',
-              image: 'Kép neve',
-              video: 'Videó neve',
-              audio: 'Hang neve'
-            }
-          },
-          searchItem: {
-            gif: 'Keressen GIF-eket vagy kategóriákat',
-            image: 'Képek vagy kategóriák keresése',
-            video: 'Videók vagy kategóriák keresése',
-            audio: 'Audió vagy kategória keresése'
-          }
-        }
-      case 'it': // Italian
-        return {
-          tabName: {
-            image: 'Immagine',
-            video: 'video',
-            audio: 'Audio'
-          },
-          create: 'Creare',
-          category: {
-            list: 'Categorie',
-            unsorted: 'Non ordinato',
-            create: 'Crea una categoria',
-            edit: 'Modifica categoria',
-            delete: 'Elimina categoria',
-            deleteConfirm: 'Questa categoria contiene sottocategorie. Saranno tutti cancellati. Sei sicuro di voler eliminare le categorie?',
-            download: 'Scarica file multimediali',
-            placeholder: 'Nome della categoria',
-            move: 'Spostare',
-            moveNext: 'Dopo',
-            movePrevious: 'Prima',
-            color: 'Colore',
-            copyColor: 'Copia colore',
-            error: {
-              needName: 'Il nome non può essere vuoto',
-              invalidNameLength: 'Il nome deve contenere un massimo di 20 caratteri',
-              wrongColor: 'Il colore non è valido',
-              nameExists: 'Questo nome esiste già',
-              invalidCategory: 'La categoria non esiste',
-              download: 'Impossibile scaricare i media'
-            },
-            success: {
-              create: 'La categoria è stata creata!',
-              delete: 'La categoria è stata eliminata!',
-              edit: 'La categoria è stata cambiata!',
-              move: 'La categoria è stata spostata!',
-              download: 'Il supporto è stato caricato!'
-            },
-            emptyHint: 'Fare clic con il tasto destro per creare una categoria!'
-          },
-          media: {
-            emptyHint: {
-              image: 'Fai clic sulla stella nell\'angolo di un\'immagine per inserirla nei preferiti',
-              video: 'Fai clic sulla stella nell\'angolo di un video per inserirlo nei preferiti',
-              audio: 'Fai clic sulla stella nell\'angolo di un audio per inserirlo nei preferiti'
-            },
-            addTo: 'Inserisci',
-            moveTo: 'Spostare',
-            removeFrom: 'Rimuovi dalla categoria',
-            copySource: 'Copia la fonte multimediale',
-            upload: {
-              title: 'Caricare',
-              normal: 'Normale',
-              spoiler: 'spoiler'
-            },
-            success: {
-              move: {
-                gif: 'La GIF è stata spostata!',
-                image: 'L\'immagine è stata spostata!',
-                video: 'Il video è stato spostato!',
-                audio: 'L\'audio è stato spostato!'
-              },
-              remove: {
-                gif: 'La GIF è stata rimossa dalle categorie!',
-                image: 'L\'immagine è stata rimossa dalle categorie!',
-                video: 'Il video è stato rimosso dalle categorie!',
-                audio: 'L\'audio è stato rimosso dalle categorie!'
-              },
-              download: {
-                gif: 'La GIF è stata caricata!',
-                image: 'L\'immagine è stata caricata!',
-                video: 'Il video è stato caricato!',
-                audio: 'L\'audio è stato scaricato!'
-              }
-            },
-            error: {
-              download: {
-                gif: 'Impossibile scaricare la GIF',
-                image: 'Impossibile caricare l\'immagine',
-                video: 'Impossibile scaricare il video',
-                audio: 'Impossibile scaricare l\'audio'
-              }
-            },
-            controls: {
-              show: 'Mostra ordini',
-              hide: 'Nascondi ordini'
-            },
-            placeholder: {
-              gif: 'Nome GIF',
-              image: 'Nome immagine',
-              video: 'Nome del video',
-              audio: 'Nome dell\'audio'
-            }
-          },
-          searchItem: {
-            gif: 'Cerca GIF o categorie',
-            image: 'Cerca immagini o categorie',
-            video: 'Cerca video o categorie',
-            audio: 'Cerca audio o categorie'
-          }
-        }
-      case 'ja': // Japanese
-        return {
-          tabName: {
-            image: '画像',
-            video: 'ビデオ',
-            audio: 'オーディオ'
-          },
-          create: '作成する',
-          category: {
-            list: 'カテゴリー',
-            unsorted: 'ソートされていません',
-            create: 'カテゴリを作成する',
-            edit: 'カテゴリを編集',
-            delete: 'カテゴリを削除',
-            deleteConfirm: 'このカテゴリにはサブカテゴリが含まれています。 それらはすべて削除されます。 カテゴリを削除してもよろしいですか?',
-            download: 'メディアをダウンロード',
-            placeholder: '種別名',
-            move: '移動',
-            moveNext: '後',
-            movePrevious: '前',
-            color: '色',
-            copyColor: 'コピーカラー',
-            error: {
-              needName: '名前を空にすることはできません',
-              invalidNameLength: '名前には最大20文字を含める必要があります',
-              wrongColor: '色が無効です',
-              nameExists: 'この名前はすでに存在します',
-              invalidCategory: 'カテゴリが存在しません',
-              download: 'メディアのダウンロードに失敗しました'
-            },
-            success: {
-              create: 'カテゴリが作成されました！',
-              delete: 'カテゴリが削除されました！',
-              edit: 'カテゴリが変更されました！',
-              move: 'カテゴリが移動しました！',
-              download: 'メディアがアップしました！'
-            },
-            emptyHint: '右クリックしてカテゴリを作成してください！'
-          },
-          media: {
-            emptyHint: {
-              image: '画像の隅にある星をクリックして、お気に入りに追加します',
-              video: '動画の隅にある星をクリックして、お気に入りに追加します',
-              audio: 'オーディオの隅にある星をクリックして、お気に入りに入れます'
-            },
-            addTo: '追加',
-            moveTo: '移動',
-            removeFrom: 'カテゴリから削除',
-            copySource: 'メディア ソースのコピー',
-            upload: {
-              title: 'アップロード',
-              normal: '正常',
-              spoiler: 'ネタバレ'
-            },
-            success: {
-              move: {
-                gif: 'GIFを移動しました！',
-                image: '画像が移動しました！',
-                video: 'ビデオが移動しました！',
-                audio: '音声が移動しました！'
-              },
-              remove: {
-                gif: 'GIF はカテゴリから削除されました。',
-                image: '画像はカテゴリから削除されました！',
-                video: '動画はカテゴリから削除されました！',
-                audio: 'オーディオはカテゴリから削除されました！'
-              },
-              download: {
-                gif: 'GIFをアップしました！',
-                image: '画像をアップしました！',
-                video: '動画がアップしました！',
-                audio: '音声がダウンロードされました！'
-              }
-            },
-            error: {
-              download: {
-                gif: 'GIF のダウンロードに失敗しました',
-                image: '画像のアップロードに失敗しました',
-                video: 'ビデオのダウンロードに失敗しました',
-                audio: 'オーディオのダウンロードに失敗しました'
-              }
-            },
-            controls: {
-              show: '注文を表示',
-              hide: '注文を非表示'
-            },
-            placeholder: {
-              gif: 'GIF名',
-              image: '画像名',
-              video: 'ビデオ名',
-              audio: '音声名'
-            }
-          },
-          searchItem: {
-            gif: 'GIF またはカテゴリを検索する',
-            image: '画像やカテゴリを検索する',
-            video: 'ビデオまたはカテゴリを検索する',
-            audio: 'オーディオまたはカテゴリを検索する'
-          }
-        }
-      case 'ko': // Korean
-        return {
-          tabName: {
-            image: '그림',
-            video: '비디오',
-            audio: '오디오'
-          },
-          create: '창조하다',
-          category: {
-            list: '카테고리',
-            unsorted: '정렬되지 않음',
-            create: '카테고리 생성',
-            edit: '카테고리 수정',
-            delete: '카테고리 삭제',
-            deleteConfirm: '이 범주에는 하위 범주가 포함되어 있습니다. 모두 삭제됩니다. 카테고리를 삭제하시겠습니까?',
-            download: '미디어 다운로드',
-            placeholder: '카테고리 이름',
-            move: '움직임',
-            moveNext: '후',
-            movePrevious: '전에',
-            color: '색깔',
-            copyColor: '색상 복사',
-            error: {
-              needName: '이름은 비워 둘 수 없습니다.',
-              invalidNameLength: '이름은 최대 20 자 여야합니다.',
-              wrongColor: '색상이 잘못되었습니다.',
-              nameExists: '이 이름은 이미 존재합니다',
-              invalidCategory: '카테고리가 없습니다.',
-              download: '미디어 다운로드 실패'
-            },
-            success: {
-              create: '카테고리가 생성되었습니다!',
-              delete: '카테고리가 삭제되었습니다!',
-              edit: '카테고리가 변경되었습니다!',
-              move: '카테고리가 이동되었습니다!',
-              download: '미디어가 업로드되었습니다!'
-            },
-            emptyHint: '카테고리를 만들려면 마우스 오른쪽 버튼을 클릭하십시오!'
-          },
-          media: {
-            emptyHint: {
-              image: '이미지 모서리에있는 별을 클릭하여 즐겨 찾기에 추가하세요.',
-              video: '동영상 모서리에있는 별표를 클릭하여 즐겨 찾기에 추가하세요.',
-              audio: '오디오 모서리에있는 별표를 클릭하여 즐겨 찾기에 넣습니다.'
-            },
-            addTo: '더하다',
-            moveTo: '움직임',
-            removeFrom: '카테고리에서 제거',
-            copySource: '미디어 소스 복사',
-            upload: {
-              title: '업로드',
-              normal: '표준',
-              spoiler: '스포일러'
-            },
-            success: {
-              move: {
-                gif: 'GIF가 이동되었습니다!',
-                image: '이미지가 이동되었습니다!',
-                video: '동영상이 이동되었습니다!',
-                audio: '오디오가 이동되었습니다!'
-              },
-              remove: {
-                gif: 'GIF가 카테고리에서 제거되었습니다!',
-                image: '카테고리에서 이미지가 제거되었습니다!',
-                video: '비디오가 카테고리에서 제거되었습니다!',
-                audio: '카테고리에서 오디오가 제거되었습니다!'
-              },
-              download: {
-                gif: 'GIF가 업로드되었습니다!',
-                image: '이미지가 업로드되었습니다!',
-                video: '영상이 업로드 되었습니다!',
-                audio: '오디오가 다운로드되었습니다!'
-              }
-            },
-            error: {
-              download: {
-                gif: 'GIF 다운로드 실패',
-                image: '이미지를 업로드하지 못했습니다.',
-                video: '동영상 다운로드 실패',
-                audio: '오디오 다운로드 실패'
-              }
-            },
-            controls: {
-              show: '주문보기',
-              hide: '주문 숨기기'
-            },
-            placeholder: {
-              gif: 'GIF 이름',
-              image: '이미지 이름',
-              video: '비디오 이름',
-              audio: '오디오 이름'
-            }
-          },
-          searchItem: {
-            gif: 'GIF 또는 카테고리 검색',
-            image: '이미지 또는 카테고리 검색',
-            video: '비디오 또는 카테고리 검색',
-            audio: '오디오 또는 카테고리 검색'
-          }
-        }
-      case 'lt': // Lithuanian
-        return {
-          tabName: {
-            image: 'Paveikslėlis',
-            video: 'Vaizdo įrašas',
-            audio: 'Garso įrašas'
-          },
-          create: 'Kurti',
-          category: {
-            list: 'Kategorijos',
-            unsorted: 'Nerūšiuota',
-            create: 'Sukurkite kategoriją',
-            edit: 'Redaguoti kategoriją',
-            delete: 'Ištrinti kategoriją',
-            deleteConfirm: 'Šioje kategorijoje yra subkategorijų. Jie visi bus ištrinti. Ar tikrai norite ištrinti kategorijas?',
-            download: 'Parsisiųsti mediją',
-            placeholder: 'Kategorijos pavadinimas',
-            move: 'Perkelti',
-            moveNext: 'Po',
-            movePrevious: 'Anksčiau',
-            color: 'Spalva',
-            copyColor: 'Kopijuoti spalvą',
-            error: {
-              needName: 'Pavadinimas negali būti tuščias',
-              invalidNameLength: 'Pavadinime gali būti ne daugiau kaip 20 simbolių',
-              wrongColor: 'Spalva neteisinga',
-              nameExists: 'šis vardas jau egzistuoja',
-              invalidCategory: 'Kategorija neegzistuoja',
-              download: 'Nepavyko atsisiųsti medijos'
-            },
-            success: {
-              create: 'Kategorija sukurta!',
-              delete: 'Kategorija ištrinta!',
-              edit: 'Kategorija pakeista!',
-              move: 'Kategorija perkelta!',
-              download: 'Žiniasklaida įkelta!'
-            },
-            emptyHint: 'Dešiniuoju pelės mygtuku spustelėkite norėdami sukurti kategoriją!'
-          },
-          media: {
-            emptyHint: {
-              image: 'Spustelėkite žvaigždutę atvaizdo kampe, kad ją įtrauktumėte į mėgstamiausius',
-              video: 'Spustelėkite žvaigždutę vaizdo įrašo kampe, kad įtrauktumėte ją į mėgstamiausius',
-              audio: 'Spustelėkite žvaigždutę garso kampe, kad įtrauktumėte ją į mėgstamiausius'
-            },
-            addTo: 'Papildyti',
-            moveTo: 'Perkelti',
-            removeFrom: 'Pašalinti iš kategorijos',
-            copySource: 'Nukopijuokite medijos šaltinį',
-            upload: {
-              title: 'Įkelti',
-              normal: 'Normalus',
-              spoiler: 'Spoileris'
-            },
-            success: {
-              move: {
-                gif: 'GIF buvo perkeltas!',
-                image: 'Vaizdas perkeltas!',
-                video: 'Vaizdo įrašas perkeltas!',
-                audio: 'Garso įrašas perkeltas!'
-              },
-              remove: {
-                gif: 'GIF buvo pašalintas iš kategorijų!',
-                image: 'Vaizdas pašalintas iš kategorijų!',
-                video: 'Vaizdo įrašas pašalintas iš kategorijų!',
-                audio: 'Garso įrašas pašalintas iš kategorijų!'
-              },
-              download: {
-                gif: 'GIF failas įkeltas!',
-                image: 'Vaizdas įkeltas!',
-                video: 'Vaizdo įrašas įkeltas!',
-                audio: 'Garso įrašas atsisiųstas!'
-              }
-            },
-            error: {
-              download: {
-                gif: 'Nepavyko atsisiųsti GIF',
-                image: 'Nepavyko įkelti vaizdo',
-                video: 'Nepavyko atsisiųsti vaizdo įrašo',
-                audio: 'Nepavyko atsisiųsti garso įrašo'
-              }
-            },
-            controls: {
-              show: 'Rodyti užsakymus',
-              hide: 'Slėpti užsakymus'
-            },
-            placeholder: {
-              gif: 'GIF pavadinimas',
-              image: 'Paveikslėlio pavadinimas',
-              video: 'Vaizdo įrašo pavadinimas',
-              audio: 'Garso įrašo pavadinimas'
-            }
-          },
-          searchItem: {
-            gif: 'Ieškokite GIF arba kategorijų',
-            image: 'Ieškokite vaizdų ar kategorijų',
-            video: 'Ieškokite vaizdo įrašų ar kategorijų',
-            audio: 'Ieškokite garso įrašų ar kategorijų'
-          }
-        }
-      case 'nl': // Dutch
-        return {
-          tabName: {
-            image: 'Afbeelding',
-            video: 'Video',
-            audio: 'Audio'
-          },
-          create: 'scheppen',
-          category: {
-            list: 'Kategorier',
-            unsorted: 'Niet gesorteerd',
-            create: 'Maak een categorie',
-            edit: 'Categorie bewerken',
-            delete: 'Categorie verwijderen',
-            deleteConfirm: 'Deze categorie bevat subcategorieën. Ze worden allemaal verwijderd. Weet u zeker dat u categorieën wilt verwijderen?',
-            download: 'Media downloaden',
-            placeholder: 'Categorie naam',
-            move: 'Verplaatsen, verschuiven',
-            moveNext: 'Na',
-            movePrevious: 'Voordat',
-            color: 'Kleur',
-            copyColor: 'Kopieer kleur',
-            error: {
-              needName: 'Naam mag niet leeg zijn',
-              invalidNameLength: 'De naam mag maximaal 20 tekens bevatten',
-              wrongColor: 'Kleur is ongeldig',
-              nameExists: 'Deze naam bestaat al',
-              invalidCategory: 'De categorie bestaat niet',
-              download: 'Kan media niet downloaden'
-            },
-            success: {
-              create: 'De categorie is aangemaakt!',
-              delete: 'De categorie is verwijderd!',
-              edit: 'De categorie is gewijzigd!',
-              move: 'De categorie is verplaatst!',
-              download: 'De media is geüpload!'
-            },
-            emptyHint: 'Klik met de rechtermuisknop om een categorie aan te maken!'
-          },
-          media: {
-            emptyHint: {
-              image: 'Klik op de ster in de hoek van een afbeelding om deze in je favorieten te plaatsen',
-              video: 'Klik op de ster in de hoek van een video om deze in je favorieten te plaatsen',
-              audio: 'Klik op de ster in de hoek van een audio om deze in je favorieten te plaatsen'
-            },
-            addTo: 'Toevoegen',
-            moveTo: 'Verplaatsen, verschuiven',
-            removeFrom: 'Verwijderen uit categorie',
-            copySource: 'Mediabron kopiëren',
-            upload: {
-              title: 'Uploaden',
-              normal: 'normaal',
-              spoiler: 'Spoiler'
-            },
-            success: {
-              move: {
-                gif: 'GIF\'en er blevet flyttet!',
-                image: 'De afbeelding is verplaatst!',
-                video: 'De video is verplaatst!',
-                audio: 'Het geluid is verplaatst!'
-              },
-              remove: {
-                gif: 'GIF\'en er blevet fjernet fra kategorierne!',
-                image: 'De afbeelding is verwijderd uit de categorieën!',
-                video: 'De video is verwijderd uit de categorieën!',
-                audio: 'Audio is verwijderd uit categorieën!'
-              },
-              download: {
-                gif: 'GIF\'en er blevet uploadet!',
-                image: 'De afbeelding is geüpload!',
-                video: 'De video is geüpload!',
-                audio: 'De audio is gedownload!'
-              }
-            },
-            error: {
-              download: {
-                gif: 'Kunne ikke downloade GIF',
-                image: 'Kan afbeelding niet uploaden',
-                video: 'Kan video niet downloaden',
-                audio: 'Kan audio niet downloaden'
-              }
-            },
-            controls: {
-              show: 'Toon bestellingen',
-              hide: 'Verberg bestellingen'
-            },
-            placeholder: {
-              gif: 'GIF navn',
-              image: 'Naam afbeelding',
-              video: 'Videonaam',
-              audio: 'Audionaam'
-            }
-          },
-          searchItem: {
-            gif: 'Søg efter GIF\'er eller kategorier',
-            image: 'Zoeken naar afbeeldingen of categorieën',
-            video: 'Zoeken naar video\'s of categorieën',
-            audio: 'Zoeken naar audio of categorieën'
-          }
-        }
-      case 'no': // Norwegian
-        return {
-          tabName: {
-            image: 'Bilde',
-            video: 'Video',
-            audio: 'Lyd'
-          },
-          create: 'Skape',
-          category: {
-            list: 'Kategorier',
-            unsorted: 'Ikke sortert',
-            create: 'Opprett en kategori',
-            edit: 'Rediger kategori',
-            delete: 'Slett kategori',
-            deleteConfirm: 'Denne kategorien inneholder underkategorier. De vil alle bli slettet. Er du sikker på at du vil slette kategorier?',
-            download: 'Last ned media',
-            placeholder: 'Kategori navn',
-            move: 'Bevege seg',
-            moveNext: 'Etter',
-            movePrevious: 'Før',
-            color: 'Farge',
-            copyColor: 'Kopier farge',
-            error: {
-              needName: 'Navnet kan ikke være tomt',
-              invalidNameLength: 'Navnet må inneholde maksimalt 20 tegn',
-              wrongColor: 'Fargen er ugyldig',
-              nameExists: 'dette navnet eksisterer allerede',
-              invalidCategory: 'Kategorien eksisterer ikke',
-              download: 'Kunne ikke laste ned medier'
-            },
-            success: {
-              create: 'Kategorien er opprettet!',
-              delete: 'Kategorien er slettet!',
-              edit: 'Kategorien er endret!',
-              move: 'Kategorien er flyttet!',
-              download: 'Mediene er lastet opp!'
-            },
-            emptyHint: 'Høyreklikk for å opprette en kategori!'
-          },
-          media: {
-            emptyHint: {
-              image: 'Klikk på stjernen i hjørnet av et bilde for å sette det i favorittene dine',
-              video: 'Klikk på stjernen i hjørnet av en video for å sette den i favorittene dine',
-              audio: 'Klikk på stjernen i hjørnet av en lyd for å sette den i favorittene dine'
-            },
-            addTo: 'Legge til',
-            moveTo: 'Bevege seg',
-            removeFrom: 'Fjern fra kategori',
-            copySource: 'Kopier mediekilde',
-            upload: {
-              title: 'Laste opp',
-              normal: 'Vanlig',
-              spoiler: 'Spoiler'
-            },
-            success: {
-              move: {
-                gif: 'GIF-en er flyttet!',
-                image: 'Bildet er flyttet!',
-                video: 'Videoen er flyttet!',
-                audio: 'Lyden er flyttet!'
-              },
-              remove: {
-                gif: 'GIF-en er fjernet fra kategoriene!',
-                image: 'Bildet er fjernet fra kategoriene!',
-                video: 'Videoen er fjernet fra kategoriene!',
-                audio: 'Lyd er fjernet fra kategorier!'
-              },
-              download: {
-                gif: 'GIF-en er lastet opp!',
-                image: 'Bildet er lastet opp!',
-                video: 'Videoen er lastet opp!',
-                audio: 'Lyden er lastet ned!'
-              }
-            },
-            error: {
-              download: {
-                gif: 'Kunne ikke laste ned GIF',
-                image: 'Kunne ikke laste opp bildet',
-                video: 'Kunne ikke laste ned video',
-                audio: 'Kunne ikke laste ned lyd'
-              }
-            },
-            controls: {
-              show: 'Vis ordrer',
-              hide: 'Skjul ordrer'
-            },
-            placeholder: {
-              gif: 'GIF-navn',
-              image: 'Bilde navn',
-              video: 'Video navn',
-              audio: 'Lydnavn'
-            }
-          },
-          searchItem: {
-            gif: 'Søk etter GIF-er eller kategorier',
-            image: 'Søk etter bilder eller kategorier',
-            video: 'Søk etter videoer eller kategorier',
-            audio: 'Søk etter lyd eller kategorier'
-          }
-        }
-      case 'pl': // Polish
-        return {
-          tabName: {
-            image: 'Obrazek',
-            video: 'Wideo',
-            audio: 'Audio'
-          },
-          create: 'Stwórz',
-          category: {
-            list: 'Kategorie',
-            unsorted: 'Nie posortowane',
-            create: 'Utwórz kategorię',
-            edit: 'Edytuj kategorię',
-            delete: 'Usuń kategorię',
-            deleteConfirm: 'Ta kategoria zawiera podkategorie. Wszystkie zostaną usunięte. Czy na pewno chcesz usunąć kategorie?',
-            download: 'Pobierz multimedia',
-            placeholder: 'Nazwa Kategorii',
-            move: 'Ruszaj się',
-            moveNext: 'Po',
-            movePrevious: 'Przed',
-            color: 'Kolor',
-            copyColor: 'Kopiuj kolor',
-            error: {
-              needName: 'Nazwa nie może być pusta',
-              invalidNameLength: 'Nazwa musi zawierać maksymalnie 20 znaków',
-              wrongColor: 'Kolor jest nieprawidłowy',
-              nameExists: 'ta nazwa już istnieje',
-              invalidCategory: 'Kategoria nie istnieje',
-              download: 'Nie udało się pobrać multimediów'
-            },
-            success: {
-              create: 'Kategoria została stworzona!',
-              delete: 'Kategoria została usunięta!',
-              edit: 'Kategoria została zmieniona!',
-              move: 'Kategoria została przeniesiona!',
-              download: 'Media zostały przesłane!'
-            },
-            emptyHint: 'Kliknij prawym przyciskiem myszy, aby utworzyć kategorię!'
-          },
-          media: {
-            emptyHint: {
-              image: 'Kliknij gwiazdkę w rogu obrazu, aby umieścić go w ulubionych',
-              video: 'Kliknij gwiazdkę w rogu filmu, aby umieścić go w ulubionych',
-              audio: 'Kliknij gwiazdkę w rogu nagrania, aby umieścić go w ulubionych your'
-            },
-            addTo: 'Dodaj',
-            moveTo: 'Ruszaj się',
-            removeFrom: 'Usuń z kategorii',
-            copySource: 'Kopiuj źródło multimediów',
-            upload: {
-              title: 'Przekazać plik',
-              normal: 'Normalna',
-              spoiler: 'Spojler'
-            },
-            success: {
-              move: {
-                gif: 'GIF został przeniesiony!',
-                image: 'Obraz został przeniesiony!',
-                video: 'Film został przeniesiony!',
-                audio: 'Dźwięk został przeniesiony!'
-              },
-              remove: {
-                gif: 'GIF został usunięty z kategorii!',
-                image: 'Obraz został usunięty z kategorii!',
-                video: 'Film został usunięty z kategorii!',
-                audio: 'Dźwięk został usunięty z kategorii!'
-              },
-              download: {
-                gif: 'GIF został przesłany!',
-                image: 'Obraz został przesłany!',
-                video: 'Film został przesłany!',
-                audio: 'Dźwięk został pobrany!'
-              }
-            },
-            error: {
-              download: {
-                gif: 'Nie udało się pobrać GIF-a',
-                image: 'Nie udało się przesłać obrazu',
-                video: 'Nie udało się pobrać wideo',
-                audio: 'Nie udało się pobrać dźwięku'
-              }
-            },
-            controls: {
-              show: 'Pokaż zamówienia',
-              hide: 'Ukryj zamówienia'
-            },
-            placeholder: {
-              gif: 'Nazwa GIF-a',
-              image: 'Nazwa obrazu',
-              video: 'Nazwa wideo',
-              audio: 'Nazwa dźwięku'
-            }
-          },
-          searchItem: {
-            gif: 'Wyszukaj GIF-y lub kategorie',
-            image: 'Wyszukaj obrazy lub kategorie',
-            video: 'Wyszukaj filmy lub kategorie',
-            audio: 'Wyszukaj audio lub kategorie'
-          }
-        }
-      case 'pt-BR': // Portuguese (Brazil)
-        return {
-          tabName: {
-            image: 'Foto',
-            video: 'Vídeo',
-            audio: 'Áudio'
-          },
-          create: 'Crio',
-          category: {
-            list: 'Categorias',
-            unsorted: 'Não classificado',
-            create: 'Crie uma categoria',
-            edit: 'Editar categoria',
-            delete: 'Apagar categoria',
-            deleteConfirm: 'Esta categoria contém subcategorias. Todos eles serão excluídos. Tem certeza de que deseja excluir as categorias?',
-            download: 'Baixar mídia',
-            placeholder: 'Nome da Categoria',
-            move: 'Mover',
-            moveNext: 'Após',
-            movePrevious: 'Antes',
-            color: 'Cor',
-            copyColor: 'Cor da cópia',
-            error: {
-              needName: 'O nome não pode estar vazio',
-              invalidNameLength: 'O nome deve conter no máximo 20 caracteres',
-              wrongColor: 'Cor é inválida',
-              nameExists: 'Este nome já existe',
-              invalidCategory: 'A categoria não existe',
-              download: 'Falha ao baixar mídia'
-            },
-            success: {
-              create: 'A categoria foi criada!',
-              delete: 'A categoria foi excluída!',
-              edit: 'A categoria foi alterada!',
-              move: 'A categoria foi movida!',
-              download: 'A mídia foi carregada!'
-            },
-            emptyHint: 'Clique com o botão direito para criar uma categoria!'
-          },
-          media: {
-            emptyHint: {
-              image: 'Clique na estrela no canto de uma imagem para colocá-la em seus favoritos',
-              video: 'Clique na estrela no canto de um vídeo para colocá-lo em seus favoritos',
-              audio: 'Clique na estrela no canto de um áudio para colocá-lo em seus favoritos'
-            },
-            addTo: 'Adicionar',
-            moveTo: 'Mover',
-            removeFrom: 'Remover da categoria',
-            copySource: 'Copiar fonte de mídia',
-            upload: {
-              title: 'Envio',
-              normal: 'Normal',
-              spoiler: 'Spoiler'
-            },
-            success: {
-              move: {
-                gif: 'O GIF foi movido!',
-                image: 'A imagem foi movida!',
-                video: 'O vídeo foi movido!',
-                audio: 'O áudio foi movido!'
-              },
-              remove: {
-                gif: 'O GIF foi removido das categorias!',
-                image: 'A imagem foi removida das categorias!',
-                video: 'O vídeo foi removido das categorias!',
-                audio: 'O áudio foi removido das categorias!'
-              },
-              download: {
-                gif: 'O GIF foi carregado!',
-                image: 'A imagem foi carregada!',
-                video: 'O vídeo foi carregado!',
-                audio: 'O áudio foi baixado!'
-              }
-            },
-            error: {
-              download: {
-                gif: 'Falha ao baixar o GIF',
-                image: 'Falha ao carregar imagem',
-                video: 'Falha ao baixar o vídeo',
-                audio: 'Falha ao baixar áudio'
-              }
-            },
-            controls: {
-              show: 'Mostrar pedidos',
-              hide: 'Ocultar pedidos'
-            },
-            placeholder: {
-              gif: 'Nome do GIF',
-              image: 'Nome da imagem',
-              video: 'Nome do vídeo',
-              audio: 'Nome de áudio'
-            }
-          },
-          searchItem: {
-            gif: 'Pesquise GIFs ou categorias',
-            image: 'Pesquise imagens ou categorias',
-            video: 'Pesquise vídeos ou categorias',
-            audio: 'Pesquise áudios ou categorias'
-          }
-        }
-      case 'ro': // Romanian
-        return {
-          tabName: {
-            image: 'Imagine',
-            video: 'Video',
-            audio: 'Audio'
-          },
-          create: 'Crea',
-          category: {
-            list: 'Categorii',
-            unsorted: 'Nu sunt sortate',
-            create: 'Creați o categorie',
-            edit: 'Editați categoria',
-            delete: 'Ștergeți categoria',
-            deleteConfirm: 'Această categorie conține subcategorii. Toate vor fi șterse. Sigur doriți să ștergeți categoriile?',
-            download: 'Descărcați conținut media',
-            placeholder: 'Numele categoriei',
-            move: 'Mișcare',
-            moveNext: 'După',
-            movePrevious: 'Inainte de',
-            color: 'Culoare',
-            copyColor: 'Copiați culoarea',
-            error: {
-              needName: 'Numele nu poate fi gol',
-              invalidNameLength: 'Numele trebuie să conțină maximum 20 de caractere',
-              wrongColor: 'Culoarea nu este validă',
-              nameExists: 'Acest nume există deja',
-              invalidCategory: 'Categoria nu există',
-              download: 'Descărcarea conținutului media nu a reușit'
-            },
-            success: {
-              create: 'Categoria a fost creată!',
-              delete: 'Categoria a fost ștearsă!',
-              edit: 'Categoria a fost schimbată!',
-              move: 'Categoria a fost mutată!',
-              download: 'Media a fost încărcată!'
-            },
-            emptyHint: 'Faceți clic dreapta pentru a crea o categorie!'
-          },
-          media: {
-            emptyHint: {
-              image: 'Faceți clic pe steaua din colțul unei imagini pentru ao pune în preferatele dvs.',
-              video: 'Faceți clic pe steaua din colțul unui videoclip pentru a-l introduce în preferatele dvs.',
-              audio: 'Faceți clic pe steaua din colțul unui sunet pentru ao pune în preferatele dvs.'
-            },
-            addTo: 'Adăuga',
-            moveTo: 'Mișcare',
-            removeFrom: 'Eliminați din categorie',
-            copySource: 'Copiați sursa media',
-            upload: {
-              title: 'Încărcare',
-              normal: 'Normal',
-              spoiler: 'Spoiler'
-            },
-            success: {
-              move: {
-                gif: 'GIF-ul a fost mutat!',
-                image: 'Imaginea a fost mutată!',
-                video: 'Videoclipul a fost mutat!',
-                audio: 'Sunetul a fost mutat!'
-              },
-              remove: {
-                gif: 'GIF-ul a fost eliminat din categorii!',
-                image: 'Imaginea a fost eliminată din categorii!',
-                video: 'Videoclipul a fost eliminat din categorii!',
-                audio: 'Sunetul a fost eliminat din categorii!'
-              },
-              download: {
-                gif: 'GIF-ul a fost încărcat!',
-                image: 'Imaginea a fost încărcată!',
-                video: 'Videoclipul a fost încărcat!',
-                audio: 'Sunetul a fost descărcat!'
-              }
-            },
-            error: {
-              download: {
-                gif: 'Nu s-a putut descărca GIF',
-                image: 'Nu s-a încărcat imaginea',
-                video: 'Descărcarea videoclipului nu a reușit',
-                audio: 'Descărcarea audio nu a reușit'
-              }
-            },
-            controls: {
-              show: 'Afișați comenzile',
-              hide: 'Ascundeți comenzile'
-            },
-            placeholder: {
-              gif: 'Nume GIF',
-              image: 'Numele imaginii',
-              video: 'Numele videoclipului',
-              audio: 'Numele audio'
-            }
-          },
-          searchItem: {
-            gif: 'Căutați GIF-uri sau categorii',
-            image: 'Căutați imagini sau categorii',
-            video: 'Căutați videoclipuri sau categorii',
-            audio: 'Căutați audio sau categorii'
-          }
-        }
-      case 'ru': // Russian
-        return {
-          tabName: {
-            image: 'Картина',
-            video: 'Видео',
-            audio: 'Аудио'
-          },
-          create: 'Создавать',
-          category: {
-            list: 'Категории',
-            unsorted: 'Не отсортировано',
-            create: 'Создать категорию',
-            edit: 'Изменить категорию',
-            delete: 'Удалить категорию',
-            deleteConfirm: 'Эта категория содержит подкатегории. Все они будут удалены. Вы уверены, что хотите удалить категории?',
-            download: 'Скачать медиа',
-            placeholder: 'Название категории',
-            move: 'Двигаться',
-            moveNext: 'После',
-            movePrevious: 'Перед',
-            color: 'Цвет',
-            copyColor: 'Цвет копии',
-            error: {
-              needName: 'Имя не может быть пустым',
-              invalidNameLength: 'Имя должно содержать не более 20 символов.',
-              wrongColor: 'Цвет недействителен',
-              nameExists: 'Это имя уже существует',
-              invalidCategory: 'Категория не существует',
-              download: 'Не удалось скачать медиа'
-            },
-            success: {
-              create: 'Категория создана!',
-              delete: 'Категория удалена!',
-              edit: 'Категория изменена!',
-              move: 'Категория перемещена!',
-              download: 'Медиа загружена!'
-            },
-            emptyHint: 'Щелкните правой кнопкой мыши, чтобы создать категорию!'
-          },
-          media: {
-            emptyHint: {
-              image: 'Нажмите на звезду в углу изображения, чтобы добавить его в избранное.',
-              video: 'Нажмите на звездочку в углу видео, чтобы добавить его в избранное.',
-              audio: 'Нажмите на звездочку в углу аудио, чтобы добавить его в избранное.'
-            },
-            addTo: 'Добавлять',
-            moveTo: 'Двигаться',
-            removeFrom: 'Удалить из категории',
-            copySource: 'Копировать медиа-источник',
-            upload: {
-              title: 'Загрузить',
-              normal: 'Обычный',
-              spoiler: 'Спойлер'
-            },
-            success: {
-              move: {
-                gif: 'Гифку перенесли!',
-                image: 'Изображение было перемещено!',
-                video: 'Видео перемещено!',
-                audio: 'Звук был перемещен!'
-              },
-              remove: {
-                gif: 'Гифка удалена из категорий!',
-                image: 'Изображение удалено из категорий!',
-                video: 'Видео удалено из категорий!',
-                audio: 'Аудио удалено из категорий!'
-              },
-              download: {
-                gif: 'Гифка загружена!',
-                image: 'Изображение загружено!',
-                video: 'Видео загружено!',
-                audio: 'Аудио скачано!'
-              }
-            },
-            error: {
-              download: {
-                gif: 'Не удалось скачать GIF',
-                image: 'Не удалось загрузить изображение',
-                video: 'Не удалось скачать видео',
-                audio: 'Не удалось скачать аудио'
-              }
-            },
-            controls: {
-              show: 'Показать заказы',
-              hide: 'Скрыть заказы'
-            },
-            placeholder: {
-              gif: 'Имя GIF',
-              image: 'Имя изображения',
-              video: 'Название видео',
-              audio: 'Название аудио'
-            }
-          },
-          searchItem: {
-            gif: 'Поиск GIF-файлов или категорий',
-            image: 'Поиск изображений или категорий',
-            video: 'Поиск видео или категорий',
-            audio: 'Поиск аудио или категорий'
-          }
-        }
-      case 'sv': // Swedish
-        return {
-          tabName: {
-            image: 'Bild',
-            video: 'Video',
-            audio: 'Audio'
-          },
-          create: 'Skapa',
-          category: {
-            list: 'Kategorier',
-            unsorted: 'Inte sorterat',
-            create: 'Skapa en kategori',
-            edit: 'Redigera kategori',
-            delete: 'Ta bort kategori',
-            deleteConfirm: 'Denna kategori innehåller underkategorier. De kommer alla att raderas. Är du säker på att du vill ta bort kategorier?',
-            download: 'Ladda ner media',
-            placeholder: 'Kategori namn',
-            move: 'Flytta',
-            moveNext: 'Efter',
-            movePrevious: 'Innan',
-            color: 'Färg',
-            copyColor: 'Kopiera färg',
-            error: {
-              needName: 'Namnet kan inte vara tomt',
-              invalidNameLength: 'Namnet måste innehålla högst 20 tecken',
-              wrongColor: 'Färgen är ogiltig',
-              nameExists: 'detta namn finns redan',
-              invalidCategory: 'Kategorin finns inte',
-              download: 'Det gick inte att ladda ner media'
-            },
-            success: {
-              create: 'Kategorin har skapats!',
-              delete: 'Kategorin har tagits bort!',
-              edit: 'Kategorin har ändrats!',
-              move: 'Kategorin har flyttats!',
-              download: 'Media har laddats upp!'
-            },
-            emptyHint: 'Högerklicka för att skapa en kategori!'
-          },
-          media: {
-            emptyHint: {
-              image: 'Klicka på stjärnan i hörnet av en bild för att lägga den till dina favoriter',
-              video: 'Klicka på stjärnan i hörnet av en video för att lägga den till dina favoriter',
-              audio: 'Klicka på stjärnan i hörnet av ett ljud för att placera den i dina favoriter'
-            },
-            addTo: 'Lägg till',
-            moveTo: 'Flytta',
-            removeFrom: 'Ta bort från kategori',
-            copySource: 'Kopiera mediakälla',
-            upload: {
-              title: 'Ladda upp',
-              normal: 'Vanligt',
-              spoiler: 'Spoiler'
-            },
-            success: {
-              move: {
-                gif: 'GIF:en har flyttats!',
-                image: 'Bilden har flyttats!',
-                video: 'Videon har flyttats!',
-                audio: 'Ljudet har flyttats!'
-              },
-              remove: {
-                gif: 'GIF har tagits bort från kategorierna!',
-                image: 'Bilden har tagits bort från kategorierna!',
-                video: 'Videon har tagits bort från kategorierna!',
-                audio: 'Ljud har tagits bort från kategorier!'
-              },
-              download: {
-                gif: 'GIF-filen har laddats upp!',
-                image: 'Bilden har laddats upp!',
-                video: 'Videon har laddats upp!',
-                audio: 'Ljudet har laddats ner!'
-              }
-            },
-            error: {
-              download: {
-                gif: 'Det gick inte att ladda ner GIF',
-                image: 'Det gick inte att ladda upp bilden',
-                video: 'Det gick inte att ladda ner videon',
-                audio: 'Det gick inte att ladda ner ljudet'
-              }
-            },
-            controls: {
-              show: 'Visa order',
-              hide: 'Dölj beställningar'
-            },
-            placeholder: {
-              gif: 'GIF-namn',
-              image: 'Bildnamn',
-              video: 'Videonamn',
-              audio: 'Ljudnamn'
-            }
-          },
-          searchItem: {
-            gif: 'Sök efter GIF-filer eller kategorier',
-            image: 'Sök efter bilder eller kategorier',
-            video: 'Sök efter videor eller kategorier',
-            audio: 'Sök efter ljud eller kategorier'
-          }
-        }
-      case 'th': // Thai
-        return {
-          tabName: {
-            image: 'ภาพ',
-            video: 'วีดีโอ',
-            audio: 'เครื่องเสียง'
-          },
-          create: 'สร้าง',
-          category: {
-            list: 'หมวดหมู่',
-            unsorted: 'ไม่เรียง',
-            create: 'สร้างหมวดหมู่',
-            edit: 'แก้ไขหมวดหมู่',
-            delete: 'ลบหมวดหมู่',
-            deleteConfirm: 'หมวดหมู่นี้มีหมวดหมู่ย่อย พวกเขาทั้งหมดจะถูกลบ คุณแน่ใจหรือไม่ว่าต้องการลบหมวดหมู่',
-            download: 'ดาวน์โหลดสื่อ',
-            placeholder: 'ชื่อหมวดหมู่',
-            move: 'ย้าย',
-            moveNext: 'หลังจาก',
-            movePrevious: 'ก่อน',
-            color: 'สี',
-            copyColor: 'คัดลอกสี',
-            error: {
-              needName: 'ชื่อไม่สามารถเว้นว่างได้',
-              invalidNameLength: 'ชื่อต้องมีอักขระไม่เกิน 20 ตัว',
-              wrongColor: 'สีไม่ถูกต้อง',
-              nameExists: 'มีชื่อนี้แล้ว',
-              invalidCategory: 'ไม่มีหมวดหมู่',
-              download: 'ไม่สามารถดาวน์โหลดสื่อ'
-            },
-            success: {
-              create: 'หมวดหมู่ถูกสร้างขึ้น!',
-              delete: 'หมวดหมู่ถูกลบ!',
-              edit: 'หมวดหมู่มีการเปลี่ยนแปลง!',
-              move: 'หมวดหมู่ถูกย้าย!',
-              download: 'สื่อได้รับการอัปโหลด!'
-            },
-            emptyHint: 'คลิกขวาเพื่อสร้างหมวดหมู่!'
-          },
-          media: {
-            emptyHint: {
-              image: 'คลิกที่ดาวที่มุมของภาพเพื่อใส่ในรายการโปรดของคุณ',
-              video: 'คลิกที่ดาวที่มุมของวิดีโอเพื่อใส่ในรายการโปรดของคุณ',
-              audio: 'คลิกที่ดาวตรงมุมของเสียงเพื่อใส่ในรายการโปรดของคุณ'
-            },
-            addTo: 'เพิ่ม',
-            moveTo: 'ย้าย',
-            removeFrom: 'ลบออกจากหมวดหมู่',
-            copySource: 'คัดลอกแหล่งที่มาของสื่อ',
-            upload: {
-              title: 'ที่อัพโหลด',
-              normal: 'ปกติ',
-              spoiler: 'สปอยเลอร์'
-            },
-            success: {
-              move: {
-                gif: 'ย้าย GIF แล้ว!',
-                image: 'ย้ายภาพแล้ว!',
-                video: 'วีดีโอถูกย้าย!',
-                audio: 'ย้ายเสียงแล้ว!'
-              },
-              remove: {
-                gif: 'GIF ถูกลบออกจากหมวดหมู่แล้ว!',
-                image: 'รูปภาพถูกลบออกจากหมวดหมู่!',
-                video: 'วิดีโอถูกลบออกจากหมวดหมู่แล้ว!',
-                audio: 'เสียงถูกลบออกจากหมวดหมู่!'
-              },
-              download: {
-                gif: 'อัปโหลด GIF แล้ว!',
-                image: 'อัปโหลดรูปภาพแล้ว!',
-                video: 'อัปโหลดวิดีโอแล้ว!',
-                audio: 'ดาวน์โหลดไฟล์เสียงแล้ว!'
-              }
-            },
-            error: {
-              download: {
-                gif: 'ดาวน์โหลด GIF ไม่สำเร็จ',
-                image: 'ไม่สามารถอัปโหลดภาพ',
-                video: 'ไม่สามารถดาวน์โหลดวิดีโอ',
-                audio: 'ไม่สามารถดาวน์โหลดเสียง'
-              }
-            },
-            controls: {
-              show: 'แสดงคำสั่งซื้อ',
-              hide: 'ซ่อนคำสั่งซื้อ'
-            },
-            placeholder: {
-              gif: 'ชื่อ GIF',
-              image: 'ชื่อภาพ',
-              video: 'ชื่อวิดีโอ',
-              audio: 'ชื่อเสียง'
-            }
-          },
-          searchItem: {
-            gif: 'ค้นหา GIF หรือหมวดหมู่',
-            image: 'ค้นหารูปภาพหรือหมวดหมู่',
-            video: 'ค้นหาวิดีโอหรือหมวดหมู่',
-            audio: 'ค้นหาไฟล์เสียงหรือหมวดหมู่'
-          }
-        }
-      case 'tr': // Turkish
-        return {
-          tabName: {
-            image: 'Resim',
-            video: 'Video',
-            audio: 'Ses'
-          },
-          create: 'Oluşturmak',
-          category: {
-            list: 'Kategoriler',
-            unsorted: 'Sıralanmamış',
-            create: 'Kategori oluştur',
-            edit: 'Kategoriyi düzenle',
-            delete: 'Kategoriyi sil',
-            deleteConfirm: 'Bu kategori alt kategorileri içerir. Hepsi silinecek. Kategorileri silmek istediğinizden emin misiniz?',
-            download: 'Medyayı indir',
-            placeholder: 'Kategori adı',
-            move: 'Hareket',
-            moveNext: 'Sonra',
-            movePrevious: 'Önce',
-            color: 'Renk',
-            copyColor: 'rengi kopyala',
-            error: {
-              needName: 'Ad boş olamaz',
-              invalidNameLength: 'Ad en fazla 20 karakter içermelidir',
-              wrongColor: 'Renk geçersiz',
-              nameExists: 'bu isim zaten var',
-              invalidCategory: 'Kategori mevcut değil',
-              download: 'Medya indirilemedi'
-            },
-            success: {
-              create: 'Kategori oluşturuldu!',
-              delete: 'Kategori silindi!',
-              edit: 'Kategori değiştirildi!',
-              move: 'Kategori taşındı!',
-              download: 'Medya yüklendi!'
-            },
-            emptyHint: 'Kategori oluşturmak için sağ tıklayın!'
-          },
-          media: {
-            emptyHint: {
-              image: 'Favorilerinize eklemek için bir resmin köşesindeki yıldıza tıklayın',
-              video: 'Favorilerinize eklemek için bir videonun köşesindeki yıldıza tıklayın',
-              audio: 'Favorilerinize eklemek için bir sesin köşesindeki yıldıza tıklayın'
-            },
-            addTo: 'Ekle',
-            moveTo: 'Hareket',
-            removeFrom: 'Kategoriden kaldır',
-            copySource: 'Medya kaynağını kopyala',
-            upload: {
-              title: 'Yükle',
-              normal: 'Normal',
-              spoiler: 'Bir şeyin önceden reklamı'
-            },
-            success: {
-              move: {
-                gif: 'GIF taşındı!',
-                image: 'Resim taşındı!',
-                video: 'Video taşındı!',
-                audio: 'Ses taşındı!'
-              },
-              remove: {
-                gif: 'GIF kategorilerden kaldırıldı!',
-                image: 'Resim kategorilerden kaldırıldı!',
-                video: 'Video kategorilerden kaldırıldı!',
-                audio: 'Ses kategorilerden kaldırıldı!'
-              },
-              download: {
-                gif: 'GIF yüklendi!',
-                image: 'Resim yüklendi!',
-                video: 'Video yüklendi!',
-                audio: 'Ses indirildi!'
-              }
-            },
-            error: {
-              download: {
-                gif: 'GIF indirilemedi',
-                image: 'Resim yüklenemedi',
-                video: 'Video indirilemedi',
-                audio: 'Ses indirilemedi'
-              }
-            },
-            controls: {
-              show: 'Siparişleri göster',
-              hide: 'Siparişleri gizle'
-            },
-            placeholder: {
-              gif: 'GIF Adı',
-              image: 'Resim adı',
-              video: 'video adı',
-              audio: 'Ses adı'
-            }
-          },
-          searchItem: {
-            gif: 'GIF\'leri veya kategorileri arayın',
-            image: 'Resim veya kategori arayın',
-            video: 'Videoları veya kategorileri arayın',
-            audio: 'Sesleri veya kategorileri arayın'
-          }
-        }
-      case 'uk': // Ukrainian
-        return {
-          tabName: {
-            image: 'Картина',
-            video: 'Відео',
-            audio: 'Аудіо'
-          },
-          create: 'Створити',
-          category: {
-            list: 'Категорії',
-            unsorted: 'Не сортується',
-            create: 'Створіть категорію',
-            edit: 'Редагувати категорію',
-            delete: 'Видалити категорію',
-            deleteConfirm: 'Ця категорія містить підкатегорії. Усі вони будуть видалені. Ви впевнені, що хочете видалити категорії?',
-            download: 'Завантажити медіафайли',
-            placeholder: 'Назва категорії',
-            move: 'Рухайся',
-            moveNext: 'Після',
-            movePrevious: 'Раніше',
-            color: 'Колір',
-            copyColor: 'Копіювати кольорові',
-            error: {
-              needName: 'Ім\'я не може бути порожнім',
-              invalidNameLength: 'Назва повинна містити максимум 20 символів',
-              wrongColor: 'Колір недійсний',
-              nameExists: 'ця назва вже існує',
-              invalidCategory: 'Категорія не існує',
-              download: 'Не вдалося завантажити медіафайл'
-            },
-            success: {
-              create: 'Категорію створено!',
-              delete: 'Категорію видалено!',
-              edit: 'Категорію змінено!',
-              move: 'Категорію переміщено!',
-              download: 'ЗМІ завантажено!'
-            },
-            emptyHint: 'Клацніть правою кнопкою миші, щоб створити категорію!'
-          },
-          media: {
-            emptyHint: {
-              image: 'Клацніть на зірочку в кутку зображення, щоб помістити його у вибране',
-              video: 'Клацніть на зірочку в кутку відео, щоб поставити його у вибране',
-              audio: 'Клацніть на зірочку в кутку звукового супроводу, щоб помістити його у вибране'
-            },
-            addTo: 'Додати',
-            moveTo: 'Рухайся',
-            removeFrom: 'Вилучити з категорії',
-            copySource: 'Копіювати медіа-джерело',
-            upload: {
-              title: 'Завантажити',
-              normal: 'Звичайний',
-              spoiler: 'Спойлер'
-            },
-            success: {
-              move: {
-                gif: 'GIF переміщено!',
-                image: 'Зображення переміщено!',
-                video: 'Відео переміщено!',
-                audio: 'Аудіо переміщено!'
-              },
-              remove: {
-                gif: 'GIF видалено з категорій!',
-                image: 'Зображення видалено з категорій!',
-                video: 'Відео видалено з категорій!',
-                audio: 'Аудіо вилучено з категорій!'
-              },
-              download: {
-                gif: 'GIF завантажено!',
-                image: 'Зображення завантажено!',
-                video: 'Відео завантажено!',
-                audio: 'Аудіо завантажено!'
-              }
-            },
-            error: {
-              download: {
-                gif: 'Не вдалося завантажити GIF',
-                image: 'Не вдалося завантажити зображення',
-                video: 'Не вдалося завантажити відео',
-                audio: 'Не вдалося завантажити аудіо'
-              }
-            },
-            controls: {
-              show: 'Показати замовлення',
-              hide: 'Сховати замовлення'
-            },
-            placeholder: {
-              gif: 'Назва GIF',
-              image: 'Назва зображення',
-              video: 'Назва відео',
-              audio: 'Назва аудіо'
-            }
-          },
-          searchItem: {
-            gif: 'Шукайте GIF-файли або категорії',
-            image: 'Шукайте зображення або категорії',
-            video: 'Шукайте відео або категорії',
-            audio: 'Шукайте аудіо чи категорії'
-          }
-        }
-      case 'vi': // Vietnamese
-        return {
-          tabName: {
-            image: 'Hình ảnh',
-            video: 'Video',
-            audio: 'Âm thanh'
-          },
-          create: 'Tạo nên',
-          category: {
-            list: 'Thể loại',
-            unsorted: 'Không được sắp xếp',
-            create: 'Tạo một danh mục',
-            edit: 'Chỉnh sửa danh mục',
-            delete: 'Xóa danh mục',
-            deleteConfirm: 'Thể loại này chứa các thể loại con. Tất cả chúng sẽ bị xóa. Bạn có chắc chắn muốn xóa danh mục không?',
-            download: 'Завантажити медіафайли',
-            placeholder: 'Tên danh mục',
-            move: 'Di chuyển',
-            moveNext: 'Sau',
-            movePrevious: 'Trước',
-            color: 'Màu sắc',
-            copyColor: 'Sao chép màu',
-            error: {
-              needName: 'Tên không được để trống',
-              invalidNameLength: 'Tên phải chứa tối đa 20 ký tự',
-              wrongColor: 'Màu không hợp lệ',
-              nameExists: 'tên này đã tồn tại',
-              invalidCategory: 'Danh mục không tồn tại',
-              download: 'Не вдалося завантажити медіафайл'
-            },
-            success: {
-              create: 'Chuyên mục đã được tạo!',
-              delete: 'Danh mục đã bị xóa!',
-              edit: 'Danh mục đã được thay đổi!',
-              move: 'Danh mục đã được di chuyển!',
-              download: 'ЗМІ завантажено!'
-            },
-            emptyHint: 'Nhấp chuột phải để tạo một danh mục!'
-          },
-          media: {
-            emptyHint: {
-              image: 'Nhấp vào ngôi sao ở góc của hình ảnh để đưa nó vào mục yêu thích của bạn',
-              video: 'Nhấp vào ngôi sao ở góc video để đưa video đó vào mục yêu thích của bạn',
-              audio: 'Nhấp vào ngôi sao ở góc của âm thanh để đưa nó vào mục yêu thích của bạn'
-            },
-            addTo: 'Thêm vào',
-            moveTo: 'Di chuyển',
-            removeFrom: 'Xóa khỏi danh mục',
-            copySource: 'Sao chép nguồn phương tiện',
-            upload: {
-              title: 'Tải lên',
-              normal: 'Bình thường',
-              spoiler: 'Spoiler'
-            },
-            success: {
-              move: {
-                gif: 'GIF đã được di chuyển!',
-                image: 'Hình ảnh đã được di chuyển!',
-                video: 'Video đã được chuyển đi!',
-                audio: 'Âm thanh đã được di chuyển!'
-              },
-              remove: {
-                gif: 'GIF đã bị xóa khỏi danh mục!',
-                image: 'Hình ảnh đã bị xóa khỏi danh mục!',
-                video: 'Video đã bị xóa khỏi danh mục!',
-                audio: 'Âm thanh đã bị xóa khỏi danh mục!'
-              },
-              download: {
-                gif: 'GIF đã được tải lên!',
-                image: 'Зображення завантажено!',
-                video: 'Відео завантажено!',
-                audio: 'Аудіо завантажено!'
-              }
-            },
-            error: {
-              download: {
-                gif: 'Không thể tải xuống GIF',
-                image: 'Не вдалося завантажити зображення',
-                video: 'Не вдалося завантажити відео',
-                audio: 'Не вдалося завантажити аудіо'
-              }
-            },
-            controls: {
-              show: 'Hiển thị đơn đặt hàng',
-              hide: 'Ẩn đơn đặt hàng'
-            },
-            placeholder: {
-              gif: 'Tên GIF',
-              image: 'Tên Hình ảnh',
-              video: 'Tên video',
-              audio: 'Tên âm thanh'
-            }
-          },
-          searchItem: {
-            gif: 'Tìm kiếm GIF hoặc danh mục',
-            image: 'Tìm kiếm hình ảnh hoặc danh mục',
-            video: 'Tìm kiếm video hoặc danh mục',
-            audio: 'Tìm kiếm âm thanh hoặc danh mục'
-          }
-        }
-      case 'zh-CN': // Chinese (China)
-        return {
-          tabName: {
-            image: '图片',
-            video: '视频',
-            audio: '声音的'
-          },
-          create: '创造',
-          category: {
-            list: '类别',
-            unsorted: '未排序',
-            create: '创建一个类别',
-            edit: '编辑类别',
-            delete: '删除类别',
-            deleteConfirm: '此类别包含子类别。 它们都将被删除。 您确定要删除类别吗？',
-            download: '下载媒体',
-            placeholder: '分类名称',
-            move: '移动',
-            moveNext: '后',
-            movePrevious: '前',
-            color: '颜色',
-            copyColor: '复印颜色',
-            error: {
-              needName: '名称不能为空',
-              invalidNameLength: '名称必须最多包含 20 个字符',
-              wrongColor: '颜色无效',
-              nameExists: '这个名字已经存在',
-              invalidCategory: '该类别不存在',
-              download: '无法下载媒体'
-            },
-            success: {
-              create: '该类别已创建！',
-              delete: '该分类已被删除！',
-              edit: '类别已更改！',
-              move: '类别已移动！',
-              download: '媒体已上传！'
-            },
-            emptyHint: '右键创建一个类别！'
-          },
-          media: {
-            emptyHint: {
-              image: '单击图像角落的星星将其放入您的收藏夹',
-              video: '点击视频角落的星星，将其放入您的收藏夹',
-              audio: '单击音频一角的星星将其放入您的收藏夹'
-            },
-            addTo: '添加',
-            moveTo: '移动',
-            removeFrom: '从类别中删除',
-            copySource: '复制媒体源',
-            upload: {
-              title: '上传',
-              normal: '普通的',
-              spoiler: '剧透'
-            },
-            success: {
-              move: {
-                gif: 'GIF已被移动！',
-                image: '图片已移动！',
-                video: '视频已移！',
-                audio: '音频已移动！'
-              },
-              remove: {
-                gif: 'GIF 已从类别中删除！',
-                image: '该图片已从类别中删除！',
-                video: '该视频已从类别中删除！',
-                audio: '音频已从类别中删除！'
-              },
-              download: {
-                gif: 'GIF已上传！',
-                image: '图片已上传！',
-                video: '视频已上传！',
-                audio: '音频已下载！'
-              }
-            },
-            error: {
-              download: {
-                gif: '无法下载 GIF',
-                image: '上传图片失败',
-                video: '下载视频失败',
-                audio: '无法下载音频'
-              }
-            },
-            controls: {
-              show: '显示订单',
-              hide: '隐藏订单'
-            },
-            placeholder: {
-              gif: '动图名称',
-              image: '图片名称',
-              video: '视频名称',
-              audio: '音频名称'
-            }
-          },
-          searchItem: {
-            gif: '搜索 GIF 或类别',
-            image: '搜索图像或类别',
-            video: '搜索视频或类别',
-            audio: '搜索音频或类别'
-          }
-        }
-      case 'zh-TW': // Chinese (Taiwan)
-        return {
-          tabName: {
-            image: '圖片',
-            video: '影片',
-            audio: '音訊'
-          },
-          create: '創建',
-          category: {
-            list: '類別',
-            unsorted: '未排序',
-            create: '創建一個分類',
-            edit: '編輯分類',
-            delete: '刪除分類',
-            deleteConfirm: '此類別包含子類別。 它們都將被刪除。 您確定要刪除類別嗎？',
-            download: '下載媒體',
-            placeholder: '分類名稱',
-            move: '移動',
-            moveNext: '下一個',
-            movePrevious: '上一個',
-            color: '顏色',
-            copyColor: '複製顏色',
-            error: {
-              needName: '名稱不能為空',
-              invalidNameLength: '名稱需少於20個字符',
-              wrongColor: '無效的顏色',
-              nameExists: '這個名稱已經存在',
-              invalidCategory: '該分類不存在',
-              download: '無法下載媒體'
-            },
-            success: {
-              create: '該分類已創建！',
-              delete: '該分類已刪除！',
-              edit: '分類已更改！',
-              move: '分類已移動！',
-              download: '媒體已上傳！'
-            },
-            emptyHint: '右鍵創建一個新分類！'
-          },
-          media: {
-            emptyHint: {
-              image: '點擊圖像角落的星星將其放入您的收藏夾',
-              video: '點擊影片角落的星星將其放入您的收藏夾',
-              audio: '單擊音訊角落的星星將其放入您的收藏夾'
-            },
-            addTo: '添加',
-            moveTo: '移動',
-            removeFrom: '從分類中刪除',
-            copySource: '複製媒體源',
-            upload: {
-              title: '上傳',
-              normal: '正常',
-              spoiler: '防雷'
-            },
-            success: {
-              move: {
-                gif: 'GIF已被移動！',
-                image: '圖片已移動！',
-                video: '影片已移動！',
-                audio: '音訊已移動！'
-              },
-              remove: {
-                gif: 'GIF 已從類別中刪除！',
-                image: '該圖片已從分類中刪除！',
-                video: '該影片已從分類中刪除！',
-                audio: '該音訊已從分類中刪除！'
-              },
-              download: {
-                gif: 'GIF已上傳！',
-                image: '圖片已上傳！',
-                video: '視頻已上傳！',
-                audio: '音頻已下載！'
-              }
+  function getPluginStrings () {
+    return {
+      bg: { // Bulgarian
+        tabName: {
+          image: 'Изображения',
+          video: 'Видео',
+          audio: 'Аудио',
+          file: 'Файл',
+        },
+        create: 'Създайте',
+        category: {
+          list: 'Категории',
+          unsorted: 'Не са сортирани',
+          create: 'Създайте категория',
+          edit: 'Редактиране на категорията',
+          delete: 'Изтриване на категорията',
+          deleteConfirm: 'Тази категория съдържа подкатегории. Всички те ще бъдат изтрити. Сигурни ли сте, че искате да изтриете категории?',
+          download: 'Изтеглете мултимедия',
+          placeholder: 'Име на категория',
+          move: 'Ход',
+          moveNext: 'След',
+          movePrevious: 'Преди',
+          color: 'Цвят',
+          copyColor: 'Копиране на цвят',
+          error: {
+            needName: 'Името не може да бъде празно',
+            invalidNameLength: 'Името трябва да съдържа максимум 20 знака',
+            wrongColor: 'Цветът е невалиден',
+            nameExists: 'това име вече съществува',
+            invalidCategory: 'Категорията не съществува',
+            download: 'Изтеглянето на мултимедия не бе успешно',
+          },
+          success: {
+            create: 'Категорията е създадена!',
+            delete: 'Категорията е изтрита!',
+            edit: 'Категорията е променена!',
+            move: 'Категорията е преместена!',
+            download: 'Медиите са качени!',
+          },
+          emptyHint: 'Щракнете с десния бутон, за да създадете категория!',
+        },
+        media: {
+          emptyHint: {
+            image: 'Кликнете върху звездата в ъгъла на изображението, за да го поставите в любимите си',
+            video: 'Кликнете върху звездата в ъгъла на видеоклипа, за да го поставите в любимите си',
+            audio: 'Кликнете върху звездата в ъгъла на звука, за да го поставите в любимите си',
+            file: "Кликнете върху ' звезда в ъгъла ' файл, за да го поставите в любимите си",
+          },
+          addTo: 'Добавяне',
+          moveTo: 'Ход',
+          removeFrom: 'Премахване от категорията',
+          copySource: 'Копиране на медийния източник',
+          upload: {
+            title: 'Качване',
+            normal: 'Нормално',
+            spoiler: 'Спойлер',
+          },
+          success: {
+            move: {
+              gif: 'GIF е преместен!',
+              image: 'Изображението е преместено!',
+              video: 'Видеото е преместено!',
+              audio: 'Аудиото е преместено!',
+              file: 'Файлът е преместен!',
+            },
+            remove: {
+              gif: 'GIF-ът е премахнат от категориите!',
+              image: 'Изображението е премахнато от категориите!',
+              video: 'Видеото е премахнато от категориите!',
+              audio: 'Аудиото е премахнато от категориите!',
+              file: 'Файлът е премахнат от категориите!',
             },
             download: {
-              gif: '無法下載 GIF',
-              image: '上傳圖片失敗',
-              video: '下載視頻失敗',
-              audio: '無法下載音頻'
+              gif: 'GIF е качен!',
+              image: 'Изображението е качено!',
+              video: 'Видеото е качено!',
+              audio: 'Аудиото е изтеглено!',
+              file: 'Файлът е изтеглен!',
             },
-            controls: {
-              show: '顯示控制選單',
-              hide: '隱藏控制選單'
-            },
-            placeholder: {
-              gif: '動圖名稱',
-              image: '圖片名稱',
-              video: '影片名稱',
-              audio: '音訊名稱'
-            }
           },
-          searchItem: {
-            gif: '搜索 GIF 或類別',
-            image: '搜索圖片或分類',
-            video: '搜索影片或分類',
-            audio: '搜索音訊或分類'
-          }
-        }
-      default: // English
-        return {
-          tabName: {
-            image: 'Image',
-            video: 'Video',
-            audio: 'Audio'
+          error: {
+            download: {
+              gif: 'Неуспешно изтегляне на GIF',
+              image: 'Качването на изображението не бе успешно',
+              video: 'Изтеглянето на видеоклипа не бе успешно',
+              audio: 'Изтеглянето на аудио не бе успешно',
+              file: 'Неуспешно изтегляне на файла',
+            },
           },
-          create: 'Create',
-          category: {
-            list: 'Categories',
-            unsorted: 'Unsorted',
-            create: 'Create Category',
-            edit: 'Edit Category',
-            delete: 'Delete Category',
-            deleteConfirm: 'This category contains sub-categories. They will all get deleted. Are you sure you want to delete the categories?',
-            download: 'Download Medias',
-            placeholder: 'Category Name',
-            move: 'Move',
-            moveNext: 'Next',
-            movePrevious: 'Previous',
-            color: 'Color',
-            copyColor: 'Copy Color',
-            error: {
-              needName: 'Name cannot be empty',
-              invalidNameLength: 'Name must contain less than 20 characters',
-              wrongColor: 'Invalid color',
-              nameExists: 'Name already exists',
-              invalidCategory: 'Category not found',
-              download: 'Error while downloading medias!'
-            },
-            success: {
-              create: 'Category created!',
-              delete: 'Category deleted!',
-              edit: 'Category edited!',
-              move: 'Category moved!',
-              download: 'Medias downloaded!'
-            },
-            emptyHint: 'Right-click to create a category!'
+          controls: {
+            show: 'Показване на поръчки',
+            hide: 'Скриване на поръчките',
           },
-          media: {
-            emptyHint: {
-              image: 'Click on the star in the corner of an image to bookmark it',
-              video: 'Click on the star in the corner of a video to bookmark it',
-              audio: 'Click on the star in the corner of an audio to bookmark it'
-            },
-            addTo: 'Add',
-            moveTo: 'Move',
-            removeFrom: 'Remove From Category',
-            copySource: 'Copy Source Link',
-            upload: {
-              title: 'Upload',
-              normal: 'Normal',
-              spoiler: 'Spoiler'
-            },
-            success: {
-              move: {
-                gif: 'GIF moved!',
-                image: 'Image moved!',
-                video: 'Video moved!',
-                audio: 'Audio moved!'
-              },
-              remove: {
-                gif: 'GIF removed from categories!',
-                image: 'Image removed from categories!',
-                video: 'Video removed from categories!',
-                audio: 'Audio removed from categories!'
-              },
-              download: {
-                gif: 'GIF downloaded!',
-                image: 'Image downloaded!',
-                video: 'Video downloaded!',
-                audio: 'Audio downloaded!'
-              }
-            },
-            error: {
-              download: {
-                gif: 'Failed to download GIF',
-                image: 'Failed to download image',
-                video: 'Failed to download video',
-                audio: 'Failed to download audio'
-              }
-            },
-            controls: {
-              show: 'Show Controls',
-              hide: 'Hide Controls'
-            },
-            placeholder: {
-              gif: 'GIF Name',
-              image: 'Image Name',
-              video: 'Video Name',
-              audio: 'Audio Name'
-            }
+          placeholder: {
+            gif: 'Име на GIF',
+            image: 'Име на изображението',
+            video: 'Име на видеоклипа',
+            audio: 'Име на звука',
+            file: 'Име на файл',
           },
-          searchItem: {
-            gif: 'Search for GIFs or Categories',
-            image: 'Search for Images or Categories',
-            video: 'Search for Videos or Categories',
-            audio: 'Search for Audios or Categories'
-          }
-        }
+        },
+        searchItem: {
+          gif: 'Търсете GIF файлове или категории',
+          image: 'Търсене на изображения или категории',
+          video: 'Търсете видеоклипове или категории',
+          audio: 'Търсене на аудио или категории',
+          file: 'Търсене на файлове или категории',
+        },
+        import: {
+          panel: 'Импортиране на медии',
+          label: {
+            types: 'Видове',
+            medias: 'Медия',
+            categories: 'Категории',
+          },
+          buttonImport: 'Импортиране',
+          success: 'Медиите са внесени!',
+          error: "Неизправност по време на ' импортиране на медии",
+        },
+        cache: {
+          panel: 'Локална база данни',
+          total: 'Обща сума :',
+          size: 'размер:',
+          clear: {
+            confirm: 'Наистина ли искате да изпразните базата данни?',
+            button: 'Празна база данни',
+            success: 'Базата данни е изпразнена!',
+            error: 'Неуспешно изхвърляне на базата данни',
+          },
+          cacheAll: {
+            button: 'Кеширайте всички медии',
+            confirm: 'Искате ли да кеширате всички медии?',
+            noMedia: "Той ' няма медия за кеширане",
+            success: 'Медиите са кеширани!',
+            error: 'Грешка при кеширане на медия',
+          },
+          refreshButton: 'Опресняване',
+        },
+        mediasCounter: 'Брой медии',
+        settings: {
+          hideUnsortedMedias: {
+            name: 'Скриване на мултимедия',
+            note: "Скриване на медиите от ' раздел, които не са категоризирани",
+          },
+          hideThumbnail: {
+            name: 'Скриване на миниатюри',
+            note: "Показва цвета на категорията вместо ' произволна миниатюра",
+          },
+          allowCaching: {
+            name: "Разрешаване на кеширане на ' преглед на медиите",
+            note: "Използва локален офлайн кеш за кеширане на файлове ' преглед на медиите",
+          },
+          mediaVolume: {
+            name: 'Мултимедия',
+            note: "Сила на звука при възпроизвеждане на мултимедия в 'раздел",
+          },
+          maxMediasPerPage: {
+            name: 'Максимален брой медии на страница',
+            note: "Максималният брой медии, показвани на страница в ' раздел",
+          },
+          position: {
+            name: 'Позиция на бутона',
+            btnsPositionKey: {
+              name: 'Относително разположение на бутоните',
+              note: 'До кой друг бутон трябва да се поставят бутоните',
+            },
+            btnsPosition: {
+              name: 'Посока на бутона',
+              note: 'Посока на бутоните в лентата за чат',
+            },
+          },
+          gif: {
+            name: 'GIF настройки',
+            enabled: {
+              name: 'Общ',
+              note: "Заменя ' Раздел GIF на Discord",
+            },
+            alwaysSendInstantly: {
+              name: 'Незабавна доставка',
+              note: 'Незабавно изпратете медийната връзка или файл',
+            },
+            alwaysUploadFile: {
+              name: 'Винаги качвайте като файл',
+              note: "Качете мултимедия като файл, а не ' изпрати линк",
+            },
+          },
+          image: {
+            name: 'Настройки на изображението',
+            enabled: {
+              name: 'Общ',
+              note: 'Активирайте този тип медия',
+            },
+            showBtn: {
+              name: 'Бутон',
+              note: 'Показване на бутона в лентата за чат',
+            },
+            showStar: {
+              name: 'звезда',
+              note: "Показва л ' звездни фаворити в медиите",
+            },
+            alwaysSendInstantly: {
+              name: 'Незабавна доставка',
+              note: 'Незабавно изпратете медийната връзка или файл',
+            },
+            alwaysUploadFile: {
+              name: 'Винаги качвайте като файл',
+              note: "Качете мултимедия като файл, а не ' изпрати линк",
+            },
+          },
+          video: {
+            name: 'Видео настройки',
+            enabled: {
+              name: 'Общ',
+              note: 'Активирайте този тип медия',
+            },
+            showBtn: {
+              name: 'Бутон',
+              note: 'Показване на бутона в лентата за чат',
+            },
+            showStar: {
+              name: 'звезда',
+              note: "Показва л ' звездни фаворити в медиите",
+            },
+            alwaysSendInstantly: {
+              name: 'Незабавна доставка',
+              note: 'Незабавно изпратете медийната връзка или файл',
+            },
+            alwaysUploadFile: {
+              name: 'Винаги качвайте като файл',
+              note: "Качете мултимедия като файл, а не ' изпрати линк",
+            },
+          },
+          audio: {
+            name: 'Аудио настройки',
+            enabled: {
+              name: 'Общ',
+              note: 'Активирайте този тип медия',
+            },
+            showBtn: {
+              name: 'Бутон',
+              note: 'Показване на бутона в лентата за чат',
+            },
+            showStar: {
+              name: 'звезда',
+              note: "Показва л ' звездни фаворити в медиите",
+            },
+          },
+          file: {
+            name: 'Настройки на файла',
+            enabled: {
+              name: 'Общ',
+              note: 'Активирайте този тип медия',
+            },
+            showBtn: {
+              name: 'Бутон',
+              note: 'Показване на бутона в лентата за чат',
+            },
+            showStar: {
+              name: 'звезда',
+              note: "Показва л ' звездни фаворити в медиите",
+            },
+            alwaysSendInstantly: {
+              name: 'Незабавна доставка',
+              note: 'Незабавно изпратете медийната връзка или файл',
+            },
+            alwaysUploadFile: {
+              name: 'Винаги качвайте като файл',
+              note: "Качете мултимедия като файл, а не ' изпрати линк",
+            },
+          },
+          panel: 'Настройки на плъгина',
+        },
+      },
+      cs: { // Czech
+        tabName: {
+          image: 'Obrázek',
+          video: 'Video',
+          audio: 'Zvuk',
+          file: 'Soubor',
+        },
+        create: 'Vytvořit',
+        category: {
+          list: 'Kategorie',
+          unsorted: 'Neřazeno',
+          create: 'Vytvořte kategorii',
+          edit: 'Upravit kategorii',
+          delete: 'Smazat kategorii',
+          deleteConfirm: 'Tato kategorie obsahuje podkategorie. Všechny budou smazány. Opravdu chcete smazat kategorie?',
+          download: 'Stáhněte si média',
+          placeholder: 'Název Kategorie',
+          move: 'Hýbat se',
+          moveNext: 'Po',
+          movePrevious: 'Před',
+          color: 'Barva',
+          copyColor: 'Kopírovat barvu',
+          setThumbnail: 'Nastavit jako miniaturu',
+          unsetThumbnail: 'Odebrat miniaturu',
+          error: {
+            needName: 'Název nemůže být prázdný',
+            invalidNameLength: 'Název musí obsahovat maximálně 20 znaků',
+            wrongColor: 'Barva je neplatná',
+            nameExists: 'tento název již existuje',
+            invalidCategory: 'Kategorie neexistuje',
+            download: 'Stažení média se nezdařilo',
+          },
+          success: {
+            create: 'Kategorie byla vytvořena!',
+            delete: 'Kategorie byla smazána!',
+            edit: 'Kategorie byla upravena!',
+            move: 'Kategorie byla přesunuta!',
+            download: 'Média byla nahrána!',
+            setThumbnail: 'Sada náhledů pro kategorii!',
+            unsetThumbnail: 'Miniatura kategorie odstraněna!',
+          },
+          emptyHint: 'Kliknutím pravým tlačítkem vytvoříte kategorii!',
+        },
+        media: {
+          emptyHint: {
+            image: 'Kliknutím na hvězdičku v rohu obrázku jej přidáte mezi oblíbené',
+            video: 'Kliknutím na hvězdičku v rohu videa je přidáte mezi oblíbené',
+            audio: 'Kliknutím na hvězdičku v rohu zvukové nahrávky ji přidáte mezi oblíbené',
+            file: 'Kliknutím na hvězdičku v rohu souboru jej přidáte mezi oblíbené',
+          },
+          addTo: 'Přidat',
+          moveTo: 'Hýbat se',
+          removeFrom: 'Odebrat z kategorie',
+          copySource: 'Kopírovat zdroj médií',
+          upload: {
+            title: 'nahrát',
+            normal: 'Normální',
+            spoiler: 'Spoilery',
+          },
+          success: {
+            move: {
+              gif: 'GIF byl přesunut!',
+              image: 'Obrázek byl přesunut!',
+              video: 'Video bylo přesunuto!',
+              audio: 'Zvuk byl přesunut!',
+              file: 'Soubor byl přesunut!',
+            },
+            remove: {
+              gif: 'GIF byl odstraněn z kategorií!',
+              image: 'Obrázek byl odstraněn z kategorií!',
+              video: 'Video bylo odstraněno z kategorií!',
+              audio: 'Zvuk byl odstraněn z kategorií!',
+              file: 'Soubor byl odstraněn z kategorií!',
+            },
+            download: {
+              gif: 'GIF byl nahrán!',
+              image: 'Obrázek byl nahrán!',
+              video: 'Video bylo nahráno!',
+              audio: 'Zvuk byl nahrán!',
+              file: 'Soubor byl stažen!',
+            },
+          },
+          error: {
+            download: {
+              gif: 'Stažení GIF se nezdařilo',
+              image: 'Nahrání obrázku se nezdařilo',
+              video: 'Stažení videa se nezdařilo',
+              audio: 'Stažení zvuku se nezdařilo',
+              file: 'Stažení souboru se nezdařilo',
+            },
+          },
+          controls: {
+            show: 'Zobrazit objednávky',
+            hide: 'Skrýt příkazy',
+          },
+          placeholder: {
+            gif: 'Název GIF',
+            image: 'Název obrázku',
+            video: 'Název videa',
+            audio: 'Název zvuku',
+            file: 'Název souboru',
+          },
+        },
+        searchItem: {
+          gif: 'Vyhledávejte GIFy nebo kategorie',
+          image: 'Vyhledávejte obrázky nebo kategorie',
+          video: 'Hledejte videa nebo kategorie',
+          audio: 'Vyhledávejte audia nebo kategorie',
+          file: 'Vyhledávejte soubory nebo kategorie',
+        },
+        import: {
+          panel: 'Import médií',
+          label: {
+            types: 'Typy',
+            medias: 'Média',
+            categories: 'Kategorie',
+          },
+          buttonImport: 'Import',
+          success: 'Média byla importována!',
+          error: 'Import média se nezdařil',
+        },
+        cache: {
+          panel: 'Lokální databáze',
+          total: 'Celkem:',
+          size: 'Velikost:',
+          clear: {
+            confirm: 'Opravdu chcete vyprázdnit databázi?',
+            button: 'Prázdná databáze',
+            success: 'Databáze byla vyprázdněna!',
+            error: 'Nepodařilo se vypsat databázi',
+          },
+          cacheAll: {
+            button: 'Uložte všechna média do mezipaměti',
+            confirm: 'Chcete uložit do mezipaměti všechna média?',
+            noMedia: 'Neexistují žádná média pro ukládání do mezipaměti',
+            success: 'Média byla uložena do mezipaměti!',
+            error: 'Selhání při ukládání médií do mezipaměti',
+          },
+          refreshButton: 'Obnovit',
+        },
+        mediasCounter: 'Počet médií',
+        settings: {
+          hideUnsortedMedias: {
+            name: 'Skrýt média',
+            note: 'Skrýt média na kartě, která nejsou zařazena do kategorie',
+          },
+          hideThumbnail: {
+            name: 'Skrýt miniatury',
+            note: 'Zobrazuje barvu kategorie namísto náhodné miniatury',
+          },
+          allowCaching: {
+            name: 'Povolit ukládání náhledu médií do mezipaměti',
+            note: 'vyrovnávací paměti náhledu médií používá místní offline mezipaměť',
+          },
+          mediaVolume: {
+            name: 'Hlasitost médií',
+            note: 'Hlasitost přehrávání médií v tab',
+          },
+          maxMediasPerPage: {
+            name: 'Maximální počet médií na stránku',
+            note: 'Maximální počet médií zobrazených na stránce na kartě',
+          },
+          position: {
+            name: 'Pozice tlačítka',
+            btnsPositionKey: {
+              name: 'Relativní poloha tlačítek',
+              note: 'Vedle kterého dalšího tlačítka by měla být tlačítka umístěna',
+            },
+            btnsPosition: {
+              name: 'Směr tlačítka',
+              note: 'Směr tlačítek na liště chatu',
+            },
+          },
+          gif: {
+            name: 'Nastavení GIF',
+            enabled: {
+              name: 'Všeobecné',
+              note: 'Nahrazuje kartu GIF aplikace Discord',
+            },
+            alwaysSendInstantly: {
+              name: 'Okamžité dodání',
+              note: 'Okamžitě odešlete odkaz na médium nebo soubor',
+            },
+            alwaysUploadFile: {
+              name: 'Vždy nahrávat jako soubor',
+              note: 'Nahrajte média jako soubor, nikoli posílejte odkaz',
+            },
+          },
+          image: {
+            name: 'Nastavení obrazu',
+            enabled: {
+              name: 'Všeobecné',
+              note: 'Povolit tento typ média',
+            },
+            showBtn: {
+              name: 'Knoflík',
+              note: 'Zobrazit tlačítko na liště chatu',
+            },
+            showStar: {
+              name: 'Hvězda',
+              note: 'Zobrazuje oblíbenou hvězdu v médiích',
+            },
+            alwaysSendInstantly: {
+              name: 'Okamžité dodání',
+              note: 'Okamžitě odešlete odkaz na médium nebo soubor',
+            },
+            alwaysUploadFile: {
+              name: 'Vždy nahrávat jako soubor',
+              note: 'Nahrajte média jako soubor, nikoli posílejte odkaz',
+            },
+          },
+          video: {
+            name: 'Nastavení videa',
+            enabled: {
+              name: 'Všeobecné',
+              note: 'Povolit tento typ média',
+            },
+            showBtn: {
+              name: 'Knoflík',
+              note: 'Zobrazit tlačítko na liště chatu',
+            },
+            showStar: {
+              name: 'Hvězda',
+              note: 'Zobrazuje oblíbenou hvězdu v médiích',
+            },
+            alwaysSendInstantly: {
+              name: 'Okamžité dodání',
+              note: 'Okamžitě odešlete odkaz na médium nebo soubor',
+            },
+            alwaysUploadFile: {
+              name: 'Vždy nahrávat jako soubor',
+              note: 'Nahrajte média jako soubor, nikoli posílejte odkaz',
+            },
+          },
+          audio: {
+            name: 'Nastavení zvuku',
+            enabled: {
+              name: 'Všeobecné',
+              note: 'Povolit tento typ média',
+            },
+            showBtn: {
+              name: 'Knoflík',
+              note: 'Zobrazit tlačítko na liště chatu',
+            },
+            showStar: {
+              name: 'Hvězda',
+              note: 'Zobrazuje oblíbenou hvězdu v médiích',
+            },
+          },
+          file: {
+            name: 'Nastavení souboru',
+            enabled: {
+              name: 'Všeobecné',
+              note: 'Povolit tento typ média',
+            },
+            showBtn: {
+              name: 'Knoflík',
+              note: 'Zobrazit tlačítko na liště chatu',
+            },
+            showStar: {
+              name: 'Hvězda',
+              note: 'Zobrazuje oblíbenou hvězdu v médiích',
+            },
+            alwaysSendInstantly: {
+              name: 'Okamžité dodání',
+              note: 'Okamžitě odešlete odkaz na médium nebo soubor',
+            },
+            alwaysUploadFile: {
+              name: 'Vždy nahrávat jako soubor',
+              note: 'Nahrajte média jako soubor, nikoli posílejte odkaz',
+            },
+          },
+          panel: 'Nastavení pluginu',
+        },
+      },
+      da: { // Danish
+        tabName: {
+          image: 'Billede',
+          video: 'Video',
+          audio: 'Lyd',
+          file: 'Fil',
+        },
+        create: 'skab',
+        category: {
+          list: 'Kategorier',
+          unsorted: 'Ikke sorteret',
+          create: 'Opret en kategori',
+          edit: 'Rediger kategori',
+          delete: 'Slet kategori',
+          deleteConfirm: 'Denne kategori indeholder underkategorier. De vil alle blive slettet. Er du sikker på, at du vil slette kategorier?',
+          download: 'Download medier',
+          placeholder: 'Kategorinavn',
+          move: 'Bevæge sig',
+          moveNext: 'Efter',
+          movePrevious: 'Før',
+          color: 'Farve',
+          copyColor: 'Kopier farve',
+          error: {
+            needName: 'Navnet kan ikke være tomt',
+            invalidNameLength: 'Navnet skal maksimalt indeholde 20 tegn',
+            wrongColor: 'Farven er ugyldig',
+            nameExists: 'dette navn findes allerede',
+            invalidCategory: 'Kategorien findes ikke',
+            download: 'Kunne ikke downloade medier',
+          },
+          success: {
+            create: 'Kategorien er oprettet!',
+            delete: 'Kategorien er blevet slettet!',
+            edit: 'Kategorien er blevet ændret!',
+            move: 'Kategorien er flyttet!',
+            download: 'Medierne er blevet uploadet!',
+          },
+          emptyHint: 'Højreklik for at oprette en kategori!',
+        },
+        media: {
+          emptyHint: {
+            image: 'Klik på stjernen i hjørnet af et billede for at placere det i dine favoritter',
+            video: 'Klik på stjernen i hjørnet af en video for at placere den i dine favoritter',
+            audio: 'Klik på stjernen i hjørnet af en lyd for at placere den i dine favoritter',
+            file: 'Klik på stjernen i hjørnet af en fil for at tilføje den til dine favoritter',
+          },
+          addTo: 'Tilføje',
+          moveTo: 'Bevæge sig',
+          removeFrom: 'Fjern fra kategori',
+          copySource: 'Kopier mediekilde',
+          upload: {
+            title: 'Upload',
+            normal: 'Normal',
+            spoiler: 'Spoiler',
+          },
+          success: {
+            move: {
+              gif: 'GIF\'en er blevet flyttet!',
+              image: 'Billedet er flyttet!',
+              video: 'Videoen er flyttet!',
+              audio: 'Lyden er flyttet!',
+              file: 'Filen er blevet flyttet!',
+            },
+            remove: {
+              gif: 'GIF\'en er blevet fjernet fra kategorierne!',
+              image: 'Billedet er fjernet fra kategorierne!',
+              video: 'Videoen er fjernet fra kategorierne!',
+              audio: 'Lyd er fjernet fra kategorier!',
+              file: 'Filen er blevet fjernet fra kategorierne!',
+            },
+            download: {
+              gif: 'GIF\'en er blevet uploadet!',
+              image: 'Billedet er uploadet!',
+              video: 'Videoen er blevet uploadet!',
+              audio: 'Lyden er downloadet!',
+              file: 'Filen er blevet downloadet!',
+            },
+          },
+          error: {
+            download: {
+              gif: 'Kunne ikke downloade GIF',
+              image: 'Billedet kunne ikke uploades',
+              video: 'Videoen kunne ikke downloades',
+              audio: 'Kunne ikke downloade lyd',
+              file: 'Filen kunne ikke downloades',
+            },
+          },
+          controls: {
+            show: 'Vis ordrer',
+            hide: 'Skjul ordrer',
+          },
+          placeholder: {
+            gif: 'GIF navn',
+            image: 'Billednavn',
+            video: 'Video navn',
+            audio: 'Audio navn',
+            file: 'Filnavn',
+          },
+        },
+        searchItem: {
+          gif: 'Søg efter GIF\'er eller kategorier',
+          image: 'Søger efter billeder eller kategorier',
+          video: 'Søg efter videoer eller kategorier',
+          audio: 'Søg efter lydbånd eller kategorier',
+          file: 'Søger efter filer eller kategorier',
+        },
+        import: {
+          panel: 'Medieimport',
+          label: {
+            types: 'Typer',
+            medias: 'Medier',
+            categories: 'Kategorier',
+          },
+          buttonImport: 'Importere',
+          success: 'Mediet er blevet importeret!',
+          error: 'Kunne ikke importere medier',
+        },
+        cache: {
+          panel: 'Lokal database',
+          total: 'I alt :',
+          size: 'Størrelse:',
+          clear: {
+            confirm: 'Vil du virkelig tømme databasen?',
+            button: 'Tom database',
+            success: 'Databasen er blevet tømt!',
+            error: 'Kunne ikke dumpe databasen',
+          },
+          cacheAll: {
+            button: 'Cache alle medier',
+            confirm: 'Vil du cache alle medier?',
+            noMedia: 'Der er ingen medier at cache',
+            success: 'Medierne er blevet cachelagret!',
+            error: 'Fejl under cachelagring af medier',
+          },
+          refreshButton: 'Opdater',
+        },
+        mediasCounter: 'Antal medier',
+        settings: {
+          hideUnsortedMedias: {
+            name: 'Skjul medier',
+            note: 'Skjul medier fra fanen, der ikke er kategoriseret',
+          },
+          hideThumbnail: {
+            name: 'Skjul thumbnails',
+            note: 'Viser kategorifarve i stedet for et tilfældigt miniaturebillede',
+          },
+          allowCaching: {
+            name: 'Tillad cachelagring af medieeksempel',
+            note: 'Bruger lokal offline cache til at cache medieforhåndsvisning',
+          },
+          mediaVolume: {
+            name: 'Medievolumen',
+            note: 'Medieafspilningslydstyrke i fanen',
+          },
+          maxMediasPerPage: {
+            name: 'Maksimalt antal medier pr. side',
+            note: 'Det maksimale antal medier, der vises pr. side på fanen',
+          },
+          position: {
+            name: 'Knap position',
+            btnsPositionKey: {
+              name: 'Relativ placering af knapper',
+              note: 'Ved siden af hvilken anden knap skal knapperne placeres',
+            },
+            btnsPosition: {
+              name: 'Knappens retning',
+              note: 'Retning af knapper på chat bar',
+            },
+          },
+          gif: {
+            name: 'GIF-indstillinger',
+            enabled: {
+              name: 'Generel',
+              note: 'Erstatter Discords GIF-fane',
+            },
+            alwaysSendInstantly: {
+              name: 'Omgående levering',
+              note: 'Send medielinket eller filen med det samme',
+            },
+            alwaysUploadFile: {
+              name: 'Upload altid som fil',
+              note: 'Upload medier som en fil i stedet for at sende et link',
+            },
+          },
+          image: {
+            name: 'Billedindstillinger',
+            enabled: {
+              name: 'Generel',
+              note: 'Aktiver denne medietype',
+            },
+            showBtn: {
+              name: 'Knap',
+              note: 'Vis knap på chat bar',
+            },
+            showStar: {
+              name: 'Stjerne',
+              note: 'Viser favoritstjerne på medier',
+            },
+            alwaysSendInstantly: {
+              name: 'Omgående levering',
+              note: 'Send medielinket eller filen med det samme',
+            },
+            alwaysUploadFile: {
+              name: 'Upload altid som fil',
+              note: 'Upload medier som en fil i stedet for at sende et link',
+            },
+          },
+          video: {
+            name: 'Videoindstillinger',
+            enabled: {
+              name: 'Generel',
+              note: 'Aktiver denne medietype',
+            },
+            showBtn: {
+              name: 'Knap',
+              note: 'Vis knap på chat bar',
+            },
+            showStar: {
+              name: 'Stjerne',
+              note: 'Viser favoritstjerne på medier',
+            },
+            alwaysSendInstantly: {
+              name: 'Omgående levering',
+              note: 'Send medielinket eller filen med det samme',
+            },
+            alwaysUploadFile: {
+              name: 'Upload altid som fil',
+              note: 'Upload medier som en fil i stedet for at sende et link',
+            },
+          },
+          audio: {
+            name: 'Lydindstillinger',
+            enabled: {
+              name: 'Generel',
+              note: 'Aktiver denne medietype',
+            },
+            showBtn: {
+              name: 'Knap',
+              note: 'Vis knap på chat bar',
+            },
+            showStar: {
+              name: 'Stjerne',
+              note: 'Viser favoritstjerne på medier',
+            },
+          },
+          file: {
+            name: 'Filindstillinger',
+            enabled: {
+              name: 'Generel',
+              note: 'Aktiver denne medietype',
+            },
+            showBtn: {
+              name: 'Knap',
+              note: 'Vis knap på chat bar',
+            },
+            showStar: {
+              name: 'Stjerne',
+              note: 'Viser favoritstjerne på medier',
+            },
+            alwaysSendInstantly: {
+              name: 'Omgående levering',
+              note: 'Send medielinket eller filen med det samme',
+            },
+            alwaysUploadFile: {
+              name: 'Upload altid som fil',
+              note: 'Upload medier som en fil i stedet for at sende et link',
+            },
+          },
+          panel: 'Indstillinger for plugin',
+        },
+      },
+      de: { // German
+        tabName: {
+          image: 'Bild',
+          video: 'Video',
+          audio: 'Audio',
+          file: 'Datei',
+        },
+        create: 'Erstellen',
+        category: {
+          list: 'Kategorien',
+          unsorted: 'Nicht sortiert',
+          create: 'Erstellen Sie eine Kategorie',
+          edit: 'Kategorie bearbeiten',
+          delete: 'Kategorie löschen',
+          deleteConfirm: 'Diese Kategorie enthält Unterkategorien. Sie werden alle gelöscht. Möchten Sie Kategorien wirklich löschen?',
+          download: 'Medien herunterladen',
+          placeholder: 'Kategoriename',
+          move: 'Bewegung',
+          moveNext: 'Nach dem',
+          movePrevious: 'Vor',
+          color: 'Farbe',
+          copyColor: 'Farbe kopieren',
+          error: {
+            needName: 'Name darf nicht leer sein',
+            invalidNameLength: 'Der Name darf maximal 20 Zeichen lang sein',
+            wrongColor: 'Farbe ist ungültig',
+            nameExists: 'Dieser Name existiert bereits',
+            invalidCategory: 'Die Kategorie existiert nicht',
+            download: 'Fehler beim Herunterladen der Medien',
+          },
+          success: {
+            create: 'Die Kategorie wurde erstellt!',
+            delete: 'Die Kategorie wurde gelöscht!',
+            edit: 'Die Kategorie wurde geändert!',
+            move: 'Die Kategorie wurde verschoben!',
+            download: 'Die Medien wurden hochgeladen!',
+          },
+          emptyHint: 'Rechtsklick um eine Kategorie zu erstellen!',
+        },
+        media: {
+          emptyHint: {
+            image: 'Klicken Sie auf den Stern in der Ecke eines Bildes, um es in Ihre Favoriten aufzunehmen',
+            video: 'Klicke auf den Stern in der Ecke eines Videos, um es zu deinen Favoriten hinzuzufügen',
+            audio: 'Klicken Sie auf den Stern in der Ecke eines Audios, um es in Ihre Favoriten aufzunehmen',
+            file: 'Klicken Sie auf den Stern in der Ecke einer Datei, um sie zu Ihren Favoriten hinzuzufügen',
+          },
+          addTo: 'Hinzufügen',
+          moveTo: 'Bewegung',
+          removeFrom: 'Aus Kategorie entfernen',
+          copySource: 'Medienquelle kopieren',
+          upload: {
+            title: 'Hochladen',
+            normal: 'Normal',
+            spoiler: 'Spoiler',
+          },
+          success: {
+            move: {
+              gif: 'Das GIF wurde verschoben!',
+              image: 'Das Bild wurde verschoben!',
+              video: 'Das Video wurde verschoben!',
+              audio: 'Der Ton wurde verschoben!',
+              file: 'Die Datei wurde verschoben!',
+            },
+            remove: {
+              gif: 'Das GIF wurde aus den Kategorien entfernt!',
+              image: 'Das Bild wurde aus den Kategorien entfernt!',
+              video: 'Das Video wurde aus den Kategorien entfernt!',
+              audio: 'Audio wurde aus den Kategorien entfernt!',
+              file: 'Die Datei wurde aus den Kategorien entfernt!',
+            },
+            download: {
+              gif: 'Das GIF wurde hochgeladen!',
+              image: 'Das Bild wurde hochgeladen!',
+              video: 'Das Video wurde hochgeladen!',
+              audio: 'Die Audiodatei wurde heruntergeladen!',
+              file: 'Die Datei wurde heruntergeladen!',
+            },
+          },
+          error: {
+            download: {
+              gif: 'GIF konnte nicht heruntergeladen werden',
+              image: 'Fehler beim Hochladen des Bildes',
+              video: 'Video konnte nicht heruntergeladen werden',
+              audio: 'Audio konnte nicht heruntergeladen werden',
+              file: 'Datei konnte nicht heruntergeladen werden',
+            },
+          },
+          controls: {
+            show: 'Bestellungen anzeigen',
+            hide: 'Bestellungen ausblenden',
+          },
+          placeholder: {
+            gif: 'GIF-Name',
+            image: 'Bildname',
+            video: 'Videoname',
+            audio: 'Audioname',
+            file: 'Dateiname',
+          },
+        },
+        searchItem: {
+          gif: 'Nach GIFs oder Kategorien suchen',
+          image: 'Nach Bildern oder Kategorien suchen',
+          video: 'Nach Videos oder Kategorien suchen',
+          audio: 'Nach Audios oder Kategorien suchen',
+          file: 'Suchen Sie nach Dateien oder Kategorien',
+        },
+        import: {
+          panel: 'Medienimport',
+          label: {
+            types: 'Typen',
+            medias: 'Medien',
+            categories: 'Kategorien',
+          },
+          buttonImport: 'Importieren',
+          success: 'Die Medien wurden importiert!',
+          error: 'Medien konnten nicht importiert werden',
+        },
+        cache: {
+          panel: 'Lokale Datenbank',
+          total: 'Gesamt:',
+          size: 'Größe :',
+          clear: {
+            confirm: 'Möchten Sie die Datenbank wirklich leeren?',
+            button: 'Leere Datenbank',
+            success: 'Die Datenbank wurde geleert!',
+            error: 'Die Datenbank konnte nicht gesichert werden',
+          },
+          cacheAll: {
+            button: 'Alle Medien zwischenspeichern',
+            confirm: 'Möchten Sie alle Medien zwischenspeichern?',
+            noMedia: 'Es sind keine Medien zum Zwischenspeichern vorhanden',
+            success: 'Die Medien wurden zwischengespeichert!',
+            error: 'Fehler beim Zwischenspeichern von Medien',
+          },
+          refreshButton: 'Aktualisierung',
+        },
+        mediasCounter: 'Anzahl der Medien',
+        settings: {
+          hideUnsortedMedias: {
+            name: 'Medien ausblenden',
+            note: 'Blenden Sie Medien aus der Registerkarte aus, die nicht kategorisiert sind',
+          },
+          hideThumbnail: {
+            name: 'Miniaturansichten ausblenden',
+            note: 'Zeigt die Kategoriefarbe anstelle einer zufälligen Miniaturansicht an',
+          },
+          allowCaching: {
+            name: 'Erlauben Sie das Zwischenspeichern der Medienvorschau',
+            note: 'Verwendet den lokalen Offline-Cache zum Zwischenspeichern der Medienvorschau',
+          },
+          mediaVolume: {
+            name: 'Medienlautstärke',
+            note: 'Lautstärke der Medienwiedergabe im Tab',
+          },
+          maxMediasPerPage: {
+            name: 'Maximale Anzahl an Medien pro Seite',
+            note: 'Die maximale Anzahl an Medien, die pro Seite auf der Registerkarte angezeigt werden',
+          },
+          position: {
+            name: 'Knopfposition',
+            btnsPositionKey: {
+              name: 'Relative Position der Schaltflächen',
+              note: 'Neben welcher anderen Schaltfläche sollen die Schaltflächen platziert werden?',
+            },
+            btnsPosition: {
+              name: 'Tastenrichtung',
+              note: 'Richtung der Schaltflächen in der Chatleiste',
+            },
+          },
+          gif: {
+            name: 'GIF-Einstellungen',
+            enabled: {
+              name: 'Allgemein',
+              note: 'Ersetzt den GIF-Tab von Discord',
+            },
+            alwaysSendInstantly: {
+              name: 'Sofortige Lieferung',
+              note: 'Senden Sie sofort den Medienlink oder die Mediendatei',
+            },
+            alwaysUploadFile: {
+              name: 'Immer als Datei hochladen',
+              note: 'Laden Sie Medien als Datei hoch, anstatt einen Link zu senden',
+            },
+          },
+          image: {
+            name: 'Bildeinstellungen',
+            enabled: {
+              name: 'Allgemein',
+              note: 'Aktivieren Sie diesen Medientyp',
+            },
+            showBtn: {
+              name: 'Taste',
+              note: 'Schaltfläche in der Chatleiste anzeigen',
+            },
+            showStar: {
+              name: 'Stern',
+              note: 'Zeigt den Lieblingsstar in den Medien',
+            },
+            alwaysSendInstantly: {
+              name: 'Sofortige Lieferung',
+              note: 'Senden Sie sofort den Medienlink oder die Mediendatei',
+            },
+            alwaysUploadFile: {
+              name: 'Immer als Datei hochladen',
+              note: 'Laden Sie Medien als Datei hoch, anstatt einen Link zu senden',
+            },
+          },
+          video: {
+            name: 'Video-Einstellungen',
+            enabled: {
+              name: 'Allgemein',
+              note: 'Aktivieren Sie diesen Medientyp',
+            },
+            showBtn: {
+              name: 'Taste',
+              note: 'Schaltfläche in der Chatleiste anzeigen',
+            },
+            showStar: {
+              name: 'Stern',
+              note: 'Zeigt den Lieblingsstar in den Medien',
+            },
+            alwaysSendInstantly: {
+              name: 'Sofortige Lieferung',
+              note: 'Senden Sie sofort den Medienlink oder die Mediendatei',
+            },
+            alwaysUploadFile: {
+              name: 'Immer als Datei hochladen',
+              note: 'Laden Sie Medien als Datei hoch, anstatt einen Link zu senden',
+            },
+          },
+          audio: {
+            name: 'Audio Einstellungen',
+            enabled: {
+              name: 'Allgemein',
+              note: 'Aktivieren Sie diesen Medientyp',
+            },
+            showBtn: {
+              name: 'Taste',
+              note: 'Schaltfläche in der Chatleiste anzeigen',
+            },
+            showStar: {
+              name: 'Stern',
+              note: 'Zeigt den Lieblingsstar in den Medien',
+            },
+          },
+          file: {
+            name: 'Dateieinstellungen',
+            enabled: {
+              name: 'Allgemein',
+              note: 'Aktivieren Sie diesen Medientyp',
+            },
+            showBtn: {
+              name: 'Taste',
+              note: 'Schaltfläche in der Chatleiste anzeigen',
+            },
+            showStar: {
+              name: 'Stern',
+              note: 'Zeigt den Lieblingsstar in den Medien',
+            },
+            alwaysSendInstantly: {
+              name: 'Sofortige Lieferung',
+              note: 'Senden Sie sofort den Medienlink oder die Mediendatei',
+            },
+            alwaysUploadFile: {
+              name: 'Immer als Datei hochladen',
+              note: 'Laden Sie Medien als Datei hoch, anstatt einen Link zu senden',
+            },
+          },
+          panel: 'Plugin-Einstellungen',
+        },
+      },
+      el: { // Greek
+        tabName: {
+          image: 'Εικόνα',
+          video: 'βίντεο',
+          audio: 'Ήχος',
+          file: 'Αρχείο',
+        },
+        create: 'Δημιουργώ',
+        category: {
+          list: 'Κατηγορίες',
+          unsorted: 'Χωρίς ταξινόμηση',
+          create: 'Δημιουργήστε μια κατηγορία',
+          edit: 'Επεξεργασία κατηγορίας',
+          delete: 'Διαγραφή κατηγορίας',
+          deleteConfirm: 'Αυτή η κατηγορία περιέχει υποκατηγορίες. Θα διαγραφούν όλα. Είστε βέβαιοι ότι θέλετε να διαγράψετε κατηγορίες;',
+          download: 'Λήψη μέσων',
+          placeholder: 'Ονομα κατηγορίας',
+          move: 'Κίνηση',
+          moveNext: 'Μετά',
+          movePrevious: 'Πριν',
+          color: 'Χρώμα',
+          copyColor: 'Αντιγραφή χρώματος',
+          error: {
+            needName: 'Το όνομα δεν μπορεί να είναι κενό',
+            invalidNameLength: 'Το όνομα πρέπει να περιέχει έως και 20 χαρακτήρες',
+            wrongColor: 'Το χρώμα δεν είναι έγκυρο',
+            nameExists: 'αυτό το όνομα υπάρχει ήδη',
+            invalidCategory: 'Η κατηγορία δεν υπάρχει',
+            download: 'Αποτυχία λήψης μέσων',
+          },
+          success: {
+            create: 'Η κατηγορία έχει δημιουργηθεί!',
+            delete: 'Η κατηγορία διαγράφηκε!',
+            edit: 'Η κατηγορία άλλαξε!',
+            move: 'Η κατηγορία έχει μετακινηθεί!',
+            download: 'Τα μέσα έχουν ανέβει!',
+          },
+          emptyHint: 'Κάντε δεξί κλικ για να δημιουργήσετε μια κατηγορία!',
+        },
+        media: {
+          emptyHint: {
+            image: 'Κάντε κλικ στο αστέρι στη γωνία μιας εικόνας για να την βάλετε στα αγαπημένα σας',
+            video: 'Κάντε κλικ στο αστέρι στη γωνία ενός βίντεο για να το βάλετε στα αγαπημένα σας',
+            audio: 'Κάντε κλικ στο αστέρι στη γωνία ενός ήχου για να το βάλετε στα αγαπημένα σας',
+            file: 'Κάντε κλικ στο αστέρι στη γωνία ενός αρχείου για να το προσθέσετε στα αγαπημένα σας',
+          },
+          addTo: 'Προσθήκη',
+          moveTo: 'Κίνηση',
+          removeFrom: 'Κατάργηση από την κατηγορία',
+          copySource: 'Αντιγραφή πηγής πολυμέσων',
+          upload: {
+            title: 'Μεταφόρτωση',
+            normal: 'Κανονικός',
+            spoiler: 'Φθείρων',
+          },
+          success: {
+            move: {
+              gif: 'Το GIF έχει μετακινηθεί!',
+              image: 'Η εικόνα μετακινήθηκε!',
+              video: 'Το βίντεο μετακινήθηκε!',
+              audio: 'Ο ήχος μετακινήθηκε!',
+              file: 'Το αρχείο έχει μετακινηθεί!',
+            },
+            remove: {
+              gif: 'Το GIF έχει αφαιρεθεί από τις κατηγορίες!',
+              image: 'Η εικόνα έχει αφαιρεθεί από τις κατηγορίες!',
+              video: 'Το βίντεο καταργήθηκε από τις κατηγορίες!',
+              audio: 'Ο ήχος καταργήθηκε από κατηγορίες!',
+              file: 'Το αρχείο έχει αφαιρεθεί από τις κατηγορίες!',
+            },
+            download: {
+              gif: 'Το GIF έχει ανέβει!',
+              image: 'Η εικόνα ανέβηκε!',
+              video: 'Το βίντεο ανέβηκε!',
+              audio: 'Ο ήχος έχει γίνει λήψη!',
+              file: 'Το αρχείο έχει γίνει λήψη!',
+            },
+          },
+          error: {
+            download: {
+              gif: 'Αποτυχία λήψης GIF',
+              image: 'Αποτυχία μεταφόρτωσης εικόνας',
+              video: 'Αποτυχία λήψης βίντεο',
+              audio: 'Αποτυχία λήψης ήχου',
+              file: 'Η λήψη του αρχείου απέτυχε',
+            },
+          },
+          controls: {
+            show: 'Εμφάνιση παραγγελιών',
+            hide: 'Απόκρυψη παραγγελιών',
+          },
+          placeholder: {
+            gif: 'Όνομα GIF',
+            image: 'Όνομα εικόνας',
+            video: 'Όνομα βίντεο',
+            audio: 'Όνομα ήχου',
+            file: 'Ονομα αρχείου',
+          },
+        },
+        searchItem: {
+          gif: 'Αναζήτηση για GIF ή κατηγορίες',
+          image: 'Αναζήτηση εικόνων ή κατηγοριών',
+          video: 'Αναζήτηση βίντεο ή κατηγοριών',
+          audio: 'Αναζήτηση ήχων ή κατηγοριών',
+          file: 'Αναζήτηση αρχείων ή κατηγοριών',
+        },
+        import: {
+          panel: 'Εισαγωγή μέσων',
+          label: {
+            types: 'Τύποι',
+            medias: 'Μεσο ΜΑΖΙΚΗΣ ΕΝΗΜΕΡΩΣΗΣ',
+            categories: 'Κατηγορίες',
+          },
+          buttonImport: 'Εισαγωγή',
+          success: 'Τα μέσα έχουν εισαχθεί!',
+          error: 'Αποτυχία εισαγωγής πολυμέσων',
+        },
+        cache: {
+          panel: 'Τοπική βάση δεδομένων',
+          total: 'Σύνολο :',
+          size: 'Μέγεθος :',
+          clear: {
+            confirm: 'Θέλετε πραγματικά να αδειάσετε τη βάση δεδομένων;',
+            button: 'Κενή βάση δεδομένων',
+            success: 'Η βάση δεδομένων έχει αδειάσει!',
+            error: 'Απέτυχε η απόρριψη της βάσης δεδομένων',
+          },
+          cacheAll: {
+            button: 'Αποθηκεύστε προσωρινά όλα τα μέσα',
+            confirm: 'Θέλετε να αποθηκεύσετε όλα τα μέσα στην προσωρινή μνήμη;',
+            noMedia: 'Δεν υπάρχουν μέσα για αποθήκευση στην κρυφή μνήμη',
+            success: 'Τα μέσα έχουν αποθηκευτεί προσωρινά!',
+            error: 'Αποτυχία κατά την προσωρινή αποθήκευση πολυμέσων',
+          },
+          refreshButton: 'Φρεσκάρω',
+        },
+        mediasCounter: 'Αριθμός μέσων',
+        settings: {
+          hideUnsortedMedias: {
+            name: 'Απόκρυψη πολυμέσων',
+            note: 'Απόκρυψη πολυμέσων από την καρτέλα που δεν είναι κατηγοριοποιημένα',
+          },
+          hideThumbnail: {
+            name: 'Απόκρυψη μικρογραφιών',
+            note: 'Εμφανίζει το χρώμα της κατηγορίας αντί για μια τυχαία μικρογραφία',
+          },
+          allowCaching: {
+            name: 'Να επιτρέπεται η προσωρινή αποθήκευση προεπισκόπησης πολυμέσων',
+            note: 'Χρησιμοποιεί τοπική προσωρινή μνήμη εκτός σύνδεσης για την προσωρινή αποθήκευση της προεπισκόπησης πολυμέσων',
+          },
+          mediaVolume: {
+            name: 'Ένταση ήχου πολυμέσων',
+            note: 'Ένταση ήχου αναπαραγωγής πολυμέσων στην καρτέλα',
+          },
+          maxMediasPerPage: {
+            name: 'Μέγιστος αριθμός μέσων ανά σελίδα',
+            note: 'Ο μέγιστος αριθμός πολυμέσων που εμφανίζονται ανά σελίδα στην καρτέλα',
+          },
+          position: {
+            name: 'Θέση κουμπιού',
+            btnsPositionKey: {
+              name: 'Σχετική θέση κουμπιών',
+              note: 'Δίπλα σε ποιο άλλο κουμπί πρέπει να τοποθετηθούν τα κουμπιά',
+            },
+            btnsPosition: {
+              name: 'Κατεύθυνση κουμπιού',
+              note: 'Κατεύθυνση των κουμπιών στη γραμμή συνομιλίας',
+            },
+          },
+          gif: {
+            name: 'Ρυθμίσεις GIF',
+            enabled: {
+              name: 'Γενικός',
+              note: 'Αντικαθιστά την καρτέλα GIF του Discord',
+            },
+            alwaysSendInstantly: {
+              name: 'Αμεση ΠΑΡΑΔΟΣΗ',
+              note: 'Στείλτε αμέσως τον σύνδεσμο ή το αρχείο πολυμέσων',
+            },
+            alwaysUploadFile: {
+              name: 'Πάντα ανέβασμα ως αρχείο',
+              note: 'Ανεβάστε μέσα ως αρχείο αντί να στείλετε έναν σύνδεσμο',
+            },
+          },
+          image: {
+            name: 'Ρυθμίσεις εικόνας',
+            enabled: {
+              name: 'Γενικός',
+              note: 'Ενεργοποιήστε αυτόν τον τύπο πολυμέσων',
+            },
+            showBtn: {
+              name: 'Κουμπί',
+              note: 'Εμφάνιση κουμπιού στη γραμμή συνομιλίας',
+            },
+            showStar: {
+              name: 'Αστέρι',
+              note: 'Εμφανίζει το αγαπημένο αστέρι στα μέσα',
+            },
+            alwaysSendInstantly: {
+              name: 'Αμεση ΠΑΡΑΔΟΣΗ',
+              note: 'Στείλτε αμέσως τον σύνδεσμο ή το αρχείο πολυμέσων',
+            },
+            alwaysUploadFile: {
+              name: 'Πάντα ανέβασμα ως αρχείο',
+              note: 'Ανεβάστε μέσα ως αρχείο αντί να στείλετε έναν σύνδεσμο',
+            },
+          },
+          video: {
+            name: 'Ρυθμίσεις βίντεο',
+            enabled: {
+              name: 'Γενικός',
+              note: 'Ενεργοποιήστε αυτόν τον τύπο πολυμέσων',
+            },
+            showBtn: {
+              name: 'Κουμπί',
+              note: 'Εμφάνιση κουμπιού στη γραμμή συνομιλίας',
+            },
+            showStar: {
+              name: 'Αστέρι',
+              note: 'Εμφανίζει το αγαπημένο αστέρι στα μέσα',
+            },
+            alwaysSendInstantly: {
+              name: 'Αμεση ΠΑΡΑΔΟΣΗ',
+              note: 'Στείλτε αμέσως τον σύνδεσμο ή το αρχείο πολυμέσων',
+            },
+            alwaysUploadFile: {
+              name: 'Πάντα ανέβασμα ως αρχείο',
+              note: 'Ανεβάστε μέσα ως αρχείο αντί να στείλετε έναν σύνδεσμο',
+            },
+          },
+          audio: {
+            name: 'Ρυθμίσεις ήχου',
+            enabled: {
+              name: 'Γενικός',
+              note: 'Ενεργοποιήστε αυτόν τον τύπο πολυμέσων',
+            },
+            showBtn: {
+              name: 'Κουμπί',
+              note: 'Εμφάνιση κουμπιού στη γραμμή συνομιλίας',
+            },
+            showStar: {
+              name: 'Αστέρι',
+              note: 'Εμφανίζει το αγαπημένο αστέρι στα μέσα',
+            },
+          },
+          file: {
+            name: 'Ρυθμίσεις αρχείου',
+            enabled: {
+              name: 'Γενικός',
+              note: 'Ενεργοποιήστε αυτόν τον τύπο πολυμέσων',
+            },
+            showBtn: {
+              name: 'Κουμπί',
+              note: 'Εμφάνιση κουμπιού στη γραμμή συνομιλίας',
+            },
+            showStar: {
+              name: 'Αστέρι',
+              note: 'Εμφανίζει το αγαπημένο αστέρι στα μέσα',
+            },
+            alwaysSendInstantly: {
+              name: 'Αμεση ΠΑΡΑΔΟΣΗ',
+              note: 'Στείλτε αμέσως τον σύνδεσμο ή το αρχείο πολυμέσων',
+            },
+            alwaysUploadFile: {
+              name: 'Πάντα ανέβασμα ως αρχείο',
+              note: 'Ανεβάστε μέσα ως αρχείο αντί να στείλετε έναν σύνδεσμο',
+            },
+          },
+          panel: 'Ρυθμίσεις Plugin',
+        },
+      },
+      en: { // English
+        tabName: {
+          image: 'Image',
+          video: 'Video',
+          audio: 'Audio',
+          file: 'File',
+        },
+        create: 'Create',
+        category: {
+          list: 'Categories',
+          unsorted: 'Unsorted',
+          create: 'Create Category',
+          edit: 'Edit Category',
+          delete: 'Delete Category',
+          deleteConfirm: 'This category contains sub-categories. They will all get deleted. Are you sure you want to delete the categories?',
+          download: 'Download Medias',
+          placeholder: 'Category Name',
+          move: 'Move',
+          moveNext: 'Next',
+          movePrevious: 'Previous',
+          color: 'Color',
+          copyColor: 'Copy Color',
+          setThumbnail: 'Set as thumbnail',
+          unsetThumbnail: 'Unset the thumbnail',
+          error: {
+            needName: 'Name cannot be empty',
+            invalidNameLength: 'Name must contain less than 20 characters',
+            wrongColor: 'Invalid color',
+            nameExists: 'Name already exists',
+            invalidCategory: 'Category not found',
+            download: 'Error while downloading medias!',
+          },
+          success: {
+            create: 'Category created!',
+            delete: 'Category deleted!',
+            edit: 'Category edited!',
+            move: 'Category moved!',
+            download: 'Medias downloaded!',
+            setThumbnail: 'Category thumbnail set!',
+            unsetThumbnail: 'Category thumbnail unset!',
+          },
+          emptyHint: 'Right-click to create a category!',
+        },
+        media: {
+          emptyHint: {
+            image: 'Click on the star in the corner of an image to bookmark it',
+            video: 'Click on the star in the corner of a video to bookmark it',
+            audio: 'Click on the star in the corner of an audio to bookmark it',
+            file: 'Click on the star in the corner of a file to bookmark it',
+          },
+          addTo: 'Add',
+          moveTo: 'Move',
+          removeFrom: 'Remove From Category',
+          copySource: 'Copy Source Link',
+          upload: {
+            title: 'Upload',
+            normal: 'Normal',
+            spoiler: 'Spoiler',
+          },
+          success: {
+            move: {
+              gif: 'GIF moved!',
+              image: 'Image moved!',
+              video: 'Video moved!',
+              audio: 'Audio moved!',
+              file: 'File moved!',
+            },
+            remove: {
+              gif: 'GIF removed from categories!',
+              image: 'Image removed from categories!',
+              video: 'Video removed from categories!',
+              audio: 'Audio removed from categories!',
+              file: 'File removed from categories!',
+            },
+            download: {
+              gif: 'GIF downloaded!',
+              image: 'Image downloaded!',
+              video: 'Video downloaded!',
+              audio: 'Audio downloaded!',
+              file: 'File downloaded!',
+            },
+          },
+          error: {
+            download: {
+              gif: 'Failed to download GIF',
+              image: 'Failed to download image',
+              video: 'Failed to download video',
+              audio: 'Failed to download audio',
+              file: 'Failed to download file',
+            },
+          },
+          controls: {
+            show: 'Show Controls',
+            hide: 'Hide Controls',
+          },
+          placeholder: {
+            gif: 'GIF Name',
+            image: 'Image Name',
+            video: 'Video Name',
+            audio: 'Audio Name',
+            file: 'File Name',
+          },
+        },
+        searchItem: {
+          gif: 'Search for GIFs or Categories',
+          image: 'Search for Images or Categories',
+          video: 'Search for Videos or Categories',
+          audio: 'Search for Audios or Categories',
+          file: 'Search for Files or Categories',
+        },
+        import: {
+          panel: 'Import medias',
+          label: {
+            types: 'Types',
+            medias: 'Medias',
+            categories: 'Categories',
+          },
+          buttonImport: 'Import',
+          success: 'Medias imported !',
+          error: 'Failed to import medias',
+        },
+        cache: {
+          panel: 'Local database',
+          total: 'Total:',
+          size: 'Size:',
+          clear: {
+            confirm: 'Are you sure you want to clear the database?',
+            button: 'Clear the database',
+            success: 'Database cleared!',
+            error: 'Failed to clear the database',
+          },
+          cacheAll: {
+            button: 'Cache all medias',
+            confirm: 'Do you want to cache all medias?',
+            noMedia: 'There is no media to cache',
+            success: 'Medias cached!',
+            error: 'Failed to cache medias',
+          },
+          refreshButton: 'Refresh',
+        },
+        mediasCounter: 'Medias count',
+        settings: {
+          allowCaching: {
+            name: 'Allow medias preview caching',
+            note: 'Uses local offline database to cache medias preview',
+          },
+          panel: 'Plugin settings',
+        },
+      },
+      es: { // Spanish
+        tabName: {
+          image: 'Imagen',
+          video: 'Video',
+          audio: 'Audio',
+          file: 'Archivo',
+        },
+        create: 'Crear',
+        category: {
+          list: 'Categorías',
+          unsorted: 'No ordenado',
+          create: 'Crea una categoria',
+          edit: 'Editar categoria',
+          delete: 'Eliminar categoría',
+          deleteConfirm: 'Esta categoría contiene subcategorías. Todos serán eliminados. ¿Seguro que quieres eliminar categorías?',
+          download: 'Descargar medios',
+          placeholder: 'Nombre de la categoría',
+          move: 'Moverse',
+          moveNext: 'Después',
+          movePrevious: 'Antes',
+          color: 'Color',
+          copyColor: 'Copiar color',
+          error: {
+            needName: 'El nombre no puede estar vacío',
+            invalidNameLength: 'El nombre debe contener un máximo de 20 caracteres.',
+            wrongColor: 'El color no es válido',
+            nameExists: 'Este nombre ya existe',
+            invalidCategory: 'La categoría no existe',
+            download: '¡Los medios han sido cargados!',
+          },
+          success: {
+            create: '¡La categoría ha sido creada!',
+            delete: '¡La categoría ha sido eliminada!',
+            edit: '¡La categoría ha sido cambiada!',
+            move: '¡La categoría ha sido movida!',
+            download: '¡Los medios han sido cargados!',
+          },
+          emptyHint: '¡Haz clic derecho para crear una categoría!',
+        },
+        media: {
+          emptyHint: {
+            image: 'Haga clic en la estrella en la esquina de una imagen para ponerla en sus favoritos',
+            video: 'Haga clic en la estrella en la esquina de un video para ponerlo en sus favoritos',
+            audio: 'Haga clic en la estrella en la esquina de un audio para ponerlo en sus favoritos',
+            file: 'Haga clic en la estrella en la esquina de un archivo para agregarlo a sus favoritos',
+          },
+          addTo: 'Agregar',
+          moveTo: 'Moverse',
+          removeFrom: 'Quitar de la categoría',
+          copySource: 'Copiar fuente multimedia',
+          upload: {
+            title: 'Subir',
+            normal: 'normal',
+            spoiler: 'Revelación',
+          },
+          success: {
+            move: {
+              gif: '¡El GIF ha sido movido!',
+              image: '¡La imagen se ha movido!',
+              video: '¡El video se ha movido!',
+              audio: '¡El audio se ha movido!',
+              file: '¡El archivo ha sido movido!',
+            },
+            remove: {
+              gif: '¡El GIF ha sido eliminado de las categorías!',
+              image: '¡La imagen ha sido eliminada de las categorías!',
+              video: '¡El video ha sido eliminado de las categorías!',
+              audio: '¡El audio ha sido eliminado de las categorías!',
+              file: '¡El archivo ha sido eliminado de las categorías!',
+            },
+            download: {
+              gif: '¡El GIF ha sido subido!',
+              image: '¡La imagen ha sido cargada!',
+              video: '¡El video ha sido subido!',
+              audio: '¡El audio se ha descargado!',
+              file: '¡El archivo ha sido descargado!',
+            },
+          },
+          error: {
+            download: {
+              gif: 'No se pudo descargar del GIF',
+              image: 'No se pudo cargar la imagen.',
+              video: 'No se pudo descargar el video',
+              audio: 'No se pudo descargar el audio',
+              file: 'No se pudo descargar el archivo',
+            },
+          },
+          controls: {
+            show: 'Mostrar pedidos',
+            hide: 'Ocultar pedidos',
+          },
+          placeholder: {
+            gif: 'Nombre del GIF',
+            image: 'Nombre de la imágen',
+            video: 'Nombre del video',
+            audio: 'Nombre de audio',
+            file: 'Nombre del archivo',
+          },
+        },
+        searchItem: {
+          gif: 'Buscar GIFs o categorías',
+          image: 'Buscar imágenes o categorías',
+          video: 'Buscar videos o categorías',
+          audio: 'Busque audios o categorías',
+          file: 'Buscar archivos o categorías',
+        },
+        import: {
+          panel: 'Importación de medios',
+          label: {
+            types: 'Tipos',
+            medias: 'Medios de comunicación',
+            categories: 'Categorías',
+          },
+          buttonImport: 'Importar',
+          success: '¡Los medios han sido importados!',
+          error: 'No se pudieron importar medios',
+        },
+        cache: {
+          panel: 'Base de datos local',
+          total: 'Total :',
+          size: 'Tamaño :',
+          clear: {
+            confirm: '¿Realmente quieres vaciar la base de datos?',
+            button: 'Base de datos vacía',
+            success: '¡La base de datos ha sido vaciada!',
+            error: 'No se pudo volcar la base de datos',
+          },
+          cacheAll: {
+            button: 'Caché de todos los medios',
+            confirm: '¿Quieres almacenar en caché todos los medios?',
+            noMedia: 'No hay medios para almacenar en caché',
+            success: '¡Los medios han sido almacenados en caché!',
+            error: 'Error al almacenar en caché los medios',
+          },
+          refreshButton: 'Actualizar',
+        },
+        mediasCounter: 'Número de medios',
+        settings: {
+          hideUnsortedMedias: {
+            name: 'Ocultar medios',
+            note: 'Ocultar medios de la pestaña que no están categorizados',
+          },
+          hideThumbnail: {
+            name: 'Ocultar miniaturas',
+            note: 'Muestra el color de la categoría en lugar de una miniatura aleatoria',
+          },
+          allowCaching: {
+            name: 'Permitir el almacenamiento en caché de vista previa de medios',
+            note: 'Utiliza caché local sin conexión para almacenar en caché la vista previa de medios',
+          },
+          mediaVolume: {
+            name: 'Volumen de medios',
+            note: 'Volumen de reproducción multimedia en la pestaña',
+          },
+          maxMediasPerPage: {
+            name: 'Número máximo de medios por página',
+            note: 'El número máximo de medios mostrados por página en la pestaña.',
+          },
+          position: {
+            name: 'Posición del botón',
+            btnsPositionKey: {
+              name: 'Posición relativa de los botones.',
+              note: '¿Junto a qué otro botón se deben colocar los botones?',
+            },
+            btnsPosition: {
+              name: 'Dirección del botón',
+              note: 'Dirección de los botones en la barra de chat.',
+            },
+          },
+          gif: {
+            name: 'Configuración de GIF',
+            enabled: {
+              name: 'General',
+              note: 'Reemplaza la pestaña GIF de Discord',
+            },
+            alwaysSendInstantly: {
+              name: 'Entrega inmediata',
+              note: 'Envíe inmediatamente el enlace o archivo multimedia',
+            },
+            alwaysUploadFile: {
+              name: 'Subir siempre como archivo',
+              note: 'Cargue medios como un archivo en lugar de enviar un enlace',
+            },
+          },
+          image: {
+            name: 'Configuración de imagen',
+            enabled: {
+              name: 'General',
+              note: 'Habilitar este tipo de medio',
+            },
+            showBtn: {
+              name: 'Botón',
+              note: 'Mostrar botón en la barra de chat',
+            },
+            showStar: {
+              name: 'Estrella',
+              note: 'Muestra estrella favorita en los medios.',
+            },
+            alwaysSendInstantly: {
+              name: 'Entrega inmediata',
+              note: 'Envíe inmediatamente el enlace o archivo multimedia',
+            },
+            alwaysUploadFile: {
+              name: 'Subir siempre como archivo',
+              note: 'Cargue medios como un archivo en lugar de enviar un enlace',
+            },
+          },
+          video: {
+            name: 'Ajustes de video',
+            enabled: {
+              name: 'General',
+              note: 'Habilitar este tipo de medio',
+            },
+            showBtn: {
+              name: 'Botón',
+              note: 'Mostrar botón en la barra de chat',
+            },
+            showStar: {
+              name: 'Estrella',
+              note: 'Muestra estrella favorita en los medios.',
+            },
+            alwaysSendInstantly: {
+              name: 'Entrega inmediata',
+              note: 'Envíe inmediatamente el enlace o archivo multimedia',
+            },
+            alwaysUploadFile: {
+              name: 'Subir siempre como archivo',
+              note: 'Cargue medios como un archivo en lugar de enviar un enlace',
+            },
+          },
+          audio: {
+            name: 'Configuraciones de audio',
+            enabled: {
+              name: 'General',
+              note: 'Habilitar este tipo de medio',
+            },
+            showBtn: {
+              name: 'Botón',
+              note: 'Mostrar botón en la barra de chat',
+            },
+            showStar: {
+              name: 'Estrella',
+              note: 'Muestra estrella favorita en los medios.',
+            },
+          },
+          file: {
+            name: 'Configuración de archivos',
+            enabled: {
+              name: 'General',
+              note: 'Habilitar este tipo de medio',
+            },
+            showBtn: {
+              name: 'Botón',
+              note: 'Mostrar botón en la barra de chat',
+            },
+            showStar: {
+              name: 'Estrella',
+              note: 'Muestra estrella favorita en los medios.',
+            },
+            alwaysSendInstantly: {
+              name: 'Entrega inmediata',
+              note: 'Envíe inmediatamente el enlace o archivo multimedia',
+            },
+            alwaysUploadFile: {
+              name: 'Subir siempre como archivo',
+              note: 'Cargue medios como un archivo en lugar de enviar un enlace',
+            },
+          },
+          panel: 'Configuración del complemento',
+        },
+      },
+      fi: { // Finnish
+        tabName: {
+          image: 'Kuva',
+          video: 'Video',
+          audio: 'Audio',
+          file: 'Tiedosto',
+        },
+        create: 'Luoda',
+        category: {
+          list: 'Luokat',
+          unsorted: 'Ei lajiteltu',
+          create: 'Luo luokka',
+          edit: 'Muokkaa kategoriaa',
+          delete: 'Poista luokka',
+          deleteConfirm: 'Tämä luokka sisältää alaluokkia. Ne kaikki poistetaan. Haluatko varmasti poistaa luokkia?',
+          download: 'Lataa media',
+          placeholder: 'Kategorian nimi',
+          move: 'Liikkua',
+          moveNext: 'Jälkeen',
+          movePrevious: 'Ennen',
+          color: 'Väri',
+          copyColor: 'Kopioi väri',
+          error: {
+            needName: 'Nimi ei voi olla tyhjä',
+            invalidNameLength: 'Nimi saa sisältää enintään 20 merkkiä',
+            wrongColor: 'Väri on virheellinen',
+            nameExists: 'tämä nimi on jo olemassa',
+            invalidCategory: 'Luokkaa ei ole olemassa',
+            download: 'Median lataaminen epäonnistui',
+          },
+          success: {
+            create: 'Luokka on luotu!',
+            delete: 'Luokka on poistettu!',
+            edit: 'Luokkaa on muutettu!',
+            move: 'Luokka on siirretty!',
+            download: 'Media on ladattu!',
+          },
+          emptyHint: 'Napsauta hiiren kakkospainikkeella luodaksesi luokan!',
+        },
+        media: {
+          emptyHint: {
+            image: 'Napsauta kuvan kulmassa olevaa tähteä lisätäksesi sen suosikkeihisi',
+            video: 'Napsauta videon kulmassa olevaa tähteä lisätäksesi sen suosikkeihisi',
+            audio: 'Napsauta äänen kulmassa olevaa tähteä lisätäksesi sen suosikkeihisi',
+            file: 'Napsauta tähteä tiedoston kulmassa lisätäksesi sen suosikkeihisi',
+          },
+          addTo: 'Lisätä',
+          moveTo: 'Liikkua',
+          removeFrom: 'Poista luokasta',
+          copySource: 'Kopioi medialähde',
+          upload: {
+            title: 'Lähetä',
+            normal: 'Normaali',
+            spoiler: 'Spoileri',
+          },
+          success: {
+            move: {
+              gif: 'GIF on siirretty!',
+              image: 'Kuva on siirretty!',
+              video: 'Video on siirretty!',
+              audio: 'Ääni on siirretty!',
+              file: 'Tiedosto on siirretty!',
+            },
+            remove: {
+              gif: 'GIF on poistettu luokista!',
+              image: 'Kuva on poistettu luokista!',
+              video: 'Video on poistettu luokista!',
+              audio: 'Ääni on poistettu luokista!',
+              file: 'Tiedosto on poistettu luokista!',
+            },
+            download: {
+              gif: 'GIF on ladattu!',
+              image: 'Kuva on ladattu!',
+              video: 'Video on ladattu!',
+              audio: 'Ääni on ladattu!',
+              file: 'Tiedosto on ladattu!',
+            },
+          },
+          error: {
+            download: {
+              gif: 'GIF:n lataaminen epäonnistui',
+              image: 'Kuvan lataaminen epäonnistui',
+              video: 'Videon lataaminen epäonnistui',
+              audio: 'Äänen lataaminen epäonnistui',
+              file: 'Tiedoston lataaminen epäonnistui',
+            },
+          },
+          controls: {
+            show: 'Näytä tilaukset',
+            hide: 'Piilota tilaukset',
+          },
+          placeholder: {
+            gif: 'GIF-nimi',
+            image: 'Kuvan nimi',
+            video: 'Videon nimi',
+            audio: 'Äänen nimi',
+            file: 'Tiedoston nimi',
+          },
+        },
+        searchItem: {
+          gif: 'Hae GIF-tiedostoja tai luokkia',
+          image: 'Hae kuvia tai luokkia',
+          video: 'Hae videoita tai luokkia',
+          audio: 'Hae ääniä tai luokkia',
+          file: 'Etsi tiedostoja tai luokkia',
+        },
+        import: {
+          panel: 'Median tuonti',
+          label: {
+            types: 'Tyypit',
+            medias: 'Media',
+            categories: 'Luokat',
+          },
+          buttonImport: 'Tuonti',
+          success: 'Media on tuotu!',
+          error: 'Median tuonti epäonnistui',
+        },
+        cache: {
+          panel: 'Paikallinen tietokanta',
+          total: 'Kaikki yhteensä :',
+          size: 'Koko :',
+          clear: {
+            confirm: 'Haluatko todella tyhjentää tietokannan?',
+            button: 'Tyhjä tietokanta',
+            success: 'Tietokanta on tyhjennetty!',
+            error: 'Tietokannan tyhjentäminen epäonnistui',
+          },
+          cacheAll: {
+            button: 'Tallenna kaikki mediat välimuistiin',
+            confirm: 'Haluatko tallentaa kaiken median välimuistiin?',
+            noMedia: 'Välimuistiin ei ole mediaa',
+            success: 'Media on tallennettu välimuistiin!',
+            error: 'Virhe tallennettaessa mediaa välimuistiin',
+          },
+          refreshButton: 'virkistää',
+        },
+        mediasCounter: 'Median määrä',
+        settings: {
+          hideUnsortedMedias: {
+            name: 'Piilota media',
+            note: 'Piilota mediat välilehdeltä, jota ei ole luokiteltu',
+          },
+          hideThumbnail: {
+            name: 'Piilota pikkukuvat',
+            note: 'Näyttää kategorian värin satunnaisen pikkukuvan sijaan',
+          },
+          allowCaching: {
+            name: 'Salli median esikatselun välimuisti',
+            note: 'Käyttää paikallista offline-välimuistia median esikatselun tallentamiseen välimuistiin',
+          },
+          mediaVolume: {
+            name: 'Median äänenvoimakkuus',
+            note: 'Median toiston äänenvoimakkuus välilehdellä',
+          },
+          maxMediasPerPage: {
+            name: 'Median enimmäismäärä sivulla',
+            note: 'Välilehden sivua kohden näytettävän median enimmäismäärä',
+          },
+          position: {
+            name: 'Painikkeen asento',
+            btnsPositionKey: {
+              name: 'Painikkeiden suhteellinen sijainti',
+              note: 'Minkä muun painikkeen viereen painikkeet tulee sijoittaa',
+            },
+            btnsPosition: {
+              name: 'Painikkeen suunta',
+              note: 'Painikkeiden suunta chat-palkissa',
+            },
+          },
+          gif: {
+            name: 'GIF-asetukset',
+            enabled: {
+              name: 'Kenraali',
+              note: 'Korvaa Discordin GIF-välilehden',
+            },
+            alwaysSendInstantly: {
+              name: 'Välitön toimitus',
+              note: 'Lähetä medialinkki tai tiedosto välittömästi',
+            },
+            alwaysUploadFile: {
+              name: 'Lataa aina tiedostona',
+              note: 'Lataa media tiedostona linkin lähettämisen sijaan',
+            },
+          },
+          image: {
+            name: 'Kuva-asetukset',
+            enabled: {
+              name: 'Kenraali',
+              note: 'Ota tämä mediatyyppi käyttöön',
+            },
+            showBtn: {
+              name: 'Painike',
+              note: 'Näytä painike chat-palkissa',
+            },
+            showStar: {
+              name: 'Tähti',
+              note: 'Näyttää suosikkitähden mediassa',
+            },
+            alwaysSendInstantly: {
+              name: 'Välitön toimitus',
+              note: 'Lähetä medialinkki tai tiedosto välittömästi',
+            },
+            alwaysUploadFile: {
+              name: 'Lataa aina tiedostona',
+              note: 'Lataa media tiedostona linkin lähettämisen sijaan',
+            },
+          },
+          video: {
+            name: 'Videoasetukset',
+            enabled: {
+              name: 'Kenraali',
+              note: 'Ota tämä mediatyyppi käyttöön',
+            },
+            showBtn: {
+              name: 'Painike',
+              note: 'Näytä painike chat-palkissa',
+            },
+            showStar: {
+              name: 'Tähti',
+              note: 'Näyttää suosikkitähden mediassa',
+            },
+            alwaysSendInstantly: {
+              name: 'Välitön toimitus',
+              note: 'Lähetä medialinkki tai tiedosto välittömästi',
+            },
+            alwaysUploadFile: {
+              name: 'Lataa aina tiedostona',
+              note: 'Lataa media tiedostona linkin lähettämisen sijaan',
+            },
+          },
+          audio: {
+            name: 'Ääniasetukset',
+            enabled: {
+              name: 'Kenraali',
+              note: 'Ota tämä mediatyyppi käyttöön',
+            },
+            showBtn: {
+              name: 'Painike',
+              note: 'Näytä painike chat-palkissa',
+            },
+            showStar: {
+              name: 'Tähti',
+              note: 'Näyttää suosikkitähden mediassa',
+            },
+          },
+          file: {
+            name: 'Tiedostoasetukset',
+            enabled: {
+              name: 'Kenraali',
+              note: 'Ota tämä mediatyyppi käyttöön',
+            },
+            showBtn: {
+              name: 'Painike',
+              note: 'Näytä painike chat-palkissa',
+            },
+            showStar: {
+              name: 'Tähti',
+              note: 'Näyttää suosikkitähden mediassa',
+            },
+            alwaysSendInstantly: {
+              name: 'Välitön toimitus',
+              note: 'Lähetä medialinkki tai tiedosto välittömästi',
+            },
+            alwaysUploadFile: {
+              name: 'Lataa aina tiedostona',
+              note: 'Lataa media tiedostona linkin lähettämisen sijaan',
+            },
+          },
+          panel: 'Plugin-asetukset',
+        },
+      },
+      fr: { // French
+        tabName: {
+          image: 'Image',
+          video: 'Vidéo',
+          audio: 'Audio',
+          file: 'Fichier',
+        },
+        create: 'Créer',
+        category: {
+          list: 'Catégories',
+          unsorted: 'Non trié',
+          create: 'Créer une catégorie',
+          edit: 'Modifier la catégorie',
+          delete: 'Supprimer la catégorie',
+          deleteConfirm: 'Cette catégorie contient des sous-catégories. Elles vont toutes être supprimées. Voulez-vous vraiment supprimer les catégories ?',
+          download: 'Télécharger les médias',
+          placeholder: 'Nom de la catégorie',
+          move: 'Déplacer',
+          moveNext: 'Après',
+          movePrevious: 'Avant',
+          color: 'Couleur',
+          copyColor: 'Copier la couleur',
+          setThumbnail: 'Définir comme miniature',
+          unsetThumbnail: 'Retirer la miniature',
+          error: {
+            needName: 'Le nom ne peut être vide',
+            invalidNameLength: 'Le nom doit contenir au maximum 20 caractères',
+            wrongColor: 'La couleur est invalide',
+            nameExists: 'Ce nom existe déjà',
+            invalidCategory: 'La catégorie n\'existe pas',
+            download: 'Échec lors du téléchargement des médias',
+          },
+          success: {
+            create: 'La catégorie a été créée !',
+            delete: 'La catégorie a été supprimée !',
+            edit: 'La catégorie a été modifiée !',
+            move: 'La catégorie a été déplacée !',
+            download: 'Les médias ont été téléchargés !',
+            setThumbnail: 'Miniature définie pour la catégorie !',
+            unsetThumbnail: 'Miniature retirée pour la catégorie !',
+          },
+          emptyHint: 'Fais un clique-droit pour créer une catégorie !',
+        },
+        media: {
+          emptyHint: {
+            image: 'Clique sur l\'étoile dans le coin d\'une image pour la mettre dans tes favoris',
+            video: 'Clique sur l\'étoile dans le coin d\'une vidéo pour la mettre dans tes favoris',
+            audio: 'Clique sur l\'étoile dans le coin d\'un audio pour le mettre dans tes favoris',
+            file: 'Clique sur l\'étoile dans le coin d\'un fichier pour le mettre dans tes favoris',
+          },
+          addTo: 'Ajouter',
+          moveTo: 'Déplacer',
+          removeFrom: 'Retirer de la catégorie',
+          copySource: 'Copier la source du média',
+          upload: {
+            title: 'Uploader',
+            normal: 'Normal',
+            spoiler: 'Spoiler',
+          },
+          success: {
+            move: {
+              gif: 'Le GIF a été déplacé !',
+              image: 'L\'image a été déplacée !',
+              video: 'La vidéo a été déplacée !',
+              audio: 'L\'audio a été déplacé !',
+              file: 'Le fichier a été déplacé !',
+            },
+            remove: {
+              gif: 'Le GIF a été enlevé des catégories !',
+              image: 'L\'image a été enlevée des catégories !',
+              video: 'La vidéo a été enlevée des catégories !',
+              audio: 'L\'audio a été enlevé des catégories !',
+              file: 'Le fichier a été enlevé des catégories !',
+            },
+            download: {
+              gif: 'Le GIF a été téléchargé !',
+              image: 'L\'image a été téléchargée !',
+              video: 'La vidéo a été téléchargée !',
+              audio: 'L\'audio a été téléchargé !',
+              file: 'Le fichier a été téléchargé !',
+            },
+          },
+          error: {
+            download: {
+              gif: 'Échec lors du téléchargement du GIF',
+              image: 'Échec lors du téléchargement de l\'image',
+              video: 'Échec lors du téléchargement de la vidéo',
+              audio: 'Échec lors du téléchargement de l\'audio',
+              file: 'Échec lors du téléchargement du fichier',
+            },
+          },
+          controls: {
+            show: 'Afficher les commandes',
+            hide: 'Cacher les commandes',
+          },
+          placeholder: {
+            gif: 'Nom du GIF',
+            image: 'Nom de l\'image',
+            video: 'Nom de la vidéo',
+            audio: 'Nom de l\'audio',
+            file: 'Nom du fichier',
+          },
+        },
+        searchItem: {
+          gif: 'Rechercher des GIFs ou des catégories',
+          image: 'Rechercher des images ou des catégories',
+          video: 'Rechercher des vidéos ou des catégories',
+          audio: 'Rechercher des audios ou des catégories',
+          file: 'Rechercher des fichiers ou des catégories',
+        },
+        import: {
+          panel: 'Importation de médias',
+          label: {
+            types: 'Types',
+            medias: 'Médias',
+            categories: 'Catégories',
+          },
+          buttonImport: 'Importer',
+          success: 'Les médias ont été importés !',
+          error: 'Échec lors de l\'importation des médias',
+        },
+        cache: {
+          panel: 'Base de données locale',
+          total: 'Total :',
+          size: 'Taille :',
+          clear: {
+            confirm: 'Voulez-vous vraiment vider la base de donnée ?',
+            button: 'Vider la base de données',
+            success: 'La base de donnée a été vidée !',
+            error: 'Échec lors du vidage de la base de donnée',
+          },
+          cacheAll: {
+            button: 'Mettre en cache tous les médias',
+            confirm: 'Voulez-vous mettre en cache tous les médias ?',
+            noMedia: 'Il n\'y a aucun média à mettre en cache',
+            success: 'Les médias on été mis en cache !',
+            error: 'Échec lors de la mise en cache des médias',
+          },
+          refreshButton: 'Actualiser',
+        },
+        mediasCounter: 'Nombre de médias',
+        settings: {
+          hideUnsortedMedias: {
+            name: 'Cacher les médias',
+            note: 'Cache les médias de l\'onglet qui sont sans catégorie',
+          },
+          hideThumbnail: {
+            name: 'Cacher les miniatures',
+            note: 'Affiche la couleur de la catégorie à la place d\'une miniature aléatoire',
+          },
+          allowCaching: {
+            name: 'Autoriser la mise en cache de l\'aperçu des médias',
+            note: 'Utilise le cache hors-ligne local pour mettre en cache l\'aperçu des médias',
+          },
+          mediaVolume: {
+            name: 'Volume des médias',
+            note: 'Volume de lecture des médias dans l\'onglet',
+          },
+          maxMediasPerPage: {
+            name: 'Nombre de médias maximum par page',
+            note: 'Le nombre maximum de médias affichés par page dans l\'onglet',
+          },
+          position: {
+            name: 'Position des boutons',
+            btnsPositionKey: {
+              name: 'Position relative des boutons',
+              note: 'À côté de quel autre bouton les boutons doivent être placés',
+            },
+            btnsPosition: {
+              name: 'Direction des boutons',
+              note: 'Direction des boutons sur la barre de discussion',
+            },
+          },
+          gif: {
+            name: 'Paramètres des GIFs',
+            enabled: {
+              name: 'Général',
+              note: 'Remplace l\'onglet GIF de Discord',
+            },
+            alwaysSendInstantly: {
+              name: 'Envoie immédiat',
+              note: 'Envoie immédiatement le lien ou fichier des médias',
+            },
+            alwaysUploadFile: {
+              name: 'Toujours upload comme fichier',
+              note: 'Upload les médias comme fichier plutôt qu\'envoyer un lien',
+            },
+          },
+          image: {
+            name: 'Paramètres des images',
+            enabled: {
+              name: 'Général',
+              note: 'Active ce type de média',
+            },
+            showBtn: {
+              name: 'Bouton',
+              note: 'Affiche le bouton sur la barre de discussion',
+            },
+            showStar: {
+              name: 'Étoile',
+              note: 'Affiche l\'étoile de favoris sur les médias',
+            },
+            alwaysSendInstantly: {
+              name: 'Envoie immédiat',
+              note: 'Envoie immédiatement le lien ou fichier des médias',
+            },
+            alwaysUploadFile: {
+              name: 'Toujours upload comme fichier',
+              note: 'Upload les médias comme fichier plutôt qu\'envoyer un lien',
+            },
+          },
+          video: {
+            name: 'Paramètres des vidéos',
+            enabled: {
+              name: 'Général',
+              note: 'Active ce type de média',
+            },
+            showBtn: {
+              name: 'Bouton',
+              note: 'Affiche le bouton sur la barre de discussion',
+            },
+            showStar: {
+              name: 'Étoile',
+              note: 'Affiche l\'étoile de favoris sur les médias',
+            },
+            alwaysSendInstantly: {
+              name: 'Envoie immédiat',
+              note: 'Envoie immédiatement le lien ou fichier des médias',
+            },
+            alwaysUploadFile: {
+              name: 'Toujours upload comme fichier',
+              note: 'Upload les médias comme fichier plutôt qu\'envoyer un lien',
+            },
+          },
+          audio: {
+            name: 'Paramètres des audios',
+            enabled: {
+              name: 'Général',
+              note: 'Active ce type de média',
+            },
+            showBtn: {
+              name: 'Bouton',
+              note: 'Affiche le bouton sur la barre de discussion',
+            },
+            showStar: {
+              name: 'Étoile',
+              note: 'Affiche l\'étoile de favoris sur les médias',
+            },
+          },
+          file: {
+            name: 'Paramètres des fichiers',
+            enabled: {
+              name: 'Général',
+              note: 'Active ce type de média',
+            },
+            showBtn: {
+              name: 'Bouton',
+              note: 'Affiche le bouton sur la barre de discussion',
+            },
+            showStar: {
+              name: 'Étoile',
+              note: 'Affiche l\'étoile de favoris sur les médias',
+            },
+            alwaysSendInstantly: {
+              name: 'Envoie immédiat',
+              note: 'Envoie immédiatement le lien ou fichier des médias',
+            },
+            alwaysUploadFile: {
+              name: 'Toujours upload comme fichier',
+              note: 'Upload les médias comme fichier plutôt qu\'envoyer un lien',
+            },
+          },
+          panel: 'Paramètres du plugin',
+        },
+      },
+      hi: { // Hindi
+        tabName: {
+          image: 'चित्र',
+          video: 'वीडियो',
+          audio: 'ऑडियो',
+          file: 'फ़ाइल',
+        },
+        create: 'बनाएं',
+        category: {
+          list: 'श्रेणियाँ',
+          unsorted: 'अवर्गीकृत',
+          create: 'एक श्रेणी बनाएं',
+          edit: 'श्रेणी संपादित करें',
+          delete: 'श्रेणी हटाएँ',
+          deleteConfirm: 'इस श्रेणी में उपश्रेणियाँ शामिल हैं। वे सभी हटा दिए जाएंगे. क्या आप वाकई श्रेणियां हटाना चाहते हैं?',
+          download: 'मीडिया डाउनलोड करें',
+          placeholder: 'श्रेणी नाम',
+          move: 'कदम',
+          moveNext: 'बाद',
+          movePrevious: 'पहले',
+          color: 'रंग',
+          copyColor: 'रंग कॉपी करें',
+          setThumbnail: 'थंबनेल के रूप में सेट करें',
+          unsetThumbnail: 'थंबनेल हटाएँ',
+          error: {
+            needName: 'नाम खाली नहीं हो सकता',
+            invalidNameLength: 'नाम में अधिकतम 20 अक्षर होने चाहिए',
+            wrongColor: 'रंग अमान्य है',
+            nameExists: 'यह नाम पहले से ही मौजूद है',
+            invalidCategory: 'श्रेणी मौजूद नहीं है',
+            download: 'मीडिया डाउनलोड करने में विफल',
+          },
+          success: {
+            create: 'श्रेणी बनाई गई है!',
+            delete: 'श्रेणी हटा दी गई है!',
+            edit: 'श्रेणी संशोधित कर दी गई है!',
+            move: 'श्रेणी स्थानांतरित कर दी गई है!',
+            download: 'मीडिया अपलोड कर दिया गया है!',
+            setThumbnail: 'श्रेणी के लिए थंबनेल सेट!',
+            unsetThumbnail: 'श्रेणी के लिए थंबनेल हटा दिया गया!',
+          },
+          emptyHint: 'श्रेणी बनाने के लिए राइट-क्लिक करें!',
+        },
+        media: {
+          emptyHint: {
+            image: 'किसी छवि को अपने पसंदीदा में जोड़ने के लिए उसके कोने में स्थित तारे पर क्लिक करें',
+            video: 'किसी वीडियो को अपने पसंदीदा में जोड़ने के लिए उसके कोने में स्थित तारे पर क्लिक करें',
+            audio: 'किसी ऑडियो को अपने पसंदीदा में जोड़ने के लिए उसके कोने में स्थित तारे पर क्लिक करें',
+            file: 'किसी फ़ाइल को अपने पसंदीदा में जोड़ने के लिए उसके कोने में स्थित तारे पर क्लिक करें',
+          },
+          addTo: 'जोड़ना',
+          moveTo: 'कदम',
+          removeFrom: 'श्रेणी से हटाएँ',
+          copySource: 'मीडिया स्रोत की प्रतिलिपि बनाएँ',
+          upload: {
+            title: 'डालना',
+            normal: 'सामान्य',
+            spoiler: 'विफल',
+          },
+          success: {
+            move: {
+              gif: 'GIF को स्थानांतरित कर दिया गया है!',
+              image: 'छवि को स्थानांतरित कर दिया गया है!',
+              video: 'वीडियो स्थानांतरित कर दिया गया है!',
+              audio: 'ऑडियो स्थानांतरित कर दिया गया है!',
+              file: 'फ़ाइल स्थानांतरित कर दी गई है!',
+            },
+            remove: {
+              gif: 'GIF को श्रेणियों से हटा दिया गया है!',
+              image: 'छवि को श्रेणियों से हटा दिया गया है!',
+              video: 'वीडियो को श्रेणियों से हटा दिया गया है!',
+              audio: 'ऑडियो को श्रेणियों से हटा दिया गया है!',
+              file: 'फ़ाइल को श्रेणियों से हटा दिया गया है!',
+            },
+            download: {
+              gif: 'GIF अपलोड कर दिया गया है!',
+              image: 'छवि अपलोड कर दी गई है!',
+              video: 'वीडियो अपलोड कर दिया गया है!',
+              audio: 'ऑडियो अपलोड कर दिया गया है!',
+              file: 'फ़ाइल डाउनलोड हो गई है!',
+            },
+          },
+          error: {
+            download: {
+              gif: 'GIF डाउनलोड करने में विफल',
+              image: 'छवि अपलोड करने में विफल',
+              video: 'वीडियो डाउनलोड करने में विफल',
+              audio: 'ऑडियो डाउनलोड करने में विफल',
+              file: 'फ़ाइल डाउनलोड करने में विफल',
+            },
+          },
+          controls: {
+            show: 'आदेश दिखाएँ',
+            hide: 'आदेश छिपाएँ',
+          },
+          placeholder: {
+            gif: 'GIF नाम',
+            image: 'छवि का नाम',
+            video: 'वीडियो का नाम',
+            audio: 'ऑडियो नाम',
+            file: 'फ़ाइल का नाम',
+          },
+        },
+        searchItem: {
+          gif: 'GIF या श्रेणियां खोजें',
+          image: 'छवियाँ या श्रेणियाँ खोजें',
+          video: 'वीडियो या श्रेणियां खोजें',
+          audio: 'ऑडियो या श्रेणियां खोजें',
+          file: 'फ़ाइलें या श्रेणियां खोजें',
+        },
+        import: {
+          panel: 'मीडिया आयात',
+          label: {
+            types: 'प्रकार',
+            medias: 'मिडिया',
+            categories: 'श्रेणियाँ',
+          },
+          buttonImport: 'आयात',
+          success: 'मीडिया आयातित किया गया है!',
+          error: 'मीडिया आयात करने में विफल',
+        },
+        cache: {
+          panel: 'स्थानीय डेटाबेस',
+          total: 'कुल :',
+          size: 'आकार :',
+          clear: {
+            confirm: 'क्या आप सचमुच डेटाबेस खाली करना चाहते हैं?',
+            button: 'खाली डेटाबेस',
+            success: 'डेटाबेस खाली कर दिया गया है!',
+            error: 'डेटाबेस डंप करने में विफल',
+          },
+          cacheAll: {
+            button: 'सभी मीडिया को कैश करें',
+            confirm: 'क्या आप सभी मीडिया को कैश करना चाहते हैं?',
+            noMedia: 'कैश करने के लिए कोई मीडिया नहीं है',
+            success: 'मीडिया को कैश कर दिया गया है!',
+            error: 'मीडिया को कैशिंग करते समय विफलता',
+          },
+          refreshButton: 'ताज़ा करना',
+        },
+        mediasCounter: 'मीडिया की संख्या',
+        settings: {
+          hideUnsortedMedias: {
+            name: 'मीडिया छिपाओ',
+            note: 'मीडिया को उस टैब से छिपाएँ जो अवर्गीकृत है',
+          },
+          hideThumbnail: {
+            name: 'थंबनेल छिपाएँ',
+            note: 'यादृच्छिक थंबनेल के बजाय श्रेणी का रंग दिखाता है',
+          },
+          allowCaching: {
+            name: 'मीडिया पूर्वावलोकन कैशिंग की अनुमति दें',
+            note: 'मीडिया पूर्वावलोकन को कैश करने के लिए स्थानीय ऑफ़लाइन कैश का उपयोग करता है',
+          },
+          mediaVolume: {
+            name: 'मीडिया वॉल्यूम',
+            note: 'टैब में मीडिया प्लेबैक वॉल्यूम',
+          },
+          maxMediasPerPage: {
+            name: 'प्रति पृष्ठ मीडिया की अधिकतम संख्या',
+            note: 'टैब में प्रति पृष्ठ प्रदर्शित मीडिया की अधिकतम संख्या',
+          },
+          position: {
+            name: 'बटन की स्थिति',
+            btnsPositionKey: {
+              name: 'बटनों की सापेक्ष स्थिति',
+              note: 'किस बटन के आगे दूसरे बटन लगाने चाहिए',
+            },
+            btnsPosition: {
+              name: 'बटन की दिशा',
+              note: 'चैट बार पर बटनों की दिशा',
+            },
+          },
+          gif: {
+            name: 'जीआईएफ सेटिंग्स',
+            enabled: {
+              name: 'सामान्य',
+              note: 'डिस्कॉर्ड के GIF टैब को प्रतिस्थापित करता है',
+            },
+            alwaysSendInstantly: {
+              name: 'तत्काल वितरण',
+              note: 'तुरंत मीडिया लिंक या फ़ाइल भेजें',
+            },
+            alwaysUploadFile: {
+              name: 'हमेशा फ़ाइल के रूप में अपलोड करें',
+              note: 'लिंक भेजने के बजाय मीडिया को फ़ाइल के रूप में अपलोड करें',
+            },
+          },
+          image: {
+            name: 'छवि सेटिंग्स',
+            enabled: {
+              name: 'सामान्य',
+              note: 'इस मीडिया प्रकार को सक्षम करें',
+            },
+            showBtn: {
+              name: 'बटन',
+              note: 'चैट बार पर शो बटन',
+            },
+            showStar: {
+              name: 'तारा',
+              note: 'मीडिया पर पसंदीदा स्टार दिखाता है',
+            },
+            alwaysSendInstantly: {
+              name: 'तत्काल वितरण',
+              note: 'तुरंत मीडिया लिंक या फ़ाइल भेजें',
+            },
+            alwaysUploadFile: {
+              name: 'हमेशा फ़ाइल के रूप में अपलोड करें',
+              note: 'लिंक भेजने के बजाय मीडिया को फ़ाइल के रूप में अपलोड करें',
+            },
+          },
+          video: {
+            name: 'वीडियो सेटिंग्स',
+            enabled: {
+              name: 'सामान्य',
+              note: 'इस मीडिया प्रकार को सक्षम करें',
+            },
+            showBtn: {
+              name: 'बटन',
+              note: 'चैट बार पर शो बटन',
+            },
+            showStar: {
+              name: 'तारा',
+              note: 'मीडिया पर पसंदीदा स्टार दिखाता है',
+            },
+            alwaysSendInstantly: {
+              name: 'तत्काल वितरण',
+              note: 'तुरंत मीडिया लिंक या फ़ाइल भेजें',
+            },
+            alwaysUploadFile: {
+              name: 'हमेशा फ़ाइल के रूप में अपलोड करें',
+              note: 'लिंक भेजने के बजाय मीडिया को फ़ाइल के रूप में अपलोड करें',
+            },
+          },
+          audio: {
+            name: 'श्रव्य विन्यास',
+            enabled: {
+              name: 'सामान्य',
+              note: 'इस मीडिया प्रकार को सक्षम करें',
+            },
+            showBtn: {
+              name: 'बटन',
+              note: 'चैट बार पर शो बटन',
+            },
+            showStar: {
+              name: 'तारा',
+              note: 'मीडिया पर पसंदीदा स्टार दिखाता है',
+            },
+          },
+          file: {
+            name: 'फ़ाइल सेटिंग्स',
+            enabled: {
+              name: 'सामान्य',
+              note: 'इस मीडिया प्रकार को सक्षम करें',
+            },
+            showBtn: {
+              name: 'बटन',
+              note: 'चैट बार पर शो बटन',
+            },
+            showStar: {
+              name: 'तारा',
+              note: 'मीडिया पर पसंदीदा स्टार दिखाता है',
+            },
+            alwaysSendInstantly: {
+              name: 'तत्काल वितरण',
+              note: 'तुरंत मीडिया लिंक या फ़ाइल भेजें',
+            },
+            alwaysUploadFile: {
+              name: 'हमेशा फ़ाइल के रूप में अपलोड करें',
+              note: 'लिंक भेजने के बजाय मीडिया को फ़ाइल के रूप में अपलोड करें',
+            },
+          },
+          panel: 'प्लगइन सेटिंग्स',
+        },
+      },
+      hr: { // Croatian
+        tabName: {
+          image: 'Slika',
+          video: 'Video',
+          audio: 'Audio',
+          file: 'Datoteka',
+        },
+        create: 'Stvoriti',
+        category: {
+          list: 'Kategorije',
+          unsorted: 'Nije sortirano',
+          create: 'Stvorite kategoriju',
+          edit: 'Uredi kategoriju',
+          delete: 'Izbriši kategoriju',
+          deleteConfirm: 'Ova kategorija sadrži potkategorije. Svi će biti izbrisani. Jeste li sigurni da želite izbrisati kategorije?',
+          download: 'Preuzmite medije',
+          placeholder: 'Ime kategorije',
+          move: 'Potez',
+          moveNext: 'Nakon',
+          movePrevious: 'Prije',
+          color: 'Boja',
+          copyColor: 'Kopiraj u boji',
+          error: {
+            needName: 'Ime ne može biti prazno',
+            invalidNameLength: 'Ime mora sadržavati najviše 20 znakova',
+            wrongColor: 'Boja je nevaljana',
+            nameExists: 'ovo ime već postoji',
+            invalidCategory: 'Kategorija ne postoji',
+            download: 'Preuzimanje medija nije uspjelo',
+          },
+          success: {
+            create: 'Kategorija je stvorena!',
+            delete: 'Kategorija je izbrisana!',
+            edit: 'Izmijenjena je kategorija!',
+            move: 'Kategorija je premještena!',
+            download: 'Mediji su učitani!',
+          },
+          emptyHint: 'Desni klik za stvaranje kategorije!',
+        },
+        media: {
+          emptyHint: {
+            image: 'Kliknite zvjezdicu u kutu slike da biste je stavili među svoje favorite',
+            video: 'Kliknite zvjezdicu u kutu videozapisa da biste je stavili među svoje favorite',
+            audio: 'Kliknite zvjezdicu u kutu zvuka da biste je stavili među svoje favorite',
+            file: 'Pritisnite zvjezdicu u kutu datoteke kako biste je dodali u svoje favorite',
+          },
+          addTo: 'Dodati',
+          moveTo: 'Potez',
+          removeFrom: 'Ukloni iz kategorije',
+          copySource: 'Kopiraj izvor medija',
+          upload: {
+            title: 'Učitaj',
+            normal: 'Normalan',
+            spoiler: 'Spoiler',
+          },
+          success: {
+            move: {
+              gif: 'GIF je premješten!',
+              image: 'Slika je premještena!',
+              video: 'Video je premješten!',
+              audio: 'Zvuk je premješten!',
+              file: 'Datoteka je premještena!',
+            },
+            remove: {
+              gif: 'GIF je uklonjen iz kategorija!',
+              image: 'Slika je uklonjena iz kategorija!',
+              video: 'Videozapis je uklonjen iz kategorija!',
+              audio: 'Audio je uklonjen iz kategorija!',
+              file: 'Datoteka je uklonjena iz kategorija!',
+            },
+            download: {
+              gif: 'GIF je učitan!',
+              image: 'Slika je učitana!',
+              video: 'Video je postavljen!',
+              audio: 'Zvuk je preuzet!',
+              file: 'Datoteka je preuzeta!',
+            },
+          },
+          error: {
+            download: {
+              gif: 'Preuzimanje GIF-a nije uspjelo',
+              image: 'Učitavanje slike nije uspjelo',
+              video: 'Preuzimanje videozapisa nije uspjelo',
+              audio: 'Preuzimanje zvuka nije uspjelo',
+              file: 'Preuzimanje datoteke nije uspjelo',
+            },
+          },
+          controls: {
+            show: 'Prikaži narudžbe',
+            hide: 'Sakrij narudžbe',
+          },
+          placeholder: {
+            gif: 'Naziv GIF-a',
+            image: 'Naziv slike',
+            video: 'Naziv videozapisa',
+            audio: 'Naziv zvuka',
+            file: 'Naziv datoteke',
+          },
+        },
+        searchItem: {
+          gif: 'Potražite GIF-ove ili kategorije',
+          image: 'Potražite slike ili kategorije',
+          video: 'Potražite videozapise ili kategorije',
+          audio: 'Potražite audio ili kategorije',
+          file: 'Traženje datoteka ili kategorija',
+        },
+        import: {
+          panel: 'Uvoz medija',
+          label: {
+            types: 'Vrste',
+            medias: 'Mediji',
+            categories: 'Kategorije',
+          },
+          buttonImport: 'Uvoz',
+          success: 'Mediji su uvezeni!',
+          error: 'Uvoz medija nije uspio',
+        },
+        cache: {
+          panel: 'Lokalna baza podataka',
+          total: 'Ukupno:',
+          size: 'Veličina:',
+          clear: {
+            confirm: 'Želite li stvarno isprazniti bazu podataka?',
+            button: 'Prazna baza podataka',
+            success: 'Baza podataka je ispražnjena!',
+            error: 'Ispis baze podataka nije uspio',
+          },
+          cacheAll: {
+            button: 'Predmemorija svih medija',
+            confirm: 'Želite li predmemorirati sve medije?',
+            noMedia: 'Nema medija za predmemoriju',
+            success: 'Mediji su spremljeni u predmemoriju!',
+            error: 'Pogreška tijekom predmemoriranja medija',
+          },
+          refreshButton: 'Osvježiti',
+        },
+        mediasCounter: 'Broj medija',
+        settings: {
+          hideUnsortedMedias: {
+            name: 'Sakrij medije',
+            note: 'Sakrij medije s kartice koji nisu kategorizirani',
+          },
+          hideThumbnail: {
+            name: 'Sakrij sličice',
+            note: 'Prikazuje boju kategorije umjesto nasumične minijature',
+          },
+          allowCaching: {
+            name: 'Dopusti predmemoriranje pregleda medija',
+            note: 'Koristi lokalnu izvanmrežnu predmemoriju za predmemoriju pregleda medija',
+          },
+          mediaVolume: {
+            name: 'Glasnoća medija',
+            note: 'Glasnoća reprodukcije medija u tab',
+          },
+          maxMediasPerPage: {
+            name: 'Maksimalan broj medija po stranici',
+            note: 'Maksimalan broj medija prikazanih po stranici na kartici',
+          },
+          position: {
+            name: 'Položaj gumba',
+            btnsPositionKey: {
+              name: 'Relativni položaj gumba',
+              note: 'Pored kojeg drugog gumba treba staviti gumbe',
+            },
+            btnsPosition: {
+              name: 'Smjer gumba',
+              note: 'Smjer gumba na traci za chat',
+            },
+          },
+          gif: {
+            name: 'GIF postavke',
+            enabled: {
+              name: 'Općenito',
+              note: 'Zamjenjuje Discordovu GIF karticu',
+            },
+            alwaysSendInstantly: {
+              name: 'Isporuka odmah',
+              note: 'Odmah pošaljite medijsku vezu ili datoteku',
+            },
+            alwaysUploadFile: {
+              name: 'Uvijek učitaj kao datoteku',
+              note: 'Prijenos medija kao datoteke umjesto slanja veze',
+            },
+          },
+          image: {
+            name: 'Postavke slike',
+            enabled: {
+              name: 'Općenito',
+              note: 'Omogućite ovu vrstu medija',
+            },
+            showBtn: {
+              name: 'Dugme',
+              note: 'Prikaži gumb na traci za chat',
+            },
+            showStar: {
+              name: 'Zvijezda',
+              note: 'Prikazuje omiljenu zvijezdu u medijima',
+            },
+            alwaysSendInstantly: {
+              name: 'Isporuka odmah',
+              note: 'Odmah pošaljite medijsku vezu ili datoteku',
+            },
+            alwaysUploadFile: {
+              name: 'Uvijek učitaj kao datoteku',
+              note: 'Prijenos medija kao datoteke umjesto slanja veze',
+            },
+          },
+          video: {
+            name: 'Video postavke',
+            enabled: {
+              name: 'Općenito',
+              note: 'Omogućite ovu vrstu medija',
+            },
+            showBtn: {
+              name: 'Dugme',
+              note: 'Prikaži gumb na traci za chat',
+            },
+            showStar: {
+              name: 'Zvijezda',
+              note: 'Prikazuje omiljenu zvijezdu u medijima',
+            },
+            alwaysSendInstantly: {
+              name: 'Isporuka odmah',
+              note: 'Odmah pošaljite medijsku vezu ili datoteku',
+            },
+            alwaysUploadFile: {
+              name: 'Uvijek učitaj kao datoteku',
+              note: 'Prijenos medija kao datoteke umjesto slanja veze',
+            },
+          },
+          audio: {
+            name: 'Audio postavke',
+            enabled: {
+              name: 'Općenito',
+              note: 'Omogućite ovu vrstu medija',
+            },
+            showBtn: {
+              name: 'Dugme',
+              note: 'Prikaži gumb na traci za chat',
+            },
+            showStar: {
+              name: 'Zvijezda',
+              note: 'Prikazuje omiljenu zvijezdu u medijima',
+            },
+          },
+          file: {
+            name: 'Postavke datoteke',
+            enabled: {
+              name: 'Općenito',
+              note: 'Omogućite ovu vrstu medija',
+            },
+            showBtn: {
+              name: 'Dugme',
+              note: 'Prikaži gumb na traci za chat',
+            },
+            showStar: {
+              name: 'Zvijezda',
+              note: 'Prikazuje omiljenu zvijezdu u medijima',
+            },
+            alwaysSendInstantly: {
+              name: 'Isporuka odmah',
+              note: 'Odmah pošaljite medijsku vezu ili datoteku',
+            },
+            alwaysUploadFile: {
+              name: 'Uvijek učitaj kao datoteku',
+              note: 'Prijenos medija kao datoteke umjesto slanja veze',
+            },
+          },
+          panel: 'Postavke dodatka',
+        },
+      },
+      hu: { // Hungarian
+        tabName: {
+          image: 'Kép',
+          video: 'Videó',
+          audio: 'Hang',
+          file: 'Fájl',
+        },
+        create: 'Teremt',
+        category: {
+          list: 'Kategóriák',
+          unsorted: 'Nincs rendezve',
+          create: 'Hozzon létre egy kategóriát',
+          edit: 'Kategória szerkesztése',
+          delete: 'Kategória törlése',
+          deleteConfirm: 'Ez a kategória alkategóriákat tartalmaz. Mindegyik törlődik. Biztosan törölni szeretné a kategóriákat?',
+          download: 'Média letöltése',
+          placeholder: 'Kategória név',
+          move: 'Mozog',
+          moveNext: 'Utána',
+          movePrevious: 'Előtt',
+          color: 'Szín',
+          copyColor: 'Szín másolása',
+          error: {
+            needName: 'A név nem lehet üres',
+            invalidNameLength: 'A név legfeljebb 20 karakterből állhat',
+            wrongColor: 'A szín érvénytelen',
+            nameExists: 'Ez a név már létezik',
+            invalidCategory: 'A kategória nem létezik',
+            download: 'Nem sikerült letölteni a médiát',
+          },
+          success: {
+            create: 'A kategória elkészült!',
+            delete: 'A kategória törölve lett!',
+            edit: 'A kategória megváltozott!',
+            move: 'A kategória áthelyezve!',
+            download: 'A média feltöltve!',
+          },
+          emptyHint: 'Kattintson jobb gombbal a kategória létrehozásához!',
+        },
+        media: {
+          emptyHint: {
+            image: 'Kattintson a kép sarkában lévő csillagra, hogy a kedvencek közé helyezze',
+            video: 'Kattintson a videó sarkában lévő csillagra, hogy a kedvencek közé tegye',
+            audio: 'Kattintson a csillagra egy hang sarkában, hogy a kedvencek közé helyezze',
+            file: 'Kattintson a csillagra a fájl sarkában, hogy hozzáadja a kedvenceihez',
+          },
+          addTo: 'Hozzáadás',
+          moveTo: 'Mozog',
+          removeFrom: 'Törlés a kategóriából',
+          copySource: 'Médiaforrás másolása',
+          upload: {
+            title: 'Feltöltés',
+            normal: 'Normál',
+            spoiler: 'Spoiler',
+          },
+          success: {
+            move: {
+              gif: 'A GIF át lett helyezve!',
+              image: 'A kép áthelyezve!',
+              video: 'A videó áthelyezve!',
+              audio: 'A hang áthelyezve!',
+              file: 'A fájl át lett helyezve!',
+            },
+            remove: {
+              gif: 'A GIF eltávolítva a kategóriákból!',
+              image: 'A képet eltávolítottuk a kategóriákból!',
+              video: 'A videót eltávolítottuk a kategóriákból!',
+              audio: 'A hangot eltávolítottuk a kategóriákból!',
+              file: 'A fájl eltávolítva a kategóriákból!',
+            },
+            download: {
+              gif: 'A GIF feltöltve!',
+              image: 'A kép feltöltve!',
+              video: 'A videó feltöltve!',
+              audio: 'A hanganyag letöltve!',
+              file: 'A fájl letöltése megtörtént!',
+            },
+          },
+          error: {
+            download: {
+              gif: 'A GIF letöltése sikertelen',
+              image: 'Nem sikerült feltölteni a képet',
+              video: 'Nem sikerült letölteni a videót',
+              audio: 'Nem sikerült letölteni a hangot',
+              file: 'Nem sikerült letölteni a fájlt',
+            },
+          },
+          controls: {
+            show: 'Mutasson megrendeléseket',
+            hide: 'Parancsok elrejtése',
+          },
+          placeholder: {
+            gif: 'GIF név',
+            image: 'Kép neve',
+            video: 'Videó neve',
+            audio: 'Hang neve',
+            file: 'Fájl név',
+          },
+        },
+        searchItem: {
+          gif: 'Keressen GIF-eket vagy kategóriákat',
+          image: 'Képek vagy kategóriák keresése',
+          video: 'Videók vagy kategóriák keresése',
+          audio: 'Audió vagy kategória keresése',
+          file: 'Fájlok vagy kategóriák keresése',
+        },
+        import: {
+          panel: 'Média importálása',
+          label: {
+            types: 'Típusok',
+            medias: 'Média',
+            categories: 'Kategóriák',
+          },
+          buttonImport: 'Importálás',
+          success: 'A médiát importálták!',
+          error: 'Nem sikerült importálni a médiát',
+        },
+        cache: {
+          panel: 'Helyi adatbázis',
+          total: 'Teljes :',
+          size: 'Méret:',
+          clear: {
+            confirm: 'Valóban ki akarja üríteni az adatbázist?',
+            button: 'Üres adatbázis',
+            success: 'Az adatbázis kiürült!',
+            error: 'Nem sikerült kiírni az adatbázist',
+          },
+          cacheAll: {
+            button: 'Az összes média gyorsítótárazása',
+            confirm: 'Gyorsítótárba szeretné helyezni az összes médiát?',
+            noMedia: 'Nincs adathordozó a gyorsítótárban',
+            success: 'A média gyorsítótárba került!',
+            error: 'Hiba a média gyorsítótárazásakor',
+          },
+          refreshButton: 'Frissítés',
+        },
+        mediasCounter: 'A média száma',
+        settings: {
+          hideUnsortedMedias: {
+            name: 'Média elrejtése',
+            note: 'A kategorizálatlan média elrejtése a lapról',
+          },
+          hideThumbnail: {
+            name: 'Bélyegképek elrejtése',
+            note: 'A kategória színét jeleníti meg véletlenszerű bélyegkép helyett',
+          },
+          allowCaching: {
+            name: 'Média előnézeti gyorsítótárazásának engedélyezése',
+            note: 'Helyi offline gyorsítótárat használ a média előnézetének gyorsítótárazásához',
+          },
+          mediaVolume: {
+            name: 'Média hangereje',
+            note: 'Médialejátszás hangereje a lapon',
+          },
+          maxMediasPerPage: {
+            name: 'Az oldalankénti média maximális száma',
+            note: 'A lapon oldalanként megjelenített média maximális száma',
+          },
+          position: {
+            name: 'A gomb pozíciója',
+            btnsPositionKey: {
+              name: 'gombok relatív helyzete',
+              note: 'Melyik másik gomb mellé kell elhelyezni a gombokat',
+            },
+            btnsPosition: {
+              name: 'Gomb iránya',
+              note: 'A gombok iránya a csevegősávon',
+            },
+          },
+          gif: {
+            name: 'GIF beállítások',
+            enabled: {
+              name: 'Tábornok',
+              note: 'A Discord GIF lapját helyettesíti',
+            },
+            alwaysSendInstantly: {
+              name: 'Azonnali kiszállítás',
+              note: 'Azonnal küldje el a média hivatkozást vagy fájlt',
+            },
+            alwaysUploadFile: {
+              name: 'Mindig fájlként töltsd fel',
+              note: 'A médiát fájlként töltse fel a hivatkozás küldése helyett',
+            },
+          },
+          image: {
+            name: 'Képbeállítások',
+            enabled: {
+              name: 'Tábornok',
+              note: 'Engedélyezze ezt a médiatípust',
+            },
+            showBtn: {
+              name: 'Gomb',
+              note: 'A gomb megjelenítése a csevegősávon',
+            },
+            showStar: {
+              name: 'Csillag',
+              note: 'Kedvenc sztárját mutatja a médiában',
+            },
+            alwaysSendInstantly: {
+              name: 'Azonnali kiszállítás',
+              note: 'Azonnal küldje el a média hivatkozást vagy fájlt',
+            },
+            alwaysUploadFile: {
+              name: 'Mindig fájlként töltsd fel',
+              note: 'A médiát fájlként töltse fel a hivatkozás küldése helyett',
+            },
+          },
+          video: {
+            name: 'Videó beállítások',
+            enabled: {
+              name: 'Tábornok',
+              note: 'Engedélyezze ezt a médiatípust',
+            },
+            showBtn: {
+              name: 'Gomb',
+              note: 'A gomb megjelenítése a csevegősávon',
+            },
+            showStar: {
+              name: 'Csillag',
+              note: 'Kedvenc sztárját mutatja a médiában',
+            },
+            alwaysSendInstantly: {
+              name: 'Azonnali kiszállítás',
+              note: 'Azonnal küldje el a média hivatkozást vagy fájlt',
+            },
+            alwaysUploadFile: {
+              name: 'Mindig fájlként töltsd fel',
+              note: 'A médiát fájlként töltse fel a hivatkozás küldése helyett',
+            },
+          },
+          audio: {
+            name: 'Hangbeállítások',
+            enabled: {
+              name: 'Tábornok',
+              note: 'Engedélyezze ezt a médiatípust',
+            },
+            showBtn: {
+              name: 'Gomb',
+              note: 'A gomb megjelenítése a csevegősávon',
+            },
+            showStar: {
+              name: 'Csillag',
+              note: 'Kedvenc sztárját mutatja a médiában',
+            },
+          },
+          file: {
+            name: 'Fájlbeállítások',
+            enabled: {
+              name: 'Tábornok',
+              note: 'Engedélyezze ezt a médiatípust',
+            },
+            showBtn: {
+              name: 'Gomb',
+              note: 'A gomb megjelenítése a csevegősávon',
+            },
+            showStar: {
+              name: 'Csillag',
+              note: 'Kedvenc sztárját mutatja a médiában',
+            },
+            alwaysSendInstantly: {
+              name: 'Azonnali kiszállítás',
+              note: 'Azonnal küldje el a média hivatkozást vagy fájlt',
+            },
+            alwaysUploadFile: {
+              name: 'Mindig fájlként töltsd fel',
+              note: 'A médiát fájlként töltse fel a hivatkozás küldése helyett',
+            },
+          },
+          panel: 'Beépülő modul beállításai',
+        },
+      },
+      it: { // Italian
+        tabName: {
+          image: 'Immagine',
+          video: 'video',
+          audio: 'Audio',
+          file: 'File',
+        },
+        create: 'Creare',
+        category: {
+          list: 'Categorie',
+          unsorted: 'Non ordinato',
+          create: 'Crea una categoria',
+          edit: 'Modifica categoria',
+          delete: 'Elimina categoria',
+          deleteConfirm: 'Questa categoria contiene sottocategorie. Saranno tutti cancellati. Sei sicuro di voler eliminare le categorie?',
+          download: 'Scarica file multimediali',
+          placeholder: 'Nome della categoria',
+          move: 'Spostare',
+          moveNext: 'Dopo',
+          movePrevious: 'Prima',
+          color: 'Colore',
+          copyColor: 'Copia colore',
+          error: {
+            needName: 'Il nome non può essere vuoto',
+            invalidNameLength: 'Il nome deve contenere un massimo di 20 caratteri',
+            wrongColor: 'Il colore non è valido',
+            nameExists: 'Questo nome esiste già',
+            invalidCategory: 'La categoria non esiste',
+            download: 'Impossibile scaricare i media',
+          },
+          success: {
+            create: 'La categoria è stata creata!',
+            delete: 'La categoria è stata eliminata!',
+            edit: 'La categoria è stata cambiata!',
+            move: 'La categoria è stata spostata!',
+            download: 'Il supporto è stato caricato!',
+          },
+          emptyHint: 'Fare clic con il tasto destro per creare una categoria!',
+        },
+        media: {
+          emptyHint: {
+            image: 'Fai clic sulla stella nell\'angolo di un\'immagine per inserirla nei preferiti',
+            video: 'Fai clic sulla stella nell\'angolo di un video per inserirlo nei preferiti',
+            audio: 'Fai clic sulla stella nell\'angolo di un audio per inserirlo nei preferiti',
+            file: "Fai clic sulla stella nell'angolo di un file per aggiungerlo ai tuoi preferiti",
+          },
+          addTo: 'Inserisci',
+          moveTo: 'Spostare',
+          removeFrom: 'Rimuovi dalla categoria',
+          copySource: 'Copia la fonte multimediale',
+          upload: {
+            title: 'Caricare',
+            normal: 'Normale',
+            spoiler: 'spoiler',
+          },
+          success: {
+            move: {
+              gif: 'La GIF è stata spostata!',
+              image: 'L\'immagine è stata spostata!',
+              video: 'Il video è stato spostato!',
+              audio: 'L\'audio è stato spostato!',
+              file: 'Il file è stato spostato!',
+            },
+            remove: {
+              gif: 'La GIF è stata rimossa dalle categorie!',
+              image: 'L\'immagine è stata rimossa dalle categorie!',
+              video: 'Il video è stato rimosso dalle categorie!',
+              audio: 'L\'audio è stato rimosso dalle categorie!',
+              file: 'Il file è stato rimosso dalle categorie!',
+            },
+            download: {
+              gif: 'La GIF è stata caricata!',
+              image: 'L\'immagine è stata caricata!',
+              video: 'Il video è stato caricato!',
+              audio: 'L\'audio è stato scaricato!',
+              file: 'Il file è stato scaricato!',
+            },
+          },
+          error: {
+            download: {
+              gif: 'Impossibile scaricare la GIF',
+              image: 'Impossibile caricare l\'immagine',
+              video: 'Impossibile scaricare il video',
+              audio: 'Impossibile scaricare l\'audio',
+              file: 'Impossibile scaricare il file',
+            },
+          },
+          controls: {
+            show: 'Mostra ordini',
+            hide: 'Nascondi ordini',
+          },
+          placeholder: {
+            gif: 'Nome GIF',
+            image: 'Nome immagine',
+            video: 'Nome del video',
+            audio: 'Nome dell\'audio',
+            file: 'Nome del file',
+          },
+        },
+        searchItem: {
+          gif: 'Cerca GIF o categorie',
+          image: 'Cerca immagini o categorie',
+          video: 'Cerca video o categorie',
+          audio: 'Cerca audio o categorie',
+          file: 'Ricerca di file o categorie',
+        },
+        import: {
+          panel: 'Importazione multimediale',
+          label: {
+            types: 'Tipi',
+            medias: 'Media',
+            categories: 'Categorie',
+          },
+          buttonImport: 'Importare',
+          success: 'Il supporto è stato importato!',
+          error: 'Impossibile importare i contenuti multimediali',
+        },
+        cache: {
+          panel: 'Banca dati locale',
+          total: 'Totale :',
+          size: 'Formato :',
+          clear: {
+            confirm: 'Vuoi davvero svuotare il database?',
+            button: 'Banca dati vuota',
+            success: 'Il database è stato svuotato!',
+            error: 'Impossibile eseguire il dump del database',
+          },
+          cacheAll: {
+            button: 'Memorizza nella cache tutti i media',
+            confirm: 'Vuoi memorizzare nella cache tutti i media?',
+            noMedia: 'Non ci sono supporti da memorizzare nella cache',
+            success: 'Il supporto è stato memorizzato nella cache!',
+            error: 'Errore durante la memorizzazione nella cache dei media',
+          },
+          refreshButton: 'ricaricare',
+        },
+        mediasCounter: 'Numero di supporti',
+        settings: {
+          hideUnsortedMedias: {
+            name: 'Nascondi contenuti multimediali',
+            note: 'Nascondi i media dalla scheda che non sono categorizzati',
+          },
+          hideThumbnail: {
+            name: 'Nascondi miniature',
+            note: 'Mostra il colore della categoria anziché una miniatura casuale',
+          },
+          allowCaching: {
+            name: "Consenti la memorizzazione nella cache dell'anteprima multimediale",
+            note: "Utilizza la cache offline locale per memorizzare nella cache l'anteprima multimediale",
+          },
+          mediaVolume: {
+            name: 'Volume multimediale',
+            note: 'Volume di riproduzione multimediale nella scheda',
+          },
+          maxMediasPerPage: {
+            name: 'Numero massimo di supporti per pagina',
+            note: 'Il numero massimo di contenuti multimediali visualizzati per pagina nella scheda',
+          },
+          position: {
+            name: 'Posizione del pulsante',
+            btnsPositionKey: {
+              name: 'Posizione relativa dei pulsanti',
+              note: 'Accanto a quale altro pulsante devono essere posizionati i pulsanti',
+            },
+            btnsPosition: {
+              name: 'Direzione del pulsante',
+              note: 'Direzione dei pulsanti sulla barra della chat',
+            },
+          },
+          gif: {
+            name: 'Impostazioni GIF',
+            enabled: {
+              name: 'Generale',
+              note: 'Sostituisce la scheda GIF di Discord',
+            },
+            alwaysSendInstantly: {
+              name: 'Consegna immediata',
+              note: 'Invia immediatamente il collegamento multimediale o il file',
+            },
+            alwaysUploadFile: {
+              name: 'Carica sempre come file',
+              note: 'Carica i contenuti multimediali come file anziché inviare un collegamento',
+            },
+          },
+          image: {
+            name: "Impostazioni dell'immagine",
+            enabled: {
+              name: 'Generale',
+              note: 'Abilita questo tipo di supporto',
+            },
+            showBtn: {
+              name: 'Pulsante',
+              note: 'Mostra il pulsante sulla barra della chat',
+            },
+            showStar: {
+              name: 'Stella',
+              note: 'Mostra la star preferita sui media',
+            },
+            alwaysSendInstantly: {
+              name: 'Consegna immediata',
+              note: 'Invia immediatamente il collegamento multimediale o il file',
+            },
+            alwaysUploadFile: {
+              name: 'Carica sempre come file',
+              note: 'Carica i contenuti multimediali come file anziché inviare un collegamento',
+            },
+          },
+          video: {
+            name: 'Impostazioni video',
+            enabled: {
+              name: 'Generale',
+              note: 'Abilita questo tipo di supporto',
+            },
+            showBtn: {
+              name: 'Pulsante',
+              note: 'Mostra il pulsante sulla barra della chat',
+            },
+            showStar: {
+              name: 'Stella',
+              note: 'Mostra la star preferita sui media',
+            },
+            alwaysSendInstantly: {
+              name: 'Consegna immediata',
+              note: 'Invia immediatamente il collegamento multimediale o il file',
+            },
+            alwaysUploadFile: {
+              name: 'Carica sempre come file',
+              note: 'Carica i contenuti multimediali come file anziché inviare un collegamento',
+            },
+          },
+          audio: {
+            name: 'Impostazioni audio',
+            enabled: {
+              name: 'Generale',
+              note: 'Abilita questo tipo di supporto',
+            },
+            showBtn: {
+              name: 'Pulsante',
+              note: 'Mostra il pulsante sulla barra della chat',
+            },
+            showStar: {
+              name: 'Stella',
+              note: 'Mostra la star preferita sui media',
+            },
+          },
+          file: {
+            name: 'Impostazioni del file',
+            enabled: {
+              name: 'Generale',
+              note: 'Abilita questo tipo di supporto',
+            },
+            showBtn: {
+              name: 'Pulsante',
+              note: 'Mostra il pulsante sulla barra della chat',
+            },
+            showStar: {
+              name: 'Stella',
+              note: 'Mostra la star preferita sui media',
+            },
+            alwaysSendInstantly: {
+              name: 'Consegna immediata',
+              note: 'Invia immediatamente il collegamento multimediale o il file',
+            },
+            alwaysUploadFile: {
+              name: 'Carica sempre come file',
+              note: 'Carica i contenuti multimediali come file anziché inviare un collegamento',
+            },
+          },
+          panel: 'Impostazioni del plugin',
+        },
+      },
+      ja: { // Japanese
+        tabName: {
+          image: '画像',
+          video: 'ビデオ',
+          audio: 'オーディオ',
+          file: 'ファイル',
+        },
+        create: '作成する',
+        category: {
+          list: 'カテゴリー',
+          unsorted: 'ソートされていません',
+          create: 'カテゴリを作成する',
+          edit: 'カテゴリを編集',
+          delete: 'カテゴリを削除',
+          deleteConfirm: 'このカテゴリにはサブカテゴリが含まれています。 それらはすべて削除されます。 カテゴリを削除してもよろしいですか?',
+          download: 'メディアをダウンロード',
+          placeholder: '種別名',
+          move: '移動',
+          moveNext: '後',
+          movePrevious: '前',
+          color: '色',
+          copyColor: 'コピーカラー',
+          error: {
+            needName: '名前を空にすることはできません',
+            invalidNameLength: '名前には最大20文字を含める必要があります',
+            wrongColor: '色が無効です',
+            nameExists: 'この名前はすでに存在します',
+            invalidCategory: 'カテゴリが存在しません',
+            download: 'メディアのダウンロードに失敗しました',
+          },
+          success: {
+            create: 'カテゴリが作成されました！',
+            delete: 'カテゴリが削除されました！',
+            edit: 'カテゴリが変更されました！',
+            move: 'カテゴリが移動しました！',
+            download: 'メディアがアップしました！',
+          },
+          emptyHint: '右クリックしてカテゴリを作成してください！',
+        },
+        media: {
+          emptyHint: {
+            image: '画像の隅にある星をクリックして、お気に入りに追加します',
+            video: '動画の隅にある星をクリックして、お気に入りに追加します',
+            audio: 'オーディオの隅にある星をクリックして、お気に入りに入れます',
+            file: 'ファイルの隅にある星をクリックしてお気に入りに追加します',
+          },
+          addTo: '追加',
+          moveTo: '移動',
+          removeFrom: 'カテゴリから削除',
+          copySource: 'メディア ソースのコピー',
+          upload: {
+            title: 'アップロード',
+            normal: '正常',
+            spoiler: 'ネタバレ',
+          },
+          success: {
+            move: {
+              gif: 'GIFを移動しました！',
+              image: '画像が移動しました！',
+              video: 'ビデオが移動しました！',
+              audio: '音声が移動しました！',
+              file: 'ファイルは移動されました!',
+            },
+            remove: {
+              gif: 'GIF はカテゴリから削除されました。',
+              image: '画像はカテゴリから削除されました！',
+              video: '動画はカテゴリから削除されました！',
+              audio: 'オーディオはカテゴリから削除されました！',
+              file: 'ファイルはカテゴリから削除されました。',
+            },
+            download: {
+              gif: 'GIFをアップしました！',
+              image: '画像をアップしました！',
+              video: '動画がアップしました！',
+              audio: '音声がダウンロードされました！',
+              file: 'ファイルがダウンロードされました！',
+            },
+          },
+          error: {
+            download: {
+              gif: 'GIF のダウンロードに失敗しました',
+              image: '画像のアップロードに失敗しました',
+              video: 'ビデオのダウンロードに失敗しました',
+              audio: 'オーディオのダウンロードに失敗しました',
+              file: 'ファイルのダウンロードに失敗しました',
+            },
+          },
+          controls: {
+            show: '注文を表示',
+            hide: '注文を非表示',
+          },
+          placeholder: {
+            gif: 'GIF名',
+            image: '画像名',
+            video: 'ビデオ名',
+            audio: '音声名',
+            file: 'ファイル名',
+          },
+        },
+        searchItem: {
+          gif: 'GIF またはカテゴリを検索する',
+          image: '画像やカテゴリを検索する',
+          video: 'ビデオまたはカテゴリを検索する',
+          audio: 'オーディオまたはカテゴリを検索する',
+          file: 'ファイルまたはカテゴリの検索',
+        },
+        import: {
+          panel: 'メディアのインポート',
+          label: {
+            types: '種類',
+            medias: 'メディア',
+            categories: 'カテゴリー',
+          },
+          buttonImport: '輸入',
+          success: 'メディアがインポートされました。',
+          error: 'メディアのインポートに失敗しました',
+        },
+        cache: {
+          panel: 'ローカルデータベース',
+          total: '合計 ：',
+          size: 'サイズ ：',
+          clear: {
+            confirm: '本当にデータベースを空にしますか?',
+            button: '空のデータベース',
+            success: 'データベースが空になりました!',
+            error: 'データベースのダンプに失敗しました',
+          },
+          cacheAll: {
+            button: 'すべてのメディアをキャッシュする',
+            confirm: 'すべてのメディアをキャッシュしますか?',
+            noMedia: 'キャッシュするメディアがありません',
+            success: 'メディアがキャッシュされました。',
+            error: 'メディアのキャッシュ中にエラーが発生しました',
+          },
+          refreshButton: 'リフレッシュ',
+        },
+        mediasCounter: 'メディア数',
+        settings: {
+          hideUnsortedMedias: {
+            name: 'メディアを隠す',
+            note: '未分類のメディアをタブから非表示にする',
+          },
+          hideThumbnail: {
+            name: 'サムネイルを非表示にする',
+            note: 'ランダムなサムネイルの代わりにカテゴリの色を表示します',
+          },
+          allowCaching: {
+            name: 'メディア プレビューのキャッシュを許可する',
+            note: 'ローカルのオフライン キャッシュを使用してメディア プレビューをキャッシュします',
+          },
+          mediaVolume: {
+            name: 'メディアのボリューム',
+            note: 'タブのメディア再生音量',
+          },
+          maxMediasPerPage: {
+            name: 'ページあたりの最大メディア数',
+            note: 'タブ内のページごとに表示されるメディアの最大数',
+          },
+          position: {
+            name: 'ボタンの位置',
+            btnsPositionKey: {
+              name: 'ボタンの相対位置',
+              note: '他のボタンの隣にボタンを配置する必要があります',
+            },
+            btnsPosition: {
+              name: 'ボタンの方向',
+              note: 'チャットバーのボタンの方向',
+            },
+          },
+          gif: {
+            name: 'GIF設定',
+            enabled: {
+              name: '一般的な',
+              note: 'DiscordのGIFタブを置き換えます',
+            },
+            alwaysSendInstantly: {
+              name: '即日配送',
+              note: 'メディアリンクまたはファイルをすぐに送信してください',
+            },
+            alwaysUploadFile: {
+              name: '常にファイルとしてアップロード',
+              note: 'リンクを送信するのではなく、メディアをファイルとしてアップロードする',
+            },
+          },
+          image: {
+            name: '画像設定',
+            enabled: {
+              name: '一般的な',
+              note: 'このメディア タイプを有効にする',
+            },
+            showBtn: {
+              name: 'ボタン',
+              note: 'チャットバーにボタンを表示',
+            },
+            showStar: {
+              name: '星',
+              note: 'お気に入りのスターをメディアに出演させる',
+            },
+            alwaysSendInstantly: {
+              name: '即日配送',
+              note: 'メディアリンクまたはファイルをすぐに送信してください',
+            },
+            alwaysUploadFile: {
+              name: '常にファイルとしてアップロード',
+              note: 'リンクを送信するのではなく、メディアをファイルとしてアップロードする',
+            },
+          },
+          video: {
+            name: 'ビデオ設定',
+            enabled: {
+              name: '一般的な',
+              note: 'このメディア タイプを有効にする',
+            },
+            showBtn: {
+              name: 'ボタン',
+              note: 'チャットバーにボタンを表示',
+            },
+            showStar: {
+              name: '星',
+              note: 'お気に入りのスターをメディアに出演させる',
+            },
+            alwaysSendInstantly: {
+              name: '即日配送',
+              note: 'メディアリンクまたはファイルをすぐに送信してください',
+            },
+            alwaysUploadFile: {
+              name: '常にファイルとしてアップロード',
+              note: 'リンクを送信するのではなく、メディアをファイルとしてアップロードする',
+            },
+          },
+          audio: {
+            name: 'オーディオ設定',
+            enabled: {
+              name: '一般的な',
+              note: 'このメディア タイプを有効にする',
+            },
+            showBtn: {
+              name: 'ボタン',
+              note: 'チャットバーにボタンを表示',
+            },
+            showStar: {
+              name: '星',
+              note: 'お気に入りのスターをメディアに出演させる',
+            },
+          },
+          file: {
+            name: 'ファイル設定',
+            enabled: {
+              name: '一般的な',
+              note: 'このメディア タイプを有効にする',
+            },
+            showBtn: {
+              name: 'ボタン',
+              note: 'チャットバーにボタンを表示',
+            },
+            showStar: {
+              name: '星',
+              note: 'お気に入りのスターをメディアに出演させる',
+            },
+            alwaysSendInstantly: {
+              name: '即日配送',
+              note: 'メディアリンクまたはファイルをすぐに送信してください',
+            },
+            alwaysUploadFile: {
+              name: '常にファイルとしてアップロード',
+              note: 'リンクを送信するのではなく、メディアをファイルとしてアップロードする',
+            },
+          },
+          panel: 'プラグイン設定',
+        },
+      },
+      ko: { // Korean
+        tabName: {
+          image: '그림',
+          video: '비디오',
+          audio: '오디오',
+          file: '파일',
+        },
+        create: '창조하다',
+        category: {
+          list: '카테고리',
+          unsorted: '정렬되지 않음',
+          create: '카테고리 생성',
+          edit: '카테고리 수정',
+          delete: '카테고리 삭제',
+          deleteConfirm: '이 범주에는 하위 범주가 포함되어 있습니다. 모두 삭제됩니다. 카테고리를 삭제하시겠습니까?',
+          download: '미디어 다운로드',
+          placeholder: '카테고리 이름',
+          move: '움직임',
+          moveNext: '후',
+          movePrevious: '전에',
+          color: '색깔',
+          copyColor: '색상 복사',
+          error: {
+            needName: '이름은 비워 둘 수 없습니다.',
+            invalidNameLength: '이름은 최대 20 자 여야합니다.',
+            wrongColor: '색상이 잘못되었습니다.',
+            nameExists: '이 이름은 이미 존재합니다',
+            invalidCategory: '카테고리가 없습니다.',
+            download: '미디어 다운로드 실패',
+          },
+          success: {
+            create: '카테고리가 생성되었습니다!',
+            delete: '카테고리가 삭제되었습니다!',
+            edit: '카테고리가 변경되었습니다!',
+            move: '카테고리가 이동되었습니다!',
+            download: '미디어가 업로드되었습니다!',
+          },
+          emptyHint: '카테고리를 만들려면 마우스 오른쪽 버튼을 클릭하십시오!',
+        },
+        media: {
+          emptyHint: {
+            image: '이미지 모서리에있는 별을 클릭하여 즐겨 찾기에 추가하세요.',
+            video: '동영상 모서리에있는 별표를 클릭하여 즐겨 찾기에 추가하세요.',
+            audio: '오디오 모서리에있는 별표를 클릭하여 즐겨 찾기에 넣습니다.',
+            file: '즐겨찾기에 추가하려면 파일 모서리에 있는 별표를 클릭하세요.',
+          },
+          addTo: '더하다',
+          moveTo: '움직임',
+          removeFrom: '카테고리에서 제거',
+          copySource: '미디어 소스 복사',
+          upload: {
+            title: '업로드',
+            normal: '표준',
+            spoiler: '스포일러',
+          },
+          success: {
+            move: {
+              gif: 'GIF가 이동되었습니다!',
+              image: '이미지가 이동되었습니다!',
+              video: '동영상이 이동되었습니다!',
+              audio: '오디오가 이동되었습니다!',
+              file: '파일이 이동되었습니다!',
+            },
+            remove: {
+              gif: 'GIF가 카테고리에서 제거되었습니다!',
+              image: '카테고리에서 이미지가 제거되었습니다!',
+              video: '비디오가 카테고리에서 제거되었습니다!',
+              audio: '카테고리에서 오디오가 제거되었습니다!',
+              file: '파일이 카테고리에서 제거되었습니다!',
+            },
+            download: {
+              gif: 'GIF가 업로드되었습니다!',
+              image: '이미지가 업로드되었습니다!',
+              video: '영상이 업로드 되었습니다!',
+              audio: '오디오가 다운로드되었습니다!',
+              file: '파일이 다운로드되었습니다!',
+            },
+          },
+          error: {
+            download: {
+              gif: 'GIF 다운로드 실패',
+              image: '이미지를 업로드하지 못했습니다.',
+              video: '동영상 다운로드 실패',
+              audio: '오디오 다운로드 실패',
+              file: '파일을 다운로드하지 못했습니다.',
+            },
+          },
+          controls: {
+            show: '주문보기',
+            hide: '주문 숨기기',
+          },
+          placeholder: {
+            gif: 'GIF 이름',
+            image: '이미지 이름',
+            video: '비디오 이름',
+            audio: '오디오 이름',
+            file: '파일 이름',
+          },
+        },
+        searchItem: {
+          gif: 'GIF 또는 카테고리 검색',
+          image: '이미지 또는 카테고리 검색',
+          video: '비디오 또는 카테고리 검색',
+          audio: '오디오 또는 카테고리 검색',
+          file: '파일 또는 카테고리 검색',
+        },
+        import: {
+          panel: '미디어 가져오기',
+          label: {
+            types: '유형',
+            medias: '미디어',
+            categories: '카테고리',
+          },
+          buttonImport: '수입',
+          success: '미디어를 가져왔습니다!',
+          error: '미디어를 가져오지 못했습니다.',
+        },
+        cache: {
+          panel: '로컬 데이터베이스',
+          total: '총 :',
+          size: '크기:',
+          clear: {
+            confirm: '정말로 데이터베이스를 비우시겠습니까?',
+            button: '빈 데이터베이스',
+            success: '데이터베이스가 비워졌습니다!',
+            error: '데이터베이스를 덤프하지 못했습니다.',
+          },
+          cacheAll: {
+            button: '모든 미디어 캐시',
+            confirm: '모든 미디어를 캐시하시겠습니까?',
+            noMedia: '캐시할 미디어가 없습니다.',
+            success: '미디어가 캐시되었습니다!',
+            error: '미디어를 캐싱하는 중 오류가 발생했습니다.',
+          },
+          refreshButton: '새로 고치다',
+        },
+        mediasCounter: '미디어 수',
+        settings: {
+          hideUnsortedMedias: {
+            name: '미디어 숨기기',
+            note: '분류되지 않은 탭에서 미디어 숨기기',
+          },
+          hideThumbnail: {
+            name: '썸네일 숨기기',
+            note: '임의의 썸네일 대신 카테고리 색상을 표시합니다.',
+          },
+          allowCaching: {
+            name: '미디어 미리보기 캐싱 허용',
+            note: '로컬 오프라인 캐시를 사용하여 미디어 미리보기를 캐시합니다.',
+          },
+          mediaVolume: {
+            name: '미디어 볼륨',
+            note: '탭의 미디어 재생 볼륨',
+          },
+          maxMediasPerPage: {
+            name: '페이지당 최대 미디어 수',
+            note: '탭의 페이지당 표시되는 최대 미디어 수',
+          },
+          position: {
+            name: '버튼 위치',
+            btnsPositionKey: {
+              name: '버튼의 상대적 위치',
+              note: '버튼을 어느 버튼 옆에 배치해야 할까요?',
+            },
+            btnsPosition: {
+              name: '버튼 방향',
+              note: '채팅바 버튼 방향',
+            },
+          },
+          gif: {
+            name: 'GIF 설정',
+            enabled: {
+              name: '일반적인',
+              note: 'Discord의 GIF 탭을 대체합니다.',
+            },
+            alwaysSendInstantly: {
+              name: '즉시배송',
+              note: '즉시 미디어 링크나 파일을 보내주세요',
+            },
+            alwaysUploadFile: {
+              name: '항상 파일로 업로드',
+              note: '링크를 보내는 대신 미디어를 파일로 업로드',
+            },
+          },
+          image: {
+            name: '이미지 설정',
+            enabled: {
+              name: '일반적인',
+              note: '이 미디어 유형을 활성화합니다.',
+            },
+            showBtn: {
+              name: '단추',
+              note: '채팅바에 버튼 표시',
+            },
+            showStar: {
+              name: '별',
+              note: '미디어에서 좋아하는 스타를 보여줍니다.',
+            },
+            alwaysSendInstantly: {
+              name: '즉시배송',
+              note: '즉시 미디어 링크나 파일을 보내주세요',
+            },
+            alwaysUploadFile: {
+              name: '항상 파일로 업로드',
+              note: '링크를 보내는 대신 미디어를 파일로 업로드',
+            },
+          },
+          video: {
+            name: '비디오 설정',
+            enabled: {
+              name: '일반적인',
+              note: '이 미디어 유형을 활성화합니다.',
+            },
+            showBtn: {
+              name: '단추',
+              note: '채팅바에 버튼 표시',
+            },
+            showStar: {
+              name: '별',
+              note: '미디어에서 좋아하는 스타를 보여줍니다.',
+            },
+            alwaysSendInstantly: {
+              name: '즉시배송',
+              note: '즉시 미디어 링크나 파일을 보내주세요',
+            },
+            alwaysUploadFile: {
+              name: '항상 파일로 업로드',
+              note: '링크를 보내는 대신 미디어를 파일로 업로드',
+            },
+          },
+          audio: {
+            name: '오디오 설정',
+            enabled: {
+              name: '일반적인',
+              note: '이 미디어 유형을 활성화합니다.',
+            },
+            showBtn: {
+              name: '단추',
+              note: '채팅바에 버튼 표시',
+            },
+            showStar: {
+              name: '별',
+              note: '미디어에서 좋아하는 스타를 보여줍니다.',
+            },
+          },
+          file: {
+            name: '파일 설정',
+            enabled: {
+              name: '일반적인',
+              note: '이 미디어 유형을 활성화합니다.',
+            },
+            showBtn: {
+              name: '단추',
+              note: '채팅바에 버튼 표시',
+            },
+            showStar: {
+              name: '별',
+              note: '미디어에서 좋아하는 스타를 보여줍니다.',
+            },
+            alwaysSendInstantly: {
+              name: '즉시배송',
+              note: '즉시 미디어 링크나 파일을 보내주세요',
+            },
+            alwaysUploadFile: {
+              name: '항상 파일로 업로드',
+              note: '링크를 보내는 대신 미디어를 파일로 업로드',
+            },
+          },
+          panel: '플러그인 설정',
+        },
+      },
+      lt: { // Lithuanian
+        tabName: {
+          image: 'Paveikslėlis',
+          video: 'Vaizdo įrašas',
+          audio: 'Garso įrašas',
+          file: 'Failas',
+        },
+        create: 'Kurti',
+        category: {
+          list: 'Kategorijos',
+          unsorted: 'Nerūšiuota',
+          create: 'Sukurkite kategoriją',
+          edit: 'Redaguoti kategoriją',
+          delete: 'Ištrinti kategoriją',
+          deleteConfirm: 'Šioje kategorijoje yra subkategorijų. Jie visi bus ištrinti. Ar tikrai norite ištrinti kategorijas?',
+          download: 'Parsisiųsti mediją',
+          placeholder: 'Kategorijos pavadinimas',
+          move: 'Perkelti',
+          moveNext: 'Po',
+          movePrevious: 'Anksčiau',
+          color: 'Spalva',
+          copyColor: 'Kopijuoti spalvą',
+          error: {
+            needName: 'Pavadinimas negali būti tuščias',
+            invalidNameLength: 'Pavadinime gali būti ne daugiau kaip 20 simbolių',
+            wrongColor: 'Spalva neteisinga',
+            nameExists: 'šis vardas jau egzistuoja',
+            invalidCategory: 'Kategorija neegzistuoja',
+            download: 'Nepavyko atsisiųsti medijos',
+          },
+          success: {
+            create: 'Kategorija sukurta!',
+            delete: 'Kategorija ištrinta!',
+            edit: 'Kategorija pakeista!',
+            move: 'Kategorija perkelta!',
+            download: 'Žiniasklaida įkelta!',
+          },
+          emptyHint: 'Dešiniuoju pelės mygtuku spustelėkite norėdami sukurti kategoriją!',
+        },
+        media: {
+          emptyHint: {
+            image: 'Spustelėkite žvaigždutę atvaizdo kampe, kad ją įtrauktumėte į mėgstamiausius',
+            video: 'Spustelėkite žvaigždutę vaizdo įrašo kampe, kad įtrauktumėte ją į mėgstamiausius',
+            audio: 'Spustelėkite žvaigždutę garso kampe, kad įtrauktumėte ją į mėgstamiausius',
+            file: 'Spustelėkite žvaigždutę failo kampe, kad pridėtumėte jį prie mėgstamiausių',
+          },
+          addTo: 'Papildyti',
+          moveTo: 'Perkelti',
+          removeFrom: 'Pašalinti iš kategorijos',
+          copySource: 'Nukopijuokite medijos šaltinį',
+          upload: {
+            title: 'Įkelti',
+            normal: 'Normalus',
+            spoiler: 'Spoileris',
+          },
+          success: {
+            move: {
+              gif: 'GIF buvo perkeltas!',
+              image: 'Vaizdas perkeltas!',
+              video: 'Vaizdo įrašas perkeltas!',
+              audio: 'Garso įrašas perkeltas!',
+              file: 'Failas perkeltas!',
+            },
+            remove: {
+              gif: 'GIF buvo pašalintas iš kategorijų!',
+              image: 'Vaizdas pašalintas iš kategorijų!',
+              video: 'Vaizdo įrašas pašalintas iš kategorijų!',
+              audio: 'Garso įrašas pašalintas iš kategorijų!',
+              file: 'Failas pašalintas iš kategorijų!',
+            },
+            download: {
+              gif: 'GIF failas įkeltas!',
+              image: 'Vaizdas įkeltas!',
+              video: 'Vaizdo įrašas įkeltas!',
+              audio: 'Garso įrašas atsisiųstas!',
+              file: 'Failas atsisiųstas!',
+            },
+          },
+          error: {
+            download: {
+              gif: 'Nepavyko atsisiųsti GIF',
+              image: 'Nepavyko įkelti vaizdo',
+              video: 'Nepavyko atsisiųsti vaizdo įrašo',
+              audio: 'Nepavyko atsisiųsti garso įrašo',
+              file: 'Nepavyko atsisiųsti failo',
+            },
+          },
+          controls: {
+            show: 'Rodyti užsakymus',
+            hide: 'Slėpti užsakymus',
+          },
+          placeholder: {
+            gif: 'GIF pavadinimas',
+            image: 'Paveikslėlio pavadinimas',
+            video: 'Vaizdo įrašo pavadinimas',
+            audio: 'Garso įrašo pavadinimas',
+            file: 'Failo pavadinimas',
+          },
+        },
+        searchItem: {
+          gif: 'Ieškokite GIF arba kategorijų',
+          image: 'Ieškokite vaizdų ar kategorijų',
+          video: 'Ieškokite vaizdo įrašų ar kategorijų',
+          audio: 'Ieškokite garso įrašų ar kategorijų',
+          file: 'Failų ar kategorijų paieška',
+        },
+        import: {
+          panel: 'Medijos importas',
+          label: {
+            types: 'Tipai',
+            medias: 'Žiniasklaida',
+            categories: 'Kategorijos',
+          },
+          buttonImport: 'Importuoti',
+          success: 'Žiniasklaida buvo importuota!',
+          error: 'Nepavyko importuoti laikmenos',
+        },
+        cache: {
+          panel: 'Vietinė duomenų bazė',
+          total: 'Iš viso:',
+          size: 'Dydis:',
+          clear: {
+            confirm: 'Ar tikrai norite ištuštinti duomenų bazę?',
+            button: 'Tuščia duomenų bazė',
+            success: 'Duomenų bazė ištuštinta!',
+            error: 'Nepavyko iškelti duomenų bazės',
+          },
+          cacheAll: {
+            button: 'Išsaugokite visą laikmeną talpykloje',
+            confirm: 'Ar norite talpykloje išsaugoti visą mediją?',
+            noMedia: 'Nėra medijos, kurią būtų galima išsaugoti talpykloje',
+            success: 'Žiniasklaida buvo išsaugota talpykloje!',
+            error: 'Klaida kaupiant laikmeną talpykloje',
+          },
+          refreshButton: 'Atnaujinti',
+        },
+        mediasCounter: 'Žiniasklaidos skaičius',
+        settings: {
+          hideUnsortedMedias: {
+            name: 'Slėpti mediją',
+            note: 'Slėpti laikmenas iš skirtuko, kuri nėra suskirstyta į kategorijas',
+          },
+          hideThumbnail: {
+            name: 'Slėpti miniatiūras',
+            note: 'Rodo kategorijos spalvą, o ne atsitiktinę miniatiūrą',
+          },
+          allowCaching: {
+            name: 'Leisti medijos peržiūros kaupimą talpykloje',
+            note: 'Naudoja vietinę talpyklą neprisijungus, kad išsaugotų medijos peržiūrą',
+          },
+          mediaVolume: {
+            name: 'Medijos garsumas',
+            note: 'Medijos atkūrimo garsumas skirtuke',
+          },
+          maxMediasPerPage: {
+            name: 'Didžiausias medijos skaičius puslapyje',
+            note: 'Didžiausias medijos skaičius, rodomas viename skirtuko lape',
+          },
+          position: {
+            name: 'Mygtuko padėtis',
+            btnsPositionKey: {
+              name: 'Santykinė mygtukų padėtis',
+              note: 'Šalia kurio kito mygtuko reikia dėti mygtukus',
+            },
+            btnsPosition: {
+              name: 'Mygtuko kryptis',
+              note: 'Mygtukų kryptis pokalbių juostoje',
+            },
+          },
+          gif: {
+            name: 'GIF nustatymai',
+            enabled: {
+              name: 'Generolas',
+              note: 'Pakeičia „Discord“ GIF skirtuką',
+            },
+            alwaysSendInstantly: {
+              name: 'Greitas pristatymas',
+              note: 'Nedelsdami išsiųskite medijos nuorodą arba failą',
+            },
+            alwaysUploadFile: {
+              name: 'Visada įkelti kaip failą',
+              note: 'Įkelkite mediją kaip failą, o ne siųskite nuorodą',
+            },
+          },
+          image: {
+            name: 'Vaizdo nustatymai',
+            enabled: {
+              name: 'Generolas',
+              note: 'Įgalinti šį laikmenos tipą',
+            },
+            showBtn: {
+              name: 'Mygtukas',
+              note: 'Rodyti mygtuką pokalbių juostoje',
+            },
+            showStar: {
+              name: 'Žvaigždė',
+              note: 'Žiniasklaidoje rodo mėgstamą žvaigždę',
+            },
+            alwaysSendInstantly: {
+              name: 'Greitas pristatymas',
+              note: 'Nedelsdami išsiųskite medijos nuorodą arba failą',
+            },
+            alwaysUploadFile: {
+              name: 'Visada įkelti kaip failą',
+              note: 'Įkelkite mediją kaip failą, o ne siųskite nuorodą',
+            },
+          },
+          video: {
+            name: 'Vaizdo įrašo nustatymai',
+            enabled: {
+              name: 'Generolas',
+              note: 'Įgalinti šį laikmenos tipą',
+            },
+            showBtn: {
+              name: 'Mygtukas',
+              note: 'Rodyti mygtuką pokalbių juostoje',
+            },
+            showStar: {
+              name: 'Žvaigždė',
+              note: 'Žiniasklaidoje rodo mėgstamą žvaigždę',
+            },
+            alwaysSendInstantly: {
+              name: 'Greitas pristatymas',
+              note: 'Nedelsdami išsiųskite medijos nuorodą arba failą',
+            },
+            alwaysUploadFile: {
+              name: 'Visada įkelti kaip failą',
+              note: 'Įkelkite mediją kaip failą, o ne siųskite nuorodą',
+            },
+          },
+          audio: {
+            name: 'Garso nustatymai',
+            enabled: {
+              name: 'Generolas',
+              note: 'Įgalinti šį laikmenos tipą',
+            },
+            showBtn: {
+              name: 'Mygtukas',
+              note: 'Rodyti mygtuką pokalbių juostoje',
+            },
+            showStar: {
+              name: 'Žvaigždė',
+              note: 'Žiniasklaidoje rodo mėgstamą žvaigždę',
+            },
+          },
+          file: {
+            name: 'Failų nustatymai',
+            enabled: {
+              name: 'Generolas',
+              note: 'Įgalinti šį laikmenos tipą',
+            },
+            showBtn: {
+              name: 'Mygtukas',
+              note: 'Rodyti mygtuką pokalbių juostoje',
+            },
+            showStar: {
+              name: 'Žvaigždė',
+              note: 'Žiniasklaidoje rodo mėgstamą žvaigždę',
+            },
+            alwaysSendInstantly: {
+              name: 'Greitas pristatymas',
+              note: 'Nedelsdami išsiųskite medijos nuorodą arba failą',
+            },
+            alwaysUploadFile: {
+              name: 'Visada įkelti kaip failą',
+              note: 'Įkelkite mediją kaip failą, o ne siųskite nuorodą',
+            },
+          },
+          panel: 'Papildinio nustatymai',
+        },
+      },
+      nl: { // Dutch
+        tabName: {
+          image: 'Afbeelding',
+          video: 'Video',
+          audio: 'Audio',
+          file: 'Bestand',
+        },
+        create: 'scheppen',
+        category: {
+          list: 'Kategorier',
+          unsorted: 'Niet gesorteerd',
+          create: 'Maak een categorie',
+          edit: 'Categorie bewerken',
+          delete: 'Categorie verwijderen',
+          deleteConfirm: 'Deze categorie bevat subcategorieën. Ze worden allemaal verwijderd. Weet u zeker dat u categorieën wilt verwijderen?',
+          download: 'Media downloaden',
+          placeholder: 'Categorie naam',
+          move: 'Verplaatsen, verschuiven',
+          moveNext: 'Na',
+          movePrevious: 'Voordat',
+          color: 'Kleur',
+          copyColor: 'Kopieer kleur',
+          error: {
+            needName: 'Naam mag niet leeg zijn',
+            invalidNameLength: 'De naam mag maximaal 20 tekens bevatten',
+            wrongColor: 'Kleur is ongeldig',
+            nameExists: 'Deze naam bestaat al',
+            invalidCategory: 'De categorie bestaat niet',
+            download: 'Kan media niet downloaden',
+          },
+          success: {
+            create: 'De categorie is aangemaakt!',
+            delete: 'De categorie is verwijderd!',
+            edit: 'De categorie is gewijzigd!',
+            move: 'De categorie is verplaatst!',
+            download: 'De media is geüpload!',
+          },
+          emptyHint: 'Klik met de rechtermuisknop om een categorie aan te maken!',
+        },
+        media: {
+          emptyHint: {
+            image: 'Klik op de ster in de hoek van een afbeelding om deze in je favorieten te plaatsen',
+            video: 'Klik op de ster in de hoek van een video om deze in je favorieten te plaatsen',
+            audio: 'Klik op de ster in de hoek van een audio om deze in je favorieten te plaatsen',
+            file: 'Klik op de ster in de hoek van een bestand om het aan uw favorieten toe te voegen',
+          },
+          addTo: 'Toevoegen',
+          moveTo: 'Verplaatsen, verschuiven',
+          removeFrom: 'Verwijderen uit categorie',
+          copySource: 'Mediabron kopiëren',
+          upload: {
+            title: 'Uploaden',
+            normal: 'normaal',
+            spoiler: 'Spoiler',
+          },
+          success: {
+            move: {
+              gif: 'GIF\'en er blevet flyttet!',
+              image: 'De afbeelding is verplaatst!',
+              video: 'De video is verplaatst!',
+              audio: 'Het geluid is verplaatst!',
+              file: 'Het bestand is verplaatst!',
+            },
+            remove: {
+              gif: 'GIF\'en er blevet fjernet fra kategorierne!',
+              image: 'De afbeelding is verwijderd uit de categorieën!',
+              video: 'De video is verwijderd uit de categorieën!',
+              audio: 'Audio is verwijderd uit categorieën!',
+              file: 'Het bestand is verwijderd uit de categorieën!',
+            },
+            download: {
+              gif: 'GIF\'en er blevet uploadet!',
+              image: 'De afbeelding is geüpload!',
+              video: 'De video is geüpload!',
+              audio: 'De audio is gedownload!',
+              file: 'Het bestand is gedownload!',
+            },
+          },
+          error: {
+            download: {
+              gif: 'Kunne ikke downloade GIF',
+              image: 'Kan afbeelding niet uploaden',
+              video: 'Kan video niet downloaden',
+              audio: 'Kan audio niet downloaden',
+              file: 'Kan bestand niet downloaden',
+            },
+          },
+          controls: {
+            show: 'Toon bestellingen',
+            hide: 'Verberg bestellingen',
+          },
+          placeholder: {
+            gif: 'GIF navn',
+            image: 'Naam afbeelding',
+            video: 'Videonaam',
+            audio: 'Audionaam',
+            file: 'Bestandsnaam',
+          },
+        },
+        searchItem: {
+          gif: 'Søg efter GIF\'er eller kategorier',
+          image: 'Zoeken naar afbeeldingen of categorieën',
+          video: 'Zoeken naar video\'s of categorieën',
+          audio: 'Zoeken naar audio of categorieën',
+          file: 'Zoeken naar bestanden of categorieën',
+        },
+        import: {
+          panel: 'Media-import',
+          label: {
+            types: 'Soorten',
+            medias: 'Media',
+            categories: 'Categorieën',
+          },
+          buttonImport: 'Importeren',
+          success: 'De media zijn geïmporteerd!',
+          error: 'Kan media niet importeren',
+        },
+        cache: {
+          panel: 'Lokale database',
+          total: 'Totaal :',
+          size: 'Maat :',
+          clear: {
+            confirm: 'Wilt u de database echt leegmaken?',
+            button: 'Lege database',
+            success: 'De database is geleegd!',
+            error: 'Kan de database niet dumpen',
+          },
+          cacheAll: {
+            button: 'Cache alle media',
+            confirm: 'Wilt u alle media in de cache opslaan?',
+            noMedia: 'Er zijn geen media om in de cache te plaatsen',
+            success: 'De media zijn in de cache opgeslagen!',
+            error: 'Fout bij het cachen van media',
+          },
+          refreshButton: 'Vernieuwen',
+        },
+        mediasCounter: 'Aantal media',
+        settings: {
+          hideUnsortedMedias: {
+            name: 'Media verbergen',
+            note: 'Verberg media op het tabblad die niet zijn gecategoriseerd',
+          },
+          hideThumbnail: {
+            name: 'Miniaturen verbergen',
+            note: 'Toont categoriekleur in plaats van een willekeurige miniatuur',
+          },
+          allowCaching: {
+            name: 'Caching van mediavoorbeelden toestaan',
+            note: 'Gebruikt lokale offline cache om mediavoorbeelden in de cache op te slaan',
+          },
+          mediaVolume: {
+            name: 'Mediavolume',
+            note: 'Mediaafspeelvolume op tabblad',
+          },
+          maxMediasPerPage: {
+            name: 'Maximaal aantal media per pagina',
+            note: 'Het maximale aantal media dat per pagina op het tabblad wordt weergegeven',
+          },
+          position: {
+            name: 'Knop positie',
+            btnsPositionKey: {
+              name: 'Relatieve positie van knoppen',
+              note: 'Naast welke andere knop moeten de knoppen worden geplaatst',
+            },
+            btnsPosition: {
+              name: 'Knop richting',
+              note: 'Richting van de knoppen op de chatbalk',
+            },
+          },
+          gif: {
+            name: 'GIF-instellingen',
+            enabled: {
+              name: 'Algemeen',
+              note: 'Vervangt het GIF-tabblad van Discord',
+            },
+            alwaysSendInstantly: {
+              name: 'Onmiddelijke levering',
+              note: 'Stuur de medialink of het bestand onmiddellijk',
+            },
+            alwaysUploadFile: {
+              name: 'Upload altijd als bestand',
+              note: 'Upload media als een bestand in plaats van een link te verzenden',
+            },
+          },
+          image: {
+            name: 'Beeldinstellingen',
+            enabled: {
+              name: 'Algemeen',
+              note: 'Schakel dit mediatype in',
+            },
+            showBtn: {
+              name: 'Knop',
+              note: 'Knop weergeven op chatbalk',
+            },
+            showStar: {
+              name: 'Ster',
+              note: 'Toont favoriete ster op media',
+            },
+            alwaysSendInstantly: {
+              name: 'Onmiddelijke levering',
+              note: 'Stuur de medialink of het bestand onmiddellijk',
+            },
+            alwaysUploadFile: {
+              name: 'Upload altijd als bestand',
+              note: 'Upload media als een bestand in plaats van een link te verzenden',
+            },
+          },
+          video: {
+            name: 'Beeldinstellingen',
+            enabled: {
+              name: 'Algemeen',
+              note: 'Schakel dit mediatype in',
+            },
+            showBtn: {
+              name: 'Knop',
+              note: 'Knop weergeven op chatbalk',
+            },
+            showStar: {
+              name: 'Ster',
+              note: 'Toont favoriete ster op media',
+            },
+            alwaysSendInstantly: {
+              name: 'Onmiddelijke levering',
+              note: 'Stuur de medialink of het bestand onmiddellijk',
+            },
+            alwaysUploadFile: {
+              name: 'Upload altijd als bestand',
+              note: 'Upload media als een bestand in plaats van een link te verzenden',
+            },
+          },
+          audio: {
+            name: 'Geluidsinstellingen',
+            enabled: {
+              name: 'Algemeen',
+              note: 'Schakel dit mediatype in',
+            },
+            showBtn: {
+              name: 'Knop',
+              note: 'Knop weergeven op chatbalk',
+            },
+            showStar: {
+              name: 'Ster',
+              note: 'Toont favoriete ster op media',
+            },
+          },
+          file: {
+            name: 'Bestandsinstellingen',
+            enabled: {
+              name: 'Algemeen',
+              note: 'Schakel dit mediatype in',
+            },
+            showBtn: {
+              name: 'Knop',
+              note: 'Knop weergeven op chatbalk',
+            },
+            showStar: {
+              name: 'Ster',
+              note: 'Toont favoriete ster op media',
+            },
+            alwaysSendInstantly: {
+              name: 'Onmiddelijke levering',
+              note: 'Stuur de medialink of het bestand onmiddellijk',
+            },
+            alwaysUploadFile: {
+              name: 'Upload altijd als bestand',
+              note: 'Upload media als een bestand in plaats van een link te verzenden',
+            },
+          },
+          panel: 'Plugin-instellingen',
+        },
+      },
+      no: { // Norwegian
+        tabName: {
+          image: 'Bilde',
+          video: 'Video',
+          audio: 'Lyd',
+          file: 'Fil',
+        },
+        create: 'Skape',
+        category: {
+          list: 'Kategorier',
+          unsorted: 'Ikke sortert',
+          create: 'Opprett en kategori',
+          edit: 'Rediger kategori',
+          delete: 'Slett kategori',
+          deleteConfirm: 'Denne kategorien inneholder underkategorier. De vil alle bli slettet. Er du sikker på at du vil slette kategorier?',
+          download: 'Last ned media',
+          placeholder: 'Kategori navn',
+          move: 'Bevege seg',
+          moveNext: 'Etter',
+          movePrevious: 'Før',
+          color: 'Farge',
+          copyColor: 'Kopier farge',
+          error: {
+            needName: 'Navnet kan ikke være tomt',
+            invalidNameLength: 'Navnet må inneholde maksimalt 20 tegn',
+            wrongColor: 'Fargen er ugyldig',
+            nameExists: 'dette navnet eksisterer allerede',
+            invalidCategory: 'Kategorien eksisterer ikke',
+            download: 'Kunne ikke laste ned medier',
+          },
+          success: {
+            create: 'Kategorien er opprettet!',
+            delete: 'Kategorien er slettet!',
+            edit: 'Kategorien er endret!',
+            move: 'Kategorien er flyttet!',
+            download: 'Mediene er lastet opp!',
+          },
+          emptyHint: 'Høyreklikk for å opprette en kategori!',
+        },
+        media: {
+          emptyHint: {
+            image: 'Klikk på stjernen i hjørnet av et bilde for å sette det i favorittene dine',
+            video: 'Klikk på stjernen i hjørnet av en video for å sette den i favorittene dine',
+            audio: 'Klikk på stjernen i hjørnet av en lyd for å sette den i favorittene dine',
+            file: 'Klikk på stjernen i hjørnet av en fil for å legge den til i favorittene dine',
+          },
+          addTo: 'Legge til',
+          moveTo: 'Bevege seg',
+          removeFrom: 'Fjern fra kategori',
+          copySource: 'Kopier mediekilde',
+          upload: {
+            title: 'Laste opp',
+            normal: 'Vanlig',
+            spoiler: 'Spoiler',
+          },
+          success: {
+            move: {
+              gif: 'GIF-en er flyttet!',
+              image: 'Bildet er flyttet!',
+              video: 'Videoen er flyttet!',
+              audio: 'Lyden er flyttet!',
+              file: 'Filen er flyttet!',
+            },
+            remove: {
+              gif: 'GIF-en er fjernet fra kategoriene!',
+              image: 'Bildet er fjernet fra kategoriene!',
+              video: 'Videoen er fjernet fra kategoriene!',
+              audio: 'Lyd er fjernet fra kategorier!',
+              file: 'Filen er fjernet fra kategoriene!',
+            },
+            download: {
+              gif: 'GIF-en er lastet opp!',
+              image: 'Bildet er lastet opp!',
+              video: 'Videoen er lastet opp!',
+              audio: 'Lyden er lastet ned!',
+              file: 'Filen er lastet ned!',
+            },
+          },
+          error: {
+            download: {
+              gif: 'Kunne ikke laste ned GIF',
+              image: 'Kunne ikke laste opp bildet',
+              video: 'Kunne ikke laste ned video',
+              audio: 'Kunne ikke laste ned lyd',
+              file: 'Kunne ikke laste ned filen',
+            },
+          },
+          controls: {
+            show: 'Vis ordrer',
+            hide: 'Skjul ordrer',
+          },
+          placeholder: {
+            gif: 'GIF-navn',
+            image: 'Bilde navn',
+            video: 'Video navn',
+            audio: 'Lydnavn',
+            file: 'Filnavn',
+          },
+        },
+        searchItem: {
+          gif: 'Søk etter GIF-er eller kategorier',
+          image: 'Søk etter bilder eller kategorier',
+          video: 'Søk etter videoer eller kategorier',
+          audio: 'Søk etter lyd eller kategorier',
+          file: 'Søker etter filer eller kategorier',
+        },
+        import: {
+          panel: 'Medieimport',
+          label: {
+            types: 'Typer',
+            medias: 'Media',
+            categories: 'Kategorier',
+          },
+          buttonImport: 'Import',
+          success: 'Media er importert!',
+          error: 'Kunne ikke importere media',
+        },
+        cache: {
+          panel: 'Lokal database',
+          total: 'Total :',
+          size: 'Størrelse:',
+          clear: {
+            confirm: 'Vil du virkelig tømme databasen?',
+            button: 'Tom database',
+            success: 'Databasen er tømt!',
+            error: 'Kunne ikke dumpe databasen',
+          },
+          cacheAll: {
+            button: 'Buffer alle medier',
+            confirm: 'Vil du bufre alle medier?',
+            noMedia: 'Det er ingen media å bufre',
+            success: 'Media har blitt cache!',
+            error: 'Feil under bufring av media',
+          },
+          refreshButton: 'Forfriske',
+        },
+        mediasCounter: 'Antall medier',
+        settings: {
+          hideUnsortedMedias: {
+            name: 'Skjul media',
+            note: 'Skjul medier fra fanen som ikke er kategorisert',
+          },
+          hideThumbnail: {
+            name: 'Skjul miniatyrbilder',
+            note: 'Viser kategorifarge i stedet for et tilfeldig miniatyrbilde',
+          },
+          allowCaching: {
+            name: 'Tillat bufring av medieforhåndsvisning',
+            note: 'Bruker lokal frakoblet hurtigbuffer for å bufre medieforhåndsvisning',
+          },
+          mediaVolume: {
+            name: 'Medievolum',
+            note: 'Medieavspillingsvolum i fanen',
+          },
+          maxMediasPerPage: {
+            name: 'Maksimalt antall medier per side',
+            note: 'Maksimalt antall medier som vises per side i fanen',
+          },
+          position: {
+            name: 'Knappposisjon',
+            btnsPositionKey: {
+              name: 'Relativ plassering av knapper',
+              note: 'Ved siden av hvilken annen knapp skal knappene plasseres',
+            },
+            btnsPosition: {
+              name: 'Knappretning',
+              note: 'Retning av knapper på chat bar',
+            },
+          },
+          gif: {
+            name: 'GIF-innstillinger',
+            enabled: {
+              name: 'Generell',
+              note: 'Erstatter Discords GIF-fane',
+            },
+            alwaysSendInstantly: {
+              name: 'Umiddelbar levering',
+              note: 'Send mediekoblingen eller filen umiddelbart',
+            },
+            alwaysUploadFile: {
+              name: 'Last alltid opp som fil',
+              note: 'Last opp media som en fil i stedet for å sende en lenke',
+            },
+          },
+          image: {
+            name: 'Bildeinnstillinger',
+            enabled: {
+              name: 'Generell',
+              note: 'Aktiver denne medietypen',
+            },
+            showBtn: {
+              name: 'Knapp',
+              note: 'Vis knapp på chattelinjen',
+            },
+            showStar: {
+              name: 'Stjerne',
+              note: 'Viser favorittstjerne på media',
+            },
+            alwaysSendInstantly: {
+              name: 'Umiddelbar levering',
+              note: 'Send mediekoblingen eller filen umiddelbart',
+            },
+            alwaysUploadFile: {
+              name: 'Last alltid opp som fil',
+              note: 'Last opp media som en fil i stedet for å sende en lenke',
+            },
+          },
+          video: {
+            name: 'Videoinnstillinger',
+            enabled: {
+              name: 'Generell',
+              note: 'Aktiver denne medietypen',
+            },
+            showBtn: {
+              name: 'Knapp',
+              note: 'Vis knapp på chattelinjen',
+            },
+            showStar: {
+              name: 'Stjerne',
+              note: 'Viser favorittstjerne på media',
+            },
+            alwaysSendInstantly: {
+              name: 'Umiddelbar levering',
+              note: 'Send mediekoblingen eller filen umiddelbart',
+            },
+            alwaysUploadFile: {
+              name: 'Last alltid opp som fil',
+              note: 'Last opp media som en fil i stedet for å sende en lenke',
+            },
+          },
+          audio: {
+            name: 'Lydinnstillinger',
+            enabled: {
+              name: 'Generell',
+              note: 'Aktiver denne medietypen',
+            },
+            showBtn: {
+              name: 'Knapp',
+              note: 'Vis knapp på chattelinjen',
+            },
+            showStar: {
+              name: 'Stjerne',
+              note: 'Viser favorittstjerne på media',
+            },
+          },
+          file: {
+            name: 'Filinnstillinger',
+            enabled: {
+              name: 'Generell',
+              note: 'Aktiver denne medietypen',
+            },
+            showBtn: {
+              name: 'Knapp',
+              note: 'Vis knapp på chattelinjen',
+            },
+            showStar: {
+              name: 'Stjerne',
+              note: 'Viser favorittstjerne på media',
+            },
+            alwaysSendInstantly: {
+              name: 'Umiddelbar levering',
+              note: 'Send mediekoblingen eller filen umiddelbart',
+            },
+            alwaysUploadFile: {
+              name: 'Last alltid opp som fil',
+              note: 'Last opp media som en fil i stedet for å sende en lenke',
+            },
+          },
+          panel: 'Plugin-innstillinger',
+        },
+      },
+      pl: { // Polish
+        tabName: {
+          image: 'Obrazek',
+          video: 'Wideo',
+          audio: 'Audio',
+          file: 'Plik',
+        },
+        create: 'Stwórz',
+        category: {
+          list: 'Kategorie',
+          unsorted: 'Nie posortowane',
+          create: 'Utwórz kategorię',
+          edit: 'Edytuj kategorię',
+          delete: 'Usuń kategorię',
+          deleteConfirm: 'Ta kategoria zawiera podkategorie. Wszystkie zostaną usunięte. Czy na pewno chcesz usunąć kategorie?',
+          download: 'Pobierz multimedia',
+          placeholder: 'Nazwa Kategorii',
+          move: 'Ruszaj się',
+          moveNext: 'Po',
+          movePrevious: 'Przed',
+          color: 'Kolor',
+          copyColor: 'Kopiuj kolor',
+          error: {
+            needName: 'Nazwa nie może być pusta',
+            invalidNameLength: 'Nazwa musi zawierać maksymalnie 20 znaków',
+            wrongColor: 'Kolor jest nieprawidłowy',
+            nameExists: 'ta nazwa już istnieje',
+            invalidCategory: 'Kategoria nie istnieje',
+            download: 'Nie udało się pobrać multimediów',
+          },
+          success: {
+            create: 'Kategoria została stworzona!',
+            delete: 'Kategoria została usunięta!',
+            edit: 'Kategoria została zmieniona!',
+            move: 'Kategoria została przeniesiona!',
+            download: 'Media zostały przesłane!',
+          },
+          emptyHint: 'Kliknij prawym przyciskiem myszy, aby utworzyć kategorię!',
+        },
+        media: {
+          emptyHint: {
+            image: 'Kliknij gwiazdkę w rogu obrazu, aby umieścić go w ulubionych',
+            video: 'Kliknij gwiazdkę w rogu filmu, aby umieścić go w ulubionych',
+            audio: 'Kliknij gwiazdkę w rogu nagrania, aby umieścić go w ulubionych your',
+            file: 'Kliknij gwiazdkę w rogu pliku, aby dodać go do ulubionych',
+          },
+          addTo: 'Dodaj',
+          moveTo: 'Ruszaj się',
+          removeFrom: 'Usuń z kategorii',
+          copySource: 'Kopiuj źródło multimediów',
+          upload: {
+            title: 'Przekazać plik',
+            normal: 'Normalna',
+            spoiler: 'Spojler',
+          },
+          success: {
+            move: {
+              gif: 'GIF został przeniesiony!',
+              image: 'Obraz został przeniesiony!',
+              video: 'Film został przeniesiony!',
+              audio: 'Dźwięk został przeniesiony!',
+              file: 'Plik został przeniesiony!',
+            },
+            remove: {
+              gif: 'GIF został usunięty z kategorii!',
+              image: 'Obraz został usunięty z kategorii!',
+              video: 'Film został usunięty z kategorii!',
+              audio: 'Dźwięk został usunięty z kategorii!',
+              file: 'Plik został usunięty z kategorii!',
+            },
+            download: {
+              gif: 'GIF został przesłany!',
+              image: 'Obraz został przesłany!',
+              video: 'Film został przesłany!',
+              audio: 'Dźwięk został pobrany!',
+              file: 'Plik został pobrany!',
+            },
+          },
+          error: {
+            download: {
+              gif: 'Nie udało się pobrać GIF-a',
+              image: 'Nie udało się przesłać obrazu',
+              video: 'Nie udało się pobrać wideo',
+              audio: 'Nie udało się pobrać dźwięku',
+              file: 'Nie udało się pobrać pliku',
+            },
+          },
+          controls: {
+            show: 'Pokaż zamówienia',
+            hide: 'Ukryj zamówienia',
+          },
+          placeholder: {
+            gif: 'Nazwa GIF-a',
+            image: 'Nazwa obrazu',
+            video: 'Nazwa wideo',
+            audio: 'Nazwa dźwięku',
+            file: 'Nazwa pliku',
+          },
+        },
+        searchItem: {
+          gif: 'Wyszukaj GIF-y lub kategorie',
+          image: 'Wyszukaj obrazy lub kategorie',
+          video: 'Wyszukaj filmy lub kategorie',
+          audio: 'Wyszukaj audio lub kategorie',
+          file: 'Wyszukiwanie plików lub kategorii',
+        },
+        import: {
+          panel: 'Import multimediów',
+          label: {
+            types: 'Typy',
+            medias: 'Głoska bezdźwięczna',
+            categories: 'Kategorie',
+          },
+          buttonImport: 'Import',
+          success: 'Media zostały zaimportowane!',
+          error: 'Nie udało się zaimportować multimediów',
+        },
+        cache: {
+          panel: 'Lokalna baza danych',
+          total: 'Całkowity :',
+          size: 'Rozmiar:',
+          clear: {
+            confirm: 'Czy na pewno chcesz opróżnić bazę danych?',
+            button: 'Pusta baza danych',
+            success: 'Baza danych została opróżniona!',
+            error: 'Nie udało się zrzucić bazy danych',
+          },
+          cacheAll: {
+            button: 'Buforuj wszystkie multimedia',
+            confirm: 'Czy chcesz buforować wszystkie multimedia?',
+            noMedia: 'Brak multimediów do buforowania',
+            success: 'Media zostały zapisane w pamięci podręcznej!',
+            error: 'Błąd podczas buforowania multimediów',
+          },
+          refreshButton: 'Odświeżać',
+        },
+        mediasCounter: 'Liczba mediów',
+        settings: {
+          hideUnsortedMedias: {
+            name: 'Ukryj multimedia',
+            note: 'Ukryj multimedia na karcie, które nie są skategoryzowane',
+          },
+          hideThumbnail: {
+            name: 'Ukryj miniatury',
+            note: 'Pokazuje kolor kategorii zamiast losowej miniatury',
+          },
+          allowCaching: {
+            name: 'Zezwalaj na buforowanie podglądu multimediów',
+            note: 'Używa lokalnej pamięci podręcznej offline do buforowania podglądu multimediów',
+          },
+          mediaVolume: {
+            name: 'Głośność multimediów',
+            note: 'Głośność odtwarzania multimediów w zakładce',
+          },
+          maxMediasPerPage: {
+            name: 'Maksymalna liczba multimediów na stronę',
+            note: 'Maksymalna liczba multimediów wyświetlanych na stronie w zakładce',
+          },
+          position: {
+            name: 'Pozycja przycisku',
+            btnsPositionKey: {
+              name: 'Względne położenie przycisków',
+              note: 'Obok jakiego innego przycisku należy umieścić przyciski',
+            },
+            btnsPosition: {
+              name: 'Kierunek przycisku',
+              note: 'Kierunek przycisków na pasku czatu',
+            },
+          },
+          gif: {
+            name: 'Ustawienia GIF',
+            enabled: {
+              name: 'Ogólny',
+              note: 'Zastępuje kartę GIF Discorda',
+            },
+            alwaysSendInstantly: {
+              name: 'Natychmiastowa dostawa',
+              note: 'Natychmiast wyślij link lub plik do multimediów',
+            },
+            alwaysUploadFile: {
+              name: 'Zawsze przesyłaj jako plik',
+              note: 'Zamiast wysyłać link, prześlij multimedia jako plik',
+            },
+          },
+          image: {
+            name: 'Ustawienia obrazu',
+            enabled: {
+              name: 'Ogólny',
+              note: 'Włącz ten typ multimediów',
+            },
+            showBtn: {
+              name: 'Przycisk',
+              note: 'Pokaż przycisk na pasku czatu',
+            },
+            showStar: {
+              name: 'Gwiazda',
+              note: 'Pokazuje ulubioną gwiazdę w mediach',
+            },
+            alwaysSendInstantly: {
+              name: 'Natychmiastowa dostawa',
+              note: 'Natychmiast wyślij link lub plik do multimediów',
+            },
+            alwaysUploadFile: {
+              name: 'Zawsze przesyłaj jako plik',
+              note: 'Zamiast wysyłać link, prześlij multimedia jako plik',
+            },
+          },
+          video: {
+            name: 'Ustawienia wideo',
+            enabled: {
+              name: 'Ogólny',
+              note: 'Włącz ten typ multimediów',
+            },
+            showBtn: {
+              name: 'Przycisk',
+              note: 'Pokaż przycisk na pasku czatu',
+            },
+            showStar: {
+              name: 'Gwiazda',
+              note: 'Pokazuje ulubioną gwiazdę w mediach',
+            },
+            alwaysSendInstantly: {
+              name: 'Natychmiastowa dostawa',
+              note: 'Natychmiast wyślij link lub plik do multimediów',
+            },
+            alwaysUploadFile: {
+              name: 'Zawsze przesyłaj jako plik',
+              note: 'Zamiast wysyłać link, prześlij multimedia jako plik',
+            },
+          },
+          audio: {
+            name: 'Ustawienia dźwięku',
+            enabled: {
+              name: 'Ogólny',
+              note: 'Włącz ten typ multimediów',
+            },
+            showBtn: {
+              name: 'Przycisk',
+              note: 'Pokaż przycisk na pasku czatu',
+            },
+            showStar: {
+              name: 'Gwiazda',
+              note: 'Pokazuje ulubioną gwiazdę w mediach',
+            },
+          },
+          file: {
+            name: 'Ustawienia pliku',
+            enabled: {
+              name: 'Ogólny',
+              note: 'Włącz ten typ multimediów',
+            },
+            showBtn: {
+              name: 'Przycisk',
+              note: 'Pokaż przycisk na pasku czatu',
+            },
+            showStar: {
+              name: 'Gwiazda',
+              note: 'Pokazuje ulubioną gwiazdę w mediach',
+            },
+            alwaysSendInstantly: {
+              name: 'Natychmiastowa dostawa',
+              note: 'Natychmiast wyślij link lub plik do multimediów',
+            },
+            alwaysUploadFile: {
+              name: 'Zawsze przesyłaj jako plik',
+              note: 'Zamiast wysyłać link, prześlij multimedia jako plik',
+            },
+          },
+          panel: 'Ustawienia wtyczki',
+        },
+      },
+      pt: { // Portuguese (Brazil)
+        tabName: {
+          image: 'Foto',
+          video: 'Vídeo',
+          audio: 'Áudio',
+          file: 'Arquivo',
+        },
+        create: 'Crio',
+        category: {
+          list: 'Categorias',
+          unsorted: 'Não classificado',
+          create: 'Crie uma categoria',
+          edit: 'Editar categoria',
+          delete: 'Apagar categoria',
+          deleteConfirm: 'Esta categoria contém subcategorias. Todos eles serão excluídos. Tem certeza de que deseja excluir as categorias?',
+          download: 'Baixar mídia',
+          placeholder: 'Nome da Categoria',
+          move: 'Mover',
+          moveNext: 'Após',
+          movePrevious: 'Antes',
+          color: 'Cor',
+          copyColor: 'Cor da cópia',
+          error: {
+            needName: 'O nome não pode estar vazio',
+            invalidNameLength: 'O nome deve conter no máximo 20 caracteres',
+            wrongColor: 'Cor é inválida',
+            nameExists: 'Este nome já existe',
+            invalidCategory: 'A categoria não existe',
+            download: 'Falha ao baixar mídia',
+          },
+          success: {
+            create: 'A categoria foi criada!',
+            delete: 'A categoria foi excluída!',
+            edit: 'A categoria foi alterada!',
+            move: 'A categoria foi movida!',
+            download: 'A mídia foi carregada!',
+          },
+          emptyHint: 'Clique com o botão direito para criar uma categoria!',
+        },
+        media: {
+          emptyHint: {
+            image: 'Clique na estrela no canto de uma imagem para colocá-la em seus favoritos',
+            video: 'Clique na estrela no canto de um vídeo para colocá-lo em seus favoritos',
+            audio: 'Clique na estrela no canto de um áudio para colocá-lo em seus favoritos',
+            file: 'Clique na estrela no canto de um arquivo para adicioná-lo aos seus favoritos',
+          },
+          addTo: 'Adicionar',
+          moveTo: 'Mover',
+          removeFrom: 'Remover da categoria',
+          copySource: 'Copiar fonte de mídia',
+          upload: {
+            title: 'Envio',
+            normal: 'Normal',
+            spoiler: 'Spoiler',
+          },
+          success: {
+            move: {
+              gif: 'O GIF foi movido!',
+              image: 'A imagem foi movida!',
+              video: 'O vídeo foi movido!',
+              audio: 'O áudio foi movido!',
+              file: 'O arquivo foi movido!',
+            },
+            remove: {
+              gif: 'O GIF foi removido das categorias!',
+              image: 'A imagem foi removida das categorias!',
+              video: 'O vídeo foi removido das categorias!',
+              audio: 'O áudio foi removido das categorias!',
+              file: 'O arquivo foi removido das categorias!',
+            },
+            download: {
+              gif: 'O GIF foi carregado!',
+              image: 'A imagem foi carregada!',
+              video: 'O vídeo foi carregado!',
+              audio: 'O áudio foi baixado!',
+              file: 'O arquivo foi baixado!',
+            },
+          },
+          error: {
+            download: {
+              gif: 'Falha ao baixar o GIF',
+              image: 'Falha ao carregar imagem',
+              video: 'Falha ao baixar o vídeo',
+              audio: 'Falha ao baixar áudio',
+              file: 'Falha ao baixar o arquivo',
+            },
+          },
+          controls: {
+            show: 'Mostrar pedidos',
+            hide: 'Ocultar pedidos',
+          },
+          placeholder: {
+            gif: 'Nome do GIF',
+            image: 'Nome da imagem',
+            video: 'Nome do vídeo',
+            audio: 'Nome de áudio',
+            file: 'Nome do arquivo',
+          },
+        },
+        searchItem: {
+          gif: 'Pesquise GIFs ou categorias',
+          image: 'Pesquise imagens ou categorias',
+          video: 'Pesquise vídeos ou categorias',
+          audio: 'Pesquise áudios ou categorias',
+          file: 'Procurando por arquivos ou categorias',
+        },
+        import: {
+          panel: 'Importação de mídia',
+          label: {
+            types: 'Tipos',
+            medias: 'meios de comunicação',
+            categories: 'Categorias',
+          },
+          buttonImport: 'Importar',
+          success: 'A mídia foi importada!',
+          error: 'Falha ao importar mídia',
+        },
+        cache: {
+          panel: 'Banco de dados local',
+          total: 'Total:',
+          size: 'Tamanho :',
+          clear: {
+            confirm: 'Você realmente deseja esvaziar o banco de dados?',
+            button: 'Banco de dados vazio',
+            success: 'O banco de dados foi esvaziado!',
+            error: 'Falha ao despejar o banco de dados',
+          },
+          cacheAll: {
+            button: 'Armazenar em cache todas as mídias',
+            confirm: 'Você deseja armazenar em cache todas as mídias?',
+            noMedia: 'Não há mídia para armazenar em cache',
+            success: 'A mídia foi armazenada em cache!',
+            error: 'Falha ao armazenar mídia em cache',
+          },
+          refreshButton: 'Atualizar',
+        },
+        mediasCounter: 'Número de mídias',
+        settings: {
+          hideUnsortedMedias: {
+            name: 'Ocultar mídia',
+            note: 'Ocultar mídia da guia que não está categorizada',
+          },
+          hideThumbnail: {
+            name: 'Ocultar miniaturas',
+            note: 'Mostra a cor da categoria em vez de uma miniatura aleatória',
+          },
+          allowCaching: {
+            name: 'Permitir cache de visualização de mídia',
+            note: 'Usa cache offline local para armazenar em cache a visualização de mídia',
+          },
+          mediaVolume: {
+            name: 'Volume de mídia',
+            note: 'Volume de reprodução de mídia na guia',
+          },
+          maxMediasPerPage: {
+            name: 'Número máximo de mídia por página',
+            note: 'O número máximo de mídias exibidas por página na guia',
+          },
+          position: {
+            name: 'Posição do botão',
+            btnsPositionKey: {
+              name: 'Posição relativa dos botões',
+              note: 'Ao lado de qual outro botão os botões devem ser colocados',
+            },
+            btnsPosition: {
+              name: 'Direção do botão',
+              note: 'Direção dos botões na barra de chat',
+            },
+          },
+          gif: {
+            name: 'Configurações de GIF',
+            enabled: {
+              name: 'Em geral',
+              note: 'Substitui a guia GIF do Discord',
+            },
+            alwaysSendInstantly: {
+              name: 'Entrega imediata',
+              note: 'Envie imediatamente o link ou arquivo de mídia',
+            },
+            alwaysUploadFile: {
+              name: 'Sempre carregue como arquivo',
+              note: 'Faça upload de mídia como um arquivo em vez de enviar um link',
+            },
+          },
+          image: {
+            name: 'Configurações de imagem',
+            enabled: {
+              name: 'Em geral',
+              note: 'Habilite este tipo de mídia',
+            },
+            showBtn: {
+              name: 'Botão',
+              note: 'Mostrar botão na barra de chat',
+            },
+            showStar: {
+              name: 'Estrela',
+              note: 'Mostra estrela favorita na mídia',
+            },
+            alwaysSendInstantly: {
+              name: 'Entrega imediata',
+              note: 'Envie imediatamente o link ou arquivo de mídia',
+            },
+            alwaysUploadFile: {
+              name: 'Sempre carregue como arquivo',
+              note: 'Faça upload de mídia como um arquivo em vez de enviar um link',
+            },
+          },
+          video: {
+            name: 'Configurações de vídeo',
+            enabled: {
+              name: 'Em geral',
+              note: 'Habilite este tipo de mídia',
+            },
+            showBtn: {
+              name: 'Botão',
+              note: 'Mostrar botão na barra de chat',
+            },
+            showStar: {
+              name: 'Estrela',
+              note: 'Mostra estrela favorita na mídia',
+            },
+            alwaysSendInstantly: {
+              name: 'Entrega imediata',
+              note: 'Envie imediatamente o link ou arquivo de mídia',
+            },
+            alwaysUploadFile: {
+              name: 'Sempre carregue como arquivo',
+              note: 'Faça upload de mídia como um arquivo em vez de enviar um link',
+            },
+          },
+          audio: {
+            name: 'Configurações de áudio',
+            enabled: {
+              name: 'Em geral',
+              note: 'Habilite este tipo de mídia',
+            },
+            showBtn: {
+              name: 'Botão',
+              note: 'Mostrar botão na barra de chat',
+            },
+            showStar: {
+              name: 'Estrela',
+              note: 'Mostra estrela favorita na mídia',
+            },
+          },
+          file: {
+            name: 'Configurações de arquivo',
+            enabled: {
+              name: 'Em geral',
+              note: 'Habilite este tipo de mídia',
+            },
+            showBtn: {
+              name: 'Botão',
+              note: 'Mostrar botão na barra de chat',
+            },
+            showStar: {
+              name: 'Estrela',
+              note: 'Mostra estrela favorita na mídia',
+            },
+            alwaysSendInstantly: {
+              name: 'Entrega imediata',
+              note: 'Envie imediatamente o link ou arquivo de mídia',
+            },
+            alwaysUploadFile: {
+              name: 'Sempre carregue como arquivo',
+              note: 'Faça upload de mídia como um arquivo em vez de enviar um link',
+            },
+          },
+          panel: 'Configurações de plug-in',
+        },
+      },
+      ro: { // Romanian
+        tabName: {
+          image: 'Imagine',
+          video: 'Video',
+          audio: 'Audio',
+          file: 'Fişier',
+        },
+        create: 'Crea',
+        category: {
+          list: 'Categorii',
+          unsorted: 'Nu sunt sortate',
+          create: 'Creați o categorie',
+          edit: 'Editați categoria',
+          delete: 'Ștergeți categoria',
+          deleteConfirm: 'Această categorie conține subcategorii. Toate vor fi șterse. Sigur doriți să ștergeți categoriile?',
+          download: 'Descărcați conținut media',
+          placeholder: 'Numele categoriei',
+          move: 'Mișcare',
+          moveNext: 'După',
+          movePrevious: 'Inainte de',
+          color: 'Culoare',
+          copyColor: 'Copiați culoarea',
+          error: {
+            needName: 'Numele nu poate fi gol',
+            invalidNameLength: 'Numele trebuie să conțină maximum 20 de caractere',
+            wrongColor: 'Culoarea nu este validă',
+            nameExists: 'Acest nume există deja',
+            invalidCategory: 'Categoria nu există',
+            download: 'Descărcarea conținutului media nu a reușit',
+          },
+          success: {
+            create: 'Categoria a fost creată!',
+            delete: 'Categoria a fost ștearsă!',
+            edit: 'Categoria a fost schimbată!',
+            move: 'Categoria a fost mutată!',
+            download: 'Media a fost încărcată!',
+          },
+          emptyHint: 'Faceți clic dreapta pentru a crea o categorie!',
+        },
+        media: {
+          emptyHint: {
+            image: 'Faceți clic pe steaua din colțul unei imagini pentru ao pune în preferatele dvs.',
+            video: 'Faceți clic pe steaua din colțul unui videoclip pentru a-l introduce în preferatele dvs.',
+            audio: 'Faceți clic pe steaua din colțul unui sunet pentru ao pune în preferatele dvs.',
+            file: 'Faceți clic pe steaua din colțul unui fișier pentru a-l adăuga la favorite',
+          },
+          addTo: 'Adăuga',
+          moveTo: 'Mișcare',
+          removeFrom: 'Eliminați din categorie',
+          copySource: 'Copiați sursa media',
+          upload: {
+            title: 'Încărcare',
+            normal: 'Normal',
+            spoiler: 'Spoiler',
+          },
+          success: {
+            move: {
+              gif: 'GIF-ul a fost mutat!',
+              image: 'Imaginea a fost mutată!',
+              video: 'Videoclipul a fost mutat!',
+              audio: 'Sunetul a fost mutat!',
+              file: 'Fișierul a fost mutat!',
+            },
+            remove: {
+              gif: 'GIF-ul a fost eliminat din categorii!',
+              image: 'Imaginea a fost eliminată din categorii!',
+              video: 'Videoclipul a fost eliminat din categorii!',
+              audio: 'Sunetul a fost eliminat din categorii!',
+              file: 'Fișierul a fost eliminat din categorii!',
+            },
+            download: {
+              gif: 'GIF-ul a fost încărcat!',
+              image: 'Imaginea a fost încărcată!',
+              video: 'Videoclipul a fost încărcat!',
+              audio: 'Sunetul a fost descărcat!',
+              file: 'Fișierul a fost descărcat!',
+            },
+          },
+          error: {
+            download: {
+              gif: 'Nu s-a putut descărca GIF',
+              image: 'Nu s-a încărcat imaginea',
+              video: 'Descărcarea videoclipului nu a reușit',
+              audio: 'Descărcarea audio nu a reușit',
+              file: 'Nu s-a putut descărca fișierul',
+            },
+          },
+          controls: {
+            show: 'Afișați comenzile',
+            hide: 'Ascundeți comenzile',
+          },
+          placeholder: {
+            gif: 'Nume GIF',
+            image: 'Numele imaginii',
+            video: 'Numele videoclipului',
+            audio: 'Numele audio',
+            file: 'Nume de fișier',
+          },
+        },
+        searchItem: {
+          gif: 'Căutați GIF-uri sau categorii',
+          image: 'Căutați imagini sau categorii',
+          video: 'Căutați videoclipuri sau categorii',
+          audio: 'Căutați audio sau categorii',
+          file: 'Căutarea fișierelor sau categoriilor',
+        },
+        import: {
+          panel: 'Import media',
+          label: {
+            types: 'Tipuri',
+            medias: 'Mass-media',
+            categories: 'Categorii',
+          },
+          buttonImport: 'Import',
+          success: 'Media a fost importată!',
+          error: 'Nu s-a putut importa conținut media',
+        },
+        cache: {
+          panel: 'Baza de date locală',
+          total: 'Total:',
+          size: 'Mărimea :',
+          clear: {
+            confirm: 'Chiar doriți să goliți baza de date?',
+            button: 'Baza de date goală',
+            success: 'Baza de date a fost golită!',
+            error: 'Nu s-a putut descărca baza de date',
+          },
+          cacheAll: {
+            button: 'Memorați în cache toate conținuturile media',
+            confirm: 'Doriți să puneți în cache toate conținuturile media?',
+            noMedia: 'Nu există suport de stocare în cache',
+            success: 'Media a fost stocată în cache!',
+            error: 'Eroare la stocarea în cache a media',
+          },
+          refreshButton: 'Reîmprospăta',
+        },
+        mediasCounter: 'Numărul de medii',
+        settings: {
+          hideUnsortedMedias: {
+            name: 'Ascunde conținut media',
+            note: 'Ascundeți media din fila care nu sunt clasificate',
+          },
+          hideThumbnail: {
+            name: 'Ascunde miniaturile',
+            note: 'Afișează culoarea categoriei în loc de o miniatură aleatorie',
+          },
+          allowCaching: {
+            name: 'Permite stocarea în cache a previzualizării media',
+            note: 'Utilizează memoria cache offline locală pentru a stoca în cache previzualizarea media',
+          },
+          mediaVolume: {
+            name: 'Volumul media',
+            note: 'Volumul redării media în filă',
+          },
+          maxMediasPerPage: {
+            name: 'Număr maxim de conținut media pe pagină',
+            note: 'Numărul maxim de conținut media afișat pe pagină în filă',
+          },
+          position: {
+            name: 'Poziția butonului',
+            btnsPositionKey: {
+              name: 'Poziția relativă a butoanelor',
+              note: 'Lângă ce alt buton ar trebui să fie plasate butoanele',
+            },
+            btnsPosition: {
+              name: 'Direcția butonului',
+              note: 'Direcția butoanelor de pe bara de chat',
+            },
+          },
+          gif: {
+            name: 'setări GIF',
+            enabled: {
+              name: 'General',
+              note: 'Înlocuiește fila GIF a Discord',
+            },
+            alwaysSendInstantly: {
+              name: 'Livrare imediata',
+              note: 'Trimiteți imediat linkul media sau fișierul',
+            },
+            alwaysUploadFile: {
+              name: 'Încărcați întotdeauna ca fișier',
+              note: 'Încărcați media ca fișier, în loc să trimiteți un link',
+            },
+          },
+          image: {
+            name: 'Setări imagine',
+            enabled: {
+              name: 'General',
+              note: 'Activați acest tip de media',
+            },
+            showBtn: {
+              name: 'Buton',
+              note: 'Afișați butonul de pe bara de chat',
+            },
+            showStar: {
+              name: 'Stea',
+              note: 'Afișează vedeta preferată pe media',
+            },
+            alwaysSendInstantly: {
+              name: 'Livrare imediata',
+              note: 'Trimiteți imediat linkul media sau fișierul',
+            },
+            alwaysUploadFile: {
+              name: 'Încărcați întotdeauna ca fișier',
+              note: 'Încărcați media ca fișier, în loc să trimiteți un link',
+            },
+          },
+          video: {
+            name: 'Setari video',
+            enabled: {
+              name: 'General',
+              note: 'Activați acest tip de media',
+            },
+            showBtn: {
+              name: 'Buton',
+              note: 'Afișați butonul de pe bara de chat',
+            },
+            showStar: {
+              name: 'Stea',
+              note: 'Afișează vedeta preferată pe media',
+            },
+            alwaysSendInstantly: {
+              name: 'Livrare imediata',
+              note: 'Trimiteți imediat linkul media sau fișierul',
+            },
+            alwaysUploadFile: {
+              name: 'Încărcați întotdeauna ca fișier',
+              note: 'Încărcați media ca fișier, în loc să trimiteți un link',
+            },
+          },
+          audio: {
+            name: 'Setari audio',
+            enabled: {
+              name: 'General',
+              note: 'Activați acest tip de media',
+            },
+            showBtn: {
+              name: 'Buton',
+              note: 'Afișați butonul de pe bara de chat',
+            },
+            showStar: {
+              name: 'Stea',
+              note: 'Afișează vedeta preferată pe media',
+            },
+          },
+          file: {
+            name: 'Setări fișiere',
+            enabled: {
+              name: 'General',
+              note: 'Activați acest tip de media',
+            },
+            showBtn: {
+              name: 'Buton',
+              note: 'Afișați butonul de pe bara de chat',
+            },
+            showStar: {
+              name: 'Stea',
+              note: 'Afișează vedeta preferată pe media',
+            },
+            alwaysSendInstantly: {
+              name: 'Livrare imediata',
+              note: 'Trimiteți imediat linkul media sau fișierul',
+            },
+            alwaysUploadFile: {
+              name: 'Încărcați întotdeauna ca fișier',
+              note: 'Încărcați media ca fișier, în loc să trimiteți un link',
+            },
+          },
+          panel: 'Setări plugin',
+        },
+      },
+      ru: { // Russian
+        tabName: {
+          image: 'Картина',
+          video: 'Видео',
+          audio: 'Аудио',
+          file: 'Файл',
+        },
+        create: 'Создавать',
+        category: {
+          list: 'Категории',
+          unsorted: 'Не отсортировано',
+          create: 'Создать категорию',
+          edit: 'Изменить категорию',
+          delete: 'Удалить категорию',
+          deleteConfirm: 'Эта категория содержит подкатегории. Все они будут удалены. Вы уверены, что хотите удалить категории?',
+          download: 'Скачать медиа',
+          placeholder: 'Название категории',
+          move: 'Двигаться',
+          moveNext: 'После',
+          movePrevious: 'Перед',
+          color: 'Цвет',
+          copyColor: 'Цвет копии',
+          error: {
+            needName: 'Имя не может быть пустым',
+            invalidNameLength: 'Имя должно содержать не более 20 символов.',
+            wrongColor: 'Цвет недействителен',
+            nameExists: 'Это имя уже существует',
+            invalidCategory: 'Категория не существует',
+            download: 'Не удалось скачать медиа',
+          },
+          success: {
+            create: 'Категория создана!',
+            delete: 'Категория удалена!',
+            edit: 'Категория изменена!',
+            move: 'Категория перемещена!',
+            download: 'Медиа загружена!',
+          },
+          emptyHint: 'Щелкните правой кнопкой мыши, чтобы создать категорию!',
+        },
+        media: {
+          emptyHint: {
+            image: 'Нажмите на звезду в углу изображения, чтобы добавить его в избранное.',
+            video: 'Нажмите на звездочку в углу видео, чтобы добавить его в избранное.',
+            audio: 'Нажмите на звездочку в углу аудио, чтобы добавить его в избранное.',
+            file: 'Нажмите на звездочку в углу файла, чтобы добавить его в избранное.',
+          },
+          addTo: 'Добавлять',
+          moveTo: 'Двигаться',
+          removeFrom: 'Удалить из категории',
+          copySource: 'Копировать медиа-источник',
+          upload: {
+            title: 'Загрузить',
+            normal: 'Обычный',
+            spoiler: 'Спойлер',
+          },
+          success: {
+            move: {
+              gif: 'Гифку перенесли!',
+              image: 'Изображение было перемещено!',
+              video: 'Видео перемещено!',
+              audio: 'Звук был перемещен!',
+              file: 'Файл перемещен!',
+            },
+            remove: {
+              gif: 'Гифка удалена из категорий!',
+              image: 'Изображение удалено из категорий!',
+              video: 'Видео удалено из категорий!',
+              audio: 'Аудио удалено из категорий!',
+              file: 'Файл удален из категорий!',
+            },
+            download: {
+              gif: 'Гифка загружена!',
+              image: 'Изображение загружено!',
+              video: 'Видео загружено!',
+              audio: 'Аудио скачано!',
+              file: 'Файл скачан!',
+            },
+          },
+          error: {
+            download: {
+              gif: 'Не удалось скачать GIF',
+              image: 'Не удалось загрузить изображение',
+              video: 'Не удалось скачать видео',
+              audio: 'Не удалось скачать аудио',
+              file: 'Не удалось загрузить файл',
+            },
+          },
+          controls: {
+            show: 'Показать заказы',
+            hide: 'Скрыть заказы',
+          },
+          placeholder: {
+            gif: 'Имя GIF',
+            image: 'Имя изображения',
+            video: 'Название видео',
+            audio: 'Название аудио',
+            file: 'Имя файла',
+          },
+        },
+        searchItem: {
+          gif: 'Поиск GIF-файлов или категорий',
+          image: 'Поиск изображений или категорий',
+          video: 'Поиск видео или категорий',
+          audio: 'Поиск аудио или категорий',
+          file: 'Поиск файлов или категорий',
+        },
+        import: {
+          panel: 'Импорт медиа',
+          label: {
+            types: 'Типы',
+            medias: 'СМИ',
+            categories: 'Категории',
+          },
+          buttonImport: 'Импортировать',
+          success: 'Носитель был импортирован!',
+          error: 'Не удалось импортировать медиафайлы.',
+        },
+        cache: {
+          panel: 'Локальная база данных',
+          total: 'Общий :',
+          size: 'Размер :',
+          clear: {
+            confirm: 'Вы действительно хотите очистить базу данных?',
+            button: 'Пустая база данных',
+            success: 'База данных очищена!',
+            error: 'Не удалось сбросить базу данных',
+          },
+          cacheAll: {
+            button: 'Кэшировать все медиа',
+            confirm: 'Вы хотите кэшировать все медиафайлы?',
+            noMedia: 'Нет носителя для кэширования',
+            success: 'Медиафайл был кэширован!',
+            error: 'Сбой при кэшировании мультимедиа',
+          },
+          refreshButton: 'Обновить',
+        },
+        mediasCounter: 'Количество носителей',
+        settings: {
+          hideUnsortedMedias: {
+            name: 'Скрыть медиа',
+            note: 'Скрыть на вкладке медиафайлы, не относящиеся к категориям',
+          },
+          hideThumbnail: {
+            name: 'Скрыть миниатюры',
+            note: 'Показывает цвет категории вместо случайного эскиза.',
+          },
+          allowCaching: {
+            name: 'Разрешить кэширование предварительного просмотра мультимедиа',
+            note: 'Использует локальный автономный кеш для кэширования предварительного просмотра мультимедиа.',
+          },
+          mediaVolume: {
+            name: 'Объем мультимедиа',
+            note: 'Громкость воспроизведения мультимедиа на вкладке',
+          },
+          maxMediasPerPage: {
+            name: 'Максимальное количество носителей на странице',
+            note: 'Максимальное количество медиафайлов, отображаемых на странице во вкладке',
+          },
+          position: {
+            name: 'Положение кнопки',
+            btnsPositionKey: {
+              name: 'Взаимное расположение кнопок',
+              note: 'Рядом с какой другой кнопкой следует разместить кнопки',
+            },
+            btnsPosition: {
+              name: 'Направление кнопки',
+              note: 'Направление кнопок на панели чата',
+            },
+          },
+          gif: {
+            name: 'Настройки GIF',
+            enabled: {
+              name: 'Общий',
+              note: 'Заменяет вкладку GIF в Discord.',
+            },
+            alwaysSendInstantly: {
+              name: 'Немедленная доставка',
+              note: 'Немедленно отправьте медиа-ссылку или файл',
+            },
+            alwaysUploadFile: {
+              name: 'Всегда загружать как файл',
+              note: 'Загрузите медиафайл в виде файла, а не отправляйте ссылку.',
+            },
+          },
+          image: {
+            name: 'Настройки изображения',
+            enabled: {
+              name: 'Общий',
+              note: 'Включить этот тип мультимедиа',
+            },
+            showBtn: {
+              name: 'Кнопка',
+              note: 'Показать кнопку на панели чата',
+            },
+            showStar: {
+              name: 'Звезда',
+              note: 'Показывает любимую звезду в СМИ',
+            },
+            alwaysSendInstantly: {
+              name: 'Немедленная доставка',
+              note: 'Немедленно отправьте медиа-ссылку или файл',
+            },
+            alwaysUploadFile: {
+              name: 'Всегда загружать как файл',
+              note: 'Загрузите медиафайл в виде файла, а не отправляйте ссылку.',
+            },
+          },
+          video: {
+            name: 'Настройки видео',
+            enabled: {
+              name: 'Общий',
+              note: 'Включить этот тип мультимедиа',
+            },
+            showBtn: {
+              name: 'Кнопка',
+              note: 'Показать кнопку на панели чата',
+            },
+            showStar: {
+              name: 'Звезда',
+              note: 'Показывает любимую звезду в СМИ',
+            },
+            alwaysSendInstantly: {
+              name: 'Немедленная доставка',
+              note: 'Немедленно отправьте медиа-ссылку или файл',
+            },
+            alwaysUploadFile: {
+              name: 'Всегда загружать как файл',
+              note: 'Загрузите медиафайл в виде файла, а не отправляйте ссылку.',
+            },
+          },
+          audio: {
+            name: 'Настройки звука',
+            enabled: {
+              name: 'Общий',
+              note: 'Включить этот тип мультимедиа',
+            },
+            showBtn: {
+              name: 'Кнопка',
+              note: 'Показать кнопку на панели чата',
+            },
+            showStar: {
+              name: 'Звезда',
+              note: 'Показывает любимую звезду в СМИ',
+            },
+          },
+          file: {
+            name: 'Настройки файла',
+            enabled: {
+              name: 'Общий',
+              note: 'Включить этот тип мультимедиа',
+            },
+            showBtn: {
+              name: 'Кнопка',
+              note: 'Показать кнопку на панели чата',
+            },
+            showStar: {
+              name: 'Звезда',
+              note: 'Показывает любимую звезду в СМИ',
+            },
+            alwaysSendInstantly: {
+              name: 'Немедленная доставка',
+              note: 'Немедленно отправьте медиа-ссылку или файл',
+            },
+            alwaysUploadFile: {
+              name: 'Всегда загружать как файл',
+              note: 'Загрузите медиафайл в виде файла, а не отправляйте ссылку.',
+            },
+          },
+          panel: 'Настройки плагина',
+        },
+      },
+      sk: { // Slovak
+        tabName: {
+          image: 'Slika',
+          video: 'Video',
+          audio: 'Avdio',
+          file: 'mapa',
+        },
+        create: 'Ustvari',
+        category: {
+          list: 'kategorije',
+          unsorted: 'Nerazvrščeno',
+          create: 'Ustvarite kategorijo',
+          edit: 'Uredi kategorijo',
+          delete: 'Izbriši kategorijo',
+          deleteConfirm: 'Ta kategorija vsebuje podkategorije. Vsi bodo izbrisani. Ali ste prepričani, da želite izbrisati kategorije?',
+          download: 'Prenesite medije',
+          placeholder: 'Ime kategorije',
+          move: 'Premakni se',
+          moveNext: 'Po',
+          movePrevious: 'prej',
+          color: 'barva',
+          copyColor: 'Kopiraj barvo',
+          setThumbnail: 'Nastavi kot sličico',
+          unsetThumbnail: 'Odstrani sličico',
+          error: {
+            needName: 'Ime ne sme biti prazno',
+            invalidNameLength: 'Ime mora vsebovati največ 20 znakov',
+            wrongColor: 'Barva je neveljavna',
+            nameExists: 'to ime že obstaja',
+            invalidCategory: 'Kategorija ne obstaja',
+            download: 'Prenos predstavnosti ni uspel',
+          },
+          success: {
+            create: 'Kategorija je ustvarjena!',
+            delete: 'Kategorija je bila izbrisana!',
+            edit: 'Kategorija je spremenjena!',
+            move: 'Kategorija je bila premaknjena!',
+            download: 'Predstavnost je bila naložena!',
+            setThumbnail: 'Sličica za kategorijo!',
+            unsetThumbnail: 'Odstranjena sličica za kategorijo!',
+          },
+          emptyHint: 'Z desnim klikom ustvarite kategorijo!',
+        },
+        media: {
+          emptyHint: {
+            image: 'Kliknite zvezdico v kotu slike, da jo dodate med priljubljene',
+            video: 'Kliknite zvezdico v kotu videoposnetka, da ga dodate med priljubljene',
+            audio: 'Kliknite zvezdico v kotu zvoka, da ga dodate med priljubljene',
+            file: 'Kliknite zvezdico v kotu datoteke, da jo dodate med priljubljene',
+          },
+          addTo: 'Dodaj',
+          moveTo: 'Premakni se',
+          removeFrom: 'Odstrani iz kategorije',
+          copySource: 'Kopiraj vir predstavnosti',
+          upload: {
+            title: 'Naloži',
+            normal: 'normalno',
+            spoiler: 'Spojlerji',
+          },
+          success: {
+            move: {
+              gif: 'GIF je bil premaknjen!',
+              image: 'Slika je bila premaknjena!',
+              video: 'Video je bil premaknjen!',
+              audio: 'Zvok je bil premaknjen!',
+              file: 'Datoteka je bila premaknjena!',
+            },
+            remove: {
+              gif: 'GIF je bil odstranjen iz kategorij!',
+              image: 'Slika je bila odstranjena iz kategorij!',
+              video: 'Video je bil odstranjen iz kategorij!',
+              audio: 'Avdio je bil odstranjen iz kategorij!',
+              file: 'Datoteka je bila odstranjena iz kategorij!',
+            },
+            download: {
+              gif: 'GIF je bil naložen!',
+              image: 'Slika je bila naložena!',
+              video: 'Video je bil naložen!',
+              audio: 'Zvok je bil naložen!',
+              file: 'Datoteka je bila prenesena!',
+            },
+          },
+          error: {
+            download: {
+              gif: 'Prenos GIF-a ni uspel',
+              image: 'Nalaganje slike ni uspelo',
+              video: 'Prenos videa ni uspel',
+              audio: 'Prenos zvoka ni uspel',
+              file: 'Prenos datoteke ni uspel',
+            },
+          },
+          controls: {
+            show: 'Prikaži naročila',
+            hide: 'Skrij ukaze',
+          },
+          placeholder: {
+            gif: 'Ime GIF',
+            image: 'Ime slike',
+            video: 'Ime videa',
+            audio: 'Ime zvoka',
+            file: 'Ime datoteke',
+          },
+        },
+        searchItem: {
+          gif: 'Iščite po GIF-ih ali kategorijah',
+          image: 'Iščite po slikah ali kategorijah',
+          video: 'Poiščite videoposnetke ali kategorije',
+          audio: 'Iskanje zvokov ali kategorij',
+          file: 'Poiščite datoteke ali kategorije',
+        },
+        import: {
+          panel: 'Uvoz medijev',
+          label: {
+            types: 'Vrste',
+            medias: 'Mediji',
+            categories: 'kategorije',
+          },
+          buttonImport: 'Uvozi',
+          success: 'Mediji so bili uvoženi!',
+          error: 'Uvoz predstavnosti ni uspel',
+        },
+        cache: {
+          panel: 'Lokalna zbirka podatkov',
+          total: 'Skupaj:',
+          size: 'Velikost:',
+          clear: {
+            confirm: 'Ali res želite izprazniti bazo podatkov?',
+            button: 'Prazna zbirka podatkov',
+            success: 'Baza podatkov je izpraznjena!',
+            error: 'Izpis baze podatkov ni uspel',
+          },
+          cacheAll: {
+            button: 'Predpomni vse medije',
+            confirm: 'Ali želite predpomniti vse medije?',
+            noMedia: 'Ni medija za predpomnilnik',
+            success: 'Mediji so bili predpomnjeni!',
+            error: 'Napaka med predpomnjenjem medija',
+          },
+          refreshButton: 'Osveži',
+        },
+        mediasCounter: 'Število medijev',
+        settings: {
+          hideUnsortedMedias: {
+            name: 'Skrij medije',
+            note: 'Na zavihku skrij medije, ki niso kategorizirani',
+          },
+          hideThumbnail: {
+            name: 'Skrij sličice',
+            note: 'Prikaže barvo kategorije namesto naključne sličice',
+          },
+          allowCaching: {
+            name: 'Dovoli predpomnjenje predogleda medijev',
+            note: 'Uporablja lokalni predpomnilnik brez povezave za predpomnilnik predstavnosti',
+          },
+          mediaVolume: {
+            name: 'Glasnost predstavnosti',
+            note: 'Glasnost predvajanja medijev v zavihku',
+          },
+          maxMediasPerPage: {
+            name: 'Največje število medijev na stran',
+            note: 'Največje število medijev, prikazanih na stran v zavihku',
+          },
+          position: {
+            name: 'Položaj gumba',
+            btnsPositionKey: {
+              name: 'Relativni položaj gumbov',
+              note: 'Poleg katerega drugega gumba naj bodo gumbi postavljeni',
+            },
+            btnsPosition: {
+              name: 'Smer gumba',
+              note: 'Smer gumbov v vrstici za klepet',
+            },
+          },
+          gif: {
+            name: 'nastavitve GIF',
+            enabled: {
+              name: 'Splošno',
+              note: 'Zamenja Discordov zavihek GIF',
+            },
+            alwaysSendInstantly: {
+              name: 'Takojšnja dostava',
+              note: 'Takoj pošljite medijsko povezavo ali datoteko',
+            },
+            alwaysUploadFile: {
+              name: 'Vedno naloži kot datoteko',
+              note: 'Predstavnost naložite kot datoteko namesto pošiljanja povezave',
+            },
+          },
+          image: {
+            name: 'Nastavitve slike',
+            enabled: {
+              name: 'Splošno',
+              note: 'Omogoči to vrsto medija',
+            },
+            showBtn: {
+              name: 'Gumb',
+              note: 'Prikaži gumb v vrstici za klepet',
+            },
+            showStar: {
+              name: 'zvezda',
+              note: 'Prikazuje najljubšo zvezdo v medijih',
+            },
+            alwaysSendInstantly: {
+              name: 'Takojšnja dostava',
+              note: 'Takoj pošljite medijsko povezavo ali datoteko',
+            },
+            alwaysUploadFile: {
+              name: 'Vedno naloži kot datoteko',
+              note: 'Predstavnost naložite kot datoteko namesto pošiljanja povezave',
+            },
+          },
+          video: {
+            name: 'Nastavitve videa',
+            enabled: {
+              name: 'Splošno',
+              note: 'Omogoči to vrsto medija',
+            },
+            showBtn: {
+              name: 'Gumb',
+              note: 'Prikaži gumb v vrstici za klepet',
+            },
+            showStar: {
+              name: 'zvezda',
+              note: 'Prikazuje najljubšo zvezdo v medijih',
+            },
+            alwaysSendInstantly: {
+              name: 'Takojšnja dostava',
+              note: 'Takoj pošljite medijsko povezavo ali datoteko',
+            },
+            alwaysUploadFile: {
+              name: 'Vedno naloži kot datoteko',
+              note: 'Predstavnost naložite kot datoteko namesto pošiljanja povezave',
+            },
+          },
+          audio: {
+            name: 'Nastavitve zvoka',
+            enabled: {
+              name: 'Splošno',
+              note: 'Omogoči to vrsto medija',
+            },
+            showBtn: {
+              name: 'Gumb',
+              note: 'Prikaži gumb v vrstici za klepet',
+            },
+            showStar: {
+              name: 'zvezda',
+              note: 'Prikazuje najljubšo zvezdo v medijih',
+            },
+          },
+          file: {
+            name: 'Nastavitve datoteke',
+            enabled: {
+              name: 'Splošno',
+              note: 'Omogoči to vrsto medija',
+            },
+            showBtn: {
+              name: 'Gumb',
+              note: 'Prikaži gumb v vrstici za klepet',
+            },
+            showStar: {
+              name: 'zvezda',
+              note: 'Prikazuje najljubšo zvezdo v medijih',
+            },
+            alwaysSendInstantly: {
+              name: 'Takojšnja dostava',
+              note: 'Takoj pošljite medijsko povezavo ali datoteko',
+            },
+            alwaysUploadFile: {
+              name: 'Vedno naloži kot datoteko',
+              note: 'Predstavnost naložite kot datoteko namesto pošiljanja povezave',
+            },
+          },
+          panel: 'Nastavitve vtičnika',
+        },
+      },
+      sv: { // Swedish
+        tabName: {
+          image: 'Bild',
+          video: 'Video',
+          audio: 'Audio',
+          file: 'Fil',
+        },
+        create: 'Skapa',
+        category: {
+          list: 'Kategorier',
+          unsorted: 'Inte sorterat',
+          create: 'Skapa en kategori',
+          edit: 'Redigera kategori',
+          delete: 'Ta bort kategori',
+          deleteConfirm: 'Denna kategori innehåller underkategorier. De kommer alla att raderas. Är du säker på att du vill ta bort kategorier?',
+          download: 'Ladda ner media',
+          placeholder: 'Kategori namn',
+          move: 'Flytta',
+          moveNext: 'Efter',
+          movePrevious: 'Innan',
+          color: 'Färg',
+          copyColor: 'Kopiera färg',
+          error: {
+            needName: 'Namnet kan inte vara tomt',
+            invalidNameLength: 'Namnet måste innehålla högst 20 tecken',
+            wrongColor: 'Färgen är ogiltig',
+            nameExists: 'detta namn finns redan',
+            invalidCategory: 'Kategorin finns inte',
+            download: 'Det gick inte att ladda ner media',
+          },
+          success: {
+            create: 'Kategorin har skapats!',
+            delete: 'Kategorin har tagits bort!',
+            edit: 'Kategorin har ändrats!',
+            move: 'Kategorin har flyttats!',
+            download: 'Media har laddats upp!',
+          },
+          emptyHint: 'Högerklicka för att skapa en kategori!',
+        },
+        media: {
+          emptyHint: {
+            image: 'Klicka på stjärnan i hörnet av en bild för att lägga den till dina favoriter',
+            video: 'Klicka på stjärnan i hörnet av en video för att lägga den till dina favoriter',
+            audio: 'Klicka på stjärnan i hörnet av ett ljud för att placera den i dina favoriter',
+            file: 'Klicka på stjärnan i hörnet av en fil för att lägga till den i dina favoriter',
+          },
+          addTo: 'Lägg till',
+          moveTo: 'Flytta',
+          removeFrom: 'Ta bort från kategori',
+          copySource: 'Kopiera mediakälla',
+          upload: {
+            title: 'Ladda upp',
+            normal: 'Vanligt',
+            spoiler: 'Spoiler',
+          },
+          success: {
+            move: {
+              gif: 'GIF:en har flyttats!',
+              image: 'Bilden har flyttats!',
+              video: 'Videon har flyttats!',
+              audio: 'Ljudet har flyttats!',
+              file: 'Filen har flyttats!',
+            },
+            remove: {
+              gif: 'GIF har tagits bort från kategorierna!',
+              image: 'Bilden har tagits bort från kategorierna!',
+              video: 'Videon har tagits bort från kategorierna!',
+              audio: 'Ljud har tagits bort från kategorier!',
+              file: 'Filen har tagits bort från kategorierna!',
+            },
+            download: {
+              gif: 'GIF-filen har laddats upp!',
+              image: 'Bilden har laddats upp!',
+              video: 'Videon har laddats upp!',
+              audio: 'Ljudet har laddats ner!',
+              file: 'Filen har laddats ner!',
+            },
+          },
+          error: {
+            download: {
+              gif: 'Det gick inte att ladda ner GIF',
+              image: 'Det gick inte att ladda upp bilden',
+              video: 'Det gick inte att ladda ner videon',
+              audio: 'Det gick inte att ladda ner ljudet',
+              file: 'Det gick inte att ladda ned filen',
+            },
+          },
+          controls: {
+            show: 'Visa order',
+            hide: 'Dölj beställningar',
+          },
+          placeholder: {
+            gif: 'GIF-namn',
+            image: 'Bildnamn',
+            video: 'Videonamn',
+            audio: 'Ljudnamn',
+            file: 'Filnamn',
+          },
+        },
+        searchItem: {
+          gif: 'Sök efter GIF-filer eller kategorier',
+          image: 'Sök efter bilder eller kategorier',
+          video: 'Sök efter videor eller kategorier',
+          audio: 'Sök efter ljud eller kategorier',
+          file: 'Söker efter filer eller kategorier',
+        },
+        import: {
+          panel: 'Mediaimport',
+          label: {
+            types: 'Typer',
+            medias: 'Media',
+            categories: 'Kategorier',
+          },
+          buttonImport: 'Importera',
+          success: 'Media har importerats!',
+          error: 'Det gick inte att importera media',
+        },
+        cache: {
+          panel: 'Lokal databas',
+          total: 'Totalt:',
+          size: 'Storlek:',
+          clear: {
+            confirm: 'Vill du verkligen tömma databasen?',
+            button: 'Tom databas',
+            success: 'Databasen har tömts!',
+            error: 'Det gick inte att dumpa databasen',
+          },
+          cacheAll: {
+            button: 'Cachelagra alla media',
+            confirm: 'Vill du cachelagra alla media?',
+            noMedia: 'Det finns ingen media att cache',
+            success: 'Media har cachats!',
+            error: 'Fel vid cachelagring av media',
+          },
+          refreshButton: 'Uppdatera',
+        },
+        mediasCounter: 'Antal media',
+        settings: {
+          hideUnsortedMedias: {
+            name: 'Dölj media',
+            note: 'Dölj media från fliken som är okategoriserade',
+          },
+          hideThumbnail: {
+            name: 'Dölj miniatyrer',
+            note: 'Visar kategorifärg istället för en slumpmässig miniatyrbild',
+          },
+          allowCaching: {
+            name: 'Tillåt cachelagring av mediaförhandsgranskningar',
+            note: 'Använder lokal offlinecache för att cache mediaförhandsgranskning',
+          },
+          mediaVolume: {
+            name: 'Medievolym',
+            note: 'Mediauppspelningsvolym i fliken',
+          },
+          maxMediasPerPage: {
+            name: 'Maximalt antal media per sida',
+            note: 'Det maximala antalet media som visas per sida på fliken',
+          },
+          position: {
+            name: 'Knappens läge',
+            btnsPositionKey: {
+              name: 'Relativ placering av knappar',
+              note: 'Bredvid vilken annan knapp ska knapparna placeras',
+            },
+            btnsPosition: {
+              name: 'Knappens riktning',
+              note: 'Riktning av knappar på chattfältet',
+            },
+          },
+          gif: {
+            name: 'GIF-inställningar',
+            enabled: {
+              name: 'Allmän',
+              note: 'Ersätter Discords GIF-flik',
+            },
+            alwaysSendInstantly: {
+              name: 'Omedelbar leverans',
+              note: 'Skicka medialänken eller filen omedelbart',
+            },
+            alwaysUploadFile: {
+              name: 'Ladda alltid upp som fil',
+              note: 'Ladda upp media som en fil istället för att skicka en länk',
+            },
+          },
+          image: {
+            name: 'Bildinställningar',
+            enabled: {
+              name: 'Allmän',
+              note: 'Aktivera den här mediatypen',
+            },
+            showBtn: {
+              name: 'Knapp',
+              note: 'Visa knapp på chattfältet',
+            },
+            showStar: {
+              name: 'Stjärna',
+              note: 'Visar favoritstjärna på media',
+            },
+            alwaysSendInstantly: {
+              name: 'Omedelbar leverans',
+              note: 'Skicka medialänken eller filen omedelbart',
+            },
+            alwaysUploadFile: {
+              name: 'Ladda alltid upp som fil',
+              note: 'Ladda upp media som en fil istället för att skicka en länk',
+            },
+          },
+          video: {
+            name: 'Videoinställningar',
+            enabled: {
+              name: 'Allmän',
+              note: 'Aktivera den här mediatypen',
+            },
+            showBtn: {
+              name: 'Knapp',
+              note: 'Visa knapp på chattfältet',
+            },
+            showStar: {
+              name: 'Stjärna',
+              note: 'Visar favoritstjärna på media',
+            },
+            alwaysSendInstantly: {
+              name: 'Omedelbar leverans',
+              note: 'Skicka medialänken eller filen omedelbart',
+            },
+            alwaysUploadFile: {
+              name: 'Ladda alltid upp som fil',
+              note: 'Ladda upp media som en fil istället för att skicka en länk',
+            },
+          },
+          audio: {
+            name: 'Ljudinställningar',
+            enabled: {
+              name: 'Allmän',
+              note: 'Aktivera den här mediatypen',
+            },
+            showBtn: {
+              name: 'Knapp',
+              note: 'Visa knapp på chattfältet',
+            },
+            showStar: {
+              name: 'Stjärna',
+              note: 'Visar favoritstjärna på media',
+            },
+          },
+          file: {
+            name: 'Filinställningar',
+            enabled: {
+              name: 'Allmän',
+              note: 'Aktivera den här mediatypen',
+            },
+            showBtn: {
+              name: 'Knapp',
+              note: 'Visa knapp på chattfältet',
+            },
+            showStar: {
+              name: 'Stjärna',
+              note: 'Visar favoritstjärna på media',
+            },
+            alwaysSendInstantly: {
+              name: 'Omedelbar leverans',
+              note: 'Skicka medialänken eller filen omedelbart',
+            },
+            alwaysUploadFile: {
+              name: 'Ladda alltid upp som fil',
+              note: 'Ladda upp media som en fil istället för att skicka en länk',
+            },
+          },
+          panel: 'Plugin-inställningar',
+        },
+      },
+      th: { // Thai
+        tabName: {
+          image: 'ภาพ',
+          video: 'วีดีโอ',
+          audio: 'เครื่องเสียง',
+          file: 'ไฟล์',
+        },
+        create: 'สร้าง',
+        category: {
+          list: 'หมวดหมู่',
+          unsorted: 'ไม่เรียง',
+          create: 'สร้างหมวดหมู่',
+          edit: 'แก้ไขหมวดหมู่',
+          delete: 'ลบหมวดหมู่',
+          deleteConfirm: 'หมวดหมู่นี้มีหมวดหมู่ย่อย พวกเขาทั้งหมดจะถูกลบ คุณแน่ใจหรือไม่ว่าต้องการลบหมวดหมู่',
+          download: 'ดาวน์โหลดสื่อ',
+          placeholder: 'ชื่อหมวดหมู่',
+          move: 'ย้าย',
+          moveNext: 'หลังจาก',
+          movePrevious: 'ก่อน',
+          color: 'สี',
+          copyColor: 'คัดลอกสี',
+          error: {
+            needName: 'ชื่อไม่สามารถเว้นว่างได้',
+            invalidNameLength: 'ชื่อต้องมีอักขระไม่เกิน 20 ตัว',
+            wrongColor: 'สีไม่ถูกต้อง',
+            nameExists: 'มีชื่อนี้แล้ว',
+            invalidCategory: 'ไม่มีหมวดหมู่',
+            download: 'ไม่สามารถดาวน์โหลดสื่อ',
+          },
+          success: {
+            create: 'หมวดหมู่ถูกสร้างขึ้น!',
+            delete: 'หมวดหมู่ถูกลบ!',
+            edit: 'หมวดหมู่มีการเปลี่ยนแปลง!',
+            move: 'หมวดหมู่ถูกย้าย!',
+            download: 'สื่อได้รับการอัปโหลด!',
+          },
+          emptyHint: 'คลิกขวาเพื่อสร้างหมวดหมู่!',
+        },
+        media: {
+          emptyHint: {
+            image: 'คลิกที่ดาวที่มุมของภาพเพื่อใส่ในรายการโปรดของคุณ',
+            video: 'คลิกที่ดาวที่มุมของวิดีโอเพื่อใส่ในรายการโปรดของคุณ',
+            audio: 'คลิกที่ดาวตรงมุมของเสียงเพื่อใส่ในรายการโปรดของคุณ',
+            file: 'คลิกที่ดาวตรงมุมของไฟล์เพื่อเพิ่มลงในรายการโปรดของคุณ',
+          },
+          addTo: 'เพิ่ม',
+          moveTo: 'ย้าย',
+          removeFrom: 'ลบออกจากหมวดหมู่',
+          copySource: 'คัดลอกแหล่งที่มาของสื่อ',
+          upload: {
+            title: 'ที่อัพโหลด',
+            normal: 'ปกติ',
+            spoiler: 'สปอยเลอร์',
+          },
+          success: {
+            move: {
+              gif: 'ย้าย GIF แล้ว!',
+              image: 'ย้ายภาพแล้ว!',
+              video: 'วีดีโอถูกย้าย!',
+              audio: 'ย้ายเสียงแล้ว!',
+              file: 'ย้ายไฟล์แล้ว!',
+            },
+            remove: {
+              gif: 'GIF ถูกลบออกจากหมวดหมู่แล้ว!',
+              image: 'รูปภาพถูกลบออกจากหมวดหมู่!',
+              video: 'วิดีโอถูกลบออกจากหมวดหมู่แล้ว!',
+              audio: 'เสียงถูกลบออกจากหมวดหมู่!',
+              file: 'ไฟล์ถูกลบออกจากหมวดหมู่แล้ว!',
+            },
+            download: {
+              gif: 'อัปโหลด GIF แล้ว!',
+              image: 'อัปโหลดรูปภาพแล้ว!',
+              video: 'อัปโหลดวิดีโอแล้ว!',
+              audio: 'ดาวน์โหลดไฟล์เสียงแล้ว!',
+              file: 'ดาวน์โหลดไฟล์แล้ว!',
+            },
+          },
+          error: {
+            download: {
+              gif: 'ดาวน์โหลด GIF ไม่สำเร็จ',
+              image: 'ไม่สามารถอัปโหลดภาพ',
+              video: 'ไม่สามารถดาวน์โหลดวิดีโอ',
+              audio: 'ไม่สามารถดาวน์โหลดเสียง',
+              file: 'ดาวน์โหลดไฟล์ไม่สำเร็จ',
+            },
+          },
+          controls: {
+            show: 'แสดงคำสั่งซื้อ',
+            hide: 'ซ่อนคำสั่งซื้อ',
+          },
+          placeholder: {
+            gif: 'ชื่อ GIF',
+            image: 'ชื่อภาพ',
+            video: 'ชื่อวิดีโอ',
+            audio: 'ชื่อเสียง',
+            file: 'ชื่อไฟล์',
+          },
+        },
+        searchItem: {
+          gif: 'ค้นหา GIF หรือหมวดหมู่',
+          image: 'ค้นหารูปภาพหรือหมวดหมู่',
+          video: 'ค้นหาวิดีโอหรือหมวดหมู่',
+          audio: 'ค้นหาไฟล์เสียงหรือหมวดหมู่',
+          file: 'การค้นหาไฟล์หรือหมวดหมู่',
+        },
+        import: {
+          panel: 'การนำเข้าสื่อ',
+          label: {
+            types: 'ประเภท',
+            medias: 'สื่อ',
+            categories: 'หมวดหมู่',
+          },
+          buttonImport: 'นำเข้า',
+          success: 'สื่อนำเข้าแล้ว!',
+          error: 'ไม่สามารถนำเข้าสื่อ',
+        },
+        cache: {
+          panel: 'ฐานข้อมูลท้องถิ่น',
+          total: 'ทั้งหมด :',
+          size: 'ขนาด :',
+          clear: {
+            confirm: 'คุณต้องการล้างฐานข้อมูลจริง ๆ หรือไม่?',
+            button: 'ฐานข้อมูลว่างเปล่า',
+            success: 'ฐานข้อมูลว่างเปล่า!',
+            error: 'ไม่สามารถดัมพ์ฐานข้อมูล',
+          },
+          cacheAll: {
+            button: 'แคชสื่อทั้งหมด',
+            confirm: 'คุณต้องการแคชสื่อทั้งหมดหรือไม่?',
+            noMedia: 'ไม่มีสื่อที่จะแคช',
+            success: 'สื่อถูกแคช!',
+            error: 'ล้มเหลวขณะแคชสื่อ',
+          },
+          refreshButton: 'รีเฟรช',
+        },
+        mediasCounter: 'จำนวนสื่อ',
+        settings: {
+          hideUnsortedMedias: {
+            name: 'ซ่อนสื่อ',
+            note: 'ซ่อนสื่อจากแท็บที่ไม่มีหมวดหมู่',
+          },
+          hideThumbnail: {
+            name: 'ซ่อนภาพขนาดย่อ',
+            note: 'แสดงสีหมวดหมู่แทนภาพขนาดย่อแบบสุ่ม',
+          },
+          allowCaching: {
+            name: 'อนุญาตแคชแสดงตัวอย่างสื่อ',
+            note: 'ใช้แคชออฟไลน์ในเครื่องเพื่อแคชตัวอย่างสื่อ',
+          },
+          mediaVolume: {
+            name: 'ปริมาณสื่อ',
+            note: 'ระดับเสียงการเล่นสื่อในแท็บ',
+          },
+          maxMediasPerPage: {
+            name: 'จำนวนสื่อสูงสุดต่อหน้า',
+            note: 'จำนวนสื่อสูงสุดที่แสดงต่อหน้าในแท็บ',
+          },
+          position: {
+            name: 'ตำแหน่งปุ่ม',
+            btnsPositionKey: {
+              name: 'ตำแหน่งสัมพันธ์ของปุ่ม',
+              note: 'ถัดจากปุ่มอื่นที่ควรวางปุ่มต่างๆ',
+            },
+            btnsPosition: {
+              name: 'ทิศทางของปุ่ม',
+              note: 'ทิศทางของปุ่มบนแถบแชท',
+            },
+          },
+          gif: {
+            name: 'การตั้งค่า GIF',
+            enabled: {
+              name: 'ทั่วไป',
+              note: 'แทนที่แท็บ GIF ของ Discord',
+            },
+            alwaysSendInstantly: {
+              name: 'จัดส่งทันที',
+              note: 'ส่งลิงค์หรือไฟล์สื่อทันที',
+            },
+            alwaysUploadFile: {
+              name: 'อัปโหลดเป็นไฟล์เสมอ',
+              note: 'อัปโหลดสื่อเป็นไฟล์แทนที่จะส่งลิงก์',
+            },
+          },
+          image: {
+            name: 'การตั้งค่ารูปภาพ',
+            enabled: {
+              name: 'ทั่วไป',
+              note: 'เปิดใช้งานสื่อประเภทนี้',
+            },
+            showBtn: {
+              name: 'ปุ่ม',
+              note: 'แสดงปุ่มบนแถบแชท',
+            },
+            showStar: {
+              name: 'ดาว',
+              note: 'โชว์ดาราคนโปรดออกสื่อ',
+            },
+            alwaysSendInstantly: {
+              name: 'จัดส่งทันที',
+              note: 'ส่งลิงค์หรือไฟล์สื่อทันที',
+            },
+            alwaysUploadFile: {
+              name: 'อัปโหลดเป็นไฟล์เสมอ',
+              note: 'อัปโหลดสื่อเป็นไฟล์แทนที่จะส่งลิงก์',
+            },
+          },
+          video: {
+            name: 'การตั้งค่าวิดีโอ',
+            enabled: {
+              name: 'ทั่วไป',
+              note: 'เปิดใช้งานสื่อประเภทนี้',
+            },
+            showBtn: {
+              name: 'ปุ่ม',
+              note: 'แสดงปุ่มบนแถบแชท',
+            },
+            showStar: {
+              name: 'ดาว',
+              note: 'โชว์ดาราคนโปรดออกสื่อ',
+            },
+            alwaysSendInstantly: {
+              name: 'จัดส่งทันที',
+              note: 'ส่งลิงค์หรือไฟล์สื่อทันที',
+            },
+            alwaysUploadFile: {
+              name: 'อัปโหลดเป็นไฟล์เสมอ',
+              note: 'อัปโหลดสื่อเป็นไฟล์แทนที่จะส่งลิงก์',
+            },
+          },
+          audio: {
+            name: 'การตั้งค่าเสียง',
+            enabled: {
+              name: 'ทั่วไป',
+              note: 'เปิดใช้งานสื่อประเภทนี้',
+            },
+            showBtn: {
+              name: 'ปุ่ม',
+              note: 'แสดงปุ่มบนแถบแชท',
+            },
+            showStar: {
+              name: 'ดาว',
+              note: 'โชว์ดาราคนโปรดออกสื่อ',
+            },
+          },
+          file: {
+            name: 'การตั้งค่าไฟล์',
+            enabled: {
+              name: 'ทั่วไป',
+              note: 'เปิดใช้งานสื่อประเภทนี้',
+            },
+            showBtn: {
+              name: 'ปุ่ม',
+              note: 'แสดงปุ่มบนแถบแชท',
+            },
+            showStar: {
+              name: 'ดาว',
+              note: 'โชว์ดาราคนโปรดออกสื่อ',
+            },
+            alwaysSendInstantly: {
+              name: 'จัดส่งทันที',
+              note: 'ส่งลิงค์หรือไฟล์สื่อทันที',
+            },
+            alwaysUploadFile: {
+              name: 'อัปโหลดเป็นไฟล์เสมอ',
+              note: 'อัปโหลดสื่อเป็นไฟล์แทนที่จะส่งลิงก์',
+            },
+          },
+          panel: 'การตั้งค่าปลั๊กอิน',
+        },
+      },
+      tr: { // Turkish
+        tabName: {
+          image: 'Resim',
+          video: 'Video',
+          audio: 'Ses',
+          file: 'Dosya',
+        },
+        create: 'Oluşturmak',
+        category: {
+          list: 'Kategoriler',
+          unsorted: 'Sıralanmamış',
+          create: 'Kategori oluştur',
+          edit: 'Kategoriyi düzenle',
+          delete: 'Kategoriyi sil',
+          deleteConfirm: 'Bu kategori alt kategorileri içerir. Hepsi silinecek. Kategorileri silmek istediğinizden emin misiniz?',
+          download: 'Medyayı indir',
+          placeholder: 'Kategori adı',
+          move: 'Hareket',
+          moveNext: 'Sonra',
+          movePrevious: 'Önce',
+          color: 'Renk',
+          copyColor: 'rengi kopyala',
+          error: {
+            needName: 'Ad boş olamaz',
+            invalidNameLength: 'Ad en fazla 20 karakter içermelidir',
+            wrongColor: 'Renk geçersiz',
+            nameExists: 'bu isim zaten var',
+            invalidCategory: 'Kategori mevcut değil',
+            download: 'Medya indirilemedi',
+          },
+          success: {
+            create: 'Kategori oluşturuldu!',
+            delete: 'Kategori silindi!',
+            edit: 'Kategori değiştirildi!',
+            move: 'Kategori taşındı!',
+            download: 'Medya yüklendi!',
+          },
+          emptyHint: 'Kategori oluşturmak için sağ tıklayın!',
+        },
+        media: {
+          emptyHint: {
+            image: 'Favorilerinize eklemek için bir resmin köşesindeki yıldıza tıklayın',
+            video: 'Favorilerinize eklemek için bir videonun köşesindeki yıldıza tıklayın',
+            audio: 'Favorilerinize eklemek için bir sesin köşesindeki yıldıza tıklayın',
+            file: 'Favorilerinize eklemek için bir dosyanın köşesindeki yıldıza tıklayın',
+          },
+          addTo: 'Ekle',
+          moveTo: 'Hareket',
+          removeFrom: 'Kategoriden kaldır',
+          copySource: 'Medya kaynağını kopyala',
+          upload: {
+            title: 'Yükle',
+            normal: 'Normal',
+            spoiler: 'Bir şeyin önceden reklamı',
+          },
+          success: {
+            move: {
+              gif: 'GIF taşındı!',
+              image: 'Resim taşındı!',
+              video: 'Video taşındı!',
+              audio: 'Ses taşındı!',
+              file: 'Dosya taşındı!',
+            },
+            remove: {
+              gif: 'GIF kategorilerden kaldırıldı!',
+              image: 'Resim kategorilerden kaldırıldı!',
+              video: 'Video kategorilerden kaldırıldı!',
+              audio: 'Ses kategorilerden kaldırıldı!',
+              file: 'Dosya kategorilerden kaldırıldı!',
+            },
+            download: {
+              gif: 'GIF yüklendi!',
+              image: 'Resim yüklendi!',
+              video: 'Video yüklendi!',
+              audio: 'Ses indirildi!',
+              file: 'Dosya indirildi!',
+            },
+          },
+          error: {
+            download: {
+              gif: 'GIF indirilemedi',
+              image: 'Resim yüklenemedi',
+              video: 'Video indirilemedi',
+              audio: 'Ses indirilemedi',
+              file: 'Dosya indirilemedi',
+            },
+          },
+          controls: {
+            show: 'Siparişleri göster',
+            hide: 'Siparişleri gizle',
+          },
+          placeholder: {
+            gif: 'GIF Adı',
+            image: 'Resim adı',
+            video: 'video adı',
+            audio: 'Ses adı',
+            file: 'Dosya adı',
+          },
+        },
+        searchItem: {
+          gif: 'GIF\'leri veya kategorileri arayın',
+          image: 'Resim veya kategori arayın',
+          video: 'Videoları veya kategorileri arayın',
+          audio: 'Sesleri veya kategorileri arayın',
+          file: 'Dosya veya kategori arama',
+        },
+        import: {
+          panel: 'Medyayı İçe Aktarma',
+          label: {
+            types: 'Türler',
+            medias: 'Medya',
+            categories: 'Kategoriler',
+          },
+          buttonImport: 'İçe aktarmak',
+          success: 'Medya ithal edildi!',
+          error: 'Medya içe aktarılamadı',
+        },
+        cache: {
+          panel: 'Yerel veritabanı',
+          total: 'Toplam :',
+          size: 'Boyut :',
+          clear: {
+            confirm: 'Veritabanını gerçekten boşaltmak istiyor musunuz?',
+            button: 'Veritabanını boşalt',
+            success: 'Veritabanı boşaltıldı!',
+            error: 'Veritabanının dökümü başarısız oldu',
+          },
+          cacheAll: {
+            button: 'Tüm medyayı önbelleğe al',
+            confirm: 'Tüm medyayı önbelleğe almak istiyor musunuz?',
+            noMedia: 'Önbelleğe alınacak medya yok',
+            success: 'Medya önbelleğe alındı!',
+            error: 'Medyayı önbelleğe alırken hata oluştu',
+          },
+          refreshButton: 'Yenile',
+        },
+        mediasCounter: 'Ortam sayısı',
+        settings: {
+          hideUnsortedMedias: {
+            name: 'Medyayı gizle',
+            note: 'Kategorize edilmemiş sekmedeki medyayı gizle',
+          },
+          hideThumbnail: {
+            name: 'Küçük resimleri gizle',
+            note: 'Rastgele küçük resim yerine kategori rengini gösterir',
+          },
+          allowCaching: {
+            name: 'Medya önizlemesinin önbelleğe alınmasına izin ver',
+            note: 'Medya önizlemesini önbelleğe almak için yerel çevrimdışı önbelleği kullanır',
+          },
+          mediaVolume: {
+            name: 'Medya hacmi',
+            note: 'Sekmede medya oynatma ses düzeyi',
+          },
+          maxMediasPerPage: {
+            name: 'Sayfa başına maksimum ortam sayısı',
+            note: 'Sekmede sayfa başına görüntülenen maksimum ortam sayısı',
+          },
+          position: {
+            name: 'Düğme konumu',
+            btnsPositionKey: {
+              name: 'Düğmelerin göreceli konumu',
+              note: 'Düğmeler başka hangi düğmenin yanına yerleştirilmelidir?',
+            },
+            btnsPosition: {
+              name: 'Düğme yönü',
+              note: 'Sohbet çubuğundaki düğmelerin yönü',
+            },
+          },
+          gif: {
+            name: 'GIF ayarları',
+            enabled: {
+              name: 'Genel',
+              note: "Discord'un GIF sekmesinin yerini alır",
+            },
+            alwaysSendInstantly: {
+              name: 'Hemen teslim',
+              note: 'Medya bağlantısını veya dosyasını hemen gönderin',
+            },
+            alwaysUploadFile: {
+              name: 'Her zaman dosya olarak yükle',
+              note: 'Bağlantı göndermek yerine medyayı dosya olarak yükleyin',
+            },
+          },
+          image: {
+            name: 'Görüntü ayarları',
+            enabled: {
+              name: 'Genel',
+              note: 'Bu medya türünü etkinleştirin',
+            },
+            showBtn: {
+              name: 'Düğme',
+              note: 'Sohbet çubuğunda düğmeyi göster',
+            },
+            showStar: {
+              name: 'Yıldız',
+              note: 'Favori yıldızı medyada gösterir',
+            },
+            alwaysSendInstantly: {
+              name: 'Hemen teslim',
+              note: 'Medya bağlantısını veya dosyasını hemen gönderin',
+            },
+            alwaysUploadFile: {
+              name: 'Her zaman dosya olarak yükle',
+              note: 'Bağlantı göndermek yerine medyayı dosya olarak yükleyin',
+            },
+          },
+          video: {
+            name: 'Video ayarları',
+            enabled: {
+              name: 'Genel',
+              note: 'Bu medya türünü etkinleştirin',
+            },
+            showBtn: {
+              name: 'Düğme',
+              note: 'Sohbet çubuğunda düğmeyi göster',
+            },
+            showStar: {
+              name: 'Yıldız',
+              note: 'Favori yıldızı medyada gösterir',
+            },
+            alwaysSendInstantly: {
+              name: 'Hemen teslim',
+              note: 'Medya bağlantısını veya dosyasını hemen gönderin',
+            },
+            alwaysUploadFile: {
+              name: 'Her zaman dosya olarak yükle',
+              note: 'Bağlantı göndermek yerine medyayı dosya olarak yükleyin',
+            },
+          },
+          audio: {
+            name: 'Ses ayarları',
+            enabled: {
+              name: 'Genel',
+              note: 'Bu medya türünü etkinleştirin',
+            },
+            showBtn: {
+              name: 'Düğme',
+              note: 'Sohbet çubuğunda düğmeyi göster',
+            },
+            showStar: {
+              name: 'Yıldız',
+              note: 'Favori yıldızı medyada gösterir',
+            },
+          },
+          file: {
+            name: 'Dosya Ayarları',
+            enabled: {
+              name: 'Genel',
+              note: 'Bu medya türünü etkinleştirin',
+            },
+            showBtn: {
+              name: 'Düğme',
+              note: 'Sohbet çubuğunda düğmeyi göster',
+            },
+            showStar: {
+              name: 'Yıldız',
+              note: 'Favori yıldızı medyada gösterir',
+            },
+            alwaysSendInstantly: {
+              name: 'Hemen teslim',
+              note: 'Medya bağlantısını veya dosyasını hemen gönderin',
+            },
+            alwaysUploadFile: {
+              name: 'Her zaman dosya olarak yükle',
+              note: 'Bağlantı göndermek yerine medyayı dosya olarak yükleyin',
+            },
+          },
+          panel: 'Eklenti Ayarları',
+        },
+      },
+      uk: { // Ukrainian
+        tabName: {
+          image: 'Картина',
+          video: 'Відео',
+          audio: 'Аудіо',
+          file: 'Файл',
+        },
+        create: 'Створити',
+        category: {
+          list: 'Категорії',
+          unsorted: 'Не сортується',
+          create: 'Створіть категорію',
+          edit: 'Редагувати категорію',
+          delete: 'Видалити категорію',
+          deleteConfirm: 'Ця категорія містить підкатегорії. Усі вони будуть видалені. Ви впевнені, що хочете видалити категорії?',
+          download: 'Завантажити медіафайли',
+          placeholder: 'Назва категорії',
+          move: 'Рухайся',
+          moveNext: 'Після',
+          movePrevious: 'Раніше',
+          color: 'Колір',
+          copyColor: 'Копіювати кольорові',
+          error: {
+            needName: 'Ім\'я не може бути порожнім',
+            invalidNameLength: 'Назва повинна містити максимум 20 символів',
+            wrongColor: 'Колір недійсний',
+            nameExists: 'ця назва вже існує',
+            invalidCategory: 'Категорія не існує',
+            download: 'Не вдалося завантажити медіафайл',
+          },
+          success: {
+            create: 'Категорію створено!',
+            delete: 'Категорію видалено!',
+            edit: 'Категорію змінено!',
+            move: 'Категорію переміщено!',
+            download: 'ЗМІ завантажено!',
+          },
+          emptyHint: 'Клацніть правою кнопкою миші, щоб створити категорію!',
+        },
+        media: {
+          emptyHint: {
+            image: 'Клацніть на зірочку в кутку зображення, щоб помістити його у вибране',
+            video: 'Клацніть на зірочку в кутку відео, щоб поставити його у вибране',
+            audio: 'Клацніть на зірочку в кутку звукового супроводу, щоб помістити його у вибране',
+            file: 'Натисніть зірочку в кутку файлу, щоб додати його до вибраного',
+          },
+          addTo: 'Додати',
+          moveTo: 'Рухайся',
+          removeFrom: 'Вилучити з категорії',
+          copySource: 'Копіювати медіа-джерело',
+          upload: {
+            title: 'Завантажити',
+            normal: 'Звичайний',
+            spoiler: 'Спойлер',
+          },
+          success: {
+            move: {
+              gif: 'GIF переміщено!',
+              image: 'Зображення переміщено!',
+              video: 'Відео переміщено!',
+              audio: 'Аудіо переміщено!',
+              file: 'Файл переміщено!',
+            },
+            remove: {
+              gif: 'GIF видалено з категорій!',
+              image: 'Зображення видалено з категорій!',
+              video: 'Відео видалено з категорій!',
+              audio: 'Аудіо вилучено з категорій!',
+              file: 'Файл видалено з категорій!',
+            },
+            download: {
+              gif: 'GIF завантажено!',
+              image: 'Зображення завантажено!',
+              video: 'Відео завантажено!',
+              audio: 'Аудіо завантажено!',
+              file: 'Файл завантажено!',
+            },
+          },
+          error: {
+            download: {
+              gif: 'Не вдалося завантажити GIF',
+              image: 'Не вдалося завантажити зображення',
+              video: 'Не вдалося завантажити відео',
+              audio: 'Не вдалося завантажити аудіо',
+              file: 'Не вдалося завантажити файл',
+            },
+          },
+          controls: {
+            show: 'Показати замовлення',
+            hide: 'Сховати замовлення',
+          },
+          placeholder: {
+            gif: 'Назва GIF',
+            image: 'Назва зображення',
+            video: 'Назва відео',
+            audio: 'Назва аудіо',
+            file: "Ім'я файлу",
+          },
+        },
+        searchItem: {
+          gif: 'Шукайте GIF-файли або категорії',
+          image: 'Шукайте зображення або категорії',
+          video: 'Шукайте відео або категорії',
+          audio: 'Шукайте аудіо чи категорії',
+          file: 'Пошук файлів або категорій',
+        },
+        import: {
+          panel: 'Імпорт медіа',
+          label: {
+            types: 'Типи',
+            medias: 'ЗМІ',
+            categories: 'Категорії',
+          },
+          buttonImport: 'Імпорт',
+          success: 'Носій інформації імпортовано!',
+          error: 'Не вдалося імпортувати медіа',
+        },
+        cache: {
+          panel: 'Локальна база даних',
+          total: 'Всього:',
+          size: 'Розмір:',
+          clear: {
+            confirm: 'Ви дійсно хочете очистити базу даних?',
+            button: 'Порожня база даних',
+            success: 'Базу даних спустошено!',
+            error: 'Не вдалося створити дамп бази даних',
+          },
+          cacheAll: {
+            button: 'Кешувати всі медіафайли',
+            confirm: 'Ви хочете кешувати всі медіафайли?',
+            noMedia: 'Немає медіа для кешу',
+            success: 'Медіа збережено в кеші!',
+            error: 'Помилка під час кешування медіа',
+          },
+          refreshButton: 'Оновити',
+        },
+        mediasCounter: 'Кількість медіа',
+        settings: {
+          hideUnsortedMedias: {
+            name: 'Приховати медіа',
+            note: 'Приховати медіафайли на вкладці без категорії',
+          },
+          hideThumbnail: {
+            name: 'Приховати мініатюри',
+            note: 'Показує колір категорії замість випадкової мініатюри',
+          },
+          allowCaching: {
+            name: 'Дозволити кешування попереднього перегляду медіа',
+            note: 'Використовує локальний офлайн-кеш для кешування попереднього перегляду медіа',
+          },
+          mediaVolume: {
+            name: 'Гучність медіа',
+            note: 'Гучність відтворення медіа на вкладці',
+          },
+          maxMediasPerPage: {
+            name: 'Максимальна кількість медіа на сторінці',
+            note: 'Максимальна кількість медіафайлів, які відображаються на сторінці вкладки',
+          },
+          position: {
+            name: 'Розташування кнопки',
+            btnsPositionKey: {
+              name: 'Взаємне розташування кнопок',
+              note: 'Біля якої ще кнопки слід розташувати кнопки',
+            },
+            btnsPosition: {
+              name: 'Напрямок кнопки',
+              note: 'Напрямок кнопок на панелі чату',
+            },
+          },
+          gif: {
+            name: 'Налаштування GIF',
+            enabled: {
+              name: 'Загальний',
+              note: 'Замінює вкладку GIF Discord',
+            },
+            alwaysSendInstantly: {
+              name: 'Негайна доставка',
+              note: 'Негайно надішліть медіа-посилання або файл',
+            },
+            alwaysUploadFile: {
+              name: 'Завжди завантажувати як файл',
+              note: 'Завантажте медіа як файл, а не надсилайте посилання',
+            },
+          },
+          image: {
+            name: 'Налаштування зображення',
+            enabled: {
+              name: 'Загальний',
+              note: 'Увімкнути цей тип носія',
+            },
+            showBtn: {
+              name: 'Кнопка',
+              note: 'Показати кнопку на панелі чату',
+            },
+            showStar: {
+              name: 'зірка',
+              note: 'Показує улюблену зірку в ЗМІ',
+            },
+            alwaysSendInstantly: {
+              name: 'Негайна доставка',
+              note: 'Негайно надішліть медіа-посилання або файл',
+            },
+            alwaysUploadFile: {
+              name: 'Завжди завантажувати як файл',
+              note: 'Завантажте медіа як файл, а не надсилайте посилання',
+            },
+          },
+          video: {
+            name: 'Налаштування відео',
+            enabled: {
+              name: 'Загальний',
+              note: 'Увімкнути цей тип носія',
+            },
+            showBtn: {
+              name: 'Кнопка',
+              note: 'Показати кнопку на панелі чату',
+            },
+            showStar: {
+              name: 'зірка',
+              note: 'Показує улюблену зірку в ЗМІ',
+            },
+            alwaysSendInstantly: {
+              name: 'Негайна доставка',
+              note: 'Негайно надішліть медіа-посилання або файл',
+            },
+            alwaysUploadFile: {
+              name: 'Завжди завантажувати як файл',
+              note: 'Завантажте медіа як файл, а не надсилайте посилання',
+            },
+          },
+          audio: {
+            name: 'Налаштування звуку',
+            enabled: {
+              name: 'Загальний',
+              note: 'Увімкнути цей тип носія',
+            },
+            showBtn: {
+              name: 'Кнопка',
+              note: 'Показати кнопку на панелі чату',
+            },
+            showStar: {
+              name: 'зірка',
+              note: 'Показує улюблену зірку в ЗМІ',
+            },
+          },
+          file: {
+            name: 'Параметри файлу',
+            enabled: {
+              name: 'Загальний',
+              note: 'Увімкнути цей тип носія',
+            },
+            showBtn: {
+              name: 'Кнопка',
+              note: 'Показати кнопку на панелі чату',
+            },
+            showStar: {
+              name: 'зірка',
+              note: 'Показує улюблену зірку в ЗМІ',
+            },
+            alwaysSendInstantly: {
+              name: 'Негайна доставка',
+              note: 'Негайно надішліть медіа-посилання або файл',
+            },
+            alwaysUploadFile: {
+              name: 'Завжди завантажувати як файл',
+              note: 'Завантажте медіа як файл, а не надсилайте посилання',
+            },
+          },
+          panel: 'Налаштування плагіна',
+        },
+      },
+      vi: { // Vietnamese
+        tabName: {
+          image: 'Hình ảnh',
+          video: 'Video',
+          audio: 'Âm thanh',
+          file: 'Tài liệu',
+        },
+        create: 'Tạo nên',
+        category: {
+          list: 'Thể loại',
+          unsorted: 'Không được sắp xếp',
+          create: 'Tạo một danh mục',
+          edit: 'Chỉnh sửa danh mục',
+          delete: 'Xóa danh mục',
+          deleteConfirm: 'Thể loại này chứa các thể loại con. Tất cả chúng sẽ bị xóa. Bạn có chắc chắn muốn xóa danh mục không?',
+          download: 'Завантажити медіафайли',
+          placeholder: 'Tên danh mục',
+          move: 'Di chuyển',
+          moveNext: 'Sau',
+          movePrevious: 'Trước',
+          color: 'Màu sắc',
+          copyColor: 'Sao chép màu',
+          error: {
+            needName: 'Tên không được để trống',
+            invalidNameLength: 'Tên phải chứa tối đa 20 ký tự',
+            wrongColor: 'Màu không hợp lệ',
+            nameExists: 'tên này đã tồn tại',
+            invalidCategory: 'Danh mục không tồn tại',
+            download: 'Не вдалося завантажити медіафайл',
+          },
+          success: {
+            create: 'Chuyên mục đã được tạo!',
+            delete: 'Danh mục đã bị xóa!',
+            edit: 'Danh mục đã được thay đổi!',
+            move: 'Danh mục đã được di chuyển!',
+            download: 'ЗМІ завантажено!',
+          },
+          emptyHint: 'Nhấp chuột phải để tạo một danh mục!',
+        },
+        media: {
+          emptyHint: {
+            image: 'Nhấp vào ngôi sao ở góc của hình ảnh để đưa nó vào mục yêu thích của bạn',
+            video: 'Nhấp vào ngôi sao ở góc video để đưa video đó vào mục yêu thích của bạn',
+            audio: 'Nhấp vào ngôi sao ở góc của âm thanh để đưa nó vào mục yêu thích của bạn',
+            file: 'Nhấp vào ngôi sao ở góc của tệp để thêm nó vào mục yêu thích của bạn',
+          },
+          addTo: 'Thêm vào',
+          moveTo: 'Di chuyển',
+          removeFrom: 'Xóa khỏi danh mục',
+          copySource: 'Sao chép nguồn phương tiện',
+          upload: {
+            title: 'Tải lên',
+            normal: 'Bình thường',
+            spoiler: 'Spoiler',
+          },
+          success: {
+            move: {
+              gif: 'GIF đã được di chuyển!',
+              image: 'Hình ảnh đã được di chuyển!',
+              video: 'Video đã được chuyển đi!',
+              audio: 'Âm thanh đã được di chuyển!',
+              file: 'Tệp đã được di chuyển!',
+            },
+            remove: {
+              gif: 'GIF đã bị xóa khỏi danh mục!',
+              image: 'Hình ảnh đã bị xóa khỏi danh mục!',
+              video: 'Video đã bị xóa khỏi danh mục!',
+              audio: 'Âm thanh đã bị xóa khỏi danh mục!',
+              file: 'Tệp đã bị xóa khỏi danh mục!',
+            },
+            download: {
+              gif: 'GIF đã được tải lên!',
+              image: 'Зображення завантажено!',
+              video: 'Відео завантажено!',
+              audio: 'Аудіо завантажено!',
+              file: 'Tệp đã được tải xuống!',
+            },
+          },
+          error: {
+            download: {
+              gif: 'Không thể tải xuống GIF',
+              image: 'Не вдалося завантажити зображення',
+              video: 'Не вдалося завантажити відео',
+              audio: 'Не вдалося завантажити аудіо',
+              file: 'Không thể tải tập tin xuống',
+            },
+          },
+          controls: {
+            show: 'Hiển thị đơn đặt hàng',
+            hide: 'Ẩn đơn đặt hàng',
+          },
+          placeholder: {
+            gif: 'Tên GIF',
+            image: 'Tên Hình ảnh',
+            video: 'Tên video',
+            audio: 'Tên âm thanh',
+            file: 'Tên tập tin',
+          },
+        },
+        searchItem: {
+          gif: 'Tìm kiếm GIF hoặc danh mục',
+          image: 'Tìm kiếm hình ảnh hoặc danh mục',
+          video: 'Tìm kiếm video hoặc danh mục',
+          audio: 'Tìm kiếm âm thanh hoặc danh mục',
+          file: 'Tìm kiếm tập tin hoặc danh mục',
+        },
+        import: {
+          panel: 'Nhập phương tiện',
+          label: {
+            types: 'Các loại',
+            medias: 'Phương tiện truyền thông',
+            categories: 'Thể loại',
+          },
+          buttonImport: 'Nhập khẩu',
+          success: 'Các phương tiện truyền thông đã được nhập khẩu!',
+          error: 'Không thể nhập phương tiện',
+        },
+        cache: {
+          panel: 'Cơ sở dữ liệu cục bộ',
+          total: 'Tổng cộng :',
+          size: 'Kích cỡ :',
+          clear: {
+            confirm: 'Bạn có thực sự muốn làm trống cơ sở dữ liệu?',
+            button: 'Cơ sở dữ liệu trống',
+            success: 'Cơ sở dữ liệu đã bị xóa!',
+            error: 'Không thể kết xuất cơ sở dữ liệu',
+          },
+          cacheAll: {
+            button: 'Lưu trữ tất cả phương tiện',
+            confirm: 'Bạn có muốn lưu trữ tất cả các phương tiện truyền thông?',
+            noMedia: 'Không có phương tiện nào để lưu vào bộ nhớ đệm',
+            success: 'Phương tiện đã được lưu vào bộ nhớ đệm!',
+            error: 'Lỗi khi lưu vào bộ nhớ đệm phương tiện',
+          },
+          refreshButton: 'Làm cho khỏe lại',
+        },
+        mediasCounter: 'Số lượng phương tiện truyền thông',
+        settings: {
+          hideUnsortedMedias: {
+            name: 'Ẩn phương tiện',
+            note: 'Ẩn phương tiện khỏi tab chưa được phân loại',
+          },
+          hideThumbnail: {
+            name: 'Ẩn hình thu nhỏ',
+            note: 'Hiển thị màu danh mục thay vì hình thu nhỏ ngẫu nhiên',
+          },
+          allowCaching: {
+            name: 'Cho phép lưu vào bộ nhớ đệm xem trước phương tiện',
+            note: 'Sử dụng bộ nhớ đệm ngoại tuyến cục bộ để lưu vào bộ nhớ đệm xem trước phương tiện',
+          },
+          mediaVolume: {
+            name: 'Âm lượng phương tiện',
+            note: 'Âm lượng phát lại phương tiện trong tab',
+          },
+          maxMediasPerPage: {
+            name: 'Số lượng phương tiện tối đa trên mỗi trang',
+            note: 'Số lượng phương tiện tối đa được hiển thị trên mỗi trang trong tab',
+          },
+          position: {
+            name: 'Vị trí nút',
+            btnsPositionKey: {
+              name: 'Vị trí tương đối của các nút',
+              note: 'Các nút nên được đặt bên cạnh nút nào',
+            },
+            btnsPosition: {
+              name: 'Hướng nút',
+              note: 'Hướng các nút trên thanh trò chuyện',
+            },
+          },
+          gif: {
+            name: 'cài đặt GIF',
+            enabled: {
+              name: 'Tổng quan',
+              note: 'Thay thế tab GIF của Discord',
+            },
+            alwaysSendInstantly: {
+              name: 'Giao ngay',
+              note: 'Gửi ngay liên kết hoặc tệp phương tiện',
+            },
+            alwaysUploadFile: {
+              name: 'Luôn tải lên dưới dạng tệp',
+              note: 'Tải phương tiện lên dưới dạng tệp thay vì gửi liên kết',
+            },
+          },
+          image: {
+            name: 'Cài đặt hình ảnh',
+            enabled: {
+              name: 'Tổng quan',
+              note: 'Bật loại phương tiện này',
+            },
+            showBtn: {
+              name: 'Cái nút',
+              note: 'Nút hiển thị trên thanh trò chuyện',
+            },
+            showStar: {
+              name: 'Ngôi sao',
+              note: 'Hiển thị ngôi sao yêu thích trên phương tiện truyền thông',
+            },
+            alwaysSendInstantly: {
+              name: 'Giao ngay',
+              note: 'Gửi ngay liên kết hoặc tệp phương tiện',
+            },
+            alwaysUploadFile: {
+              name: 'Luôn tải lên dưới dạng tệp',
+              note: 'Tải phương tiện lên dưới dạng tệp thay vì gửi liên kết',
+            },
+          },
+          video: {
+            name: 'Cài đặt video',
+            enabled: {
+              name: 'Tổng quan',
+              note: 'Bật loại phương tiện này',
+            },
+            showBtn: {
+              name: 'Cái nút',
+              note: 'Nút hiển thị trên thanh trò chuyện',
+            },
+            showStar: {
+              name: 'Ngôi sao',
+              note: 'Hiển thị ngôi sao yêu thích trên phương tiện truyền thông',
+            },
+            alwaysSendInstantly: {
+              name: 'Giao ngay',
+              note: 'Gửi ngay liên kết hoặc tệp phương tiện',
+            },
+            alwaysUploadFile: {
+              name: 'Luôn tải lên dưới dạng tệp',
+              note: 'Tải phương tiện lên dưới dạng tệp thay vì gửi liên kết',
+            },
+          },
+          audio: {
+            name: 'Cài đặt âm thanh',
+            enabled: {
+              name: 'Tổng quan',
+              note: 'Bật loại phương tiện này',
+            },
+            showBtn: {
+              name: 'Cái nút',
+              note: 'Nút hiển thị trên thanh trò chuyện',
+            },
+            showStar: {
+              name: 'Ngôi sao',
+              note: 'Hiển thị ngôi sao yêu thích trên phương tiện truyền thông',
+            },
+          },
+          file: {
+            name: 'Cài đặt tệp',
+            enabled: {
+              name: 'Tổng quan',
+              note: 'Bật loại phương tiện này',
+            },
+            showBtn: {
+              name: 'Cái nút',
+              note: 'Nút hiển thị trên thanh trò chuyện',
+            },
+            showStar: {
+              name: 'Ngôi sao',
+              note: 'Hiển thị ngôi sao yêu thích trên phương tiện truyền thông',
+            },
+            alwaysSendInstantly: {
+              name: 'Giao ngay',
+              note: 'Gửi ngay liên kết hoặc tệp phương tiện',
+            },
+            alwaysUploadFile: {
+              name: 'Luôn tải lên dưới dạng tệp',
+              note: 'Tải phương tiện lên dưới dạng tệp thay vì gửi liên kết',
+            },
+          },
+          panel: 'Cài đặt plugin',
+        },
+      },
+      zh: { // Chinese (China)
+        tabName: {
+          image: '图片',
+          video: '视频',
+          audio: '声音的',
+          file: '文件',
+        },
+        create: '创造',
+        category: {
+          list: '类别',
+          unsorted: '未排序',
+          create: '创建一个类别',
+          edit: '编辑类别',
+          delete: '删除类别',
+          deleteConfirm: '此类别包含子类别。 它们都将被删除。 您确定要删除类别吗？',
+          download: '下载媒体',
+          placeholder: '分类名称',
+          move: '移动',
+          moveNext: '后',
+          movePrevious: '前',
+          color: '颜色',
+          copyColor: '复印颜色',
+          error: {
+            needName: '名称不能为空',
+            invalidNameLength: '名称必须最多包含 20 个字符',
+            wrongColor: '颜色无效',
+            nameExists: '这个名字已经存在',
+            invalidCategory: '该类别不存在',
+            download: '无法下载媒体',
+          },
+          success: {
+            create: '该类别已创建！',
+            delete: '该分类已被删除！',
+            edit: '类别已更改！',
+            move: '类别已移动！',
+            download: '媒体已上传！',
+          },
+          emptyHint: '右键创建一个类别！',
+        },
+        media: {
+          emptyHint: {
+            image: '单击图像角落的星星将其放入您的收藏夹',
+            video: '点击视频角落的星星，将其放入您的收藏夹',
+            audio: '单击音频一角的星星将其放入您的收藏夹',
+            file: '单击文件一角的星号将其添加到您的收藏夹',
+          },
+          addTo: '添加',
+          moveTo: '移动',
+          removeFrom: '从类别中删除',
+          copySource: '复制媒体源',
+          upload: {
+            title: '上传',
+            normal: '普通的',
+            spoiler: '剧透',
+          },
+          success: {
+            move: {
+              gif: 'GIF已被移动！',
+              image: '图片已移动！',
+              video: '视频已移！',
+              audio: '音频已移动！',
+              file: '文件已被移动！',
+            },
+            remove: {
+              gif: 'GIF 已从类别中删除！',
+              image: '该图片已从类别中删除！',
+              video: '该视频已从类别中删除！',
+              audio: '音频已从类别中删除！',
+              file: '该文件已从类别中删除！',
+            },
+            download: {
+              gif: 'GIF已上传！',
+              image: '图片已上传！',
+              video: '视频已上传！',
+              audio: '音频已下载！',
+              file: '文件已下载！',
+            },
+          },
+          error: {
+            download: {
+              gif: '无法下载 GIF',
+              image: '上传图片失败',
+              video: '下载视频失败',
+              audio: '无法下载音频',
+              file: '下载文件失败',
+            },
+          },
+          controls: {
+            show: '显示订单',
+            hide: '隐藏订单',
+          },
+          placeholder: {
+            gif: '动图名称',
+            image: '图片名称',
+            video: '视频名称',
+            audio: '音频名称',
+            file: '文件名',
+          },
+        },
+        searchItem: {
+          gif: '搜索 GIF 或类别',
+          image: '搜索图像或类别',
+          video: '搜索视频或类别',
+          audio: '搜索音频或类别',
+          file: '搜索文件或类别',
+        },
+        import: {
+          panel: '媒体导入',
+          label: {
+            types: '类型',
+            medias: '媒体',
+            categories: '类别',
+          },
+          buttonImport: '进口',
+          success: '媒体已导入！',
+          error: '导入媒体失败',
+        },
+        cache: {
+          panel: '本地数据库',
+          total: '全部的 ：',
+          size: '尺寸 ：',
+          clear: {
+            confirm: '您真的要清空数据库吗？',
+            button: '空数据库',
+            success: '数据库已被清空！',
+            error: '转储数据库失败',
+          },
+          cacheAll: {
+            button: '缓存所有媒体',
+            confirm: '您想缓存所有媒体吗？',
+            noMedia: '没有可缓存的媒体',
+            success: '媒体已被缓存！',
+            error: '缓存媒体时失败',
+          },
+          refreshButton: '刷新',
+        },
+        mediasCounter: '媒体数量',
+        settings: {
+          hideUnsortedMedias: {
+            name: '隐藏媒体',
+            note: '隐藏选项卡中未分类的媒体',
+          },
+          hideThumbnail: {
+            name: '隐藏缩略图',
+            note: '显示类别颜色而不是随机缩略图',
+          },
+          allowCaching: {
+            name: '允许媒体预览缓存',
+            note: '使用本地离线缓存来缓存媒体预览',
+          },
+          mediaVolume: {
+            name: '媒体音量',
+            note: '选项卡中的媒体播放音量',
+          },
+          maxMediasPerPage: {
+            name: '每页最大媒体数',
+            note: '选项卡中每页显示的最大媒体数',
+          },
+          position: {
+            name: '按钮位置',
+            btnsPositionKey: {
+              name: '按钮的相对位置',
+              note: '这些按钮应该放置在哪个其他按钮旁边',
+            },
+            btnsPosition: {
+              name: '按钮方向',
+              note: '聊天栏按钮的方向',
+            },
+          },
+          gif: {
+            name: 'GIF 设置',
+            enabled: {
+              name: '一般的',
+              note: '取代 Discord 的 GIF 选项卡',
+            },
+            alwaysSendInstantly: {
+              name: '立即发货',
+              note: '立即发送媒体链接或文件',
+            },
+            alwaysUploadFile: {
+              name: '始终以文件形式上传',
+              note: '将媒体作为文件上传而不是发送链接',
+            },
+          },
+          image: {
+            name: '图像设置',
+            enabled: {
+              name: '一般的',
+              note: '启用此媒体类型',
+            },
+            showBtn: {
+              name: '按钮',
+              note: '在聊天栏上显示按钮',
+            },
+            showStar: {
+              name: '星星',
+              note: '在媒体上显示最喜欢的明星',
+            },
+            alwaysSendInstantly: {
+              name: '立即发货',
+              note: '立即发送媒体链接或文件',
+            },
+            alwaysUploadFile: {
+              name: '始终以文件形式上传',
+              note: '将媒体作为文件上传而不是发送链接',
+            },
+          },
+          video: {
+            name: '视频设置',
+            enabled: {
+              name: '一般的',
+              note: '启用此媒体类型',
+            },
+            showBtn: {
+              name: '按钮',
+              note: '在聊天栏上显示按钮',
+            },
+            showStar: {
+              name: '星星',
+              note: '在媒体上显示最喜欢的明星',
+            },
+            alwaysSendInstantly: {
+              name: '立即发货',
+              note: '立即发送媒体链接或文件',
+            },
+            alwaysUploadFile: {
+              name: '始终以文件形式上传',
+              note: '将媒体作为文件上传而不是发送链接',
+            },
+          },
+          audio: {
+            name: '音频设置',
+            enabled: {
+              name: '一般的',
+              note: '启用此媒体类型',
+            },
+            showBtn: {
+              name: '按钮',
+              note: '在聊天栏上显示按钮',
+            },
+            showStar: {
+              name: '星星',
+              note: '在媒体上显示最喜欢的明星',
+            },
+          },
+          file: {
+            name: '文件设置',
+            enabled: {
+              name: '一般的',
+              note: '启用此媒体类型',
+            },
+            showBtn: {
+              name: '按钮',
+              note: '在聊天栏上显示按钮',
+            },
+            showStar: {
+              name: '星星',
+              note: '在媒体上显示最喜欢的明星',
+            },
+            alwaysSendInstantly: {
+              name: '立即发货',
+              note: '立即发送媒体链接或文件',
+            },
+            alwaysUploadFile: {
+              name: '始终以文件形式上传',
+              note: '将媒体作为文件上传而不是发送链接',
+            },
+          },
+          panel: '插件设置',
+        },
+      },
     }
   }
 };

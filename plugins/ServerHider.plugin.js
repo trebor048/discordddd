@@ -2,7 +2,7 @@
  * @name ServerHider
  * @author DevilBro
  * @authorId 278543574059057154
- * @version 6.2.6
+ * @version 6.2.9
  * @description Allows you to hide certain Servers in your Server List
  * @invite Jx3TjNS
  * @donate https://www.paypal.me/MircoWittrien
@@ -14,7 +14,7 @@
 
 module.exports = (_ => {
 	const changeLog = {
-		
+
 	};
 
 	return !window.BDFDB_Global || (!window.BDFDB_Global.loaded && !window.BDFDB_Global.started) ? class {
@@ -23,14 +23,14 @@ module.exports = (_ => {
 		getAuthor () {return this.author;}
 		getVersion () {return this.version;}
 		getDescription () {return `The Library Plugin needed for ${this.name} is missing. Open the Plugin Settings to download it. \n\n${this.description}`;}
-		
+
 		downloadLibrary () {
 			require("request").get("https://mwittrien.github.io/BetterDiscordAddons/Library/0BDFDB.plugin.js", (e, r, b) => {
 				if (!e && b && r.statusCode == 200) require("fs").writeFile(require("path").join(BdApi.Plugins.folder, "0BDFDB.plugin.js"), b, _ => BdApi.showToast("Finished downloading BDFDB Library", {type: "success"}));
 				else BdApi.alert("Error", "Could not download BDFDB Library Plugin. Try again later or download it manually from GitHub: https://mwittrien.github.io/downloader/?library");
 			});
 		}
-		
+
 		load () {
 			if (!window.BDFDB_Global || !Array.isArray(window.BDFDB_Global.pluginQueue)) window.BDFDB_Global = Object.assign({}, window.BDFDB_Global, {pluginQueue: []});
 			if (!window.BDFDB_Global.downloadModal) {
@@ -57,7 +57,7 @@ module.exports = (_ => {
 		}
 	} : (([Plugin, BDFDB]) => {
 		let hiddenEles;
-		
+
 		return class ServerHider extends Plugin {
 			onLoad () {
 				this.defaults = {
@@ -65,22 +65,34 @@ module.exports = (_ => {
 						onlyHideInStream:	{value: false, 	description: "Only hide selected Servers while in Streamer Mode"}
 					}
 				};
-				
+
 				this.modulePatches = {
+					before: [
+						"QuickSwitcher"
+					],
 					after: [
 						"GuildsBar"
 					]
 				};
 			}
-			
+
 			onStart () {
 				hiddenEles = BDFDB.DataUtils.load(this, "hidden");
-				
+
 				BDFDB.PatchUtils.patch(this, BDFDB.LibraryModules.DispatchApiUtils, "dispatch", {after: e => {
 					if (e.methodArguments[0].type == "STREAMER_MODE_UPDATE") BDFDB.DiscordUtils.rerenderAll(true);
 				}});
-				
-				BDFDB.PatchUtils.patch(this, BDFDB.LibraryModules.SortedGuildUtils, "getGuildFolderById", {after: e => {
+
+				BDFDB.PatchUtils.patch(this, BDFDB.LibraryModules.HistoryUtils, "transitionTo", {instead: e => {
+					if (!e.methodArguments || this.settings.general.onlyHideInStream && !BDFDB.LibraryStores.StreamerModeStore.enabled) return e.callOriginalMethod();
+					if (typeof e.methodArguments[0] == "string" && e.methodArguments[0].startsWith("/channels/")) {
+						let guildId = (e.methodArguments[0].split("/channels/")[1] || e.methodArguments[0].split("/channels/")[1]).split("/")[0];
+						if (guildId && ((hiddenEles.servers || []).includes(guildId) || (hiddenEles.folders || []).includes((BDFDB.GuildUtils.getFolder(guildId) || {}).folderId))) return;
+					}
+					return e.callOriginalMethod();
+				}});
+
+				BDFDB.PatchUtils.patch(this, BDFDB.LibraryStores.SortedGuildStore, "getGuildFolderById", {after: e => {
 					let hiddenGuildIds = hiddenEles.servers || [];
 					if (e.returnValue && hiddenGuildIds.length) {
 						let folder = Object.assign({}, e.returnValue);
@@ -89,16 +101,16 @@ module.exports = (_ => {
 						return folder;
 					}
 				}});
-				
+
 				BDFDB.PatchUtils.patch(this, BDFDB.LibraryStores.GuildReadStateStore, "getMutableGuildStates", {after: e => {
 					if (!e.returnValue || this.settings.general.onlyHideInStream && !BDFDB.LibraryStores.StreamerModeStore.enabled) return;
 					let hiddenGuildIds = hiddenEles && hiddenEles.servers || [];
-					if (hiddenGuildIds.length) for (let id in e.returnValue) if (hiddenGuildIds.includes(id)) e.returnValue[id] = Object.assign({}, e.returnValue[id], {mentionCount: 0, mentionCounts: {}});
+					if (hiddenGuildIds.length) for (let id in e.returnValue) if (hiddenGuildIds.includes(id)) e.returnValue[id] = Object.assign({}, e.returnValue[id], {ncMentionCount: 0, mentionCount: 0, mentionCounts: {}});
 				}});
 
 				BDFDB.DiscordUtils.rerenderAll();
 			}
-			
+
 			onStop () {
 				BDFDB.DiscordUtils.rerenderAll();
 			}
@@ -109,7 +121,7 @@ module.exports = (_ => {
 					collapseStates: collapseStates,
 					children: _ => {
 						let settingsItems = [];
-						
+
 						for (let key in this.defaults.general) settingsItems.push(BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.SettingsSaveItem, {
 							type: "Switch",
 							plugin: this,
@@ -117,7 +129,7 @@ module.exports = (_ => {
 							label: this.defaults.general[key].description,
 							value: this.settings.general[key]
 						}));
-				
+
 						settingsItems.push(BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.SettingsItem, {
 							type: "Button",
 							color: BDFDB.LibraryComponents.Button.Colors.RED,
@@ -130,12 +142,12 @@ module.exports = (_ => {
 							},
 							children: BDFDB.LanguageUtils.LanguageStrings.RESET
 						}));
-						
+
 						return settingsItems;
 					}
 				});
 			}
-			
+
 			onGuildContextMenu (e) {
 				if (document.querySelector(BDFDB.dotCN.modalwrapper) || !BDFDB.DOMUtils.getParent(BDFDB.dotCN.guilds, e.instance.props.target)) return;
 				let [children, index] = BDFDB.ContextMenuUtils.findItem(e.returnvalue, {id: "devmode-copy-id", group: true});
@@ -165,7 +177,7 @@ module.exports = (_ => {
 					]
 				}));
 			}
-		
+
 			processGuildsBar (e) {
 				if (this.settings.general.onlyHideInStream && !BDFDB.LibraryStores.StreamerModeStore.enabled) return;
 				let hiddenGuildIds = hiddenEles.servers || [];
@@ -188,15 +200,25 @@ module.exports = (_ => {
 				}
 			}
 
+			processQuickSwitcher (e) {
+				if (this.settings.general.onlyHideInStream && !BDFDB.LibraryStores.StreamerModeStore.enabled) return;
+				e.instance.props.results = [].concat(e.instance.props.results).filter(n => {
+					if (!n) return true;
+					if (n.type == "GUILD" && n.record.id && ((hiddenEles.servers || []).includes(n.record.id) || (hiddenEles.folders || []).includes((BDFDB.GuildUtils.getFolder(n.record.id) || {}).folderId))) return false;
+					else if (n.record.guild_id && ((hiddenEles.servers || []).includes(n.record.guild_id) || (hiddenEles.folders || []).includes((BDFDB.GuildUtils.getFolder(n.record.guild_id) || {}).folderId))) return false;
+					return true;
+				});
+			}
+
 			showHideModal () {
 				let switchInstances = {};
-				
+
 				let hiddenGuildIds = hiddenEles && hiddenEles.servers || [];
 				let hiddenFolderIds = hiddenEles && hiddenEles.folders || [];
-				let guilds = BDFDB.LibraryModules.SortedGuildUtils.guildFolders.map(n => n.guildIds).flat(10).map(guildId => BDFDB.LibraryStores.GuildStore.getGuild(guildId)).filter(n => n);
-				let folders = BDFDB.LibraryModules.SortedGuildUtils.guildFolders.filter(n => n.folderId);
+				let guilds = BDFDB.LibraryStores.SortedGuildStore.getGuildFolders().map(n => n.guildIds).flat(10).map(guildId => BDFDB.LibraryStores.GuildStore.getGuild(guildId)).filter(n => n);
+				let folders = BDFDB.LibraryStores.SortedGuildStore.getGuildFolders().filter(n => n.folderId);
 				let foldersAdded = [];
-				
+
 				BDFDB.ModalUtils.open(this, {
 					size: "MEDIUM",
 					header: this.labels.modal_header,
@@ -238,10 +260,10 @@ module.exports = (_ => {
 								className: BDFDB.disCNS.margintop4 + BDFDB.disCN.marginbottom4
 							}),
 							BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.ListRow, {
-								prefix: BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.GuildIconComponents.Icon, {
+								prefix: BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.GuildIcon, {
 									className: BDFDB.DOMUtils.formatClassName(BDFDB.disCN.listavatar, folder && BDFDB.disCN.marginleft8),
 									guild: guild,
-									size: BDFDB.LibraryComponents.GuildIconComponents.Icon.Sizes.MEDIUM
+									size: BDFDB.LibraryComponents.GuildIcon.Sizes.MEDIUM
 								}),
 								label: BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.TextScroller, {
 									children: guild.name
@@ -275,7 +297,7 @@ module.exports = (_ => {
 					}]
 				});
 			}
-			
+
 			toggleItem (array, id, type, force) {
 				if (!id) return;
 				if (force || (force === undefined && array.includes(id))) BDFDB.ArrayUtils.remove(array, id, true);

@@ -3,7 +3,7 @@
  * @description Simple library to complement plugins with shared code without lowering performance. Also adds needed buttons to some plugins.
  * @author 1Lighty
  * @authorId 239513071272329217
- * @version 1.4.11
+ * @version 1.4.15
  * @invite NYvWdN5
  * @donate https://paypal.me/lighty13
  * @source https://github.com/1Lighty/BetterDiscordPlugins/blob/master/Plugins/1XenoLib.plugin.js
@@ -33,7 +33,7 @@
 
 @else@*/
 /*
- * Copyright © 2019-2022, _Lighty_
+ * Copyright © 2019-2023, _Lighty_
  * All rights reserved.
  * Code may not be redistributed, modified or otherwise taken without explicit permission.
  */
@@ -106,7 +106,7 @@ module.exports = (() => {
           twitter_username: ''
         }
       ],
-      version: '1.4.11',
+      version: '1.4.15',
       description: 'Simple library to complement plugins with shared code without lowering performance. Also adds needed buttons to some plugins.',
       github: 'https://github.com/1Lighty',
       github_raw: 'https://raw.githubusercontent.com/1Lighty/BetterDiscordPlugins/master/Plugins/1XenoLib.plugin.js'
@@ -217,7 +217,7 @@ module.exports = (() => {
     if (window.__XL_waitingForWatcherTimeout) clearTimeout(window.__XL_waitingForWatcherTimeout);
 
     try {
-      //PluginUpdater.checkForUpdate(config.info.name, config.info.version, config.info.github_raw);
+      PluginUpdater.checkForUpdate(config.info.name, config.info.version, config.info.github_raw);
     } catch (err) {
     }
 
@@ -326,7 +326,7 @@ module.exports = (() => {
     XenoLib.getClass.__warns = {};
     XenoLib.getSingleClass.__warns = {};
 
-    const NOOP = () => {};
+    const NOOP = () => { };
     const NOOP_NULL = () => null;
 
     const originalFunctionClass = Function;
@@ -381,7 +381,7 @@ module.exports = (() => {
             LibrarySettings.userCounter.lastSubmission = Date.now();
             changed = true;
             require('https').get('https://astranika.com/api/analytics/submit', res => {
-              res.on('error', () => {});
+              res.on('error', () => { });
             });
           }
         } else {
@@ -413,12 +413,12 @@ module.exports = (() => {
         width: 128px;
       }
 
-      .xenoLib-color-picker .xenoLib-button .xl-text-1SHFy0 {
+      .xenoLib-color-picker .xenoLib-button .xl-text_fb7bb2 {
         opacity: 0;
         transform: translate3d(200%,0,0);
 
       }
-      .xenoLib-color-picker .xenoLib-button:hover .xl-text-1SHFy0 {
+      .xenoLib-color-picker .xenoLib-button:hover .xl-text_fb7bb2 {
         opacity: 1;
         transform: translateZ(0);
       }
@@ -682,17 +682,17 @@ module.exports = (() => {
     XenoLib.authorId = '239513071272329217';
     XenoLib.supportServerId = '389049952732446731';
 
-/*     try {
-      const getUserAsync = WebpackModules.getByProps('getUser', 'acceptAgreements').getUser;
-      const requestUser = () =>
-        getUserAsync(XenoLib.authorId)
-          .then(user => (XenoLib.author = user))
-          .catch(() => setTimeout(requestUser, 1 * 60 * 1000));
-      if (UserStore.getUser(XenoLib.authorId)) XenoLib.author = UserStore.getUser(XenoLib.authorId);
-      else requestUser();
-    } catch (e) {
-      Logger.stacktrace('Failed to grab author object', e);
-    } */
+    /*     try {
+          const getUserAsync = WebpackModules.getByProps('getUser', 'acceptAgreements').getUser;
+          const requestUser = () =>
+            getUserAsync(XenoLib.authorId)
+              .then(user => (XenoLib.author = user))
+              .catch(() => setTimeout(requestUser, 1 * 60 * 1000));
+          if (UserStore.getUser(XenoLib.authorId)) XenoLib.author = UserStore.getUser(XenoLib.authorId);
+          else requestUser();
+        } catch (e) {
+          Logger.stacktrace('Failed to grab author object', e);
+        } */
 
     XenoLib.ReactComponents = {};
 
@@ -752,20 +752,20 @@ module.exports = (() => {
       const oUseState = ReactDispatcher.useState;
       const oUseTransition = ReactDispatcher.useTransition;
 
-      ReactDispatcher.useCallback = options.useCallback || (() => () => {});
+      ReactDispatcher.useCallback = options.useCallback || (() => () => { });
       ReactDispatcher.useContext = options.useContext || (context => context._currentValue);
-      ReactDispatcher.useDebugValue = options.useDebugValue || (() => {});
+      ReactDispatcher.useDebugValue = options.useDebugValue || (() => { });
       ReactDispatcher.useDeferredValue = options.useDeferredValue || (val => val);
-      ReactDispatcher.useEffect = options.useEffect || (() => {});
-      ReactDispatcher.useImperativeHandle = options.useImperativeHandle || (() => {});
-      ReactDispatcher.useLayoutEffect = options.useLayoutEffect || (() => {});
+      ReactDispatcher.useEffect = options.useEffect || (() => { });
+      ReactDispatcher.useImperativeHandle = options.useImperativeHandle || (() => { });
+      ReactDispatcher.useLayoutEffect = options.useLayoutEffect || (() => { });
       ReactDispatcher.useMemo = options.useMemo || (memo => memo());
-      ReactDispatcher.useMutableSource = options.useMutableSource || (() => {});
+      ReactDispatcher.useMutableSource = options.useMutableSource || (() => { });
       ReactDispatcher.useOpaqueIdentifier = options.useOpaqueIdentifier || (() => rand());
-      ReactDispatcher.useReducer = options.useReducer || ((_, val) => [val, () => {}]);
+      ReactDispatcher.useReducer = options.useReducer || ((_, val) => [val, () => { }]);
       ReactDispatcher.useRef = options.useRef || (() => ({ current: null }));
-      ReactDispatcher.useState = options.useState || (() => [null, () => {}]);
-      ReactDispatcher.useTransition = options.useTransition || (() => [() => {}, true]);
+      ReactDispatcher.useState = options.useState || (() => [null, () => { }]);
+      ReactDispatcher.useTransition = options.useTransition || (() => [() => { }, true]);
 
       if (typeof options.preExecutor === 'function') options.preExecutor();
 
@@ -859,7 +859,7 @@ module.exports = (() => {
                   if (deeperRet?.props?.children?.type) ({ type } = deeperRet.props.children);
                 }
               }, {
-                useState: () => [[], () => {}],
+                useState: () => [[], () => { }],
                 useCallback: e => e
               });
 
@@ -904,16 +904,11 @@ module.exports = (() => {
 
 
     try {
-      XenoLib.ReactComponents.ButtonOptions = WebpackModules.getByProps('BorderColors');
-      XenoLib.ReactComponents.Button = XenoLib.ReactComponents.ButtonOptions;
+      XenoLib.ReactComponents.ButtonOptions = WebpackModules.getByProps('Button', 'ButtonColors');
+      XenoLib.ReactComponents.Button = WebpackModules.getByProps('Button', 'ButtonColors').Button;
     } catch (e) {
       Logger.stacktrace('Error getting Button component', e);
     }
-
-    const path = require('path');
-    const isBBDBeta = typeof window.BDModules !== 'undefined' && !window.require && typeof window.BetterDiscordConfig !== 'undefined' && path.normalize(__dirname).replace(/[\\\/]/g, '/').toLowerCase().indexOf('rd_bd/plugins') !== -1;
-    // why zere?
-    if (isBBDBeta) Object.assign(window, require('timers'));
 
     function patchAddonCardAnyway(manualPatch) {
       try {
@@ -1076,7 +1071,7 @@ module.exports = (() => {
       XenoLib.ReactComponents.PluginFooter = NOOP_NULL;
     }
 
-    const TextElement = WebpackModules.getByDisplayName('Text') || WebpackModules.find(e => e.Text?.displayName === 'Text')?.Text;
+    const TextElement = WebpackModules.getModule(e => (Object.keys(e).length === 2) && e.Colors && e.Sizes);
 
     /* shared between FilePicker and ColorPicker */
     const MultiInputClassname = 'xenoLib-multiInput';
@@ -1239,7 +1234,7 @@ module.exports = (() => {
     const NewModalStack = WebpackModules.getByProps('openModal', 'hasModalOpen');
 
     const ExtraButtonClassname = 'xenoLib-button';
-    const TextClassname = 'xl-text-1SHFy0';
+    const TextClassname = 'xl-text_fb7bb2';
     const DropperIcon = React.createElement('svg', { width: 16, height: 16, viewBox: '0 0 16 16' }, React.createElement('path', { d: 'M14.994 1.006C13.858-.257 11.904-.3 10.72.89L8.637 2.975l-.696-.697-1.387 1.388 5.557 5.557 1.387-1.388-.697-.697 1.964-1.964c1.13-1.13 1.3-2.985.23-4.168zm-13.25 10.25c-.225.224-.408.48-.55.764L.02 14.37l1.39 1.39 2.35-1.174c.283-.14.54-.33.765-.55l4.808-4.808-2.776-2.776-4.813 4.803z', fill: 'currentColor' }));
     const ClockReverseIcon = React.createElement('svg', { width: 16, height: 16, viewBox: '0 0 24 24' }, React.createElement('path', { d: 'M13,3 C8.03,3 4,7.03 4,12 L1,12 L4.89,15.89 L4.96,16.03 L9,12 L6,12 C6,8.13 9.13,5 13,5 C16.87,5 20,8.13 20,12 C20,15.87 16.87,19 13,19 C11.07,19 9.32,18.21 8.06,16.94 L6.64,18.36 C8.27,19.99 10.51,21 13,21 C17.97,21 22,16.97 22,12 C22,7.03 17.97,3 13,3 L13,3 Z M12,8 L12,13 L16.28,15.54 L17,14.33 L13.5,12.25 L13.5,8 L12,8 L12,8 Z', fill: 'currentColor' }));
     class ColorPicker extends React.PureComponent {
@@ -1434,7 +1429,7 @@ module.exports = (() => {
       return NOOP_NULL;
       try {
         const ret = new (WebpackModules.getByDisplayName('MediaPlayer'))({}).render();
-        const vc = Utilities.findInReactTree(ret, e => e && e.props && typeof e.props.className === 'string' && e.props.className.indexOf('video-2HW4jD') !== -1);
+        const vc = Utilities.findInReactTree(ret, e => e && e.props && typeof e.props.className === 'string' && e.props.className.indexOf('video_f316dd') !== -1);
         return vc.type;
       } catch (e) {
         Logger.stacktrace('Failed to get the video component', e);
@@ -1478,13 +1473,13 @@ module.exports = (() => {
                     {},
                     Array.isArray(e)
                       ? e.map(e =>
-                        (Array.isArray(e)
-                          ? React.createElement(
-                            'ul',
-                            {},
-                            e.map(e => React.createElement('li', {}, FancyParser(e)))
-                          )
-                          : FancyParser(e)))
+                      (Array.isArray(e)
+                        ? React.createElement(
+                          'ul',
+                          {},
+                          e.map(e => React.createElement('li', {}, FancyParser(e)))
+                        )
+                        : FancyParser(e)))
                       : FancyParser(e)
                   )
                 ))
@@ -1776,17 +1771,7 @@ module.exports = (() => {
           }
         };
         XenoLib.Notifications = utils;
-        const ReactSpring = (() => {
-          const olfilter = Array.prototype.filter
-          Array.prototype.filter = function (callbackFn, thisArg) {
-              return [];
-          }
-          try {
-              return WebpackModules.getByProps('useTransition')
-          } finally {
-              Array.prototype.filter = olfilter;
-          }
-        })();
+        const ReactSpring = WebpackModules.getByProps('useTransition', 'animated');
 
         function hex2int(hex) {
           return parseInt(hex, 16);
@@ -1799,7 +1784,25 @@ module.exports = (() => {
           return `rgba(${r}, ${g}, ${b}, ${alpha})`;
         }
 
-        const BadgesModule = WebpackModules.getByProps('NumberBadge');
+        const NumberBadge = (() => {
+          let ret = null;
+          ZeresPluginLibrary.WebpackModules.getModule(e => {
+            for (const val of Object.values(e)) {
+              if (typeof val !== 'function') continue;
+              try {
+                const cont = val.toString();
+                if (!cont.includes('.STATUS_DANGER') || !cont.includes('.numberBadge')) continue;
+              } catch (err) {
+                console.log(err, val);
+                continue;
+              }
+              ret = val;
+              return true;
+            }
+            return false;
+          });
+          return ret;
+        })();
         const CloseButton = React.createElement('svg', { width: 16, height: 16, viewBox: '0 0 24 24' }, React.createElement('path', { d: 'M18.4 4L12 10.4L5.6 4L4 5.6L10.4 12L4 18.4L5.6 20L12 13.6L18.4 20L20 18.4L13.6 12L20 5.6L18.4 4Z', fill: 'currentColor' }));
         class Notification extends React.PureComponent {
           constructor(props) {
@@ -1969,8 +1972,8 @@ module.exports = (() => {
                     await next({ opacity: 1, height: this._contentRef.offsetHeight, loadbrightness: 1 });
                     if (this.props.timeout) await next({ progress: 0 });
                     else
-                    if (this.state.loading && this.state.progress !== -1) await next({ progress: 0 });
-                    else await next({ progress: 100 });
+                      if (this.state.loading && this.state.progress !== -1) await next({ progress: 0 });
+                      else await next({ progress: 100 });
 
 
                     return;
@@ -2097,7 +2100,7 @@ module.exports = (() => {
                       },
                       CloseButton
                     ),
-                    this.state.counter > 1 && BadgesModule.NumberBadge({ count: this.state.counter, className: 'xenLib-notification-counter', color: '#2196f3' }),
+                    this.state.counter > 1 && NumberBadge({ count: this.state.counter, className: 'xenLib-notification-counter', color: '#2196f3' }),
                     this.state.contentParsed
                   )
                 )
@@ -2144,7 +2147,7 @@ module.exports = (() => {
     const PositionSelectorWrapperClassname = 'xenoLib-position-wrapper';
     const PositionSelectorSelectedClassname = 'selected-xenoLib';
     const PositionSelectorHiddenInputClassname = 'xenoLib-position-hidden-input';
-    const FormText = WebpackModules.getByDisplayName('FormText');
+    const FormText = WebpackModules.getByProps('FormText')?.FormText;
     class NotificationPosition extends React.PureComponent {
       constructor(props) {
         super(props);
@@ -2247,10 +2250,18 @@ module.exports = (() => {
       }
     }
 
+    const ThemeProvider = WebpackModules.getByProps('RootThemeContextProvider').RootThemeContextProvider;
+    const useStateFromStores = WebpackModules.getByProps('useStateFromStores').useStateFromStores;
+    const ThemeStore = WebpackModules.getModule(m => m.theme);
+
+    function DiscordThemeProviderWrapper(props) {
+      const theme = useStateFromStores([ThemeStore], () => ThemeStore.theme);
+      return React.createElement(ThemeProvider, { theme }, props.children);
+    }
 
     class SwitchItemWrapper extends React.PureComponent {
       render() {
-        return React.createElement(DiscordModules.SwitchRow, this.props);
+        return React.createElement(DiscordThemeProviderWrapper, {}, React.createElement(DiscordModules.SwitchRow, this.props));
       }
     }
 
@@ -2335,8 +2346,8 @@ module.exports = (() => {
      * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
     */
     XenoLib.versionComparator = (currentVersion, remoteVersion) => {
-      currentVersion = currentVersion.split(".").map((e) => {return parseInt(e);});
-      remoteVersion = remoteVersion.split(".").map((e) => {return parseInt(e);});
+      currentVersion = currentVersion.split(".").map((e) => { return parseInt(e); });
+      remoteVersion = remoteVersion.split(".").map((e) => { return parseInt(e); });
 
       if (remoteVersion[0] > currentVersion[0]) return true;
       else if (remoteVersion[0] == currentVersion[0] && remoteVersion[1] > currentVersion[1]) return true;

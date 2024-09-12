@@ -2,7 +2,7 @@
  * @name ServerDetails
  * @author DevilBro
  * @authorId 278543574059057154
- * @version 1.1.6
+ * @version 1.1.9
  * @description Shows Server Details in the Server List Tooltip
  * @invite Jx3TjNS
  * @donate https://www.paypal.me/MircoWittrien
@@ -14,7 +14,7 @@
 
 module.exports = (_ => {
 	const changeLog = {
-		
+
 	};
 
 	return !window.BDFDB_Global || (!window.BDFDB_Global.loaded && !window.BDFDB_Global.started) ? class {
@@ -23,14 +23,19 @@ module.exports = (_ => {
 		getAuthor () {return this.author;}
 		getVersion () {return this.version;}
 		getDescription () {return `The Library Plugin needed for ${this.name} is missing. Open the Plugin Settings to download it. \n\n${this.description}`;}
-		
+
 		downloadLibrary () {
-			require("request").get("https://mwittrien.github.io/BetterDiscordAddons/Library/0BDFDB.plugin.js", (e, r, b) => {
-				if (!e && b && r.statusCode == 200) require("fs").writeFile(require("path").join(BdApi.Plugins.folder, "0BDFDB.plugin.js"), b, _ => BdApi.showToast("Finished downloading BDFDB Library", {type: "success"}));
-				else BdApi.alert("Error", "Could not download BDFDB Library Plugin. Try again later or download it manually from GitHub: https://mwittrien.github.io/downloader/?library");
+			BdApi.Net.fetch("https://mwittrien.github.io/BetterDiscordAddons/Library/0BDFDB.plugin.js").then(r => {
+				if (!r || r.status != 200) throw new Error();
+				else return r.text();
+			}).then(b => {
+				if (!b) throw new Error();
+				else return require("fs").writeFile(require("path").join(BdApi.Plugins.folder, "0BDFDB.plugin.js"), b, _ => BdApi.showToast("Finished downloading BDFDB Library", {type: "success"}));
+			}).catch(error => {
+				BdApi.alert("Error", "Could not download BDFDB Library Plugin. Try again later or download it manually from GitHub: https://mwittrien.github.io/downloader/?library");
 			});
 		}
-		
+
 		load () {
 			if (!window.BDFDB_Global || !Array.isArray(window.BDFDB_Global.pluginQueue)) window.BDFDB_Global = Object.assign({}, window.BDFDB_Global, {pluginQueue: []});
 			if (!window.BDFDB_Global.downloadModal) {
@@ -57,7 +62,7 @@ module.exports = (_ => {
 		}
 	} : (([Plugin, BDFDB]) => {
 		var _this;
-	
+
 		const GuildDetailsComponent = class GuildDetails extends BdApi.React.Component {
 			constructor(props) {
 				super(props);
@@ -115,6 +120,7 @@ module.exports = (_ => {
 				}
 				else {
 					let src = this.props.guild.getIconURL(4096, this.props.guild.icon && BDFDB.LibraryModules.IconUtils.isAnimatedIconHash(this.props.guild.icon));
+					let roles = this.props.guild.roles || BDFDB.LibraryStores.GuildStore.getRoles(this.props.guild.id);
 					return BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.Flex, {
 						direction: BDFDB.LibraryComponents.Flex.Direction.VERTICAL,
 						align: BDFDB.LibraryComponents.Flex.Align.CENTER,
@@ -128,7 +134,7 @@ module.exports = (_ => {
 							})),
 							_this.settings.items.owner && BDFDB.ReactUtils.createElement(GuildDetailsRowComponent, {
 								prefix: BDFDB.LanguageUtils.LanguageStrings.GUILD_OWNER,
-								string: `${owner ? owner.username : "Unknown"}#${owner ? owner.discriminator : "0000"}`
+								string: !owner ? BDFDB.LanguageUtils.LanguageStrings.UNKNOWN_USER : (owner.isPomelo() ? owner.username : `${owner.username}#${owner.discriminator}`)
 							}),
 							_this.settings.items.creationDate && BDFDB.ReactUtils.createElement(GuildDetailsRowComponent, {
 								prefix: _this.labels.creation_date,
@@ -150,9 +156,9 @@ module.exports = (_ => {
 								prefix: BDFDB.LanguageUtils.LanguageStrings.CHANNELS,
 								string: BDFDB.LibraryStores.GuildChannelStore.getChannels(this.props.guild.id).count
 							}),
-							_this.settings.items.roles && BDFDB.ReactUtils.createElement(GuildDetailsRowComponent, {
+							_this.settings.items.roles && roles && BDFDB.ReactUtils.createElement(GuildDetailsRowComponent, {
 								prefix: BDFDB.LanguageUtils.LanguageStrings.ROLES,
-								string: Object.keys(this.props.guild.roles).length
+								string: Object.keys(BDFDB.ObjectUtils.filter(roles, n => n.id != this.props.guild.id)).length
 							}),
 							_this.settings.items.language && BDFDB.ReactUtils.createElement(GuildDetailsRowComponent, {
 								prefix: BDFDB.LanguageUtils.LanguageStrings.LANGUAGE,
@@ -163,7 +169,7 @@ module.exports = (_ => {
 				}
 			}
 		};
-		
+
 		const GuildDetailsRowComponent = class GuildDetailsRow extends BdApi.React.Component {
 			render() {
 				return (this.props.prefix.length + this.props.string.length) > Math.round(34 * (_this.settings.amounts.tooltipWidth/300)) ? [
@@ -178,25 +184,25 @@ module.exports = (_ => {
 				});
 			}
 		};
-		
+
 		return class ServerDetails extends Plugin {
 			onLoad () {
 				_this = this;
-				
+
 				this.defaults = {
 					general: {
 						onlyShowOnShift:	{value: false,	description: "Only show the Details Tooltip, while holding 'Shift'"}
 					},
 					items: {
-						icon:				{value: true, 	description: "icon"},
-						owner:				{value: true, 	description: "GUILD_OWNER"},
+						icon:			{value: true, 	description: "icon"},
+						owner:			{value: true, 	description: "GUILD_OWNER"},
 						creationDate:		{value: true, 	description: "creation_date"},
-						joinDate:			{value: true, 	description: "join_date"},
-						members:			{value: true, 	description: "MEMBERS"},
-						channels:			{value: true, 	description: "CHANNELS"},
-						roles:				{value: true, 	description: "ROLES"},
-						boosts:				{value: true, 	description: "boosts"},
-						language:			{value: true, 	description: "LANGUAGE"}
+						joinDate:		{value: true, 	description: "join_date"},
+						members:		{value: true, 	description: "MEMBERS"},
+						channels:		{value: true, 	description: "CHANNELS"},
+						roles:			{value: true, 	description: "ROLES"},
+						boosts:			{value: true, 	description: "boosts"},
+						language:		{value: true, 	description: "LANGUAGE"}
 					},
 					dates: {
 						tooltipDates:		{value: {}, 	description: "Tooltip Dates"}
@@ -205,19 +211,19 @@ module.exports = (_ => {
 						tooltipColor:		{value: "", 	description: "Tooltip Color"}
 					},
 					amounts: {
-						tooltipDelay:		{value: 0,		min: 0,		max: 10,	digits: 1,	unit: "s",	description: "Tooltip Delay"},
+						tooltipDelay:		{value: 0,	min: 0,		max: 10,	digits: 1,	unit: "s",	description: "Tooltip Delay"},
 						tooltipWidth:		{value: 300,	min: 200,	max: 600,	digits: 0,	unit: "px",	description: "Tooltip Width"}
 					}
 				};
-			
+
 				this.modulePatches = {
 					after: [
 						"GuildItem"
 					]
 				};
-				
+
 				this.patchPriority = 9;
-				
+
 				this.css = `
 					${BDFDB.dotCNS._serverdetailstooltip + BDFDB.dotCN.tooltipcontent} {
 						display: flex;
@@ -240,14 +246,14 @@ module.exports = (_ => {
 					}
 				`;
 			}
-			
+
 			onStart () {
 				this.forceUpdateAll();
 			}
-			
+
 			onStop () {
 				this.forceUpdateAll();
-				
+
 				BDFDB.DOMUtils.removeLocalStyle(this.name + "TooltipWidth");
 			}
 
@@ -257,7 +263,7 @@ module.exports = (_ => {
 					collapseStates: collapseStates,
 					children: _ => {
 						let settingsItems = [];
-						
+
 						settingsItems.push(BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.CollapseContainer, {
 							title: "General",
 							collapseStates: collapseStates,
@@ -269,7 +275,7 @@ module.exports = (_ => {
 								value: this.settings.general[key]
 							}))
 						}));
-						
+
 						settingsItems.push(BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.CollapseContainer, {
 							title: "Tooltip Items",
 							collapseStates: collapseStates,
@@ -281,7 +287,7 @@ module.exports = (_ => {
 								value: this.settings.items[key]
 							}))
 						}));
-						
+
 						settingsItems.push(BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.CollapseContainer, {
 							title: "Tooltip Format",
 							collapseStates: collapseStates,
@@ -320,7 +326,7 @@ module.exports = (_ => {
 								placeholder: this.settings.colors[key]
 							})))
 						}));
-						
+
 						return settingsItems;
 					}
 				});
@@ -332,8 +338,8 @@ module.exports = (_ => {
 					this.forceUpdateAll();
 				}
 			}
-		
-			forceUpdateAll () {				
+
+			forceUpdateAll () {
 				let iconSize = this.settings.amounts.tooltipWidth - 80;
 				BDFDB.DOMUtils.appendLocalStyle(this.name + "TooltipWidth", `
 					${BDFDB.dotCN._serverdetailstooltip} {
@@ -346,10 +352,10 @@ module.exports = (_ => {
 						height: ${iconSize > 0 ? iconSize : 30}px;
 					}
 				`);
-				
+
 				BDFDB.DiscordUtils.rerenderAll();
 			}
-			
+
 			processGuildItem (e) {
 				if (!BDFDB.GuildUtils.is(e.instance.props.guild)) return;
 				let tooltipContainer;
@@ -377,189 +383,189 @@ module.exports = (_ => {
 					case "bg":		// Bulgarian
 						return {
 							boosts:								"Бустери",
-							creation_date:						"Дата на създаване",
+							creation_date:							"Дата на създаване",
 							icon:								"Икона",
 							join_date:							"Дата на присъединяване"
 						};
 					case "da":		// Danish
 						return {
 							boosts:								"Boosts",
-							creation_date:						"Oprettelsesdato",
+							creation_date:							"Oprettelsesdato",
 							icon:								"Ikon",
 							join_date:							"Deltag i dato"
 						};
 					case "de":		// German
 						return {
 							boosts:								"Boosts",
-							creation_date:						"Erstellungsdatum",
+							creation_date:							"Erstellungsdatum",
 							icon:								"Symbol",
 							join_date:							"Beitrittsdatum"
 						};
 					case "el":		// Greek
 						return {
 							boosts:								"Ενισχυτές",
-							creation_date:						"Ημερομηνία δημιουργίας",
-							icon:								"Εικόνισμα",
+							creation_date:							"Ημερομηνία δημιουργίας",
+							icon:								"Εικονίδιο",
 							join_date:							"Ημερομηνία προσχώρησης"
 						};
 					case "es":		// Spanish
 						return {
 							boosts:								"Impulsores",
-							creation_date:						"Fecha de creación",
+							creation_date:							"Fecha de creación",
 							icon:								"Icono",
 							join_date:							"Fecha de Ingreso"
 						};
 					case "fi":		// Finnish
 						return {
 							boosts:								"Tehostimet",
-							creation_date:						"Luomispäivä",
+							creation_date:							"Luomispäivä",
 							icon:								"Kuvake",
 							join_date:							"Liittymispäivä"
 						};
 					case "fr":		// French
 						return {
 							boosts:								"Boosts",
-							creation_date:						"Date de création",
+							creation_date:							"Date de création",
 							icon:								"Icône",
 							join_date:							"Date d'inscription"
 						};
 					case "hr":		// Croatian
 						return {
 							boosts:								"Pojačala",
-							creation_date:						"Datum stvaranja",
+							creation_date:							"Datum stvaranja",
 							icon:								"Ikona",
 							join_date:							"Datum pridruživanja"
 						};
 					case "hu":		// Hungarian
 						return {
 							boosts:								"Emlékeztetők",
-							creation_date:						"Létrehozás dátuma",
+							creation_date:							"Létrehozás dátuma",
 							icon:								"Ikon",
 							join_date:							"Csatlakozás dátuma"
 						};
 					case "it":		// Italian
 						return {
 							boosts:								"Boosts",
-							creation_date:						"Data di creazione",
+							creation_date:							"Data di creazione",
 							icon:								"Icona",
 							join_date:							"Data di iscrizione"
 						};
 					case "ja":		// Japanese
 						return {
 							boosts:								"ブースター",
-							creation_date:						"作成日",
+							creation_date:							"作成日",
 							icon:								"アイコン",
 							join_date:							"参加日"
 						};
 					case "ko":		// Korean
 						return {
 							boosts:								"부스터",
-							creation_date:						"제작 일",
+							creation_date:							"제작 일",
 							icon:								"상",
 							join_date:							"가입 날짜"
 						};
 					case "lt":		// Lithuanian
 						return {
 							boosts:								"Stiprintuvai",
-							creation_date:						"Sukūrimo data",
+							creation_date:							"Sukūrimo data",
 							icon:								"Piktograma",
 							join_date:							"Įstojimo data"
 						};
 					case "nl":		// Dutch
 						return {
 							boosts:								"Boosts",
-							creation_date:						"Aanmaakdatum",
+							creation_date:							"Aanmaakdatum",
 							icon:								"Icoon",
 							join_date:							"Toetredingsdatum"
 						};
 					case "no":		// Norwegian
 						return {
 							boosts:								"Boosts",
-							creation_date:						"Opprettelsesdato",
+							creation_date:							"Opprettelsesdato",
 							icon:								"Ikon",
 							join_date:							"Bli med på dato"
 						};
 					case "pl":		// Polish
 						return {
 							boosts:								"Boosty",
-							creation_date:						"Data utworzenia",
+							creation_date:							"Data utworzenia",
 							icon:								"Ikona",
 							join_date:							"Data dołączenia"
 						};
 					case "pt-BR":	// Portuguese (Brazil)
 						return {
 							boosts:								"Boosts",
-							creation_date:						"Data de criação",
+							creation_date:							"Data de criação",
 							icon:								"Ícone",
 							join_date:							"Data de afiliação"
 						};
 					case "ro":		// Romanian
 						return {
 							boosts:								"Amplificatoare",
-							creation_date:						"Data crearii",
+							creation_date:							"Data crearii",
 							icon:								"Pictogramă",
 							join_date:							"Data înscrierii"
 						};
 					case "ru":		// Russian
 						return {
 							boosts:								"Бустеры",
-							creation_date:						"Дата создания",
+							creation_date:							"Дата создания",
 							icon:								"Икона",
 							join_date:							"Дате вступления"
 						};
 					case "sv":		// Swedish
 						return {
 							boosts:								"Boosts",
-							creation_date:						"Skapelsedagen",
+							creation_date:							"Skapelsedagen",
 							icon:								"Ikon",
 							join_date:							"Gå med datum"
 						};
 					case "th":		// Thai
 						return {
 							boosts:								"บูสเตอร์",
-							creation_date:						"วันที่สร้าง",
+							creation_date:							"วันที่สร้าง",
 							icon:								"ไอคอน",
 							join_date:							"วันที่เข้าร่วม"
 						};
 					case "tr":		// Turkish
 						return {
 							boosts:								"Güçlendiriciler",
-							creation_date:						"Oluşturulma tarihi",
+							creation_date:							"Oluşturulma tarihi",
 							icon:								"Simge",
 							join_date:							"Üyelik Tarihi"
 						};
 					case "uk":		// Ukrainian
 						return {
 							boosts:								"Підсилювачі",
-							creation_date:						"Дата створення",
+							creation_date:							"Дата створення",
 							icon:								"Піктограма",
 							join_date:							"Дата приєднання"
 						};
 					case "vi":		// Vietnamese
 						return {
 							boosts:								"Bộ tăng tốc",
-							creation_date:						"Ngày thành lập",
+							creation_date:							"Ngày thành lập",
 							icon:								"Biểu tượng",
 							join_date:							"Ngày tham gia"
 						};
 					case "zh-CN":	// Chinese (China)
 						return {
 							boosts:								"助推器",
-							creation_date:						"创建日期",
+							creation_date:							"创建日期",
 							icon:								"图标",
 							join_date:							"参加日期"
 						};
 					case "zh-TW":	// Chinese (Taiwan)
 						return {
 							boosts:								"助推器",
-							creation_date:						"創建日期",
+							creation_date:							"創建日期",
 							icon:								"圖示",
 							join_date:							"參加日期"
 						};
 					default:		// English
 						return {
 							boosts:								"Boosts",
-							creation_date:						"Creation Date",
+							creation_date:							"Creation Date",
 							icon:								"Icon",
 							join_date:							"Join Date"
 						};

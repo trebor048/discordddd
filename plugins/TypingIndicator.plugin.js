@@ -5,7 +5,8 @@
  * @source https://github.com/l0c4lh057/BetterDiscordStuff/blob/master/Plugins/TypingIndicator/TypingIndicator.plugin.js
  * @patreon https://www.patreon.com/l0c4lh057
  * @invite YzzeuJPpyj
- * @authorId 226677096091484160
+ * @authorId 226677096091484160, 917630027477159986, 933076363102007317
+ * @author l0c4lh057 , imafrogowo , davilarek
  */
 
 module.exports = (() => {
@@ -70,7 +71,7 @@ module.exports = (() => {
 			}
 		]
 	};
-	
+
 	return !global.ZeresPluginLibrary ? class {
 		constructor(){this._config = config;}
 		getName(){return config.info.name;}
@@ -98,10 +99,11 @@ module.exports = (() => {
 			const Flux = WebpackModules.getByProps("connectStores");
 			const FluxUtils = WebpackModules.getByProps("useStateFromStores");
 			const MutedStore = WebpackModules.getByProps("isMuted", "isChannelMuted");
-			const Spinner = WebpackModules.getByDisplayName("Spinner");
-			const Tooltip = WebpackModules.getByDisplayName("Tooltip");
-			
-			if(!BdApi.Plugins.get("BugReportHelper") && !BdApi.getData(config.info.name, "didShowIssueHelperPopup")){
+			const Spinner = BdApi.Webpack.getModule(x=>x.Spinner).Spinner; //WebpackModules.getByDisplayName("Spinner");
+			const Tooltip = BdApi.Components.Tooltip;
+
+			// I don't think anyone wants this, aaron. Requested removal.
+			/*if(!BdApi.Plugins.get("BugReportHelper") && !BdApi.getData(config.info.name, "didShowIssueHelperPopup")){
 				BdApi.saveData(config.info.name, "didShowIssueHelperPopup", true);
 				BdApi.showConfirmationModal("Do you want to download a helper plugin?", `Do you want to download a helper plugin that makes it easier for you to report issues? That plugin is not needed to anything else to function correctly but nice to have when reporting iissues, shortening the time until the problem gets resolved by asking you for specific information and also including additional information you did not provide.`, {
 					confirmText: "Download",
@@ -115,23 +117,28 @@ module.exports = (() => {
 						});
 					}
 				});
-			}
-			
+			}*/
+
 			const renderElement = ({userIds, opacity, type, isFocused, id})=>{
 				userIds = [...new Set(userIds)];
 				if(userIds.length === 0) return null;
-				const usernames = userIds.map(userId => UserStore.getUser(userId)).filter(user => user).map(user => user.tag);
+				const usernames = userIds
+					.map(userId => UserStore.getUser(userId))
+					.filter(user => user !== null)  // For some reason faulty name existed. so null check OwO
+					.map(user => user.tag);
+				const filteredUsernames = usernames.map(username => username.replace(/#0000$/, ''));
+
 				const remainingUserCount = userIds.length - usernames.length;
 				const text = (()=>{
-					if(usernames.length === 0){
+					if(filteredUsernames.length === 0){
 						return `${remainingUserCount} user${remainingUserCount > 1 ? "s" : ""}`;
 					}else if(userIds.length > 2){
-						const otherCount = usernames.length - 1 + remainingUserCount;
-						return `${usernames[0]} and ${otherCount} other${otherCount > 1 ? "s" : ""}`;
+						const otherCount = filteredUsernames.length - 1 + remainingUserCount;
+						return `${filteredUsernames[0]} and ${otherCount} other${otherCount > 1 ? "s" : ""}`;
 					}else if(remainingUserCount === 0){
-						return usernames.join(", ");
+						return filteredUsernames.join(", ");
 					}else{
-						return `${usernames.join(", ")} and ${remainingUserCount} other${remainingUserCount > 1 ? "s" : ""}`;
+						return `${filteredUsernames.join(", ")} and ${remainingUserCount} other${remainingUserCount > 1 ? "s" : ""}`;
 					}
 				})();
 				return React.createElement(
@@ -153,26 +160,26 @@ module.exports = (() => {
 					})
 				);
 			}
-			
+
 			return class TypingIndicator extends Plugin {
 				onStart(){
 					PluginUtilities.addStyle("typingindicator-css", `
 						.typingindicator-guild, .typingindicator-dms, .typingindicator-folder {
-							position: absolute;
-							bottom: 0;
-							padding: 3px;
-							border-radius: 6px;
-							background-color: var(--background-tertiary);
-							right: 14px;
+							position: absolute !important;
+							bottom: 0 !important;
+							padding: 3px !important;
+							border-radius: 6px !important;
+							background-color: var(--background-tertiary) !important;
+							right: 14px !important;
 						}
 						.ti-indicator span.pulsingEllipsisItem-3pNmEc {
-							background-color: var(--channels-default);
+							background-color: var(--channels-default) !important;
 						}
 						.ti-indicator .pulsingEllipsis-3YiXRF {
-							width: 22px;
+							width: 22px !important;
 						}
 						.ti-indicator .pulsingEllipsisItem-3pNmEc:nth-of-type(3) {
-							margin-right: 0;
+							margin-right: 0 !important;
 						}
 					`);
 					this.promises = {state:{cancelled: false}, cancel(){this.state.cancelled = true;}};
@@ -186,20 +193,24 @@ module.exports = (() => {
 					this.promises.cancel();
 					Patcher.unpatchAll();
 				}
-				
+
 				getGuildChannels(...guildIds){
 					const channels = ChannelStore.getGuildChannels ? Object.values(ChannelStore.getGuildChannels()) : ChannelStore.getMutableGuildChannels ? Object.values(ChannelStore.getMutableGuildChannels()) : [];
 					return channels.filter(c => guildIds.includes(c.guild_id) && c.type !== DiscordConstants.ChannelTypes.GUILD_VOICE && c.type !== DiscordConstants.ChannelTypes.GUILD_CATEGORY);
 				}
-				
+
 				getPrivateChannels(){
 					return ChannelStore.getPrivateChannels ? Object.values(ChannelStore.getPrivateChannels()) : ChannelStore.getMutablePrivateChannels ? Object.values(ChannelStore.getMutablePrivateChannels()) : [];
 				}
-				
+
 				patchChannelList(){
-					const ChannelItem = WebpackModules.getModule(m => Object(m.default).displayName==="ChannelItem");
-					Patcher.after(ChannelItem, "default", (_, [props], returnValue) => {
-						if(props.channel.type!==DiscordConstants.ChannelTypes.GUILD_TEXT) return;
+					const ChannelItem = WebpackModules.getModule((m) =>
+					["canHaveDot", "unreadRelevant", "UNREAD_HIGHLIGHT"].every((s) =>
+					  m?.Z?.toString().includes(s)
+					)
+				  );
+					const ChannelTypes = {GUILD_TEXT: 15}
+					Patcher.after(ChannelItem, "Z", (_, [props], returnValue) => {
 						if(props.selected) return;
 						if(props.muted && !this.settings.includeMuted) return;
 						const selfId = UserStore.getCurrentUser()?.id;
@@ -210,11 +221,11 @@ module.exports = (() => {
 						const wrappedCount = fluxWrapper(({userIds}) => {
 							return React.createElement(renderElement, {userIds, opacity: 0.7, type: "channel", isFocused: WindowInfo.isFocused(), id: props.channel.id});
 						});
-						const itemList = Utilities.getNestedProp(returnValue, "props.children.props.children.1.props");
+						const itemList = Utilities.getNestedProp(returnValue, "props.children.props.children.1.props.children.props.children.1.props");
 						if(itemList) itemList.children = [...(Array.isArray(itemList.children) ? itemList.children : [itemList.children]), React.createElement(wrappedCount)];
 					});
 				}
-				
+
 				onAdded(selector, callback) {
 					if (document.body.querySelector(selector)) return callback(document.body.querySelector(selector));
 					const observer = new MutationObserver((mutations) => {
@@ -234,15 +245,15 @@ module.exports = (() => {
 					observer.observe(document.body, {subtree: true, childList: true});
 					return () => {observer.disconnect();};
 				}
-				
+
 				async forceUpdateGuilds(promiseState) {
 					document.getElementsByClassName("scroller-1Bvpku none-2Eo-qx scrollerBase-289Jih")[0]?.dispatchEvent(new CustomEvent("scroll"));
 				}
-				
+
 				// this still doesnt work but it was an attempt to fix it and im too lazy to undo it for release
+				// Yeah it isnt gonna work for now. Will rework later with better result
 				patchGuildList(promiseState){
-					const GuildComponents = WebpackModules.getModule(m => m?.default?.displayName === "GuildNode");
-					if (!GuildComponents || typeof GuildComponents.default !== "function") return console.error("[TypingIndicator] Could not find Guild components");
+					const result = (target => target ? [target, Object.keys(target).find(k => ['includeActivity', 'onBlur'].every(s => target[k]?.toString?.().includes(s)))] : [])(WebpackModules.getModule(m => Object.values(m).some(m => ['includeActivity', 'onBlur'].every(s => m?.toString?.().includes(s))), {searchGetters: false}));
 					const selfId = UserStore.getCurrentUser()?.id;
 					if(!selfId) return setTimeout(()=>this.patchGuildList(promiseState), 100);
 					const Indicator = guildId => {
@@ -271,14 +282,17 @@ module.exports = (() => {
 						}
 						return returnValue;
 					}
-					Patcher.after(GuildComponents, "default", (_, [args], returnValue)=>{
-						const original = returnValue.type;
-						returnValue.type = PatchedGuild;
-						returnValue.props.__TI_original = original;
+					Patcher.after(...result, (_, [args], returnValue)=>{ // Woah? Patch??
+						Patcher.after(returnValue.props.text, 'type', (self, _, value) => { // WOAH!? ANOTHER PATCH??!!
+							const original = returnValue.type;
+							returnValue.type = PatchedGuild;
+							returnValue.props.__TI_original = original;
+							//returnValue.props.children.props.children.push(Indicator({guildId: returnValue.props.text.props.guild.id}));
+						})
 					});
 					this.forceUpdateGuilds(promiseState);
 				}
-				
+
 				async patchHomeIcon(promiseState){
 					const Home = await ReactComponents.getComponentByName("TutorialIndicator", "." + WebpackModules.getByProps("badgeIcon", "circleIcon", "listItem", "pill").listItem.replace(/ /g, "."));
 					if(promiseState.cancelled) return;
@@ -303,12 +317,12 @@ module.exports = (() => {
 						const wrappedCount = fluxWrapper(({userIds}) => {
 							return React.createElement(renderElement, {userIds, opacity: 1, type: "dms", isFocused: WindowInfo.isFocused()});
 						});
-						children.props.children = React.Children.toArray(children.props.children);
+						children.props.children = React.Children.toArray(children.props.children.children.props.children);
 						if(children.props.children.push) children.props.children.push(React.createElement(wrappedCount));
 					});
 					Home.forceUpdateAll();
 				}
-				
+
 				async patchFolders(promiseState){
 					const Folder = WebpackModules.find(m=>m?.type?.render && (m?.type?.render||m?.type?.__powercordOriginal_render)?.toString()?.indexOf("SERVER_FOLDER")!==-1);
 					if(promiseState.cancelled || !Folder) return;
@@ -331,7 +345,7 @@ module.exports = (() => {
 						returnValue.props.children.push(React.createElement(wrappedCount));
 					});
 				}
-				
+
 				getSettingsPanel(){
 					return this.buildSettingsPanel().getElement();
 				}
