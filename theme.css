@@ -1,0 +1,568 @@
+
+
+/*
+.-------------------------------------.
+| _    _   _  ____ _  ____   ______   |
+|| |  | | | |/ ___| |/ /\ \ / / ___|  |
+|| |  | | | | |   | ' /  \ V /\___ \  |
+|| |__| |_| | |___| . \   | |  ___) | |
+||_____\___/_\____|_|\_\__|_|_|____/  |
+||_   _| | | | ____|  \/  | ____|     |
+|  | | | |_| |  _| | |\/| |  _|       |
+|  | | |  _  | |___| |  | | |___      |
+|  |_| |_| |_|_____|_|  |_|_____|     |
+'-------------------------------------'
+*/
+
+
+/*.------------------------.
+| ____   ___   ___ _____ |
+||  _ \ / _ \ / _ \_   _||
+|| |_) | | | | | | || |  |
+||  _ <| |_| | |_| || |  |
+||_| \_\\___/ \___/ |_|  |
+'------------------------'
+*/
+:root{
+  /*Guild List Settings*/
+    --home-icon:url(https://i.imgur.com/6acswEa.gif);
+    --chat-button:url(https://i.imgur.com/SM8uWmL.gif);
+    --guild-list-width: 220px;
+    --guild-list-height: 48px;
+    --guild-item-radius: 50px;
+    --guild-item-spacing: 8px;
+    --guild-item-font-size: 16px;
+  /*Guild Minify*/
+    --guildbar-width: 68px;
+  /*Window Settings*/
+    --title-bar-text:"methamphetamine";
+  /*Sizing Settings*/
+    --border-radius: 12px;
+    --radius: 12px;
+    --spacing: 6px;
+  /*Color Settings*/
+    --none:rgba(0, 0, 0, 0);
+    --main-color: #1e1f22;
+    --main-color-hover: hsl(210, 18%, 25%);
+    --second-color: #313338;
+    --primary-bg:hsl(225, 19%, 20%);
+    --second-bg:hsl(225, 6%, 13%);
+    --background-primary: var(--primary-bg);
+    --background-secondary: var(--second-bg);
+    --bg-overlay-chat:none;
+    --hover-color: #2a3742;
+    --link-color: #5785ba;
+    --blue-color-text: #cdd6f4;
+    --text-link:white;
+    --bluee:rgb(0,119,167);
+    --blueetrans:rgba(255, 255, 255, 0.158);
+    --blueetrans2:rgba(12, 16, 17, 0.7);
+    --bluetrans3:rgba(0, 183, 255, 0.65);
+    --bg-overlay-hover:rgba(255, 255, 255, 0.158);
+    --brightblue:rgb(0,101,141);
+    --white:rgb(255,255,255);
+    --whitetrans:rgba(255,255,255,0.7);
+    --whitetrans2:rgba(255,255,255,0.15);
+    --status-danger-text:rgb(255, 158, 155);
+    --status-danger: red;
+    --brand-500: var(--bluee);
+  /*Settings Sizes*/
+    --settingsmodalbackground: 	transparent;
+    --settingsmodalwidth: 		1500px;
+    --settingsmodalheight: 		70vh;
+  /*Border Settings*/
+    --border-width: 2px; /* panel border thickness. */
+    --border-color: var(--whitetrans2); /* panel border color. */
+    --border-transition: 0.185s ease; /* panel border transition. */
+    --background-transition: 0.4s ease;
+    --borderz: 1px rgba(255, 10, 10, 0) ridge;
+    --borderz-hover: 1px rgba(255, 255, 255, 0.75) ridge;
+    --borderz-fade: border 0.135s ease;
+    --border-hover-color:var(--bluee);
+    --bluee-hover:rgba(0, 150, 209, 0.2);
+    --interactive-hover:var(--bluee);
+    --msg-solo-button-width: 36px;
+    --msg-grid-button-padding: 32px;
+    --msg-grid-columns: 2;
+    --msg-button-height: 64px;
+    --msg-button-border-radius: 8px;
+    --msg-section-spacing: 12px;
+    --gDM-online: linear-gradient(to right, rgba(68, 105, 68, 0.45) , transparent);
+    --gDM-offline: linear-gradient(to right, rgba(66, 66, 66, 0.45) , transparent);
+    --gDM-dnd: linear-gradient(to right, rgba(130,70,70, 0.45) , transparent);
+    --gDM-idle: linear-gradient(to right, rgba(135, 105, 75, 0.45) , transparent);
+    --gDM-streaming: linear-gradient(to right, rgba(63, 33, 88, 0.45) , transparent);
+    --gDM-border-radius: 8px;
+  }
+
+
+/*
+.-----------------------------------------------------.
+|    _    _   _ ___ __  __    _  _____ ___ ___  _   _ |
+|   / \  | \ | |_ _|  \/  |  / \|_   _|_ _/ _ \| \ | ||
+|  / _ \ |  \| || || |\/| | / _ \ | |  | | | | |  \| ||
+| / ___ \| |\  || || |  | |/ ___ \| |  | | |_| | |\  ||
+|/_/   \_\_| \_|___|_|  |_/_/   \_\_| |___\___/|_| \_||
+'-----------------------------------------------------'
+*/
+@keyframes unreadBG {
+  0% { background-color: hsl(0, 100%, 50%); }
+  20% { background-color: #0000006c; }
+  40% { background-color: #ffee00; }
+  60% { background-color: #ffffff; }
+  80% { background-color: hsl(0, 100%, 50%); }
+  100% { background-color: #ffee00; }
+}
+
+@keyframes unreadBorder {
+  0% { border-color: hsl(0, 100%, 50%); }
+  20% { border-color: #0000006c; }
+  40% { border-color: #ffee00; }
+  60% { border-color: #ffffff; }
+  80% { border-color: hsl(0, 100%, 50%); }
+  100% { border-color: #ffee00; }
+}
+
+@keyframes gradientLoop {
+  0% { background-position: 100% 0%; }
+  50% { background-position: -15% 0%; }
+  100% { background-position: 100% 0%; } 
+}
+@keyframes borderGradientLoop {
+  0% { border-image-source: linear-gradient(90deg, var(--green-360), var(--green-light)); border-image-outset: 0; }
+  50% { border-image-source: linear-gradient(90deg, var(--green-light), var(--green-360)); border-image-outset: 0; }
+  100% { border-image-source: linear-gradient(90deg, var(--green-360), var(--green-light)); border-image-outset: 0; }
+}
+@keyframes slideOutIn{0%{background-size:100% 100%;}49%{background-size:0 100%;}50%{background-size:0 100%}100%{background-size:100% 100%;}} 
+@keyframes flash { 0% { background-color: red; } 25% { background-color: rgb(255, 255, 255); } 40% { background-color: rgba(0, 0, 0, 0.50); } 60% { backgorund-color: rgb(255, 251, 0)} }
+/* make closebutton take the whole screen and become invisible */
+[class^=carouselModal_] [class^=closeButton_]
+ { position: fixed;
+   width: 100%;
+   height: 100%;
+   opacity: 0;}
+/* topbar is row-reverse by default, undoing that so name/time is back on the left */
+[class^=carouselModal_] [class^=topBar_]
+ { flex-direction: row; }
+/* pull image onto the top of the stack so it's not blocked by the closebutton */
+[class^=carouselModal_] [class^=mediaWrapper_],
+[class^=carouselModal_] [class^=galleryContainer_]
+ { z-index: 1;
+   height: auto;
+   width: auto; }
+
+
+/*Selected Colouring*/
+.selected_f5eb4b{background:var(--bluee);}
+.interactive_c91bad:hover{background-color: var(--blueetrans);}
+/* SCROLL BAR */
+  ::-webkit-scrollbar-thumb{background-color:var(--whitetrans)!important;height:10%;}
+  ::-webkit-scrollbar-thumb:hover{background-color:var(--white);height:12%;}
+/* RESIZE GIF DRAWER */
+  #app-mount .drawerSizingWrapper_af5dbb{ border: var(--borderz); transition: var(--borderz-fade); height: 70vh; bottom: 0px; left: 46.5%; width: 600px; }
+  .drawerSizingWrapper_af5dbb:hover{ border:var(--borderz-hover); }
+
+
+  /*CONTEXT MENUS*/
+  .ContextMenu__item{border-radius:7px;}
+  .ContextMenu__menu #message-add-reaction{background:linear-gradient(to right, rgb(46, 90, 141), rgba(0, 119, 255, 0));} 
+  .ContextMenu__menu #message-copy-link{background:linear-gradient(to right, rgb(37, 110, 37), transparent);} 
+  .ContextMenu__menu #message-report{background:linear-gradient(to right, rgba(110, 37, 37, 0.725), transparent);color:red;} 
+  .ContextMenu__menu #message-copy-text{background:linear-gradient(to right, rgba(23, 24, 16, 0.725), transparent);} 
+  .ContextMenu__menu [id^="message-"]:hover{animation:slideOutIn 1.5s ease forwards;}
+[class^="channelTextArea_"] [class^="inner_"] {
+  flex-direction: column;
+     [class^="separator_"] {
+      margin-left: auto;
+    }
+  }
+
+[class^="inner_"]:has([class^="attachWrapper_"])  > [class^="buttons_"] {
+
+    margin-left: 32px;
+}
+[class^="attachWrapper_"] {
+  top: calc(100% - 69px);
+  position: fixed;
+}
+.ThreadSplit__chatLayerWrapper .container_d1c246{min-width:0px!important;filter: brightness(0.5) blur(2px);transition:filter 0.75s ease;width:100px;}
+.chatLayerWrapper_d1c246 .container_d1c246:hover{filter:brightness(1) blur(0px)}
+/*Mentions # Badge*/
+.mentionsBadge_e2a798,.baseShapeRound_df8943{border-radius:4px!important;transform: scale(1.1);;}
+
+
+/*
+.--------------------------------------------.
+|__        _____ _   _ ____   _____        __|
+|\ \      / /_ _| \ | |  _ \ / _ \ \      / /|
+| \ \ /\ / / | ||  \| | | | | | | \ \ /\ / / |
+|  \ V  V /  | || |\  | |_| | |_| |\ V  V /  |
+| __\_/\_/  |___|_| \_|____/_\___/ _\_/\_/   |
+|| __ )| | | |_   _|_   _/ _ \| \ | / ___|   |
+||  _ \| | | | | |   | || | | |  \| \___ \   |
+|| |_) | |_| | | |   | || |_| | |\  |___) |  |
+||____/ \___/  |_|   |_| \___/|_| \_|____/   |
+'--------------------------------------------'
+*/
+
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+
+
+/* Close Button ---------------------------- */
+.titleBar_a934d8 > [aria-label^="Close"] {
+  transform: translateY(0);
+  transition: transform 0.15s ease-out, background-color 0.15s ease-out;
+  background-color: transparent;
+  margin-top: -30px;
+}
+.titleBar_a934d8 > [aria-label^="Close"]:hover {
+  transform: translateY(5px);
+  background-color: rgba(242, 80, 86, 0.2) !important; /* Subtle highlight */
+}
+.titleBar_a934d8 > [aria-label^="Close"] > svg {
+  width: 100%;
+  height: 100%;
+  transform: scale(1.0);
+  transition: transform 0.15s ease-out;
+  background-color: #f25056 !important;
+  border: 1px solid rgba(75, 75, 75, 0.8);
+  border-radius: 8px;
+}
+.titleBar_a934d8 > [aria-label^="Close"] > svg:hover {
+  transform: scale(1.2);
+  background-color: #f97a7a !important;
+}
+.titleBar_a934d8 > [aria-label^="Close"] > svg > polygon {
+  display: none;
+}
+
+/* Minimise Button ---------------------------- */
+[aria-label^="Minimise"] {
+  transform: translateY(0);
+  transition: transform 0.15s ease-out, background-color 0.15s ease-out;
+  background-color: transparent;
+  margin-top: -30px;
+}
+[aria-label^="Minimise"]:hover {
+  transform: translateY(5px);
+  background-color: rgba(250, 197, 54, 0.2) !important; /* Subtle highlight */
+}
+[aria-label^="Minimise"] > svg {
+  width: 100%;
+  height: 100%;
+  transform: scale(1.0);
+  transition: transform 0.15s ease-out;
+  background-color: #fac536 !important;
+  border: 1px solid rgba(75, 75, 75, 0.8);
+  border-radius: 8px;
+}
+[aria-label^="Minimise"] > svg:hover {
+  transform: scale(1.2);
+  background-color: #fbe096 !important;
+}
+[aria-label^="Minimise"] > svg > rect {
+  display: none;
+}
+
+/* Maximise Button ---------------------------- */
+[aria-label^="Maximise"] {
+  transform: translateY(0);
+  transition: transform 0.15s ease-out, background-color 0.15s ease-out;
+  background-color: transparent;
+  margin-top: -30px;
+}
+[aria-label^="Maximise"]:hover {
+  transform: translateY(5px);
+  background-color: rgba(0, 168, 14, 0.2) !important; /* Subtle highlight */
+}
+[aria-label^="Maximise"] > svg {
+  width: 100%;
+  height: 100%;
+  transform: scale(1.0);
+  transition: transform 0.15s ease-out;
+  background-color: #00a80e !important;
+  border: 1px solid rgba(75, 75, 75, 0.8);
+  border-radius: 8px;
+}
+[aria-label^="Maximise"] > svg:hover {
+  transform: scale(1.2);
+  background-color: #85fb8f !important;
+}
+[aria-label^="Maximise"] > svg > rect {
+  display: none;
+}
+
+/* General Button Adjustments ---------------------------- */
+.titleBar_a934d8 > [aria-label^="Close"],
+.titleBar_a934d8 > [aria-label^="Minimise"],
+.titleBar_a934d8 > [aria-label^="Maximise"] {
+  right: 10px;
+  margin-top: -12px;
+  background: none !important;
+}
+
+.titleBar_a934d8 > [aria-label^="Close"]:hover,
+.titleBar_a934d8 > [aria-label^="Minimise"]:hover,
+.titleBar_a934d8 > [aria-label^="Maximise"]:hover {
+  margin-top: -12px;
+  background: none !important;
+}
+
+/* Buttons Animation ---------------------------- */
+.winButton_a934d8 svg {
+  width: 100%;
+  height: 100%;
+  border-radius: 3px !important;
+}
+.winButton_a934d8 {
+  margin-right: 14px;
+}
+
+/* Vencord Channel Tabs ---------------------------- */
+.vc-channeltabs-tab-container {
+  transform: scaleY(0.75);
+  margin-top: 6px;
+  margin-bottom: -4px;
+}
+.vc-channeltabs-tab-inner {
+  transform: scaleY(1.25) !important;
+}
+.vc-channeltabs-separator {
+  display: none;
+}
+/* Disable Resizing from the Top ---------------------------- */
+.resizable-window {
+  resize: none; /* Disables all native resizing */
+  cursor: default; /* Changes the cursor to default */
+}
+
+.resizable-window::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 0; /* Remove the resize handle area */
+  cursor: default; /* Neutral cursor */
+  background-color: transparent; /* Ensure no visible handle */
+  z-index: -1; /* Send to the background */
+}
+
+
+/*
+    .--------------------------------------------------------------.
+    | __  __ _____ __  __ ____  _____ ____    _     ___ ____ _____ |
+    ||  \/  | ____|  \/  | __ )| ____|  _ \  | |   |_ _/ ___|_   _||
+    || |\/| |  _| | |\/| |  _ \|  _| | |_) | | |    | |\___ \ | |  |
+    || |  | | |___| |  | | |_) | |___|  _ <  | |___ | | ___) || |  |
+    ||_|  |_|_____|_|  |_|____/|_____|_| \_\ |_____|___|____/ |_|  |
+    '--------------------------------------------------------------'
+    */
+/*Member List Cards*/
+[aria-label="Members"] > [class*="layout_"] {
+  height:35px;
+}
+[aria-label="Members"] > [class*="layout_"] span{
+transform: scale3d(); 
+} 
+    /*Member List Slide Out*/
+/* Default styling for .container_cbd271 when chat is NOT present */
+.container_cbd271 {
+    position: relative;
+    display: inline-block;
+    margin-right: -125px; /* Adjusted margin-right */
+    transition: all 0.6s ease; /* Smooth transition for all effects */
+    filter: none; /* No blur or brightness adjustment */
+}
+
+.container_cbd271:hover {
+    margin-right: 0px; /* On hover, reset the margin-right */
+    filter: blur(0px) brightness(1); /* Remove blur and darkness on hover */
+}
+
+
+/* Apply blur and margin change when .chatLayerWrapper_d1c246 is present */
+:has(.chatLayerWrapper_d1c246) .container_cbd271 {
+    margin-right: -155px; /* Adjusted margin-right when chat is present */
+    filter: blur(1.5px) brightness(0.85); /* Apply blur and darken the element */
+}
+
+/*Mention Indicator - All Channels*/
+.mentionsBar_eba0ba { background-color: red; border-radius: 6px; border: 2px rgba(255, 255, 255, 0.3) ridge; animation: flash 0.8s infinite; }
+.mentionsBar_eba0ba .barText_eba0ba { font-size: 100%; }
+/*Mentions Indicator - Individual Channels*/
+.link_d8bfb3:has(.mentionsBadge_e2a798) {
+    background: linear-gradient(90deg, rgba(255, 0, 0, 0.8), rgba(255, 255, 255, 0.24),rgba(255, 0, 0, 0.8),);
+    background-size: 200%;
+    border-radius: 8px; /* Define a border radius */
+    animation: unreadBG 0.6s ease-in-out infinite; /* Smoother transition with ease-in-out */
+}
+
+/*
+.-----------------------------.
+| _   _ ____  _____ ____      |
+|| | | / ___|| ____|  _ \     |
+|| | | \___ \|  _| | |_) |    |
+|| |_| |___) | |___|  _ <     |
+| \___/|____/|_____|_| \_\    |
+|   / \  |  _ \| ____|  / \   |
+|  / _ \ | |_) |  _|   / _ \  |
+| / ___ \|  _ <| |___ / ___ \ |
+|/_/   \_\_| \_\_____/_/   \_\|
+'-----------------------------'
+*/
+/*User Panel Buttons*/
+.theme-dark #app-mount .panels_a4d4d9{background:none;}
+.theme-dark .container_b2ca13{background:none;}
+.theme-dark .container_adcaac{background:none;}
+.actionButtons_adcaac{display:grid;}
+.theme-dark .container_b2ca13 > .avatarWrapper_b2ca13{transition:transform 0.2s ease-out;border-radius:7px;margin-right:4px;margin-left:4px;min-width:fit-content;}
+.theme-dark .container_b2ca13 > .avatarWrapper_b2ca13:hover{transform:scale(1.2);}
+.avatarSpeaking_c51b4e{border-radius:7px;}
+.panels_a4d4d9 > .container_b2ca13{height:44px;}
+.panels_a4d4d9 > .container_b2ca13 button{background:var(--background-primary);--bacborder-radius:7px;width:36px;margin:0px 4px;transition:transform 0.2s ease-out;}
+.panels_a4d4d9 > .container_b2ca13 button:hover{color:white;border-radius:7px;width:36px;transform:scale(1.2);z-index:500;}
+#app-mount .panels_a4d4d9 > [class*="container"]:hover,#app-mount .panels_a4d4d9 > [class*="wrapper"] > [class*="container"]:hover{background-color:var(--main-color-hover);transition:0.25s ease;}
+.avatarWrapper_b2ca13 .nameTag_b2ca13{padding-left:5px;padding-right:0px;display:none;}
+.avatarWrapper_b2ca13 .nameTag_b2ca13 .text-sm\/normal_dc00ef{font-size:80%;}
+.avatarWrapper_b2ca13 .nameTag_b2ca13 [class*="panel"] > div{font-size:75%;}    .avatarWrapper_b2ca13 .nameTag_b2ca13 .text-sm\/normal_dc00ef{font-size:80%;}
+
+  /*.sidebar_a4d4d9:hover  .panels_a4d4d9 > .container_b2ca13 button{width:40px;}
+.avatarWrapper_b2ca13{ min-width:0px;width:0px;border-radius:var(--border-radius);}*/
+.sidebar_a4d4d9:hover .avatarWrapper_b2ca13{width:fit-content;}
+/*VC Buttons*/
+.button_adcaac .buttonColor_adcaac, .button_adcaac.buttonColor_adcaac{transition:0.2s ease;}
+.button_adcaac:hover .buttonColor_adcaac:hover, .button_adcaac.buttonColor_adcaac:hover{transform:scale(1.075)}
+
+
+/*
+.-----------------------------------.
+|  ____ _   _ ___ _     ____  ____  |
+| / ___| | | |_ _| |   |  _ \/ ___| |
+|| |  _| | | || || |   | | | \___ \ |
+|| |_| | |_| || || |___| |_| |___) ||
+| \____|\___/|___|_____|____/|____/ |
+'-----------------------------------'
+*/
+/*Discover Button*/
+.guilds_a4d4d9 .footer_aa1bff{display:none;}
+.guilds_a4d4d9 div.Background{display:none;}
+/*Scroller*/
+.mention_edf32f{border-radius:6px;}
+/*Add Server button*/
+/*DM Button*/
+/*Home Button Icon*/
+[data-list-item-id="guildsnav___home"] svg{display:none;}
+#app-mount > div.App__appAsidePanelWrapper.appAsidePanelWrapper_bd26cc > div.App__notAppAsidePanel.notAppAsidePanel_bd26cc > div.App__app.app_bd26cc > div > div.BaseLayer__layers.layers_d4b6c5.AppLayers__layers.layers_a01fb1 > div > div.u.u530921.u530921__container.container_a4d4d9 > nav > ul > div.GuildsSidebar__scroller.scroller_fea3ef.u.u49505.u49505__none.none_c49869.scrollerBase_c49869 > div.u.u342824.u342824__tutorialContainer.tutorialContainer_f9623d > div > div.u.u466474.u466474__listItemWrapper.listItemWrapper_dfb2f8{transform:scale(1.2);}
+[aria-label="Direct Messages"]>div{background-position:0px 0px;background-image:var(--home-icon);background-size:cover;background-repeat: no-repeat;}
+#app-mount > div.App__appAsidePanelWrapper.appAsidePanelWrapper_bd26cc > div.App__notAppAsidePanel.notAppAsidePanel_bd26cc > div.App__app.app_bd26cc > div > div.BaseLayer__layers.layers_d4b6c5.AppLayers__layers.layers_a01fb1 > div > div.u.u530921.u530921__container.container_a4d4d9 > nav > ul > div.GuildsSidebar__scroller.scroller_fea3ef.u.u49505.u49505__none.none_c49869.scrollerBase_c49869 > div.u.u342824.u342824__tutorialContainer.tutorialContainer_f9623d > div > div.u.u466474.u466474__listItemWrapper.listItemWrapper_dfb2f8 > div > svg > foreignObject > div > div > svg > path{display:none;}
+.platform-win .scroller_fea3ef{padding-top:12px;}
+[class*=unreadMentionsIndicatorBottom]{bottom:0px;}
+
+/*
+.-----------------------------------------------.
+| ____  _____ _____ _____ ___ _   _  ____ ____  |
+|/ ___|| ____|_   _|_   _|_ _| \ | |/ ___/ ___| |
+|\___ \|  _|   | |   | |  | ||  \| | |  _\___ \ |
+| ___) | |___  | |   | |  | || |\  | |_| |___) ||
+||____/|_____| |_|   |_| |___|_| \_|\____|____/ |
+'-----------------------------------------------'
+*/
+/*Settings*/
+
+:root{
+  --settingsbackground:transparent;
+  --settingsbackground_v:var(--settingsbackground_s,var(--settingsbackground));
+  --settingsheight:60;
+  --settingsheight_v:min(calc(1vh * var(--settingsheight_s,var(--settingsheight))),99vh);
+  --settingswidth:1200;
+  --settingswidth_v:min(calc(1px * var(--settingswidth_s,var(--settingswidth))),99vw);
+  }
+#app-mount .baseLayer_d4b6c5
+  {opacity:1!important;transform:unset!important;will-change:unset!important}
+#app-mount .stop-animations *
+  {animation:inherit!important;transition-property:inherit!important}#app-mount .layer_d4b6c5.stop-animations:first-child::after{background:#000!important;bottom:0!important;content:""!important;left:0!important;margin:0!important;opacity:.85!important;padding:0!important;pointer-events:none!important;position:fixed!important;right:0!important;top:0!important;z-index:999!important}#app-mount .layer_d4b6c5 ~ .layer_d4b6c5{background:var(--settingsbackground_v)!important;border-radius:5px!important;bottom:0!important;box-shadow:var(--elevation-high)!important;contain:unset!important;height:var(--settingsheight_v)!important;left:0!important;margin:auto!important;overflow:hidden!important;padding:0!important;position:absolute!important;right:0!important;top:0!important;width:var(--settingswidth_v)!important;z-index:1000!important;--settingsiconsadditionalsize:var(--use-settingsicons,0) * (var(--settingsicons-size,0px) + var(--settingsicons-gap,0px))}#app-mount .layer_d4b6c5 ~ .layer_d4b6c5 > div,#app-mount .layer_d4b6c5 ~ .layer_d4b6c5 .standardSidebarView_c25c6d{border-radius:unset!important;height:100%!important;margin:unset!important;overflow:hidden!important;padding:unset!important;position:static!important;width:100%!important}#app-mount .layer_d4b6c5 ~ .layer_d4b6c5 .sidebarRegion_c25c6d,#app-mount .layer_d4b6c5 ~ .layer_d4b6c5 .sidebarRegionScroller_c25c6d{flex:0 0 auto!important}#app-mount .layer_d4b6c5 ~ .layer_d4b6c5 .sidebar_c25c6d{padding:20px 6px 20px 20px !important;width:218px!important}#app-mount .layer_d4b6c5 ~ .layer_d4b6c5 .contentColumnDefault_c25c6d,#app-mount .layer_d4b6c5 ~ .layer_d4b6c5 .contentColumnWide_c25c6d{padding:20px 40px!important}#app-mount .layer_d4b6c5 ~ .layer_d4b6c5 .wrapper_e5cdf3{width:calc(var(--settingswidth_v) - 420px - var(--settingsiconsadditionalsize))!important}#app-mount .layer_d4b6c5 ~ .layer_d4b6c5 .repo_k8F4Sd{max-width:calc(var(--settingswidth_v) - 226px - var(--settingsiconsadditionalsize))!important}#app-mount .layer_d4b6c5 ~ .layer_d4b6c5 .repoHeader_2KfNvH{padding-bottom:0!important}#app-mount .layer_d4b6c5 ~ .layer_d4b6c5 .repoHeader_2KfNvH .quickSelectLabel__79774{font-size:12px!important}#app-mount .layer_d4b6c5 ~ .layer_d4b6c5 .repoScroller_9JnAPs{padding-top:0!important}#app-mount .layer_d4b6c5 ~ .layer_d4b6c5 .sidebar_e87574{height:var(--settingsheight_v)!important}#app-mount .layer_d4b6c5 ~ .layer_d4b6c5 .standardSidebarView_c25c6d .editor{height:calc(var(--settingsheight_v) - 120px)!important}#app-mount .layer_d4b6c5 ~ .layer_d4b6c5 .toolsContainer_c25c6d,#app-mount .layer_d4b6c5 ~ .layer_d4b6c5 .toolsContainer_c25c6d .tools_c25c6d,#app-mount .layer_d4b6c5 ~ .layer_d4b6c5 .toolsContainer_c25c6d .container_df5532,#app-mount .layer_d4b6c5 ~ .layer_d4b6c5 .toolsContainer_c25c6d .closeButton_df5532{background:transparent!important;border:none!important;border-radius:0!important;bottom:0!important;cursor:default!important;height:100%!important;left:0!important;margin:0!important;max-height:unset!important;max-width:unset!important;opacity:0!important;padding:0!important;position:absolute!important;right:0!important;top:0!important;width:100%!important}#app-mount .layer_d4b6c5 ~ .layer_d4b6c5 .toolsContainer_c25c6d{position:fixed!important;top:22px!important;z-index:-1!important}#app-mount .layer_d4b6c5 ~ .layer_d4b6c5 .settingsToolbar_wu4yfQ{display:none!important}#app-mount .layer_d4b6c5 ~ .layer_d4b6c5 .accountProfileCard_b69b77{max-width:calc(var(--settingswidth_v) - 0px - var(--settingsiconsadditionalsize))!important}#app-mount .layer_d4b6c5 ~ .layer_d4b6c5 .profileCustomizationSection_bad983 .baseLayout_bad983 .sectionsContainer_e466c8,#app-mount .layer_d4b6c5 ~ .layer_d4b6c5 .profileCustomizationSection_bad983 .baseLayout_bad983 .sectionsContainer_b45d91,#app-mount .layer_d4b6c5 ~ .layer_d4b6c5 .profileCustomizationSection_bad983 .baseLayout_bad983 .editor_eb2d2c,#app-mount .layer_d4b6c5 ~ .layer_d4b6c5 .profileCustomizationSection_bad983 .baseLayout_bad983 .preview_bad983{max-width:calc((var(--settingswidth_v) - 352px - var(--settingsiconsadditionalsize)) / 2)!important;min-width:calc((var(--settingswidth_v) - 352px - var(--settingsiconsadditionalsize)) / 2)!important}#app-mount .layer_d4b6c5 ~ .layer_d4b6c5 .profileCustomizationSection_bad983 .baseLayout_bad983.tryItOutLayout_eb2d2c .sectionsContainer_e466c8,#app-mount .layer_d4b6c5 ~ .layer_d4b6c5 .profileCustomizationSection_bad983 .baseLayout_bad983.tryItOutLayout_eb2d2c .sectionsContainer_b45d91,#app-mount .layer_d4b6c5 ~ .layer_d4b6c5 .profileCustomizationSection_bad983 .baseLayout_bad983.tryItOutLayout_eb2d2c .editor_eb2d2c,#app-mount .layer_d4b6c5 ~ .layer_d4b6c5 .profileCustomizationSection_bad983 .baseLayout_bad983.tryItOutLayout_eb2d2c .preview_bad983{max-width:calc((var(--settingswidth_v) - 364px - var(--settingsiconsadditionalsize)) / 2)!important;min-width:calc((var(--settingswidth_v) - 364px - var(--settingsiconsadditionalsize)) / 2)!important}#app-mount .layer_d4b6c5 ~ .layer_d4b6c5 .profileCustomizationSection_bad983 .baseLayout_bad983 .preview_bad983 .userPopoutOuter_c69a7b,#app-mount .layer_d4b6c5 ~ .layer_d4b6c5 .baseLayout_bad983.tryItOutLayout_eb2d2c .preview_bad983 .userPopoutOuter_c69a7b{width:calc((var(--settingswidth_v) - 352px - var(--settingsiconsadditionalsize)) / 2)!important}#app-mount .layer_d4b6c5 ~ .layer_d4b6c5 .profileCustomizationSection_bad983 .baseLayout_bad983 .preview_bad983 .userPopoutInner_c69a7b{overflow:hidden!important}#app-mount .layer_d4b6c5 ~ .layer_d4b6c5 .guildsSection__337a8{max-width:calc(var(--settingswidth_v) - 352px - var(--settingsiconsadditionalsize))!important}#app-mount .root_f906dd{background:var(--settingsbackground_v)!important;border-radius:5px!important;bottom:0!important;box-shadow:var(--elevation-high)!important;contain:unset!important;height:var(--settingsheight_v)!important;left:0!important;margin:auto!important;overflow:hidden!important;padding:0!important;position:fixed!important;right:0!important;top:0!important;width:var(--settingswidth_v)!important;z-index:1000!important}
+#app-mount .root_f906dd.enterDone_f906dd
+  {transform:unset!important}
+#app-mount .root_f906dd .closeIconWrapper_a50853,#app-mount .root_f906dd .closeIconWrapper_a50853 .container_df5532,#app-mount .root_f906dd .closeIconWrapper_a50853 .closeButton_df5532,#app-mount .shop_e77fa3 .container_df5532,#app-mount .shop_e77fa3 .closeButton_df5532
+  {animation:unset!important;background:transparent!important;border:none!important;border-radius:0!important;bottom:0!important;cursor:default!important;height:100%!important;left:0!important;margin:0!important;max-height:unset!important;max-width:unset!important;opacity:0!important;padding:0!important;position:fixed!important;right:0!important;top:0!important;transition:unset!important;width:100%!important;z-index:-1!important}
+#app-mount .root_f906dd .closeIconWrapper_a50853
+  {top:22px!important}
+#app-mount .layer_d4b6c5 ~ .layer_d4b6c5 .repoHeader_2KfNvH .tabBar_b9fccc,#app-mount .layer_d4b6c5 ~ .layer_d4b6c5 .profileCustomizationSection_bad983 .baseLayout_bad983
+  {gap:30px!important}
+#app-mount .customColumn_c25c6d,#app-mount .contentColumn_c25c6d
+  {max-width:100vw}
+#app-mount .sidebarRegion_c25c6d
+  {background:none;margin-left:30px}
+#app-mount .sidebarRegionScroller_c25c6d
+  {margin-left:-300px;border: var(--border-width) solid var(--border-color);border-top-right-radius:12px;border-bottom-right-radius:12px;border-bottom:none!important;
+  transition: border-color var(--border-transition), box-shadow 0.85s ease, margin-left .385s ease;}
+#app-mount .sidebarRegionScroller_c25c6d:hover
+  {margin-left:-32px;border-color:var(--border-hover-color);}
+#app-mount .SettingsSidebar__side
+  {margin-top:-12px}
+#app-mount .SettingsSidebar__item
+  {margin-top:-6px}
+#app-mount .Settings__sidebarRegion.sidebarRegion_c25c6d > div > nav > div:not(#app-mount .Settings__sidebarRegion.sidebarRegion_c25c6d > div > nav > div:nth-child(1))
+  {opacity:0}
+.Settings__sidebarRegionScroller
+  {overflow:hidden;position:relative}
+.SettingsSidebar__side > div
+  {margin-left:-140px;opacity:0;transition:opacity 1s ease,margin-left .3s ease}
+.Settings__sidebarRegionScroller:hover .SettingsSidebar__side > div:nth-child(1)
+  {margin-left:0}
+.SettingsSidebar__side > div:nth-child(1),.Settings__sidebarRegionScroller:hover .SettingsSidebar__side > div
+  {margin-left:0;opacity:1}
+[class*="Settings__contentColumn"] > div > div > *{width:100%!important;}
+#app-mount .layer_d4b6c5.stop-animations:first-child::after{background:rgba(0,0,0,0.6)!important;backdrop-filter: blur(2px);}
+#app-mount .layer_d4b6c5 ~ .layer_d4b6c5 > div, #app-mount .layer_d4b6c5 ~ .layer_d4b6c5 .standardSidebarView_c25c6d{opacity:0.9!important;}
+
+/*Minimal Discord*/
+
+/* Guilds */
+.guilds_a4d4d9 {
+  width: var(--guildbar-width);
+  /* Makes open folders look normal */
+  /* Pings on DMs/servers */
+}
+.guilds_a4d4d9 .wrapper_c4cd66 {
+  height: calc(var(--guildbar-width) * 0.625) !important;
+}
+.guilds_a4d4d9 .wrapper_c4cd66 span {
+  max-height: calc(var(--guildbar-width) * 0.375) !important;
+}
+.guilds_a4d4d9 div[style*="height: 56px"],
+.guilds_a4d4d9 [role=group] {
+  height: auto !important;
+}
+.guilds_a4d4d9 [class*=unreadMentionsIndicator],
+.guilds_a4d4d9 .wrapper_bc7085 {
+  width: 100%;
+}
+.guilds_a4d4d9 .wrapper-28eC3z,
+.guilds_a4d4d9 [class*=guildsError-],
+.guilds_a4d4d9 svg[width="48"] {
+  width: calc(var(--guildbar-width) * 0.625) !important;
+  height: calc(var(--guildbar-width) * 0.625) !important;
+  border-radius:12px;
+}
+.guilds_a4d4d9 svg[width="48"] foreignObject{mask:none;}
+foreignObject{mask:none!important;border-radius:25%!important}
+.guilds_a4d4d9 #bd-pub-button {
+  height: calc(var(--guildbar-width) * 0.375) !important;
+  line-height: calc(var(--guildbar-width) * 0.375) !important;
+  font-size: 10px;
+}
+.guilds_a4d4d9 .wrapper_c5f96a {
+  width: calc(var(--guildbar-width) * 0.625) !important;
+  height: calc(var(--guildbar-width) * 0.625) !important;
+}
+.guilds_a4d4d9 .listItem_c96c45 {
+  width: var(--guildbar-width) !important;
+}
+.guilds_a4d4d9 .expandedFolderBackground_bc7085 {
+  left: calc(var(--guildbar-width) * 0.2) !important;
+  width: calc(var(--guildbar-width) * 0.625) !important;
+  --custom-folder-item-guild-icon-margin: 0px;
+}
