@@ -130,7 +130,7 @@
         font-size: 14px;
         line-height: 18px;
         color: var(--text-normal);
-        content: "..."
+        content: ""
     }
 
     /* only show channel's boost progressBar level when not active */
@@ -176,7 +176,7 @@
         font-family: var(--font-primary);
         line-height: 16px;
         color: var(--channels-default);
-        content: "..."
+        content: ""
     }
 
     [class*="sidebar_"]:has([aria-label*="(server)"]):not(:focus-within) ul[aria-label="Channels"] [class*="containerDefault_"]:has([class*="arrow_"]) div[class*="children"] {
@@ -357,7 +357,7 @@
         font-size: 14px;
         line-height: 18px;
         color: var(--text-normal);
-        content: "..."
+        content: ""
     }
 
     /* only show channel's boost progressBar level when not active */
@@ -403,7 +403,7 @@
         font-family: var(--font-primary);
         line-height: 16px;
         color: var(--channels-default);
-        content: "..."
+        content: ""
     }
 
     [class*="sidebar_"]:has([aria-label*="(server)"]):not(:hover) ul[aria-label="Channels"] [class*="containerDefault_"]:has([class*="arrow_"]) div[class*="children"] {
