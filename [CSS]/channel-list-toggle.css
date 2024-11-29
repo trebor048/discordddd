@@ -84,7 +84,7 @@ html[class^="is-mobile"] {
 
 	@media only screen and (max-width:570px) {
 		div[class^="sidebar_"] nav:before {
-			content: "????";
+			content: "";
 			position: fixed;
 			width: 50px;
 			height: 26px;
