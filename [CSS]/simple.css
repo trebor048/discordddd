@@ -1,0 +1,51 @@
+/**
+ * @name Simple and Clean
+ * @description Removes clutter and unneeded features for a more concise user experience.
+ * @author Akross
+ * @authorId 282593436803268618
+ * @authoerLink https://akross.dev
+ * @version 2.0
+ * @source https://github.com/akrossu/SimpleAndClean/blob/main/SimpleAndClean.theme.css
+ * @website https://github.com/akrossu/SimpleAndClean
+*/
+
+/* ----------------------------------------------- */
+/*            Simple and Clean Theme :3            */
+/* ----------------------------------------------- */
+@import url(https://raw.githubusercontent.com/akrossu/SimpleAndClean/refs/heads/main/src/base.css);
+@import url(https://raw.githubusercontent.com/akrossu/SimpleAndClean/refs/heads/main/src/chat.css);
+@import url(https://raw.githubusercontent.com/akrossu/SimpleAndClean/refs/heads/main/src/mica.css);
+@import url(https://raw.githubusercontent.com/akrossu/SimpleAndClean/refs/heads/main/src/sidebar.css);
+@import url(https://raw.githubusercontent.com/akrossu/SimpleAndClean/refs/heads/main/src/friends.css);
+@import url(https://raw.githubusercontent.com/akrossu/SimpleAndClean/refs/heads/main/src/settings.css);
+
+/* Optional Additions */
+/*@import url(https://raw.githubusercontent.com/akrossu/SimpleAndClean/refs/heads/main/src/window.css); /* Gets rid of window controls */
+/*@import url(https://raw.githubusercontent.com/akrossu/SimpleAndClean/refs/heads/main/src/additions/serverCircles.css);*/
+
+:root { /* App Wallpaper */
+    --app-bg-url: url("https://i.imgur.com/RepButt.gif");
+    /* --app-bg-url: url("https://github.com/akrossu/SimpleAndClean/blob/main/src/resources/sample-wallpapers/6.png?raw=true"); */
+    /* --app-bg-url: url("https://github.com/akrossu/SimpleAndClean/blob/main/src/resources/sample-wallpapers/3981.jpg?raw=true"); */
+}
+
+:root { /* APP COLORS */
+    --dark-app-wrapper: lab(4.68% 0 0);
+    --dark-sidebar: lab(7.74% 0 0);
+    --dark-backgoround: lab(10.77% 0 0);
+
+    --light-app-wrapper: lab(95.15% 0.01 -0.01);
+}
+
+:root { /* MICA */
+    --app-bg-brightness: 40%;
+    --panel-rgb: rgba(0, 0, 0, 0.05);
+}
+
+.visual-refresh.theme-dark {
+    --app-bg: var(--dark-app-wrapper);
+}
+
+.visual-refresh.theme-light {
+    --app-bg: var(--light-app-wrapper);
+}
